@@ -1,0 +1,16 @@
+aws_iam_role.fargate_pod_exec interop-eks-dev-EksFargatePodExecutionRole
+module.eks.aws_eks_cluster.this[0] interop-eks-dev
+module.eks.aws_iam_role.this[0] interop-eks-dev-EksClusterRole
+module.eks.aws_iam_role_policy_attachment.this["AmazonEKSClusterPolicy"] interop-eks-dev-EksClusterRole/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+module.eks.aws_iam_openid_connect_provider.oidc_provider[0] arn:aws:iam::505630707203:oidc-provider/oidc.eks.eu-central-1.amazonaws.com/id/47C408D8DCA92B659C346C80DD0C572D
+module.eks.aws_cloudwatch_log_group.this[0] /aws/eks/interop-eks-dev/cluster
+module.eks.aws_eks_addon.this["coredns"] interop-eks-dev:coredns
+module.eks.aws_eks_addon.this["kube-proxy"] interop-eks-dev:kube-proxy
+module.eks.aws_eks_addon.this["vpc-cni"] interop-eks-dev:vpc-cni
+module.eks.module.fargate_profile["system"].aws_eks_fargate_profile.this[0] interop-eks-dev:EKSFargateProfileSystem-GTigYv4p5CgY
+module.eks.module.fargate_profile["application"].aws_eks_fargate_profile.this[0] interop-eks-dev:EKSFargateProfileApplicatio-UohA0LUXvAOP
+module.eks.module.fargate_profile["observability"].aws_eks_fargate_profile.this[0] interop-eks-dev:EKSFargateProfileObservabil-djlff8sAMua3
+module.eks.module.fargate_profile["tools"].aws_eks_fargate_profile.this[0] interop-eks-dev:EKSFargateProfileDevTools-c8F5N8JSC4Ki
+module.eks.aws_security_group.cluster[0] sg-0e2ab55b80f66178f
+module.elb_iam_role.aws_iam_role.this[0] interop-eks-dev-EksLoadBalancerControllerRole
+module.adot_iam_role.aws_iam_role.this[0] interop-eks-dev-ADOT-ServiceAccount-Role
