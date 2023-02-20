@@ -7,3 +7,9 @@ tags = {
   Owner       = "PagoPA"
   Source      = "https://github.com/pagopa/interop-infra"
 }
+bastion_host_ami_id = "ami-05f5f4f906feab6a7"
+bastion_host_instance_type = "t2.micro"
+bastion_host_private_ip = ""
+bastion_host_security_group_name = ""
+bastion_host_ssh_cidr = ""
+bastion_host_key_pair = ""
