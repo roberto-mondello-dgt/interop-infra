@@ -15,6 +15,8 @@ aws_ecr_repository.app["interop-be-party-registry-proxy"] interop-be-party-regis
 aws_ecr_repository.app["interop-be-purpose-management"] interop-be-purpose-management
 aws_ecr_repository.app["interop-be-purpose-process"] interop-be-purpose-process
 aws_ecr_repository.app["interop-frontend"] interop-frontend
+aws_ecr_repository.app["interop-be-padigitale-report-generator"] interop-be-padigitale-report-generator
+aws_ecr_repository.app["interop-be-dashboard-metrics-report-generator"] interop-be-dashboard-metrics-report-generator
 aws_ecr_lifecycle_policy.app["interop-be-agreement-management"] interop-be-agreement-management
 aws_ecr_lifecycle_policy.app["interop-be-agreement-process"] interop-be-agreement-process
 aws_ecr_lifecycle_policy.app["interop-be-api-gateway"] interop-be-api-gateway
@@ -32,3 +34,5 @@ aws_ecr_lifecycle_policy.app["interop-be-party-registry-proxy"] interop-be-party
 aws_ecr_lifecycle_policy.app["interop-be-purpose-management"] interop-be-purpose-management
 aws_ecr_lifecycle_policy.app["interop-be-purpose-process"] interop-be-purpose-process
 aws_ecr_lifecycle_policy.app["interop-frontend"] interop-frontend
+aws_ecr_lifecycle_policy.app["interop-be-padigitale-report-generator"] interop-be-padigitale-report-generator
+aws_ecr_lifecycle_policy.app["interop-be-dashboard-metrics-report-generator"] interop-be-dashboard-metrics-report-generator

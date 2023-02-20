@@ -18,7 +18,9 @@ locals {
     "interop-be-party-registry-proxy",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
-    "interop-frontend"
+    "interop-frontend",
+    "interop-be-padigitale-report-generator",
+    "interop-be-dashboard-metrics-report-generator"
   ]
 }
 
