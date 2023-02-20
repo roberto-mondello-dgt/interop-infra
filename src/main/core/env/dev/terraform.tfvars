@@ -1,15 +1,17 @@
 aws_region = "eu-central-1"
 env        = "dev"
 short_name = "interop"
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "dev"
-  Owner       = "PagoPA"
-  Source      = "https://github.com/pagopa/interop-infra"
-}
+
 bastion_host_ami_id = "ami-094c442a8e9a67935"
 bastion_host_instance_type = "t2.micro"
 bastion_host_private_ip = "172.32.0.7"
 bastion_host_security_group_name = "interop-bastion-host-dev-BastionSecurityGroup-WP1X6VLMIUMW"
 bastion_host_ssh_cidr = "0.0.0.0/0"
 bastion_host_key_pair = "interop-bh-key-dev"
+
+tags = {
+  CreatedBy   = "Terraform"
+  Environment = "dev"
+  Owner       = "PagoPA"
+  Source      = "https://github.com/pagopa/interop-infra"
+}
