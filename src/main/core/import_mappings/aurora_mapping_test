@@ -1,0 +1,9 @@
+aws_kms_key.persistence_management 92e7c57f-a418-4228-a2cb-015084066773
+aws_secretsmanager_secret.persistence_management_master arn:aws:secretsmanager:eu-central-1:895646477129:secret:test/aurora-pg/interop-rds-test-QzlHzL
+aws_secretsmanager_secret_version.persistence_management_credentials arn:aws:secretsmanager:eu-central-1:895646477129:secret:test/aurora-pg/interop-rds-test-QzlHzL|01a3a58d-0b30-4198-8752-453e8ed4efe8
+module.persistence_management_aurora_cluster.aws_rds_cluster.this[0] interop-rds-test-auroradbcluster-u2a45bkp2iqr
+module.persistence_management_aurora_cluster.aws_rds_cluster_instance.this["primary"] iamjt69lstx8vp
+module.persistence_management_aurora_cluster.aws_rds_cluster_instance.this["replica1"] ia2kfif199v3bk
+module.persistence_management_aurora_cluster.aws_rds_cluster_instance.this["replica2"] ia5op8xj5o25hp
+module.persistence_management_aurora_cluster.aws_db_subnet_group.this[0] interop-rds-test-dbsubnetgroup-ex5iby3uhnbt
+module.persistence_management_aurora_cluster.aws_rds_cluster_parameter_group.this[0] interop-rds-test-rdsdbclusterparametergroup-y0wcfjbgv5fy

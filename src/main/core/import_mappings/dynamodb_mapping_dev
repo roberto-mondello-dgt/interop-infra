@@ -1,0 +1,2 @@
+aws_dynamodb_table.notification_events interop-notification-events
+aws_dynamodb_table.notification_resources interop-notification-resources

@@ -44,3 +44,16 @@ module "vpc" {
   database_subnet_names        = concat(local.aurora_subnets_names, local.docdb_subnets_names)
   create_database_subnet_group = false
 }
+
+data "aws_eks_cluster" "backend" {
+  count = var.eks_cluster_name != null ? 1 : 0
+
+  name = var.eks_cluster_name
+}
+
+data "aws_security_groups" "backend" {
+  filter {
+    name = "group-id"
+    values = try(data.aws_eks_cluster.backend[0].vpc_config[0].security_group_ids, [])
+  }
+}

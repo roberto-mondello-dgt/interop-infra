@@ -2,16 +2,39 @@ aws_region = "eu-central-1"
 env        = "prod"
 short_name = "interop"
 
-bastion_host_ami_id = "ami-05f5f4f906feab6a7"
-bastion_host_instance_type = "t2.micro"
-bastion_host_private_ip = "172.32.0.125"
-bastion_host_security_group_name = "interop-bastion-host-prod-BastionSecurityGroup-RMFYSHUF0P69"
-bastion_host_ssh_cidr = "0.0.0.0/0"
-bastion_host_key_pair = "interop-bh-key-prod"
-
 tags = {
   CreatedBy   = "Terraform"
   Environment = "prod"
   Owner       = "PagoPA"
   Source      = "https://github.com/pagopa/interop-infra"
 }
+
+bastion_host_ami_id              = "ami-05f5f4f906feab6a7"
+bastion_host_instance_type       = "t2.micro"
+bastion_host_private_ip          = "172.32.0.125"
+bastion_host_security_group_name = "interop-bastion-host-prod-BastionSecurityGroup-RMFYSHUF0P69"
+bastion_host_ssh_cidr            = "0.0.0.0/0"
+bastion_host_key_pair            = "interop-bh-key-prod"
+
+eks_cluster_name = "interop-eks-prod"
+
+persistence_management_cluster_id             = "interop-rds-prod-auroradbcluster-n6mrmtikvktv"
+persistence_management_database_name          = "persistence_management"
+persistence_management_engine_version         = "13.4"
+persistence_management_instance_class         = "db.t4g.medium"
+persistence_management_subnet_group_name      = "interop-rds-prod-dbsubnetgroup-wtgcr8luwouy"
+persistence_management_parameter_group_name   = "interop-rds-prod-rdsdbclusterparametergroup-jccxnxbx76wj"
+persistence_management_parameter_group_family = "aurora-postgresql13"
+persistence_management_master_username        = "root"
+persistence_management_primary_instance_id    = "iacssmqzaqjtke"
+persistence_management_replica1_instance_id   = "iag1ir56gge28j"
+persistence_management_replica2_instance_id   = "iai6ggc9mqc8df"
+
+read_model_cluster_id           = "read-model"
+read_model_master_username      = "root"
+read_model_engine_version       = "4.0.0"
+read_model_instance_class       = "db.t4g.medium"
+read_model_subnet_group_name    = "docdbsubnetgroup-o9tsiei6mmwh"
+read_model_parameter_group_name = "read-model-parameter-group"
+
+notification_events_table_ttl_enabled = true
