@@ -166,3 +166,8 @@ variable "notification_events_table_ttl_enabled" {
   description = "Enable or disable TTL in 'interop-notification-events' table"
   type = bool
 }
+
+variable "backend_integration_alb_name" {
+  description = "Name of the ALB created by the aws-load-balancer-controller"
+  type = string
+}

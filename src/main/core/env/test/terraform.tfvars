@@ -38,3 +38,5 @@ read_model_subnet_group_name    = "docdbsubnetgroup-obcnimrvqtxx"
 read_model_parameter_group_name = "read-model-parameter-group"
 
 notification_events_table_ttl_enabled = true
+
+backend_integration_alb_name = "k8s-test-interops-1810b960f8"
