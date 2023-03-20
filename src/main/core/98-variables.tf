@@ -171,3 +171,10 @@ variable "backend_integration_alb_name" {
   description = "Name of the ALB created by the aws-load-balancer-controller"
   type = string
 }
+
+# to be removed when imported SNS topics on terraform
+
+variable "alarms_topic_sns" {
+  description = "ARN of the SNS topic that will receive notifications for alarms"
+  type = string
+}

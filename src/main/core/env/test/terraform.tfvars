@@ -40,3 +40,6 @@ read_model_parameter_group_name = "read-model-parameter-group"
 notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-test-interops-1810b960f8"
+
+# to be removed when imported SNS topics on terraform
+alarms_topic_sns = "arn:aws:sns:eu-central-1:895646477129:interop-platform-alarms-test"

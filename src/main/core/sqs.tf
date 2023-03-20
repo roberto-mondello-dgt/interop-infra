@@ -1,0 +1,73 @@
+module "persistence_events_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "v4.0.1"
+
+  name       = "persistence-events.fifo"
+  fifo_queue = true
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 10
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+  receive_wait_time_seconds  = 1
+  deduplication_scope        = "messageGroup"
+  fifo_throughput_limit      = "perMessageGroupId"
+}
+
+module "persistence_events_queue_monitoring" {
+  source = "./modules/queue-monitoring"
+
+  env                     = var.env
+  region                  = var.aws_region
+  queue_name              = module.persistence_events_queue.queue_name
+  alarm_threshold_seconds = "1800" # 30 minutes
+  alarm_sns_topic_arn     = var.alarms_topic_sns
+}
+
+module "generated_jwt_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "v4.0.1"
+
+  name = "generated-jwt"
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+}
+
+module "generated_jwt_queue_monitoring" {
+  source = "./modules/queue-monitoring"
+
+  env                     = var.env
+  region                  = var.aws_region
+  queue_name              = module.generated_jwt_queue.queue_name
+  alarm_threshold_seconds = "4500" # 1 hour 30 minutes
+  alarm_sns_topic_arn     = var.alarms_topic_sns
+}
+
+module "certified_mail_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "v4.0.1"
+
+  name       = "certified-mail.fifo"
+  fifo_queue = true
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+}
+
+module "certified_mail_queue_monitoring" {
+  source = "./modules/queue-monitoring"
+
+  env                     = var.env
+  region                  = var.aws_region
+  queue_name              = module.certified_mail_queue.queue_name
+  alarm_threshold_seconds = "1800" # 30 minutes
+  alarm_sns_topic_arn     = var.alarms_topic_sns
+}

@@ -20,7 +20,7 @@ eks_cluster_name = "interop-eks-prod"
 
 persistence_management_cluster_id             = "interop-rds-prod-auroradbcluster-n6mrmtikvktv"
 persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.4"
+persistence_management_engine_version         = "13.8"
 persistence_management_instance_class         = "db.t4g.medium"
 persistence_management_subnet_group_name      = "interop-rds-prod-dbsubnetgroup-wtgcr8luwouy"
 persistence_management_parameter_group_name   = "interop-rds-prod-rdsdbclusterparametergroup-jccxnxbx76wj"
@@ -40,3 +40,6 @@ read_model_parameter_group_name = "read-model-parameter-group"
 notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-prod-interops-18ff9f336d"
+
+# to be removed when imported SNS topics on terraform
+alarms_topic_sns = "arn:aws:sns:eu-central-1:697818730278:interop-platform-alarms-prod"
