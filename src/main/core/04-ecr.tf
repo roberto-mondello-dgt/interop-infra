@@ -1,6 +1,5 @@
 locals {
   is_prod = var.env == "prod"
-  is_test = var.env == "test"
   repository_name = [
     "interop-be-agreement-management",
     "interop-be-agreement-process",
@@ -24,8 +23,10 @@ locals {
   ]
 }
 
+# TODO: refactor the for_each -> count
 resource "aws_ecr_repository" "app" {
-  for_each             = { for repo in local.repository_name : repo => repo if local.is_test == false }
+  for_each             = { for repo in local.repository_name : repo => repo }
+
   image_tag_mutability = local.is_prod ? "IMMUTABLE" : "MUTABLE"
   name                 = each.key
 }

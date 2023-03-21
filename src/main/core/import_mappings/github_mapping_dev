@@ -1,0 +1,7 @@
+aws_iam_role.github_runner_task_exec interop-github-runner-ecs-task-exec-dev
+aws_iam_role.github_runner_task interop-github-runner-task-dev
+aws_ecs_cluster.github_runners interop-github-runners-dev
+aws_ecs_task_definition.github_runner arn:aws:ecs:eu-central-1:505630707203:task-definition/interop-github-runner-dev:11
+aws_security_group.github_runners sg-0554cdcff5d7b49d5
+aws_iam_role.github_ecr interop-github-ecr-dev
+aws_iam_role.github_ecs interop-github-ecs-dev

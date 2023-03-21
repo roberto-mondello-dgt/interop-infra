@@ -150,12 +150,12 @@ variable "read_model_subnet_group_name" {
 
 variable "read_model_parameter_group_name" {
   description = "Name of cluster parameter group for the DocDB cluster - read model"
-  type = string
+  type        = string
 }
 
 variable "read_model_parameter_group_family" {
   description = "Family of the parameter group (based on engine version) for the DocDB cluster - read model"
-  type = map
+  type        = map(any)
   default = {
     "3.6.0" = "docdb3.6"
     "4.0.0" = "docdb4.0"
@@ -164,12 +164,32 @@ variable "read_model_parameter_group_family" {
 
 variable "notification_events_table_ttl_enabled" {
   description = "Enable or disable TTL in 'interop-notification-events' table"
-  type = bool
+  type        = bool
 }
 
 variable "backend_integration_alb_name" {
   description = "Name of the ALB created by the aws-load-balancer-controller"
-  type = string
+  type        = string
+}
+
+variable "github_runners_allowed_repos" {
+  description = "Github repositories names (format: organization/repo-name) allowed to assume the ECS role to start/stop self-hosted runners"
+  type        = list(string)
+}
+
+variable "github_runners_cpu" {
+  description = "vCPU to allocate for each GH runner execution (e.g. 1024)"
+  type        = number
+}
+
+variable "github_runners_memory" {
+  description = "RAM to allocate for each GH runner execution (e.g. 2048)"
+  type        = number
+}
+
+variable "github_runners_image_uri" {
+  description = "URI of the runner image"
+  type        = string
 }
 
 # to be removed when imported SNS topics on terraform

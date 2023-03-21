@@ -41,5 +41,9 @@ notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-dev-interops-9d1ad7f6b4"
 
-# to be removed when imported SNS topics on terraform
 alarms_topic_sns = "arn:aws:sns:eu-central-1:505630707203:interop-platform-alarms-dev"
+
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws"]
+github_runners_cpu           = 2048
+github_runners_memory        = 4096
+github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"

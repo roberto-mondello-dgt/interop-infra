@@ -43,3 +43,8 @@ backend_integration_alb_name = "k8s-prod-interops-18ff9f336d"
 
 # to be removed when imported SNS topics on terraform
 alarms_topic_sns = "arn:aws:sns:eu-central-1:697818730278:interop-platform-alarms-prod"
+
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
+github_runners_cpu           = 2048
+github_runners_memory        = 4096
+github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"

@@ -16,7 +16,8 @@ module "persistence_events_queue" {
 }
 
 module "persistence_events_queue_monitoring" {
-  source = "./modules/queue-monitoring"
+  source     = "./modules/queue-monitoring"
+  depends_on = [module.persistence_events_queue]
 
   env                     = var.env
   region                  = var.aws_region
@@ -39,7 +40,8 @@ module "generated_jwt_queue" {
 }
 
 module "generated_jwt_queue_monitoring" {
-  source = "./modules/queue-monitoring"
+  source     = "./modules/queue-monitoring"
+  depends_on = [module.generated_jwt_queue]
 
   env                     = var.env
   region                  = var.aws_region
@@ -63,7 +65,8 @@ module "certified_mail_queue" {
 }
 
 module "certified_mail_queue_monitoring" {
-  source = "./modules/queue-monitoring"
+  source     = "./modules/queue-monitoring"
+  depends_on = [module.certified_mail_queue]
 
   env                     = var.env
   region                  = var.aws_region

@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.48.0"
+      version = "~> 4.59.0"
     }
   }
 }
@@ -68,4 +68,17 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
     name = "DynamoDB Terraform State Lock Table"
   })
 
+}
+
+# github openid identity provider.
+resource "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [
+    "6938fd4d98bab03faadb97b34396831e3780aea1"
+  ]
 }

@@ -20,7 +20,7 @@ eks_cluster_name = "interop-eks-test"
 
 persistence_management_cluster_id             = "interop-rds-test-auroradbcluster-u2a45bkp2iqr"
 persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.4"
+persistence_management_engine_version         = "13.8"
 persistence_management_instance_class         = "db.t4g.large"
 persistence_management_subnet_group_name      = "interop-rds-test-dbsubnetgroup-ex5iby3uhnbt"
 persistence_management_parameter_group_name   = "interop-rds-test-rdsdbclusterparametergroup-y0wcfjbgv5fy"
@@ -43,3 +43,8 @@ backend_integration_alb_name = "k8s-test-interops-1810b960f8"
 
 # to be removed when imported SNS topics on terraform
 alarms_topic_sns = "arn:aws:sns:eu-central-1:895646477129:interop-platform-alarms-test"
+
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
+github_runners_cpu           = 2048
+github_runners_memory        = 4096
+github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
