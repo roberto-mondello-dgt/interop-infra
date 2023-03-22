@@ -20,7 +20,7 @@ eks_cluster_name = "interop-eks-dev"
 
 persistence_management_cluster_id             = "interop-rds-dev-auroradbcluster-1ws49gkll6459"
 persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.8"
+persistence_management_engine_version         = "13.9"
 persistence_management_instance_class         = "db.t4g.medium"
 persistence_management_subnet_group_name      = "interop-rds-dev-dbsubnetgroup-fk3mnuj6th50"
 persistence_management_parameter_group_name   = "interop-rds-dev-rdsdbclusterparametergroup-pmkjrep8gv9p"

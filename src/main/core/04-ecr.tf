@@ -19,7 +19,8 @@ locals {
     "interop-be-purpose-process",
     "interop-frontend",
     "interop-be-padigitale-report-generator",
-    "interop-be-dashboard-metrics-report-generator"
+    "interop-be-dashboard-metrics-report-generator",
+    "interop-be-attribute-registry-process"
   ]
 }
 
