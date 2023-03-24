@@ -1,0 +1,31 @@
+locals {
+  # TODO: is there a better way? We need to fix "test" env name someday
+  env_dns_name                   = replace(var.env, "test", "uat")
+  interop_env_dns_domain         = var.env != "prod" ? format("%s.%s", local.env_dns_name, var.dns_interop_base_domain) : var.dns_interop_base_domain
+  delegate_interop_dev_subdomain = var.env == "prod" && length(toset(var.dns_interop_dev_ns_records)) > 0
+  delegate_interop_uat_subdomain = var.env == "prod" && length(toset(var.dns_interop_uat_ns_records)) > 0
+}
+
+resource "aws_route53_zone" "interop_public" {
+  name = local.interop_env_dns_domain
+}
+
+resource "aws_route53_record" "interop_dev_delegation" {
+  count = local.delegate_interop_dev_subdomain ? 1 : 0
+
+  zone_id = aws_route53_zone.interop_public.zone_id
+  name    = format("dev.%s", var.dns_interop_base_domain)
+  type    = "NS"
+  records = toset(var.dns_interop_dev_ns_records)
+  ttl     = "300"
+}
+
+resource "aws_route53_record" "interop_uat_delegation" {
+  count = local.delegate_interop_uat_subdomain ? 1 : 0
+
+  zone_id = aws_route53_zone.interop_public.zone_id
+  name    = format("uat.%s", var.dns_interop_base_domain)
+  type    = "NS"
+  records = toset(var.dns_interop_uat_ns_records)
+  ttl     = "300"
+}

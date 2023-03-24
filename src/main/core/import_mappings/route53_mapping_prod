@@ -1,0 +1,5 @@
+aws_route53_zone.interop_public Z100714238OQISA97RBZW
+aws_route53_record.interop_dev_delegation[0] Z100714238OQISA97RBZW_dev.interop.pagopa.it_NS
+aws_route53_record.interop_uat_delegation[0] Z100714238OQISA97RBZW_uat.interop.pagopa.it_NS
+aws_route53_zone.pdnd_public[0] Z06242753OVTAAYMYB0RM
+aws_route53_record.pdnd_uat_delegation[0] Z06242753OVTAAYMYB0RM_test.pdnd-interop.pagopa.it_NS

@@ -48,3 +48,17 @@ github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
+
+dns_interop_base_domain = "interop.pagopa.it"
+dns_interop_dev_ns_records = [
+  "ns-1337.awsdns-39.org.",
+  "ns-70.awsdns-08.com.",
+  "ns-1728.awsdns-24.co.uk.",
+  "ns-876.awsdns-45.net.",
+]
+dns_interop_uat_ns_records = [
+  "ns-1942.awsdns-50.co.uk.",
+  "ns-783.awsdns-33.net.",
+  "ns-317.awsdns-39.com.",
+  "ns-1395.awsdns-46.org.",
+]

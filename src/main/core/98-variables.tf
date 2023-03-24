@@ -196,5 +196,23 @@ variable "github_runners_image_uri" {
 
 variable "alarms_topic_sns" {
   description = "ARN of the SNS topic that will receive notifications for alarms"
-  type = string
+  type        = string
 }
+
+variable "dns_interop_base_domain" {
+  description = "Base DNS domain for the Interoperability product. According to PagoPA eng standard, it usually is a third level domain (e.g. product.example.com)"
+  type        = string
+}
+
+variable "dns_interop_dev_ns_records" {
+  description = "NS records for the Interop 'dev' hosted zone. Used to grant DNS delegation for the subdomain"
+  type        = list(string)
+  default     = []
+}
+
+variable "dns_interop_uat_ns_records" {
+  description = "NS records for the Interop 'uat' hosted zone. Used to grant DNS delegation for the subdomain"
+  type        = list(string)
+  default     = []
+}
+
