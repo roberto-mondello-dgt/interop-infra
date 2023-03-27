@@ -98,8 +98,8 @@ resource "aws_docdb_cluster" "read_model" {
   vpc_security_group_ids          = [aws_security_group.read_model.id]
   availability_zones              = module.vpc.azs
 
-  master_username = jsondecode(aws_secretsmanager_secret_version.persistence_management_credentials.secret_string).username
-  master_password = jsondecode(aws_secretsmanager_secret_version.persistence_management_credentials.secret_string).password
+  master_username = jsondecode(aws_secretsmanager_secret_version.read_model_credentials.secret_string).username
+  master_password = jsondecode(aws_secretsmanager_secret_version.read_model_credentials.secret_string).password
 
   storage_encrypted = true
   kms_key_id        = aws_kms_key.read_model.arn
