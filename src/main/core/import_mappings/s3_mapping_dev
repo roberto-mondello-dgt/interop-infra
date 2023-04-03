@@ -1,0 +1,68 @@
+module.jwt_well_known_bucket.aws_s3_bucket.this[0] interop-jwt-well-known-dev
+module.jwt_well_known_bucket.aws_s3_bucket_acl.this[0] interop-jwt-well-known-dev,private
+module.jwt_well_known_bucket.aws_s3_bucket_public_access_block.this[0] interop-jwt-well-known-dev
+module.jwt_well_known_bucket.aws_s3_bucket_versioning.this[0] interop-jwt-well-known-dev
+
+module.application_documents_bucket.aws_s3_bucket.this[0] interop-application-documents-dev
+module.application_documents_bucket.aws_s3_bucket_acl.this[0] interop-application-documents-dev,private
+module.application_documents_bucket.aws_s3_bucket_public_access_block.this[0] interop-application-documents-dev
+module.application_documents_bucket.aws_s3_bucket_versioning.this[0] interop-application-documents-dev
+module.application_documents_bucket.aws_s3_bucket_server_side_encryption_configuration.this[0] interop-application-documents-dev
+
+module.cfn_templates_bucket.aws_s3_bucket.this[0] interop-cfn-templates-dev
+module.cfn_templates_bucket.aws_s3_bucket_acl.this[0] interop-cfn-templates-dev,private
+module.cfn_templates_bucket.aws_s3_bucket_public_access_block.this[0] interop-cfn-templates-dev
+module.cfn_templates_bucket.aws_s3_bucket_versioning.this[0] interop-cfn-templates-dev
+
+module.open_api_bucket.aws_s3_bucket.this[0] interop-open-api-dev
+module.open_api_bucket.aws_s3_bucket_acl.this[0] interop-open-api-dev,private
+module.open_api_bucket.aws_s3_bucket_public_access_block.this[0] interop-open-api-dev
+module.open_api_bucket.aws_s3_bucket_versioning.this[0] interop-open-api-dev
+
+module.generated_jwt_details_bucket.aws_s3_bucket.this[0] interop-generated-jwt-details-dev
+module.generated_jwt_details_bucket.aws_s3_bucket_acl.this[0] interop-generated-jwt-details-dev,private
+module.generated_jwt_details_bucket.aws_s3_bucket_public_access_block.this[0] interop-generated-jwt-details-dev
+module.generated_jwt_details_bucket.aws_s3_bucket_versioning.this[0] interop-generated-jwt-details-dev
+module.generated_jwt_details_bucket.aws_s3_bucket_object_lock_configuration.this[0] interop-generated-jwt-details-dev
+module.generated_jwt_details_bucket.aws_s3_bucket_lifecycle_configuration.this[0] interop-generated-jwt-details-dev
+aws_iam_role.data_lake_tokens interop-datalake-bucket-token-dev
+
+module.application_logs_bucket.aws_s3_bucket.this[0] interop-application-logs-dev
+module.application_logs_bucket.aws_s3_bucket_acl.this[0] interop-application-logs-dev,private
+module.application_logs_bucket.aws_s3_bucket_public_access_block.this[0] interop-application-logs-dev
+module.application_logs_bucket.aws_s3_bucket_versioning.this[0] interop-application-logs-dev
+module.application_logs_bucket.aws_s3_bucket_policy.this[0] interop-application-logs-dev
+
+module.athena_query_results_bucket.aws_s3_bucket.this[0] interop-athena-query-results-dev
+module.athena_query_results_bucket.aws_s3_bucket_acl.this[0] interop-athena-query-results-dev,private
+module.athena_query_results_bucket.aws_s3_bucket_public_access_block.this[0] interop-athena-query-results-dev
+module.athena_query_results_bucket.aws_s3_bucket_versioning.this[0] interop-athena-query-results-dev
+module.athena_query_results_bucket.aws_s3_bucket_lifecycle_configuration.this[0] interop-athena-query-results-dev
+
+module.platform_metrics_bucket.aws_s3_bucket.this[0] interop-platform-metrics-dev
+module.platform_metrics_bucket.aws_s3_bucket_acl.this[0] interop-platform-metrics-dev,private
+module.platform_metrics_bucket.aws_s3_bucket_public_access_block.this[0] interop-platform-metrics-dev
+module.platform_metrics_bucket.aws_s3_bucket_versioning.this[0] interop-platform-metrics-dev
+module.platform_metrics_bucket.aws_s3_bucket_lifecycle_configuration.this[0] interop-platform-metrics-dev
+aws_iam_role.data_lake_metrics interop-datalake-platform-metrics-dev
+
+module.allow_list_bucket.aws_s3_bucket.this[0] interop-allow-list-dev
+module.allow_list_bucket.aws_s3_bucket_acl.this[0] interop-allow-list-dev,private
+module.allow_list_bucket.aws_s3_bucket_public_access_block.this[0] interop-allow-list-dev
+module.allow_list_bucket.aws_s3_bucket_versioning.this[0] interop-allow-list-dev
+
+module.public_dashboards_bucket.aws_s3_bucket.this[0] interop-public-dashboards-dev
+module.public_dashboards_bucket.aws_s3_bucket_acl.this[0] interop-public-dashboards-dev,private
+module.public_dashboards_bucket.aws_s3_bucket_public_access_block.this[0] interop-public-dashboards-dev
+module.public_dashboards_bucket.aws_s3_bucket_versioning.this[0] interop-public-dashboards-dev
+
+module.probing_eservices_bucket.aws_s3_bucket.this[0] interop-probing-eservices-dev
+module.probing_eservices_bucket.aws_s3_bucket_acl.this[0] interop-probing-eservices-dev,private
+module.probing_eservices_bucket.aws_s3_bucket_public_access_block.this[0] interop-probing-eservices-dev
+module.probing_eservices_bucket.aws_s3_bucket_versioning.this[0] interop-probing-eservices-dev
+module.probing_eservices_bucket.aws_s3_bucket_policy.this[0] interop-probing-eservices-dev
+
+module.metrics_reports_bucket.aws_s3_bucket.this[0] interop-metrics-reports-dev
+module.metrics_reports_bucket.aws_s3_bucket_acl.this[0] interop-metrics-reports-dev,private
+module.metrics_reports_bucket.aws_s3_bucket_public_access_block.this[0] interop-metrics-reports-dev
+module.metrics_reports_bucket.aws_s3_bucket_versioning.this[0] interop-metrics-reports-dev

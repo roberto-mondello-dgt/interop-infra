@@ -51,7 +51,7 @@ resource "aws_iam_role" "github_ecr" {
             "ecr:PutImage",
             "ecr:UploadLayerPart"
           ]
-          Resource = values(aws_ecr_repository.app)[*].arn
+          Resource = "*"
         }
       ]
     })

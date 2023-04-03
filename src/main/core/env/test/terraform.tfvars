@@ -20,7 +20,7 @@ eks_cluster_name = "interop-eks-test"
 
 persistence_management_cluster_id             = "interop-rds-test-auroradbcluster-u2a45bkp2iqr"
 persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.8"
+persistence_management_engine_version         = "13.9"
 persistence_management_instance_class         = "db.t4g.large"
 persistence_management_subnet_group_name      = "interop-rds-test-dbsubnetgroup-ex5iby3uhnbt"
 persistence_management_parameter_group_name   = "interop-rds-test-rdsdbclusterparametergroup-y0wcfjbgv5fy"
@@ -50,3 +50,6 @@ github_runners_memory        = 4096
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
 
 dns_interop_base_domain = "interop.pagopa.it"
+
+data_lake_account_id  = "688071769384"
+data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"

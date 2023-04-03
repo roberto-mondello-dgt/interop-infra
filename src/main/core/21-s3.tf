@@ -1,0 +1,304 @@
+module "jwt_well_known_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-jwt-well-known-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}
+
+module "application_documents_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-application-documents-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  server_side_encryption_configuration = {
+    rule = {
+      apply_server_side_encryption_by_default = {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+
+module "cfn_templates_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-cfn-templates-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}
+
+module "open_api_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-open-api-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}
+
+module "generated_jwt_details_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-generated-jwt-details-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  object_lock_enabled = true
+  object_lock_configuration = {
+    rule = {
+      default_retention = {
+        mode  = var.env == "prod" ? "COMPLIANCE" : "GOVERNANCE"
+        years = 10
+      }
+    }
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "GlacierRule"
+      enabled    = true
+      expiration = { days : 3650 } # delete after 10 years
+      transition = {
+        days : 365
+        storage_class : "GLACIER"
+      }
+    }
+  ]
+}
+
+module "application_logs_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-application-logs-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service : ["logs.${var.aws_region}.amazonaws.com"]
+        }
+        Action   = "s3:GetBucketAcl"
+        Resource = module.application_logs_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow"
+        Principal = {
+          Service : ["logs.${var.aws_region}.amazonaws.com"]
+        }
+        Action   = "s3:PutObject"
+        Resource = "${module.application_logs_bucket.s3_bucket_arn}/*"
+      }
+    ]
+  })
+}
+
+module "athena_query_results_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-athena-query-results-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "Expiration"
+      enabled    = true
+      expiration = { days : 31 } # delete after 31 days
+    }
+  ]
+}
+
+module "platform_metrics_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-platform-metrics-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "Expiration"
+      enabled    = true
+      expiration = { days : 183 } # delete after 6 months
+    }
+  ]
+}
+
+module "allow_list_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-allow-list-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}
+
+module "public_dashboards_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-public-dashboards-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  cors_rule = var.env != "test" ? [] : [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET"]
+      allowed_origins = ["https://www.interop.pagopa.it"]
+    }
+  ]
+}
+
+module "probing_eservices_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-probing-eservices-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  attach_policy = var.probing_registry_reader_role_arn != null
+  policy = var.probing_registry_reader_role_arn != null ? jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS : var.probing_registry_reader_role_arn
+        }
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucketVersions",
+          "s3:ListBucket",
+          "s3:GetObjectVersion"
+        ]
+        Resource = [
+          module.probing_eservices_bucket.s3_bucket_arn,
+          "${module.probing_eservices_bucket.s3_bucket_arn}/*"
+        ]
+      }
+    ]
+  }) : null
+}
+
+
+module "metrics_reports_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-metrics-reports-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}

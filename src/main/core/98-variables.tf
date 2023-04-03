@@ -216,3 +216,18 @@ variable "dns_interop_uat_ns_records" {
   default     = []
 }
 
+variable "data_lake_account_id" {
+  description = "AWS account ID of the DataLake team for token data ingestion"
+  type        = string
+}
+
+variable "data_lake_external_id" {
+  description = "External ID of the DataLake team for token data ingestion. Passed by them when assuming the role"
+  type        = string
+}
+
+variable "probing_registry_reader_role_arn" {
+  description = "ARN of the role used by the probing registry reader to access the bucket containing eservices list"
+  type        = string
+  default     = null
+}

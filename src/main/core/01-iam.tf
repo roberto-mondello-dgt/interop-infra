@@ -133,3 +133,87 @@ resource "aws_iam_group_policy_attachment" "external_backend_devs_read_only" {
   group      = aws_iam_group.external_backend_devs[0].name
   policy_arn = data.aws_iam_policy.read_only.arn
 }
+
+resource "aws_iam_role" "data_lake_tokens" {
+  name = format("%s-datalake-bucket-token-%s", var.short_name, var.env)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = var.data_lake_account_id
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = var.data_lake_external_id
+          }
+        }
+      }
+    ]
+  })
+
+  inline_policy {
+    name = "DataLakeBucketTokenPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Action   = "s3:GetObject"
+          Resource = "${module.generated_jwt_details_bucket.s3_bucket_arn}/*"
+        },
+        {
+          Effect   = "Allow"
+          Action   = "s3:ListBucket"
+          Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+        }
+      ]
+    })
+  }
+}
+
+resource "aws_iam_role" "data_lake_metrics" {
+  name = format("%s-datalake-platform-metrics-%s", var.short_name, var.env)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = var.data_lake_account_id
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = var.data_lake_external_id
+          }
+        }
+      }
+    ]
+  })
+
+  inline_policy {
+    name = "DataLakePlatformMeticsBucketPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Action   = "s3:GetObject"
+          Resource = "${module.platform_metrics_bucket.s3_bucket_arn}/*"
+        },
+        {
+          Effect   = "Allow"
+          Action   = "s3:ListBucket"
+          Resource = module.platform_metrics_bucket.s3_bucket_arn
+        }
+      ]
+    })
+  }
+}

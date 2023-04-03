@@ -12,6 +12,9 @@ do
   tf_address="$(echo "$line" | cut -d " " -f1)"
   resource_id="$(echo "$line" | cut -d " " -f2)"
 
+  #ignore empty lines
+  [ -z "$line" ] && continue
+
   # ignore commented lines
   grep -q "^#" <<< "$tf_address" && continue
 

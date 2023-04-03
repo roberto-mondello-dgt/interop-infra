@@ -20,7 +20,7 @@ eks_cluster_name = "interop-eks-prod"
 
 persistence_management_cluster_id             = "interop-rds-prod-auroradbcluster-n6mrmtikvktv"
 persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.8"
+persistence_management_engine_version         = "13.9"
 persistence_management_instance_class         = "db.t4g.medium"
 persistence_management_subnet_group_name      = "interop-rds-prod-dbsubnetgroup-wtgcr8luwouy"
 persistence_management_parameter_group_name   = "interop-rds-prod-rdsdbclusterparametergroup-jccxnxbx76wj"
@@ -62,3 +62,6 @@ dns_interop_uat_ns_records = [
   "ns-317.awsdns-39.com.",
   "ns-1395.awsdns-46.org.",
 ]
+
+data_lake_account_id  = "688071769384"
+data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
