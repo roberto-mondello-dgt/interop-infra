@@ -1,0 +1,2 @@
+aws_kms_key.interop 17c1177f-d7dc-4181-9f54-6fd416bf229b
+aws_kms_alias.interop alias/interop-rsa2048-dev

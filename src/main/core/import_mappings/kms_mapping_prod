@@ -1,0 +1,2 @@
+aws_kms_key.interop 
+aws_kms_alias.interop alias/interop-rsa2048-prod
