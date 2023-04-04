@@ -1,2 +1,2 @@
-aws_kms_key.interop 
+aws_kms_key.interop 199d08d2-9971-4979-a78d-e6f7a544f296
 aws_kms_alias.interop alias/interop-rsa2048-prod
