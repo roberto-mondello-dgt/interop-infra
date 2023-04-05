@@ -1,0 +1,3 @@
+aws_wafv2_web_acl.interop b5d147fd-59c4-4f39-b265-4dc8d391ec50/interop-web-acl-test/REGIONAL
+aws_cloudwatch_log_group.waf aws-waf-logs-test
+aws_wafv2_web_acl_logging_configuration.interop arn:aws:wafv2:eu-central-1:895646477129:regional/webacl/interop-web-acl-test/b5d147fd-59c4-4f39-b265-4dc8d391ec50
