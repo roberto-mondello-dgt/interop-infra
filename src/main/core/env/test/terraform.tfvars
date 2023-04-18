@@ -41,9 +41,6 @@ notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-test-interops-1810b960f8"
 
-# to be removed when imported SNS topics on terraform
-alarms_topic_sns = "arn:aws:sns:eu-central-1:895646477129:interop-platform-alarms-test"
-
 github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
@@ -53,3 +50,6 @@ dns_interop_base_domain = "interop.pagopa.it"
 
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
+
+interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
+interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"

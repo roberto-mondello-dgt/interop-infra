@@ -41,8 +41,6 @@ notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-dev-interops-9d1ad7f6b4"
 
-alarms_topic_sns = "arn:aws:sns:eu-central-1:505630707203:interop-platform-alarms-dev"
-
 github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
@@ -54,3 +52,6 @@ data_lake_account_id  = "688071769384"
 data_lake_external_id = "ac94a267-b8fc-4ecc-8294-8302795e8ba3"
 
 probing_registry_reader_role_arn = "arn:aws:iam::774300547186:role/application/eks/pods/interop-be-probing-registry-reader-dev"
+
+interop_auth_openapi_path = "./openapi/dev/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
+interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"

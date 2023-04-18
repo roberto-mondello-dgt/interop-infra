@@ -23,7 +23,7 @@ module "persistence_events_queue_monitoring" {
   region                  = var.aws_region
   queue_name              = module.persistence_events_queue.queue_name
   alarm_threshold_seconds = "1800" # 30 minutes
-  alarm_sns_topic_arn     = var.alarms_topic_sns
+  alarm_sns_topic_arn     = aws_sns_topic.platform_alarms.arn
 }
 
 module "generated_jwt_queue" {
@@ -47,7 +47,7 @@ module "generated_jwt_queue_monitoring" {
   region                  = var.aws_region
   queue_name              = module.generated_jwt_queue.queue_name
   alarm_threshold_seconds = "4500" # 1 hour 30 minutes
-  alarm_sns_topic_arn     = var.alarms_topic_sns
+  alarm_sns_topic_arn     = aws_sns_topic.platform_alarms.arn
 }
 
 module "certified_mail_queue" {
@@ -72,5 +72,5 @@ module "certified_mail_queue_monitoring" {
   region                  = var.aws_region
   queue_name              = module.certified_mail_queue.queue_name
   alarm_threshold_seconds = "1800" # 30 minutes
-  alarm_sns_topic_arn     = var.alarms_topic_sns
+  alarm_sns_topic_arn     = aws_sns_topic.platform_alarms.arn
 }

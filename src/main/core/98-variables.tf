@@ -192,13 +192,6 @@ variable "github_runners_image_uri" {
   type        = string
 }
 
-# to be removed when imported SNS topics on terraform
-
-variable "alarms_topic_sns" {
-  description = "ARN of the SNS topic that will receive notifications for alarms"
-  type        = string
-}
-
 variable "dns_interop_base_domain" {
   description = "Base DNS domain for the Interoperability product. According to PagoPA eng standard, it usually is a third level domain (e.g. product.example.com)"
   type        = string
@@ -230,4 +223,14 @@ variable "probing_registry_reader_role_arn" {
   description = "ARN of the role used by the probing registry reader to access the bucket containing eservices list"
   type        = string
   default     = null
+}
+
+variable "interop_auth_openapi_path" {
+  description = "Relative path of Interop auth OpenAPI definition file"
+  type        = string
+}
+
+variable "interop_api_openapi_path" {
+  description = "Relative path of Interop API OpenAPI definition file"
+  type        = string
 }

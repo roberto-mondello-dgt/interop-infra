@@ -1,0 +1,5 @@
+aws_sns_topic.logs_automation_errors arn:aws:sns:eu-central-1:505630707203:interop-logs-automation-errors-dev
+aws_sns_topic_policy.logs_automation_errors arn:aws:sns:eu-central-1:505630707203:interop-logs-automation-errors-dev
+
+aws_sns_topic.platform_alarms arn:aws:sns:eu-central-1:505630707203:interop-platform-alarms-dev
+aws_sns_topic_policy.platform_alarms arn:aws:sns:eu-central-1:505630707203:interop-platform-alarms-dev
