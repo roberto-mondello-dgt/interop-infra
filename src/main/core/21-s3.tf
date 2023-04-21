@@ -13,6 +13,29 @@ module "jwt_well_known_bucket" {
   versioning = {
     enabled = true
   }
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.jwt_well_known_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
+
 }
 
 module "application_documents_bucket" {
@@ -243,6 +266,28 @@ module "public_dashboards_bucket" {
       allowed_origins = ["https://www.interop.pagopa.it"]
     }
   ]
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.public_dashboards_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 module "probing_eservices_bucket" {
@@ -301,4 +346,43 @@ module "metrics_reports_bucket" {
   versioning = {
     enabled = true
   }
+}
+
+module "interop_landing_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-landing-%s", var.short_name, var.env)
+
+  acl                     = "private"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.interop_landing_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }

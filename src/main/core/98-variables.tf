@@ -234,3 +234,8 @@ variable "interop_api_openapi_path" {
   description = "Relative path of Interop API OpenAPI definition file"
   type        = string
 }
+
+variable "interop_landing_domain_name" {
+  description = "Domain name of the Interop landing page"
+  type = string
+}

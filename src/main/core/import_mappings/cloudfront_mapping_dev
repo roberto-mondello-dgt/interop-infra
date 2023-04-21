@@ -1,0 +1,11 @@
+aws_route53_record.landing_www Z04170962VFG8V4TNAMPJ_www.dev.interop.pagopa.it_A
+aws_route53_record.landing_base Z04170962VFG8V4TNAMPJ_dev.interop.pagopa.it_A
+aws_acm_certificate.landing arn:aws:acm:us-east-1:505630707203:certificate/a4e84ba0-c729-4120-81aa-dcf53f10607f
+aws_route53_record.landing_cert_validation["www.dev.interop.pagopa.it"] Z04170962VFG8V4TNAMPJ__f05b9388c2c6e03547b48411125e1a4d.www.dev.interop.pagopa.it._CNAME
+aws_route53_record.landing_cert_validation["dev.interop.pagopa.it"] Z04170962VFG8V4TNAMPJ__78aaef7834e3e815ddf02b9bdb888349.dev.interop.pagopa.it._CNAME
+aws_cloudfront_origin_access_control.landing_s3 E22IC02UAS323B
+aws_cloudfront_distribution.landing E3T0MRKRSRG5YZ 
+module.interop_landing_bucket.aws_s3_bucket_policy.this[0] interop-landing-dev
+module.jwt_well_known_bucket.aws_s3_bucket_policy.this[0] interop-jwt-well-known-dev
+module.public_dashboards_bucket.aws_s3_bucket_policy.this[0] interop-public-dashboards-dev
+aws_cloudfront_function.www_react_app www-react-app-dev

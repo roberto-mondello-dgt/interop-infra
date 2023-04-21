@@ -1,0 +1,11 @@
+aws_route53_record.landing_www Z047452525YHHCDUAYVCQ_www.uat.interop.pagopa.it_A
+aws_route53_record.landing_base Z047452525YHHCDUAYVCQ_uat.interop.pagopa.it_A
+aws_acm_certificate.landing arn:aws:acm:us-east-1:895646477129:certificate/a7c32174-9bc0-431e-b89b-e498971fb813
+aws_route53_record.landing_cert_validation["www.uat.interop.pagopa.it"] Z047452525YHHCDUAYVCQ__1752f4c3b5a808346f395e04c835604b.www.uat.interop.pagopa.it._CNAME
+aws_route53_record.landing_cert_validation["uat.interop.pagopa.it"] Z047452525YHHCDUAYVCQ__309c5feba14e2bffe9cc6018895e0d52.uat.interop.pagopa.it._CNAME
+aws_cloudfront_origin_access_control.landing_s3 EGBK0PYT9DI7M
+aws_cloudfront_distribution.landing E3Q1NPBSS1BXRJ
+module.interop_landing_bucket.aws_s3_bucket_policy.this[0] interop-landing-test
+module.jwt_well_known_bucket.aws_s3_bucket_policy.this[0] interop-jwt-well-known-test
+module.public_dashboards_bucket.aws_s3_bucket_policy.this[0] interop-public-dashboards-test
+aws_cloudfront_function.www_react_app www-react-app-test

@@ -55,3 +55,5 @@ probing_registry_reader_role_arn = "arn:aws:iam::774300547186:role/application/e
 
 interop_auth_openapi_path = "./openapi/dev/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
 interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"
+
+interop_landing_domain_name = "dev.interop.pagopa.it"

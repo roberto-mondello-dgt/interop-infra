@@ -66,3 +66,8 @@ module.metrics_reports_bucket.aws_s3_bucket.this[0] interop-metrics-reports-prod
 module.metrics_reports_bucket.aws_s3_bucket_acl.this[0] interop-metrics-reports-prod,private
 module.metrics_reports_bucket.aws_s3_bucket_public_access_block.this[0] interop-metrics-reports-prod
 module.metrics_reports_bucket.aws_s3_bucket_versioning.this[0] interop-metrics-reports-prod
+
+module.interop_landing_bucket.aws_s3_bucket.this[0] interop-landing-prod
+module.interop_landing_bucket.aws_s3_bucket_acl.this[0] interop-landing-prod
+module.interop_landing_bucket.aws_s3_bucket_public_access_block.this[0] interop-landing-prod
+module.interop_landing_bucket.aws_s3_bucket_versioning.this[0] interop-landing-prod

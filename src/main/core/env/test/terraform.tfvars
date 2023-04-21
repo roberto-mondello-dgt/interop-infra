@@ -53,3 +53,5 @@ data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
 
 interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
 interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"
+
+interop_landing_domain_name = "uat.interop.pagopa.it"
