@@ -1,0 +1,3 @@
+aws_lambda_function.logs_dates_lambda arn:aws:lambda:eu-central-1:895646477129:function:interop-logs-dates-test
+aws_lambda_function.logs_export_lambda arn:aws:lambda:eu-central-1:895646477129:function:interop-logs-export-test
+aws_iam_role.lambda_role interop-logs-lambda-test

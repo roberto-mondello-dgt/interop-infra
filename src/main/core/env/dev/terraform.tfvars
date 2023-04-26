@@ -57,3 +57,5 @@ interop_auth_openapi_path = "./openapi/dev/auth-server/interop-auth-server-adc89
 interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"
 
 interop_landing_domain_name = "dev.interop.pagopa.it"
+
+lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:505630707203:log-group:/aws/eks/interop-eks-dev/application:*"

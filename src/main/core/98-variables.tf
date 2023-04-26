@@ -239,3 +239,9 @@ variable "interop_landing_domain_name" {
   description = "Domain name of the Interop landing page"
   type = string
 }
+
+# TODO: remove once this log group is imported
+variable "lambda_eks_application_log_group_arn" {
+  description = "EKS Application log group arn"
+  type        = string
+}

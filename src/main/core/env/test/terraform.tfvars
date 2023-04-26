@@ -55,3 +55,5 @@ interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc8
 interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-04797574cb3dfc89d34f7f2b328a1048c5b21ee5.yaml"
 
 interop_landing_domain_name = "uat.interop.pagopa.it"
+
+lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:895646477129:log-group:/aws/eks/interop-eks-test/application:*"
