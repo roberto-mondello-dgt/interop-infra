@@ -15,6 +15,7 @@ locals {
     "interop-be-catalog-process",
     "interop-be-certified-mail-sender",
     "interop-be-dashboard-metrics-report-generator",
+    "interop-be-eservices-monitoring-exporter",
     "interop-be-metrics-report-generator",
     "interop-be-notifier",
     "interop-be-padigitale-report-generator",
