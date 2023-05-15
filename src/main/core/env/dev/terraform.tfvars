@@ -52,6 +52,12 @@ data_lake_account_id  = "688071769384"
 data_lake_external_id = "ac94a267-b8fc-4ecc-8294-8302795e8ba3"
 
 probing_registry_reader_role_arn = "arn:aws:iam::774300547186:role/application/eks/pods/interop-be-probing-registry-reader-dev"
+probing_domain_ns_records = [
+  "ns-1122.awsdns-12.org",
+  "ns-1665.awsdns-16.co.uk",
+  "ns-272.awsdns-34.com",
+  "ns-826.awsdns-39.net",
+]
 
 interop_auth_openapi_path = "./openapi/dev/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
 interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-d3dfe1725cee1cac81b6b34d8746b71e93598b15.yaml"

@@ -225,6 +225,12 @@ variable "probing_registry_reader_role_arn" {
   default     = null
 }
 
+variable "probing_domain_ns_records" {
+  description = "NS records for the probing DNS domain"
+  type        = list(string)
+  default     = []
+}
+
 variable "interop_auth_openapi_path" {
   description = "Relative path of Interop auth OpenAPI definition file"
   type        = string
@@ -237,7 +243,7 @@ variable "interop_api_openapi_path" {
 
 variable "interop_landing_domain_name" {
   description = "Domain name of the Interop landing page"
-  type = string
+  type        = string
 }
 
 # TODO: remove once this log group is imported
