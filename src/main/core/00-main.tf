@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.59.0"
+      version = "~> 4.65.0"
     }
   }
 }
@@ -16,6 +16,11 @@ provider "aws" {
 
   default_tags {
     tags = var.tags
+  }
+
+  # avoid drift between VPC module and K8s tags applied only for some specific subnets
+  ignore_tags {
+    keys = ["kubernetes.io/role/elb", "kubernetes.io/role/internal-elb"]
   }
 }
 
@@ -29,3 +34,11 @@ provider "aws" {
 }
 
 data "aws_caller_identity" "current" {}
+
+data "aws_iam_role" "github_iac" {
+  name = "GitHubActionIACRole"
+}
+
+data "aws_iam_role" "sso_admin" {
+  name = var.sso_admin_role_name
+}

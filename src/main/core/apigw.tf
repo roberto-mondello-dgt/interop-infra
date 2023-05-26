@@ -21,8 +21,8 @@ module "interop_auth_apigw" {
   openapi_relative_path = var.interop_auth_openapi_path
   domain_name           = module.interop_auth_domain.apigw_custom_domain_name
 
-  vpc_link_id          = aws_api_gateway_vpc_link.nlb_vpc_link.id
-  nlb_domain_name      = module.nlb.lb_dns_name
+  vpc_link_id          = aws_api_gateway_vpc_link.integration.id
+  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "authorization-server"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -45,8 +45,8 @@ module "interop_selfcare_apigw" {
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
   frontend_redirect_uri = "/ui"
 
-  vpc_link_id          = aws_api_gateway_vpc_link.nlb_vpc_link.id
-  nlb_domain_name      = module.nlb.lb_dns_name
+  vpc_link_id          = aws_api_gateway_vpc_link.integration.id
+  nlb_domain_name      = module.nlb_v2.lb_dns_name
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
 }
@@ -68,8 +68,8 @@ module "interop_api_1dot0_apigw" {
   openapi_relative_path = var.interop_api_openapi_path
   domain_name           = module.interop_api_domain.apigw_custom_domain_name
 
-  vpc_link_id          = aws_api_gateway_vpc_link.nlb_vpc_link.id
-  nlb_domain_name      = module.nlb.lb_dns_name
+  vpc_link_id          = aws_api_gateway_vpc_link.integration.id
+  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -86,8 +86,8 @@ module "interop_api_0dot0_apigw" {
   openapi_relative_path = var.interop_api_openapi_path
   domain_name           = module.interop_api_domain.apigw_custom_domain_name
 
-  vpc_link_id          = aws_api_gateway_vpc_link.nlb_vpc_link.id
-  nlb_domain_name      = module.nlb.lb_dns_name
+  vpc_link_id          = aws_api_gateway_vpc_link.integration.id
+  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn

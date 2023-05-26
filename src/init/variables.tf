@@ -15,3 +15,8 @@ variable "tags" {
     "CreatedBy" : "Terraform",
   }
 }
+
+variable "github_repository" {
+  type        = string
+  description = "Github repository for this configuration"
+}

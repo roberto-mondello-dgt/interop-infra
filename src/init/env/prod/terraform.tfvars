@@ -8,3 +8,5 @@ tags = {
   "Source"      = "https://github.com/pagopa/interop-infra"
   "name"        = "S3 Remote Terraform State Store"
 }
+
+github_repository = "pagopa/interop-infra-v2"

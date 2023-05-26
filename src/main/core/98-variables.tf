@@ -20,6 +20,11 @@ variable "tags" {
   }
 }
 
+variable "sso_admin_role_name" {
+  type        = string
+  description = "Name of the SSO admin role"
+}
+
 variable "azs" {
   type        = list(string)
   description = "Availability zones to use"
@@ -82,6 +87,16 @@ variable "persistence_management_instance_class" {
   type        = string
 }
 
+variable "persistence_management_number_instances" {
+  description = "Number of instances of the Aurora cluster - persistence management"
+  type        = number
+
+  validation {
+    condition     = var.persistence_management_number_instances > 0
+    error_message = "The number of instances must be greater than 0"
+  }
+}
+
 variable "persistence_management_subnet_group_name" {
   description = "Subnet group name of the Aurora cluster - persistence management"
   type        = string
@@ -141,6 +156,16 @@ variable "read_model_db_port" {
 variable "read_model_instance_class" {
   description = "Instance class of the DocDB cluster - read model"
   type        = string
+}
+
+variable "read_model_number_instances" {
+  description = "Number of instances of the DocDB cluster - read model"
+  type        = number
+
+  validation {
+    condition     = var.read_model_number_instances > 0
+    error_message = "The number of instances must be greater than 0"
+  }
 }
 
 variable "read_model_subnet_group_name" {
@@ -249,5 +274,31 @@ variable "interop_landing_domain_name" {
 # TODO: remove once this log group is imported
 variable "lambda_eks_application_log_group_arn" {
   description = "EKS Application log group arn"
+  type        = string
+}
+
+variable "eks_k8s_version" {
+  type        = string
+  description = "K8s version used in the EKS cluster"
+}
+
+variable "eks_vpc_cni_version" {
+  type        = string
+  description = "EKS vpc-cni addon version"
+}
+
+variable "eks_coredns_version" {
+  type        = string
+  description = "EKS coredns addon version"
+}
+
+variable "eks_kube_proxy_version" {
+  type        = string
+  description = "EKS kube-proxy addon version"
+}
+
+# TODO: rename after migration
+variable "backend_integration_v2_alb_name" {
+  description = ""
   type        = string
 }

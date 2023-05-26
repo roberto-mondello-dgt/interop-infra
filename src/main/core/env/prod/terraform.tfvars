@@ -9,6 +9,8 @@ tags = {
   Source      = "https://github.com/pagopa/interop-infra"
 }
 
+sso_admin_role_name = "AWSReservedSSO_FullAdmin_afdc92d80f0cc31a"
+
 bastion_host_ami_id              = "ami-05f5f4f906feab6a7"
 bastion_host_instance_type       = "t2.micro"
 bastion_host_private_ip          = "172.32.0.125"
@@ -22,6 +24,7 @@ persistence_management_cluster_id             = "interop-rds-prod-auroradbcluste
 persistence_management_database_name          = "persistence_management"
 persistence_management_engine_version         = "13.9"
 persistence_management_instance_class         = "db.t4g.medium"
+persistence_management_number_instances       = 3
 persistence_management_subnet_group_name      = "interop-rds-prod-dbsubnetgroup-wtgcr8luwouy"
 persistence_management_parameter_group_name   = "interop-rds-prod-rdsdbclusterparametergroup-jccxnxbx76wj"
 persistence_management_parameter_group_family = "aurora-postgresql13"
@@ -34,6 +37,7 @@ read_model_cluster_id           = "read-model"
 read_model_master_username      = "root"
 read_model_engine_version       = "4.0.0"
 read_model_instance_class       = "db.t4g.medium"
+read_model_number_instances     = 3
 read_model_subnet_group_name    = "docdbsubnetgroup-o9tsiei6mmwh"
 read_model_parameter_group_name = "read-model-parameter-group"
 
@@ -69,3 +73,10 @@ interop_api_openapi_path  = "./openapi/prod/internal-api-gateway/interop-api-v1.
 interop_landing_domain_name = "interop.pagopa.it"
 
 lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:697818730278:log-group:/aws/eks/interop-eks-prod/application:*"
+
+eks_k8s_version        = "1.26"
+eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
+eks_coredns_version    = "v1.9.3-eksbuild.3"
+eks_kube_proxy_version = "v1.26.2-eksbuild.1"
+
+backend_integration_v2_alb_name = "k8s-prod-interops-af9ac9a443"

@@ -16,6 +16,7 @@ data "aws_iam_policy_document" "github_assume_ecr" {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
 
+      # TODO: these repo names should not use wildcard (branch * is ok)
       values = [
         "repo:pagopa/interop-be-*:*",
         "repo:pagopa/pdnd-interop-frontend:*"

@@ -1,5 +1,6 @@
 aws_region = "eu-central-1"
 env        = "dev"
+
 tags = {
   "CreatedBy"   = "Terraform"
   "Environment" = "dev"
@@ -8,3 +9,5 @@ tags = {
   "Source"      = "https://github.com/pagopa/interop-infra"
   "name"        = "S3 Remote Terraform State Store"
 }
+
+github_repository = "pagopa/interop-infra-v2"

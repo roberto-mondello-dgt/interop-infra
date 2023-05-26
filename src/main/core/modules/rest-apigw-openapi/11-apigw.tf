@@ -32,7 +32,10 @@ resource "aws_api_gateway_deployment" "this" {
 
   triggers = {
     redeployment = sha1(jsonencode([
-      aws_api_gateway_rest_api.this.body
+      aws_api_gateway_rest_api.this.body,
+      var.vpc_link_id,
+      var.nlb_domain_name,
+      var.service_prefix
     ]))
   }
 

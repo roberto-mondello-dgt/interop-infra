@@ -1,6 +1,5 @@
 module "interop_auth_apigw_monitoring" {
   source     = "./modules/apigw-monitoring"
-  depends_on = [module.interop_auth_apigw]
 
   env           = var.env
   apigw_name    = module.interop_auth_apigw.apigw_name
@@ -14,7 +13,6 @@ module "interop_auth_apigw_monitoring" {
 
 module "interop_selfcare_apigw_monitoring" {
   source     = "./modules/apigw-monitoring"
-  depends_on = [module.interop_selfcare_apigw]
 
   env           = var.env
   apigw_name    = module.interop_selfcare_apigw.apigw_name
@@ -28,7 +26,6 @@ module "interop_selfcare_apigw_monitoring" {
 
 module "interop_api_1dot0_apigw_monitoring" {
   source     = "./modules/apigw-monitoring"
-  depends_on = [module.interop_api_1dot0_apigw]
 
   env           = var.env
   apigw_name    = module.interop_api_1dot0_apigw.apigw_name
@@ -44,7 +41,6 @@ module "interop_api_0dot0_apigw_monitoring" {
   count = var.env == "dev" ? 1 : 0
 
   source     = "./modules/apigw-monitoring"
-  depends_on = [module.interop_api_0dot0_apigw[0]]
 
   env           = var.env
   apigw_name    = module.interop_api_0dot0_apigw[0].apigw_name

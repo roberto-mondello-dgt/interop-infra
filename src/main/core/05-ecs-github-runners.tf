@@ -74,7 +74,7 @@ resource "aws_iam_role" "github_runner_task" {
         {
           Effect   = "Allow"
           Action   = "eks:DescribeCluster"
-          Resource = try(data.aws_eks_cluster.backend[0].arn, "")
+          Resource = "*"
         }
       ]
     })
@@ -170,4 +170,20 @@ resource "aws_ecs_task_definition" "github_runner" {
 resource "aws_security_group" "github_runners" {
   description = "SG for Github runners"
   vpc_id      = module.vpc.vpc_id
+}
+
+# TODO: rename after migration
+resource "aws_security_group" "github_runners_v2" {
+  name        = format("%s-github-runners-%s", var.short_name, var.env)
+  description = "SG for Github runners"
+
+  vpc_id = module.vpc_v2.vpc_id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 }

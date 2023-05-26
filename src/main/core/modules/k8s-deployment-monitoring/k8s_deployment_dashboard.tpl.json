@@ -1,0 +1,451 @@
+{
+  "widgets": [
+    {
+      "height": 6,
+      "width": 8,
+      "y": 2,
+      "x": 0,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_cpu_utilization_over_pod_limit",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service CPU AVG percentage usage over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "left": {
+            "showUnits": true
+          },
+          "right": {
+            "showUnits": false,
+            "label": "%"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 8,
+      "y": 8,
+      "x": 0,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_cpu_usage_total",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service CPU AVG usage over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Millicore"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 12,
+      "y": 14,
+      "x": 0,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_cpu_limit",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service AVG CPU limit over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Millicore"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 2,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_memory_utilization_over_pod_limit",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "region": "${Region}",
+        "stat": "Average",
+        "title": "Service Memory AVG percentage usage over pods",
+        "period": 300
+      }
+    },
+    {
+      "height": 6,
+      "width": 12,
+      "y": 20,
+      "x": 12,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            {
+              "expression": "SEARCH('{ContainerInsights,ClusterName,Namespace,PodName,Service} ClusterName=${ClusterName} Service=${Service} MetricName=pod_memory_utilization_over_pod_limit', 'Average', 300)",
+              "id": "e1",
+              "period": 300
+            }
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Pods memory usage over limit",
+        "period": 300,
+        "stat": "Maximum",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Bytes"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 12,
+      "y": 14,
+      "x": 12,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_memory_limit",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service AVG Memory limit over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Bytes"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 8,
+      "y": 2,
+      "x": 16,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_network_rx_bytes",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service AVG network rx bytes over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Bytes"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 8,
+      "y": 8,
+      "x": 16,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_network_tx_bytes",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service AVG network tx bytes over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Bytes"
+          }
+        }
+      }
+    },
+    {
+      "height": 7,
+      "width": 8,
+      "y": 26,
+      "x": 8,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            {
+              "expression": "m1-m2",
+              "label": "Unavailable pods",
+              "id": "e1",
+              "region": "${Region}"
+            }
+          ],
+          [
+            "ContainerInsights",
+            "kube_${ServiceType}_status_replicas",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}",
+            {
+              "id": "m1",
+              "visible": false
+            }
+          ],
+          [
+            "ContainerInsights",
+            "kube_${ServiceType}_status_replicas_available",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}",
+            {
+              "id": "m2",
+              "visible": false
+            }
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "stat": "Maximum",
+        "period": 60,
+        "title": "Number of unavailable pods of ${Service}",
+        "sparkline": false,
+        "setPeriodToTimeRange": true
+      }
+    },
+    {
+      "height": 7,
+      "width": 8,
+      "y": 26,
+      "x": 0,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "kube_${ServiceType}_status_replicas",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "stat": "Maximum",
+        "period": 60,
+        "title": "Number of running pods per service",
+        "setPeriodToTimeRange": true
+      }
+    },
+    {
+      "height": 7,
+      "width": 8,
+      "y": 26,
+      "x": 16,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "kube_pod_container_status_restarts_total",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "stat": "Average",
+        "period": 300,
+        "title": "Pods restarting",
+        "legend": {
+          "position": "bottom"
+        }
+      }
+    },
+    {
+      "height": 2,
+      "width": 24,
+      "y": 0,
+      "x": 0,
+      "type": "text",
+      "properties": {
+        "markdown": "## ${Service}\n"
+      }
+    },
+    {
+      "height": 6,
+      "width": 12,
+      "y": 20,
+      "x": 0,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            {
+              "expression": "SEARCH('{ContainerInsights,ClusterName,Namespace,PodName,Service} ClusterName=${ClusterName} Service=${Service} MetricName=pod_cpu_utilization_over_pod_limit', 'Average', 300)",
+              "id": "e1",
+              "period": 300
+            }
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Pods CPU usage over limit",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "left": {
+            "showUnits": true
+          },
+          "right": {
+            "showUnits": false,
+            "label": "%"
+          }
+        }
+      }
+    },
+    {
+      "height": 6,
+      "width": 8,
+      "y": 8,
+      "x": 8,
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [
+            "ContainerInsights",
+            "pod_memory_working_set",
+            "Service",
+            "${Service}",
+            "ClusterName",
+            "${ClusterName}",
+            "Namespace",
+            "${Namespace}"
+          ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${Region}",
+        "title": "Service Memory AVG usage over pods",
+        "period": 300,
+        "stat": "Average",
+        "yAxis": {
+          "right": {
+            "showUnits": false,
+            "label": "Bytes"
+          }
+        }
+      }
+    }
+  ]
+}
