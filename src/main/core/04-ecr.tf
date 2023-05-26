@@ -24,6 +24,7 @@ locals {
     "interop-be-party-mock-registry",
     "interop-be-party-process",
     "interop-be-party-registry-proxy",
+    "interop-be-privacy-notices-updater",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
     "interop-be-tenant-management",
