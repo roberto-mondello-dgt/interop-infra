@@ -1,0 +1,5 @@
+aws_athena_workgroup.interop_queries interop-queries-test
+aws_athena_named_query.app_logs_errors_fulldate 9c893d3b-9d59-43e5-ac30-aec795d7d116
+aws_athena_named_query.app_logs_cid_fulldate 9c4d9b13-08ab-4029-ade2-5791646f6b85
+aws_athena_named_query.app_logs_cid_month 423c9882-b837-4ac4-80be-7e0160a00221
+aws_athena_named_query.app_logs_cid_nodate 46d1ac90-9801-4c5f-83a6-079b7bd45367
