@@ -302,3 +302,9 @@ variable "backend_integration_v2_alb_name" {
   description = ""
   type        = string
 }
+
+variable "eks_application_log_group_name" {
+  description = "Name of the application log group created by FluentBit"
+  type        = string
+  default     = null
+}

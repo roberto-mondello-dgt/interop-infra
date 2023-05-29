@@ -68,3 +68,5 @@ eks_coredns_version    = "v1.9.3-eksbuild.3"
 eks_kube_proxy_version = "v1.26.2-eksbuild.1"
 
 backend_integration_v2_alb_name = "k8s-test-interops-488c927ce9"
+
+eks_application_log_group_name = "/aws/eks/interop-eks-cluster-test/application"
