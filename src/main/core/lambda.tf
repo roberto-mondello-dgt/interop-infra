@@ -1,3 +1,8 @@
+# TODO: handle if it's missing
+data "aws_cloudwatch_log_group" "app_logs" {
+  name = var.eks_application_log_group_name
+}
+
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -10,7 +15,8 @@ data "aws_iam_policy_document" "assume_role" {
     actions = ["sts:AssumeRole"]
   }
 }
-// TODO split roles
+
+// TODO split roles, rename
 resource "aws_iam_role" "lambda_role" {
   assume_role_policy  = data.aws_iam_policy_document.assume_role.json
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
@@ -23,7 +29,7 @@ resource "aws_iam_role" "lambda_role" {
             {
                 Action   = "logs:CreateExportTask"
                 Effect   = "Allow"
-                Resource = "${var.lambda_eks_application_log_group_arn}" // TODO To be replaced with resource dependency when migrating cloudwatch log groups
+                Resource = "${data.aws_cloudwatch_log_group.app_logs.arn}:*"
             },
             {
                 Action   = "logs:DescribeExportTasks"
