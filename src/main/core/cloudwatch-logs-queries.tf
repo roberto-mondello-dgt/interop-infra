@@ -4,10 +4,10 @@ resource "aws_cloudwatch_query_definition" "app_logs_errors" {
   log_group_names = [var.eks_application_log_group_name]
 
   query_string = <<-EOT
-    fields @timestamp, @message 
+    fields @timestamp, @message
     | sort @timestamp asc
     | filter (@message like /ERROR/ or stream = "stderr")
-    | filter @logstream not like /adot-collector/
+    | filter @logStream not like /adot-collector/
   EOT
 }
 
@@ -17,10 +17,10 @@ resource "aws_cloudwatch_query_definition" "cid_tracker" {
   log_group_names = [var.eks_application_log_group_name]
 
   query_string = <<-EOT
-    fields @timestamp, @message 
-    | sort @timestamp asc 
-    | parse @message "[CID=*]" as CID 
-    | filter CID = "" 
+    fields @timestamp, @message
+    | sort @timestamp asc
+    | parse @message "[CID=*]" as CID
+    | filter CID = ""
   EOT
 }
 
