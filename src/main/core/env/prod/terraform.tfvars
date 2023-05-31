@@ -82,3 +82,5 @@ eks_kube_proxy_version = "v1.26.2-eksbuild.1"
 backend_integration_v2_alb_name = "k8s-prod-interops-af9ac9a443"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-prod/application"
+
+dtd_share_sftp_hostname = "dtd-share.interop.pagopa.it"

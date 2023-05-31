@@ -1,0 +1,10 @@
+module.dtd_share_bucket.aws_s3_bucket.this[0] interop-dtd-share-prod
+#module.dtd_share_bucket.aws_s3_bucket_acl.this[0] interop-dtd-share-prod
+module.dtd_share_bucket.aws_s3_bucket_public_access_block.this[0] interop-dtd-share-prod
+module.dtd_share_bucket.aws_s3_bucket_versioning.this[0] interop-dtd-share-prod
+
+aws_iam_role.dtd_share_logging InteropDtdShareLoggingprod
+aws_transfer_server.dtd_share s-9670cff3ba2a43f8a
+module.be_dtd_catalog_exporter_irsa.aws_iam_role.this[0] interop-be-dtd-catalog-exporter-prod
+aws_route53_record.dtd_share Z100714238OQISA97RBZW_dtd-share.interop.pagopa.it_CNAME
+aws_iam_role.dtd_share_s3 InteropDtdShareS3prod

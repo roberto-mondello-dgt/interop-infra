@@ -308,3 +308,8 @@ variable "eks_application_log_group_name" {
   type        = string
   default     = null
 }
+
+variable "dtd_share_sftp_hostname" {
+  description = "Custom hostname for the DTD share SFTP server"
+  type        = string
+}

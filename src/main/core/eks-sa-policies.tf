@@ -355,6 +355,20 @@ resource "aws_iam_policy" "be_dashboard_metrics_report_generator" {
   })
 }
 
+resource "aws_iam_policy" "be_dtd_catalog_exporter" {
+  name = "InteropBeDtdCatalogExporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+    {
+      Effect   = "Allow",
+      Action   = "s3:PutObject"
+      Resource = format("%s/*", module.dtd_share_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
 data "aws_iam_policy" "cloudwatch_agent_server" {
   name = "CloudWatchAgentServerPolicy"
 }
