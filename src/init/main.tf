@@ -21,6 +21,10 @@ data "aws_iam_policy" "admin_access" {
   name = "AdministratorAccess"
 }
 
+data "aws_iam_policy" "readonly_access" {
+  name = "ReadOnlyAccess"
+}
+
 # terraform state file setup
 # create an S3 bucket to store the state file in
 
@@ -120,3 +124,35 @@ resource "aws_iam_role_policy_attachment" "githubiac" {
   policy_arn = data.aws_iam_policy.admin_access.arn
 }
 
+resource "aws_iam_role" "githubiac_ro" {
+  name        = "GitHubActionIACRoleRO"
+  description = "Role to plan infrastructure changes (read-only)"
+
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          "Federated" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" : "repo:${var.github_repository}:*"
+          },
+          "ForAllValues:StringEquals" = {
+            "token.actions.githubusercontent.com:iss" : "https://token.actions.githubusercontent.com",
+            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "githubiac_ro" {
+  role       = aws_iam_role.githubiac_ro.name
+  policy_arn = data.aws_iam_policy.readonly_access.arn
+}
