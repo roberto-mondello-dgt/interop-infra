@@ -1,3 +1,12 @@
-# interop-infra-v2
+# interop-infra
 
-:warning: This is a WIP and may not represent the real state of the infrastructure.
+## Tools required
+
+- [tfenv](https://github.com/tfutils/tfenv)
+
+## AWS account bootstrap
+
+⚠️ These steps are necessary only when the AWS account doesn't already contain the TF backend resources. ⚠️
+
+
+
