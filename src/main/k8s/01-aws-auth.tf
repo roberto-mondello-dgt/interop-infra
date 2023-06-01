@@ -1,3 +1,31 @@
+data "aws_iam_role" "fargate_profiles" {
+  for_each = toset(var.fargate_profiles_roles_names)
+
+  name = each.key
+}
+
+data "aws_iam_role" "admin" {
+  for_each = toset(var.k8s_admin_roles_names)
+
+  name = each.key
+}
+
+data "aws_iam_role" "iac_readonly" {
+  name = var.iac_k8s_readonly_role_name
+}
+
+data "aws_iam_user" "admin" {
+  for_each = toset(var.users_k8s_admin)
+
+  user_name = each.key
+}
+
+data "aws_iam_user" "readonly" {
+  for_each = toset(var.users_k8s_readonly)
+
+  user_name = each.key
+}
+
 locals {
   fargate_profiles_mapping = [for role in data.aws_iam_role.fargate_profiles : templatefile("./templates/aws-auth-role.tpl",
     {
@@ -22,11 +50,18 @@ locals {
       k8s_groups   = ["readonly-group"]
   })
 
-  github_runner_mapping = templatefile("./templates/aws-auth-role.tpl",
+  admin_roles_mapping = [for role in data.aws_iam_role.admin : templatefile("./templates/aws-auth-role.tpl",
     {
-      role_arn     = data.aws_iam_role.github_runner.arn
-      k8s_username = "github-runner"
+      role_arn     = role.arn
+      k8s_username = role.name
       k8s_groups   = ["system:masters"]
+  })]
+
+  iac_readonly_role_mapping = templatefile("./templates/aws-auth-role.tpl",
+    {
+      role_arn     = data.aws_iam_role.iac_readonly.arn
+      k8s_username = data.aws_iam_role.iac_readonly.name
+      k8s_groups   = ["iac-readonly-group"]
   })
 
   admin_users_mapping = [for user in data.aws_iam_user.admin : templatefile("./templates/aws-auth-user.tpl",
@@ -44,28 +79,6 @@ locals {
   })]
 }
 
-data "aws_iam_role" "fargate_profiles" {
-  for_each = toset(var.fargate_profiles_roles_names)
-
-  name = each.key
-}
-
-data "aws_iam_role" "github_runner" {
-  name = var.github_runner_role_name
-}
-
-data "aws_iam_user" "admin" {
-  for_each = toset(var.iam_users_k8s_admin)
-
-  user_name = each.key
-}
-
-data "aws_iam_user" "readonly" {
-  for_each = toset(var.iam_users_k8s_readonly)
-
-  user_name = each.key
-}
-
 resource "kubernetes_config_map_v1" "aws_auth" {
   metadata {
     name      = "aws-auth"
@@ -73,7 +86,7 @@ resource "kubernetes_config_map_v1" "aws_auth" {
   }
 
   data = {
-    mapRoles = join("", concat(local.fargate_profiles_mapping, [local.sso_full_admin_mapping, local.sso_readonly_mapping, local.github_runner_mapping]))
+    mapRoles = join("", concat(local.fargate_profiles_mapping, [local.sso_full_admin_mapping, local.sso_readonly_mapping, local.iac_readonly_role_mapping], local.admin_roles_mapping))
     mapUsers = join("", local.admin_users_mapping, local.readonly_users_mapping)
   }
 }

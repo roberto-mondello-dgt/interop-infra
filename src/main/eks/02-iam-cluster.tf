@@ -47,7 +47,7 @@ resource "aws_iam_role" "fargate_pod_exec" {
   managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"]
 
   inline_policy {
-    name = "EksFargatePodExecInline"
+    name   = "EksFargatePodExecInline"
     policy = data.aws_iam_policy_document.fargate_pod_exec_inline.json
   }
 }

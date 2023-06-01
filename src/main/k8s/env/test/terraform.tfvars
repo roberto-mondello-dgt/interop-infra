@@ -12,12 +12,16 @@ tags = {
 eks_cluster_name = "interop-eks-cluster-test"
 be_prefix        = "interop-be"
 
-sso_full_admin_role_name     = "AWSReservedSSO_FullAdmin_48811da36f58fc1e"
-sso_readonly_role_name       = "AWSReservedSSO_ReadOnlyAccess_306c376a5a83bb31"
-github_runner_role_name      = "interop-github-runner-task-test"
+sso_full_admin_role_name = "AWSReservedSSO_FullAdmin_48811da36f58fc1e"
+sso_readonly_role_name   = "AWSReservedSSO_ReadOnlyAccess_306c376a5a83bb31"
+
+iac_k8s_readonly_role_name = "GitHubActionIACRoleReadOnly"
+
 fargate_profiles_roles_names = ["Interop-EKS-SystemProfile", "Interop-EKS-ApplicationProfile", "Interop-EKS-ObservabilityProfile"]
 
-iam_users_k8s_admin    = ["a.gallitano", "s.perazzolo", "a.gelameris", "e.nardelli", "m.desimone", "r.castagnola"]
+k8s_admin_roles_names = ["GitHubActionIACRole", "interop-github-runner-task-test"]
+
+users_k8s_admin = ["a.gallitano", "s.perazzolo", "a.gelameris", "e.nardelli", "m.desimone", "r.castagnola"]
 
 kube_state_metrics_image_version_tag = "v2.6.0"
 kube_state_metrics_cpu               = "250m"

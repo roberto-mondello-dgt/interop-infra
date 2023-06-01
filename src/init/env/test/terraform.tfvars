@@ -9,4 +9,4 @@ tags = {
   "name"        = "S3 Remote Terraform State Store"
 }
 
-github_repository = "pagopa/interop-infra-v2"
+github_repository = "pagopa/interop-infra"

@@ -46,18 +46,24 @@ variable "sso_readonly_role_name" {
   description = "Name of the SSO readonly role"
 }
 
-variable "github_runner_role_name" {
+variable "iac_k8s_readonly_role_name" {
   type        = string
-  description = "Name of the Github runner role used to deploy K8s manifests"
+  description = "Name of the IaC IAM role to be granted readonly access in the cluster"
 }
 
-variable "iam_users_k8s_admin" {
+variable "k8s_admin_roles_names" {
+  type        = list(string)
+  description = "IAM role names to be granted admin access in the cluster"
+  default     = []
+}
+
+variable "users_k8s_admin" {
   type        = list(string)
   description = "IAM users to be granted admin access in the cluster"
   default     = []
 }
 
-variable "iam_users_k8s_readonly" {
+variable "users_k8s_readonly" {
   type        = list(string)
   description = "IAM users to be granted readonly access in the cluster"
   default     = []

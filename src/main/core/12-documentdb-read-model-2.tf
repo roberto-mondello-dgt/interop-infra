@@ -143,7 +143,7 @@ resource "aws_docdb_cluster" "read_model_v2" {
 resource "aws_docdb_cluster_instance" "read_model_v2" {
   count = var.read_model_number_instances
 
-  identifier                  = format("read-model-instance-%d", count.index+1)
+  identifier                  = format("read-model-instance-%d", count.index + 1)
   cluster_identifier          = aws_docdb_cluster.read_model_v2.id
   availability_zone           = element(module.vpc_v2.azs, count.index)
   instance_class              = var.read_model_instance_class

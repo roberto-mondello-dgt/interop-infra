@@ -1,3 +1,33 @@
+resource "kubernetes_cluster_role_v1" "iac_readonly" {
+  metadata {
+    name = "iac-readony-cluster-role"
+  }
+
+  rule {
+    api_groups = ["*"]
+    resources  = ["*"]
+    verbs      = ["get", "list", "watch"]
+  }
+}
+
+resource "kubernetes_cluster_role_binding_v1" "iac_readonly" {
+  metadata {
+    name = "iac-readonly"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+
+  subject {
+    kind      = "Group"
+    name      = "iac-readonly-group"
+    api_group = "rbac.authorization.k8s.io"
+  }
+}
+
 resource "kubernetes_role" "port_forward" {
   count = var.env != "prod" ? 1 : 0
 

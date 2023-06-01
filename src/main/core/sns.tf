@@ -13,7 +13,7 @@ resource "aws_sns_topic_policy" "logs_automation_errors" {
         Principal = {
           Service = "events.amazonaws.com"
         }
-        Action = "sns:Publish"
+        Action   = "sns:Publish"
         Resource = aws_sns_topic.logs_automation_errors.arn
       }
     ]
@@ -35,7 +35,7 @@ resource "aws_sns_topic_policy" "platform_alarms" {
         Principal = {
           Service = "cloudwatch.amazonaws.com"
         }
-        Action = "sns:Publish"
+        Action   = "sns:Publish"
         Resource = aws_sns_topic.platform_alarms.arn
         Condition = {
           ArnLike = {

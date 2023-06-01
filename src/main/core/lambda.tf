@@ -22,27 +22,27 @@ resource "aws_iam_role" "lambda_role" {
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
   name                = "interop-logs-lambda-${var.env}"
   inline_policy {
-    name   = "InteropLogsLambdaExportPolicy"
+    name = "InteropLogsLambdaExportPolicy"
     policy = jsonencode({
-        Version   = "2012-10-17"
-        Statement = [
-            {
-                Action   = "logs:CreateExportTask"
-                Effect   = "Allow"
-                Resource = "${data.aws_cloudwatch_log_group.app_logs.arn}:*"
-            },
-            {
-                Action   = "logs:DescribeExportTasks"
-                Effect   = "Allow"
-                Resource = "*"
-            },
-            {
-                Action   = "logs:DescribeLogGroups"
-                Effect   = "Allow"
-                Resource = "*"
-            }
-        ] 
-    }) 
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action   = "logs:CreateExportTask"
+          Effect   = "Allow"
+          Resource = "${data.aws_cloudwatch_log_group.app_logs.arn}:*"
+        },
+        {
+          Action   = "logs:DescribeExportTasks"
+          Effect   = "Allow"
+          Resource = "*"
+        },
+        {
+          Action   = "logs:DescribeLogGroups"
+          Effect   = "Allow"
+          Resource = "*"
+        }
+      ]
+    })
   }
 }
 
@@ -60,13 +60,13 @@ data "archive_file" "logs_export_lambda_code" {
 }
 
 resource "aws_lambda_function" "logs_dates_lambda" {
-  filename      = data.archive_file.logs_dates_lambda_code.output_path
-  function_name = "interop-logs-dates-${var.env}"
-  handler       = "main.handler"
-  memory_size   = 128
-  package_type  = "Zip"
-  role          = aws_iam_role.lambda_role.arn
-  runtime       = "python3.9"
+  filename         = data.archive_file.logs_dates_lambda_code.output_path
+  function_name    = "interop-logs-dates-${var.env}"
+  handler          = "main.handler"
+  memory_size      = 128
+  package_type     = "Zip"
+  role             = aws_iam_role.lambda_role.arn
+  runtime          = "python3.9"
   source_code_hash = data.archive_file.logs_dates_lambda_code.output_base64sha256
   ephemeral_storage {
     size = 512
@@ -80,13 +80,13 @@ resource "aws_lambda_function" "logs_dates_lambda" {
 }
 
 resource "aws_lambda_function" "logs_export_lambda" {
-  filename      = data.archive_file.logs_export_lambda_code.output_path
-  function_name = "interop-logs-export-${var.env}"
-  handler       = "main.handler"
-  memory_size   = 128
-  package_type  = "Zip"
-  role          = aws_iam_role.lambda_role.arn
-  runtime       = "python3.9"
+  filename         = data.archive_file.logs_export_lambda_code.output_path
+  function_name    = "interop-logs-export-${var.env}"
+  handler          = "main.handler"
+  memory_size      = 128
+  package_type     = "Zip"
+  role             = aws_iam_role.lambda_role.arn
+  runtime          = "python3.9"
   source_code_hash = data.archive_file.logs_export_lambda_code.output_base64sha256
   ephemeral_storage {
     size = 512

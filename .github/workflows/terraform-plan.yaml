@@ -9,6 +9,7 @@ on:
     paths:
       - 'src/main/**'
       - '.github/workflows/*.yml'
+      - '.github/workflows/*.yaml'
 
 defaults:
   run:
@@ -22,8 +23,9 @@ permissions:
 jobs:
   terraform:
     strategy:
+      fail-fast: false
       matrix:
-        environment: [dev_ro, test_ro, prod_ro]
+        environment: [dev, test_ro, prod_ro]
     name: "terraform-plan"
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
@@ -51,17 +53,38 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+      - name: Normalize environment
+        id: norm_env
+        run:
+          GH_ENV="${{ matrix.environment }}"
+          NORM_ENV="$(echo "$GH_ENV" | sed -e 's/_ro//')"
+
+          echo "NORM_ENV=$NORM_ENV" >> $GITHUB_ENV
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check -recursive
 
-      - name: Terraform Plan (main)
-        id: plan_main
+      - name: Terraform Init (main/core)
+        id: init_core
+        working-directory: src/main/core
         run: |
-          ./terraform.sh plan ${{ matrix.environment }}
+          ./terraform.sh init "$NORM_ENV"
 
-      - name: Terraform Plan (K8s)
+      - name: Terraform Plan (main/core)
+        id: plan_core
+        working-directory: src/main/core
+        run: |
+          ./terraform.sh plan "$NORM_ENV"
+
+      - name: Terraform Init (main/k8s)
+        id: init_k8s
+        working-directory: src/main/k8s
+        run: |
+          ./terraform.sh init "$NORM_ENV"
+
+      - name: Terraform Plan (main/k8s)
         id: plan_k8s
         working-directory: src/main/k8s
         run: |
-          ./terraform.sh plan ${{ matrix.environment }}
+          ./terraform.sh plan "$NORM_ENV"

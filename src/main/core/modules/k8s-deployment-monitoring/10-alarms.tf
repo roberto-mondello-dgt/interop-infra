@@ -70,9 +70,9 @@ resource "aws_cloudwatch_metric_alarm" "unavailable_pods" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   treat_missing_data  = "missing"
   # TODO: pass as variables?
-  threshold = 1
+  threshold           = 1
   datapoints_to_alarm = 1
-  evaluation_periods = 5
+  evaluation_periods  = 5
 
   metric_query {
     id          = "e1"

@@ -61,9 +61,9 @@ module "eks_v2" {
   # managed outside of this module
   manage_aws_auth_configmap = false
 
-  vpc_id                    = module.vpc_v2.vpc_id
-  subnet_ids                = data.aws_subnets.eks_control_plane.ids
-  cluster_ip_family         = "ipv4"
+  vpc_id            = module.vpc_v2.vpc_id
+  subnet_ids        = data.aws_subnets.eks_control_plane.ids
+  cluster_ip_family = "ipv4"
   # CIDR range for K8s services IPs. Just to avoid potential overlap with other networks
   cluster_service_ipv4_cidr = "10.1.0.0/21"
 

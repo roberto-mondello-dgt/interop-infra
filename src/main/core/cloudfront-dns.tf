@@ -9,7 +9,7 @@ resource "aws_route53_record" "landing_www" {
     evaluate_target_health = true
     name                   = aws_cloudfront_distribution.landing.domain_name
     zone_id                = "Z2FDTNDATAQYW2" # fixed value for CloudFront distributions
-  } 
+  }
 }
 
 resource "aws_route53_record" "landing_base" {

@@ -72,7 +72,7 @@ resource "aws_instance" "bastion_host_v2" {
 
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.bastion_host.id
-  vpc_security_group_ids     = [aws_security_group.bastion_host_v2.id]
+  vpc_security_group_ids      = [aws_security_group.bastion_host_v2.id]
 
   tags = {
     Name = format("interop-bastion-host-v2-%s", var.env)

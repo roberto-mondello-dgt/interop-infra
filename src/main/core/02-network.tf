@@ -14,7 +14,8 @@ locals {
 # use module's default igw, nat, eip names
 # map_public_ip_on_launch should be true
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "4.0.2"
 
   name                  = format("%s-vpc-%s", var.short_name, var.env)
   cidr                  = "172.32.0.0/21"
@@ -115,7 +116,7 @@ locals {
 # TODO: rename module and vpc after migration
 module "vpc_v2" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.1"
+  version = "4.0.2"
 
   name = format("%s-vpc-v2-%s", var.short_name, var.env)
   cidr = "10.0.0.0/16"

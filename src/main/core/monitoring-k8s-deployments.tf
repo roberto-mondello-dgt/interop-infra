@@ -3,7 +3,7 @@
 module "be_agreement_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-agreement-management"
@@ -21,7 +21,7 @@ module "be_agreement_management_monitoring" {
 module "be_agreement_process_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-agreement-management"
@@ -39,7 +39,7 @@ module "be_agreement_process_monitoring" {
 module "be_api_gateway_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-api-gateway"
@@ -57,7 +57,7 @@ module "be_api_gateway_monitoring" {
 module "be_attribute_registry_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-attribute-registry-management"
@@ -75,7 +75,7 @@ module "be_attribute_registry_management_monitoring" {
 module "be_authorization_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-authorization-management"
@@ -93,7 +93,7 @@ module "be_authorization_management_monitoring" {
 module "be_authorization_process_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-authorization-process"
@@ -111,7 +111,7 @@ module "be_authorization_process_monitoring" {
 module "be_authorization_server_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-authorization-server"
@@ -129,7 +129,7 @@ module "be_authorization_server_monitoring" {
 module "be_backend_for_frontend_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-backend-for-frontend"
@@ -147,7 +147,7 @@ module "be_backend_for_frontend_monitoring" {
 module "be_catalog_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-catalog-management"
@@ -165,7 +165,7 @@ module "be_catalog_management_monitoring" {
 module "be_catalog_process_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-catalog-process"
@@ -183,7 +183,7 @@ module "be_catalog_process_monitoring" {
 module "be_notifier_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-notifier"
@@ -201,7 +201,7 @@ module "be_notifier_monitoring" {
 module "be_party_registry_proxy_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-party-registry-proxy"
@@ -219,7 +219,7 @@ module "be_party_registry_proxy_monitoring" {
 module "be_purpose_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-purpose-management"
@@ -237,7 +237,7 @@ module "be_purpose_management_monitoring" {
 module "be_purpose_process_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-purpose-process"
@@ -255,7 +255,7 @@ module "be_purpose_process_monitoring" {
 module "be_tenant_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-tenant-management"
@@ -273,7 +273,7 @@ module "be_tenant_management_monitoring" {
 module "be_tenant_process_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-be-tenant-process"
@@ -291,7 +291,7 @@ module "be_tenant_process_monitoring" {
 module "frontend_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "interop-frontend"
@@ -309,7 +309,7 @@ module "frontend_monitoring" {
 module "be_redis_monitoring" {
   source = "./modules/k8s-deployment-monitoring"
 
-  env              = var.env
+  env                 = var.env
   eks_cluster_name    = module.eks_v2.cluster_name
   k8s_namespace       = var.env
   k8s_deployment_name = "redis"

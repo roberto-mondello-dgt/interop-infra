@@ -90,8 +90,8 @@ resource "aws_iam_role" "github_ecs" {
       Version = "2012-10-17"
       Statement = [
         {
-          Effect   = "Allow"
-          Action   = "ecs:RunTask"
+          Effect = "Allow"
+          Action = "ecs:RunTask"
           Resource = [
             aws_ecs_task_definition.github_runner.arn_without_revision,
             "${aws_ecs_task_definition.github_runner.arn_without_revision}:*"
@@ -103,8 +103,8 @@ resource "aws_iam_role" "github_ecs" {
           }
         },
         {
-          Effect = "Allow"
-          Action = "ecs:StopTask"
+          Effect   = "Allow"
+          Action   = "ecs:StopTask"
           Resource = "*"
           Condition = {
             StringEquals = {

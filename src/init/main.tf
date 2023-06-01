@@ -125,7 +125,7 @@ resource "aws_iam_role_policy_attachment" "githubiac" {
 }
 
 resource "aws_iam_role" "githubiac_ro" {
-  name        = "GitHubActionIACRoleRO"
+  name        = "GitHubActionIACRoleReadOnly"
   description = "Role to plan infrastructure changes (read-only)"
 
 
@@ -155,4 +155,58 @@ resource "aws_iam_role" "githubiac_ro" {
 resource "aws_iam_role_policy_attachment" "githubiac_ro" {
   role       = aws_iam_role.githubiac_ro.name
   policy_arn = data.aws_iam_policy.readonly_access.arn
+}
+
+resource "aws_iam_policy" "terraform_lock_access" {
+  name = "TerraformLockAccess"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:PutItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:UpdateItem"
+      ]
+      Resource = aws_dynamodb_table.terraform_state_lock.arn
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "terraform_lock_access" {
+  role       = aws_iam_role.githubiac_ro.name
+  policy_arn = aws_iam_policy.terraform_lock_access.arn
+}
+
+resource "aws_iam_policy" "secretsmanager_readonly" {
+  name = "SecretsManagerReadOnly"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecretVersionIds",
+        "secretsmanager:ListSecrets"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secretsmanager_readonly" {
+  role       = aws_iam_role.githubiac_ro.name
+  policy_arn = aws_iam_policy.secretsmanager_readonly.arn
 }

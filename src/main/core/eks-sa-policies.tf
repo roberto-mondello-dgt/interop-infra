@@ -278,8 +278,8 @@ resource "aws_iam_policy" "be_certified_mail_sender" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow",
-      Action   = [
+      Effect = "Allow",
+      Action = [
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage"
       ]
@@ -294,20 +294,20 @@ resource "aws_iam_policy" "be_metrics_report_generator" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-    {
-      Effect   = "Allow",
-      Action   = "s3:GetObject"
-      Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
-    },
-    {
-      Effect   = "Allow",
-      Action   = "s3:ListBucket"
-      Resource = module.generated_jwt_details_bucket.s3_bucket_arn
-    },
-    {
-      Effect   = "Allow",
-      Action   = "s3:PutObject"
-      Resource = format("%s/*", module.metrics_reports_bucket.s3_bucket_arn)
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.metrics_reports_bucket.s3_bucket_arn)
     }]
   })
 }
@@ -318,15 +318,15 @@ resource "aws_iam_policy" "be_pa_digitale_report_generator" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-    {
-      Effect   = "Allow",
-      Action   = "s3:GetObject"
-      Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
-    },
-    {
-      Effect   = "Allow",
-      Action   = "s3:PutObject"
-      Resource = format("%s/*", module.platform_metrics_bucket.s3_bucket_arn)
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.platform_metrics_bucket.s3_bucket_arn)
     }]
   })
 }
@@ -337,20 +337,20 @@ resource "aws_iam_policy" "be_dashboard_metrics_report_generator" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-    {
-      Effect   = "Allow",
-      Action   = "s3:GetObject"
-      Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
-    },
-    {
-      Effect   = "Allow",
-      Action   = "s3:ListBucket"
-      Resource = module.generated_jwt_details_bucket.s3_bucket_arn
-    },
-    {
-      Effect   = "Allow",
-      Action   = "s3:PutObject"
-      Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
     }]
   })
 }
@@ -361,10 +361,10 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-    {
-      Effect   = "Allow",
-      Action   = "s3:PutObject"
-      Resource = format("%s/*", module.dtd_share_bucket.s3_bucket_arn)
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.dtd_share_bucket.s3_bucket_arn)
     }]
   })
 }

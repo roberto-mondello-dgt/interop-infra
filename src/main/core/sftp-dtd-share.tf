@@ -66,8 +66,8 @@ resource "aws_iam_role" "dtd_share_s3" {
           Resource = module.dtd_share_bucket.s3_bucket_arn
         },
         {
-          Effect   = "Allow"
-          Action   = "s3:Get*"
+          Effect = "Allow"
+          Action = "s3:Get*"
           Resource = [
             module.dtd_share_bucket.s3_bucket_arn,
             "${module.dtd_share_bucket.s3_bucket_arn}/*"
