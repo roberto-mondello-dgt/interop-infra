@@ -206,6 +206,29 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Effect   = "Allow"
         Action   = "kms:Sign"
         Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+        ]
+        Resource = aws_dynamodb_table.privacy_notices.arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+        ]
+        Resource = aws_dynamodb_table.privacy_notices_acceptances.arn
     }]
   })
 }
@@ -365,6 +388,40 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
         Effect   = "Allow",
         Action   = "s3:PutObject"
         Resource = format("%s/*", module.dtd_share_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_privacy_notices_updater" {
+  name = "InteropBePrivacyNoticesUpdaterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.privacy_notices_history_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          format("%s/*", module.privacy_notices_history_bucket.s3_bucket_arn),
+          format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.privacy_notices.arn
     }]
   })
 }

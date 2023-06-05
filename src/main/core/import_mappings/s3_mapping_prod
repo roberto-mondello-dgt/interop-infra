@@ -71,3 +71,8 @@ module.interop_landing_bucket.aws_s3_bucket.this[0] interop-landing-prod
 module.interop_landing_bucket.aws_s3_bucket_acl.this[0] interop-landing-prod
 module.interop_landing_bucket.aws_s3_bucket_public_access_block.this[0] interop-landing-prod
 module.interop_landing_bucket.aws_s3_bucket_versioning.this[0] interop-landing-prod
+
+module.public_bucket.aws_s3_bucket.this[0] interop-prod-public
+module.public_bucket.aws_s3_bucket_versioning.this[0] interop-prod-public
+module.public_bucket.aws_s3_bucket_policy.this[0] interop-prod-public
+module.public_bucket.aws_s3_bucket_cors_configuration.this[0] interop-prod-public

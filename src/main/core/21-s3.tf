@@ -1,3 +1,9 @@
+# TODO: refactor?
+locals {
+  frontend_env_cors_domain = (var.env != "prod" ?
+  format("selfcare.%s.%s", local.env_dns_name, var.dns_interop_base_domain) : format("selfcare.%s", var.dns_interop_base_domain))
+}
+
 # TODO: update S3 module and remove "acl" value after new AWS defaults?
 
 module "jwt_well_known_bucket" {
@@ -389,7 +395,6 @@ module "interop_landing_bucket" {
   })
 }
 
-
 module "dtd_share_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.8.2"
@@ -420,4 +425,73 @@ module "privacy_notices_history_bucket" {
   versioning = {
     enabled = true
   }
+
+  object_lock_enabled = true
+  object_lock_configuration = {
+    rule = {
+      default_retention = {
+        # TODO: use conditional version below when ready to lock
+        # mode  = var.env == "prod" ? "COMPLIANCE" : "GOVERNANCE"
+        mode  = "GOVERNANCE"
+        years = 10
+      }
+    }
+  }
+}
+
+module "privacy_notices_content_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-privacy-notices-content-%s", var.short_name, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+}
+
+# TODO: refactor this bucket, the contents can be exposed by other AWS services
+module "public_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-%s-public", var.short_name, var.env)
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+
+  versioning = {
+    enabled = false
+  }
+
+  cors_rule = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET", "HEAD"]
+      allowed_origins = ["https://${local.frontend_env_cors_domain}"]
+    }
+  ]
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = "*"
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+        ]
+        Resource = "${module.public_bucket.s3_bucket_arn}/*"
+      }
+    ]
+  })
 }
