@@ -80,3 +80,15 @@ backend_integration_v2_alb_name = "k8s-dev-interops-db067b4512"
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
 
 dtd_share_sftp_hostname = "dtd-share.dev.interop.pagopa.it"
+
+k8s_monitoring_cronjobs_names = [
+  "interop-be-attributes-loader",
+  "interop-be-dashboard-metrics-report-generator",
+  "interop-be-dtd-catalog-exporter",
+  "interop-be-metrics-report-generator",
+  "interop-be-padigitale-report-generator",
+  "interop-be-party-registry-proxy-refresher",
+  "interop-be-privacy-notices-updater",
+  "interop-be-tenants-cert-attr-updater",
+  "interop-be-token-details-persister"
+]

@@ -1,4 +1,4 @@
-# TODO: rename cluster module name after migration
+# TODO: use foreach?
 
 module "be_agreement_management_monitoring" {
   source = "./modules/k8s-deployment-monitoring"

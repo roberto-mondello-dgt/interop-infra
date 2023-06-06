@@ -313,3 +313,8 @@ variable "dtd_share_sftp_hostname" {
   description = "Custom hostname for the DTD share SFTP server"
   type        = string
 }
+
+variable "k8s_monitoring_cronjobs_names" {
+  description = "Names of K8s cronjobs to monitor"
+  type        = list(string)
+}
