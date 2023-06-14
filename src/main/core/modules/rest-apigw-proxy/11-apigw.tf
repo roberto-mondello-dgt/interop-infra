@@ -138,9 +138,13 @@ resource "aws_api_gateway_stage" "env" {
         "status"               = "$context.status"
         "integrationLatencyMs" = "$context.integrationLatency"
         "integrationStatus"    = "$context.integrationStatus"
+        "integrationError"     = "$context.integration.error"
         "responseLatencyMs"    = "$context.responseLatency"
+        "responseLengthBytes"  = "$context.responseLength"
         "wafStatus"            = "$context.waf.status"
+        "wafLatency"           = "$context.waf.latency"
         "wafError"             = "$context.waf.error"
+        "xrayTraceId"          = "$context.xrayTraceId"
       })
     }
   }
