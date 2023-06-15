@@ -59,11 +59,13 @@ module "certified_mail_queue" {
 
   sqs_managed_sse_enabled = false
 
-  visibility_timeout_seconds = 30
-  max_message_size           = 262144
-  message_retention_seconds  = 1209600
-  deduplication_scope        = "messageGroup"
-  fifo_throughput_limit      = "perMessageGroupId"
+  visibility_timeout_seconds  = 30
+  max_message_size            = 262144
+  message_retention_seconds   = 1209600
+
+  content_based_deduplication = true
+  deduplication_scope         = "queue"
+  fifo_throughput_limit       = "perQueue"
 }
 
 module "certified_mail_queue_monitoring" {
