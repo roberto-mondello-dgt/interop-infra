@@ -1,4 +1,4 @@
-resource "aws_kms_key" "interop" {
+resource "aws_kms_key" "interop_probing" {
   customer_master_key_spec = "RSA_2048"
   key_usage                = "SIGN_VERIFY"
   policy = jsonencode(
@@ -20,7 +20,7 @@ resource "aws_kms_key" "interop" {
   )
 }
 
-resource "aws_kms_alias" "interop" {
-  name          = "alias/interop-rsa2048-${var.env}"
-  target_key_id = aws_kms_key.interop.key_id
+resource "aws_kms_alias" "interop_probing" {
+  name          = "alias/interop-probing-rsa2048-${var.env}"
+  target_key_id = aws_kms_key.interop_probing.key_id
 }

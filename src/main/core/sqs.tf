@@ -59,9 +59,9 @@ module "certified_mail_queue" {
 
   sqs_managed_sse_enabled = false
 
-  visibility_timeout_seconds  = 30
-  max_message_size            = 262144
-  message_retention_seconds   = 1209600
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
 
   content_based_deduplication = true
   deduplication_scope         = "queue"
