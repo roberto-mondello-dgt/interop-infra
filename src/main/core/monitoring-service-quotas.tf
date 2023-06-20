@@ -5,15 +5,15 @@ resource "aws_cloudwatch_metric_alarm" "kms_rsa_quota" {
   alarm_actions = [aws_sns_topic.platform_alarms.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  threshold           = 70
+  threshold           = 60
   datapoints_to_alarm = 1
-  evaluation_periods  = 1
+  evaluation_periods  = 5
   treat_missing_data  = "notBreaching"
 
   metric_query {
     id          = "pct_utilization"
     label       = "% Utilization"
-    expression  = "(usage_data/SERVICE_QUOTA(usage_data))*100"
+    expression  = "(usage_data/(SERVICE_QUOTA(usage_data)/60))*100"
     return_data = true
   }
 
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "kms_rsa_quota" {
       metric_name = "CallCount"
       namespace   = "AWS/Usage"
       stat        = "Sum"
-      period      = 3600 # 1 hour
+      period      = 60 # 1 minute
 
       dimensions = {
         Service  = "KMS"
