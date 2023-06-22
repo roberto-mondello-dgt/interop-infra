@@ -218,6 +218,7 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Effect = "Allow",
         Action = [
           "dynamodb:GetItem",
+          "dynamodb:Query"
         ]
         Resource = aws_dynamodb_table.privacy_notices.arn
       },
@@ -225,6 +226,7 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Effect = "Allow",
         Action = [
           "dynamodb:GetItem",
+          "dynamodb:Query",
           "dynamodb:PutItem",
           "dynamodb:UpdateItem",
         ]

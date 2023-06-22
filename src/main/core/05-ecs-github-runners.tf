@@ -166,12 +166,6 @@ resource "aws_ecs_task_definition" "github_runner" {
   ])
 }
 
-# TODO: allow this SG in EKS SG rules (currently using CIDR)
-resource "aws_security_group" "github_runners" {
-  description = "SG for Github runners"
-  vpc_id      = module.vpc.vpc_id
-}
-
 # TODO: rename after migration
 resource "aws_security_group" "github_runners_v2" {
   name        = format("%s-github-runners-%s", var.short_name, var.env)

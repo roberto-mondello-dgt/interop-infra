@@ -61,12 +61,6 @@ variable "bastion_host_key_pair" {
   type        = string
 }
 
-variable "eks_cluster_name" {
-  description = "Name of the EKS cluster created in a separate module"
-  type        = string
-  default     = null
-}
-
 variable "persistence_management_cluster_id" {
   description = "ID of the Aurora cluster - persistence management"
   type        = string
