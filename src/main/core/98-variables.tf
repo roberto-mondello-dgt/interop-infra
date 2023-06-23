@@ -308,6 +308,11 @@ variable "dtd_share_sftp_hostname" {
   type        = string
 }
 
+variable "k8s_monitoring_deployments_names" {
+  description = "Names of K8s deployments to monitor"
+  type        = list(string)
+}
+
 variable "k8s_monitoring_cronjobs_names" {
   description = "Names of K8s cronjobs to monitor"
   type        = list(string)
