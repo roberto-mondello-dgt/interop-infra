@@ -4,8 +4,6 @@ resource "aws_cloudwatch_metric_alarm" "avg_cpu" {
   alarm_name        = format("k8s-%s-avg-cpu-%s", var.k8s_deployment_name, var.env)
   alarm_description = format("AVG CPU usage alarm for %s", var.k8s_deployment_name)
 
-  alarm_actions = var.sns_topics_arns
-
   metric_name = "pod_cpu_utilization_over_pod_limit"
   namespace   = "ContainerInsights"
   dimensions = {
@@ -19,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "avg_cpu" {
   treat_missing_data  = "notBreaching"
 
   threshold           = var.avg_cpu_alarm_threshold
-  period              = var.alarm_period_seconds
+  period              = var.performance_alarms_period_seconds
   evaluation_periods  = var.alarm_eval_periods
   datapoints_to_alarm = var.alarm_datapoints
 }
@@ -43,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "avg_memory" {
   treat_missing_data  = "notBreaching"
 
   threshold           = var.avg_cpu_alarm_threshold
-  period              = var.alarm_period_seconds
+  period              = var.performance_alarms_period_seconds
   evaluation_periods  = var.alarm_eval_periods
   datapoints_to_alarm = var.alarm_datapoints
 }

@@ -12,9 +12,9 @@ module "k8s_deployment_monitoring" {
 
   create_alarms = true
 
-  avg_cpu_alarm_threshold    = 70
-  avg_memory_alarm_threshold = 70
-  alarm_period_seconds       = 900 # 15 minutes
+  avg_cpu_alarm_threshold           = 70
+  avg_memory_alarm_threshold        = 70
+  performance_alarms_period_seconds = 300 # 5 minutes
 
   create_dashboard = true
 }

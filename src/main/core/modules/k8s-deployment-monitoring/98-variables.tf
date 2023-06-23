@@ -44,8 +44,8 @@ variable "avg_memory_alarm_threshold" {
   type        = number
 }
 
-variable "alarm_period_seconds" {
-  description = "Period (in seconds) over which the alarm statistic is applied"
+variable "performance_alarms_period_seconds" {
+  description = "Period (in seconds) over which the alarm statistic is applied for performance alarms"
   type        = number
 }
 
