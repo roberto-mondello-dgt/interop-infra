@@ -107,6 +107,7 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-attributes-loader",
   "interop-be-dashboard-metrics-report-generator",
   "interop-be-dtd-catalog-exporter",
+  "interop-be-eservices-monitoring-exporter",
   "interop-be-metrics-report-generator",
   "interop-be-padigitale-report-generator",
   "interop-be-party-registry-proxy-refresher",
