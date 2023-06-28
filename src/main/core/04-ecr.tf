@@ -31,6 +31,7 @@ locals {
     "interop-be-tenant-process",
     "interop-be-tenants-cert-attr-updater",
     "interop-be-token-details-persister",
+    "interop-be-tenants-attributes-checker",
     "interop-frontend"
   ]
 }
