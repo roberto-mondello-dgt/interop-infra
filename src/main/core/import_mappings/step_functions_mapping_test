@@ -1,2 +1,0 @@
-aws_iam_role.logs_automation interop-logs-automation-test
-aws_sfn_state_machine.logs_automation arn:aws:states:eu-central-1:895646477129:stateMachine:interop-logs-automation-test

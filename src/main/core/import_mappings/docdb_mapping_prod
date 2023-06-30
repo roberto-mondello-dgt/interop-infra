@@ -1,4 +1,0 @@
-aws_kms_key.read_model dba29352-c52e-45b5-950d-e425b649db55
-aws_docdb_subnet_group.read_model docdbsubnetgroup-o9tsiei6mmwh
-aws_docdb_cluster_parameter_group.read_model read-model-parameter-group
-aws_docdb_cluster.read_model read-model

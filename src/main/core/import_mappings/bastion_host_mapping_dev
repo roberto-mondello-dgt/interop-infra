@@ -1,4 +1,0 @@
-  aws_network_interface_attachment.bastion_host eni-attach-06363ec2ff750be9a
-  aws_security_group.allow_ssh sg-092713ae85d7186b8
-  aws_instance.bastion_host i-0108daaf71f88aa42
-  aws_network_interface.bastion_host eni-0c16ca77ded30347f

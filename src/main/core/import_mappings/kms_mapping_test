@@ -1,2 +1,0 @@
-aws_kms_key.interop 32d8a321-1568-44f5-9558-a9072f519d2d
-aws_kms_alias.interop alias/interop-rsa2048-test

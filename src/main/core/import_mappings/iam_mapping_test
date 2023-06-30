@@ -1,7 +1,0 @@
-aws_iam_role.full_admin interop-iam-users-test-FullAdminRole
-aws_iam_role.read_only interop-iam-users-test-ReadOnlyRole
-aws_iam_role.cfn_full_admin interop-iam-users-test-CFNFullAdminRole
-aws_iam_group.read_only interop-iam-users-test-ReadOnlyGroup-1FMY1O5DDBI6F
-aws_iam_group_policy.read_only interop-iam-users-test-ReadOnlyGroup-1FMY1O5DDBI6F:AssumeReadOnlyRolePolicy
-aws_iam_group.admin interop-iam-users-test-AdminGroup-K7XMXFU3K1HI
-aws_iam_group_policy.admin interop-iam-users-test-AdminGroup-K7XMXFU3K1HI:AssumeAdminRolePolicy

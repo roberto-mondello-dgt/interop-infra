@@ -1,6 +1,0 @@
-module.persistence_events_queue.aws_sqs_queue.this[0] https://sqs.eu-central-1.amazonaws.com/895646477129/persistence-events.fifo
-module.persistence_events_queue_monitoring.aws_cloudwatch_dashboard.main sqs-persistence-events-fifo
-module.persistence_events_queue_monitoring.aws_cloudwatch_metric_alarm.sqs_alarm persistence-events.fifo-message-age-test
-module.generated_jwt_queue.aws_sqs_queue.this[0] https://sqs.eu-central-1.amazonaws.com/895646477129/generated-jwt
-module.generated_jwt_queue_monitoring.aws_cloudwatch_metric_alarm.sqs_alarm generated-jwt-message-age-test
-module.generated_jwt_queue_monitoring.aws_cloudwatch_dashboard.main sqs-generated-jwt

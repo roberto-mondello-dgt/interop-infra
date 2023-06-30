@@ -1,5 +1,0 @@
-aws_iam_role.events_logs_automation interop-events-logs-automation-prod
-aws_cloudwatch_event_rule.logs_automation_schedule default/interop-applications-logs-schedule-prod
-aws_cloudwatch_event_target.logs_automation[0] default/interop-applications-logs-schedule-prod/StartLogsAutomationExecution
-aws_cloudwatch_event_rule.logs_automation_failure default/interop-logs-automation-errors-prod
-aws_cloudwatch_event_target.logs_automation_failure default/interop-logs-automation-errors-prod/SendNotification

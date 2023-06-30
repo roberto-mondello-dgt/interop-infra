@@ -1,5 +1,0 @@
-  module.nlb.aws_lb.this[0] arn:aws:elasticloadbalancing:eu-central-1:505630707203:loadbalancer/net/be-integration-nlb-dev/0b893b6283a1e532
-  module.nlb.aws_lb_listener.frontend_http_tcp[0] arn:aws:elasticloadbalancing:eu-central-1:505630707203:listener/net/be-integration-nlb-dev/0b893b6283a1e532/13b1e110794468c1
-  module.nlb.aws_lb_target_group.main[0] arn:aws:elasticloadbalancing:eu-central-1:505630707203:targetgroup/be-integration-alb-tg-dev/2a2629374b315202 
-  module.nlb.aws_lb_listener.frontend_http_tcp[1] arn:aws:elasticloadbalancing:eu-central-1:505630707203:listener/net/be-integration-nlb-dev/0b893b6283a1e532/27d579de70f8db2b
-  aws_api_gateway_vpc_link.nlb_vpc_link oa08at

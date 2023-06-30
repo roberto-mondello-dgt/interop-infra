@@ -1,5 +1,0 @@
-module.nlb.aws_lb.this[0] arn:aws:elasticloadbalancing:eu-central-1:697818730278:loadbalancer/net/be-integration-nlb-prod/9b2d3d5c36e05134
-module.nlb.aws_lb_listener.frontend_http_tcp[0] arn:aws:elasticloadbalancing:eu-central-1:697818730278:listener/net/be-integration-nlb-prod/9b2d3d5c36e05134/36f7de16d0e7f88c
-module.nlb.aws_lb_target_group.main[0] arn:aws:elasticloadbalancing:eu-central-1:697818730278:targetgroup/be-integration-alb-tg-prod/f2fbb5795db9145c
-module.nlb.aws_lb_listener.frontend_http_tcp[1] arn:aws:elasticloadbalancing:eu-central-1:697818730278:listener/net/be-integration-nlb-prod/9b2d3d5c36e05134/d9c7fb0f6549e074
-aws_api_gateway_vpc_link.nlb_vpc_link dadh6k

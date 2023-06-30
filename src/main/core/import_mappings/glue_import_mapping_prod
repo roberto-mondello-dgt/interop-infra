@@ -1,3 +1,0 @@
-aws_glue_crawler.app_logs_crawler app-logs-crawler
-aws_iam_role.app_logs_role interop-application-logs-crawler-prod
-aws_glue_classifier.cw_logs_classifier cw-app-logs
