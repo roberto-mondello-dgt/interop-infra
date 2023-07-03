@@ -495,3 +495,42 @@ module "public_bucket" {
     ]
   })
 }
+
+module "alb_logs_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-alb-logs-%s", var.short_name, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "Expiration"
+      enabled    = true
+      expiration = { days : var.env == "prod" ? 93 : 32 }
+    }
+  ]
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = {
+          "AWS" = "arn:aws:iam::054676820928:root" # ELB account id for eu-central-1. See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+        }
+        Action = "s3:PutObject"
+        Resource = "${module.alb_logs_bucket.s3_bucket_arn}/*"
+      }
+    ]
+  })
+}
