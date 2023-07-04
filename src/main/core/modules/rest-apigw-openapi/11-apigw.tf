@@ -63,6 +63,7 @@ resource "aws_api_gateway_stage" "env" {
     content {
       destination_arn = var.access_log_group_arn
       format = jsonencode({
+        "apigwId"              = "$context.apiId"
         "requestId"            = "$context.requestId"
         "extendedRequestId"    = "$context.extendedRequestId"
         "sourceIp"             = "$context.identity.sourceIp"
