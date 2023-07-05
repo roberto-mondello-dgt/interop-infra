@@ -389,6 +389,11 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
       {
         Effect   = "Allow",
         Action   = "s3:PutObject"
+        Resource = format("%s/*", module.public_catalog_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
         Resource = format("%s/*", module.dtd_share_bucket.s3_bucket_arn)
     }]
   })

@@ -17,6 +17,31 @@ resource "aws_cloudfront_origin_access_control" "landing_s3" {
   signing_protocol                  = "sigv4"
 }
 
+resource "aws_cloudfront_cache_policy" "public_catalog" {
+  name = "PublicCatalogCaching"
+
+  min_ttl     = 0
+  default_ttl = 3540 # 59 minutes
+  max_ttl     = 3540 # 59 minutes
+
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+
+    headers_config {
+      header_behavior = "none"
+    }
+
+    query_strings_config {
+      query_string_behavior = "none"
+    }
+
+    enable_accept_encoding_brotli = true
+    enable_accept_encoding_gzip   = true
+  }
+}
+
 resource "aws_cloudfront_distribution" "landing" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -66,6 +91,14 @@ resource "aws_cloudfront_distribution" "landing" {
     origin_access_control_id = aws_cloudfront_origin_access_control.landing_s3.id
   }
 
+  origin {
+    origin_id                = "PublicCatalog"
+    domain_name              = module.public_catalog_bucket.s3_bucket_bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.landing_s3.id
+
+    origin_path = "/catalog"
+  }
+
   default_cache_behavior {
     target_origin_id       = "S3FrontendAssets"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
@@ -104,5 +137,16 @@ resource "aws_cloudfront_distribution" "landing" {
 
     origin_request_policy_id = (var.env == "test" ?
     data.aws_cloudfront_origin_request_policy.cors_s3_origin.id : null)
+  }
+
+  ordered_cache_behavior {
+    path_pattern           = "/catalog.json"
+    target_origin_id       = "PublicCatalog"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    viewer_protocol_policy = "redirect-to-https"
+
+    cached_methods  = ["GET", "HEAD"]
+    cache_policy_id = aws_cloudfront_cache_policy.public_catalog.id
+    compress        = true
   }
 }

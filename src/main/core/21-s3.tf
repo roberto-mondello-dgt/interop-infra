@@ -411,6 +411,44 @@ module "dtd_share_bucket" {
   }
 }
 
+module "public_catalog_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-public-catalog-%s", var.short_name, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.public_catalog_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
 module "privacy_notices_history_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.8.2"
