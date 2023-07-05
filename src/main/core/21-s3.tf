@@ -562,11 +562,11 @@ module "alb_logs_bucket" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
+        Effect = "Allow"
         Principal = {
           "AWS" = "arn:aws:iam::054676820928:root" # ELB account id for eu-central-1. See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
         }
-        Action = "s3:PutObject"
+        Action   = "s3:PutObject"
         Resource = "${module.alb_logs_bucket.s3_bucket_arn}/*"
       }
     ]

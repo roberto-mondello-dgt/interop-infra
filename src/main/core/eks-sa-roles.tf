@@ -377,6 +377,23 @@ module "be_privacy_notices_updater_irsa" {
   }
 }
 
+module "be_one_trust_notices_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-one-trust-notices-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${var.env}:interop-be-one-trust-notices"]
+    }
+  }
+
+  role_policy_arns = {
+    be_one_trust_notices = aws_iam_policy.be_one_trust_notices.arn
+  }
+}
 
 module "aws_load_balancer_controller_irsa" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"

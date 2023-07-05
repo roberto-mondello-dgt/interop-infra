@@ -1,7 +1,7 @@
 resource "aws_athena_named_query" "alb_logs_5xx" {
-  name        = "alb-logs-5xx"
-  workgroup   = aws_athena_workgroup.interop_queries.id
-  database    = "default"
+  name      = "alb-logs-5xx"
+  workgroup = aws_athena_workgroup.interop_queries.id
+  database  = "default"
 
   query = <<-EOT
     SELECT * FROM alb_logs

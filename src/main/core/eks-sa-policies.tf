@@ -433,6 +433,40 @@ resource "aws_iam_policy" "be_privacy_notices_updater" {
   })
 }
 
+resource "aws_iam_policy" "be_one_trust_notices" {
+  name = "InteropBeOneTrustNoticesPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.privacy_notices_history_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          format("%s/*", module.privacy_notices_history_bucket.s3_bucket_arn),
+          format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.privacy_notices.arn
+    }]
+  })
+}
+
 data "aws_iam_policy" "cloudwatch_agent_server" {
   name = "CloudWatchAgentServerPolicy"
 }

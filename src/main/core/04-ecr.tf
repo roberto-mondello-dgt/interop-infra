@@ -19,6 +19,7 @@ locals {
     "interop-be-eservices-monitoring-exporter",
     "interop-be-metrics-report-generator",
     "interop-be-notifier",
+    "interop-be-one-trust-notices",
     "interop-be-padigitale-report-generator",
     "interop-be-party-management",
     "interop-be-party-mock-registry",
