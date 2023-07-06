@@ -73,3 +73,7 @@ resource "aws_secretsmanager_secret" "onetrust_client_id" {
 resource "aws_secretsmanager_secret" "onetrust_client_secret" {
   name = "onetrust-clientsecret"
 }
+
+resource "aws_secretsmanager_secret" "pec_sender" {
+  name = "interop-pec-sender"
+}
