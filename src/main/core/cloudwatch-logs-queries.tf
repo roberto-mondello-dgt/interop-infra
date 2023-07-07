@@ -86,6 +86,7 @@ resource "aws_cloudwatch_query_definition" "generated_tokens" {
     | filter @logStream like /interop-be-authorization-server/
     | parse @message "[TYPE=*]" as token_type
     | filter token_type = "CONSUMER" # CONSUMER | API
+    | filter @message like /Token generated/
     | sort @timestamp desc
     | display @timestamp, @message
   EOT
