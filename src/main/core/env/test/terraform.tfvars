@@ -55,6 +55,13 @@ dns_interop_base_domain = "interop.pagopa.it"
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
 
+probing_domain_ns_records = [
+  "ns-1332.awsdns-38.org",
+  "ns-1645.awsdns-13.co.uk",
+  "ns-463.awsdns-57.com",
+  "ns-913.awsdns-50.net",
+]
+
 interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
 interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-d3dfe1725cee1cac81b6b34d8746b71e93598b15.yaml"
 
