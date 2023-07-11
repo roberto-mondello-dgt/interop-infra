@@ -1,6 +1,6 @@
 resource "aws_cloudfront_function" "www_react_app" {
   name    = format("www-react-app-%s", var.env)
-  comment = "Redirects to www URL (if necessary) and appends index.html (if missing)"
+  comment = "Redirects to www URL (if necessary) and appends index.html (if missing). It also handles the public catalog URI"
 
   runtime = "cloudfront-js-1.0"
   publish = true
@@ -22,11 +22,16 @@ resource "aws_cloudfront_function" "www_react_app" {
           return response;
       }
 
-      var uri = request.uri;
-      if (uri.endsWith('/')) {
+      var eserviceRegex = /^\/catalogo\/.+/
+
+      if (eserviceRegex.test(request.uri)) {
+        request.uri = "/catalogo/[id]"
+      }
+
+      if (request.uri.endsWith('/')) {
           request.uri += 'index.html';
       }
-      else if (!uri.includes('.')) {
+      else if (!request.uri.includes('.')) {
           request.uri += '/index.html';
       }
 
