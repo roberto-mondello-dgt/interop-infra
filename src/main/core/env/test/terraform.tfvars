@@ -59,7 +59,7 @@ probing_domain_ns_records = [
   "ns-1332.awsdns-38.org",
   "ns-1645.awsdns-13.co.uk",
   "ns-463.awsdns-57.com",
-  "ns-913.awsdns-50.net",
+  "ns-913.awsdns-50.net"
 ]
 
 interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
