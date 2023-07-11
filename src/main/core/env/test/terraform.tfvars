@@ -55,6 +55,7 @@ dns_interop_base_domain = "interop.pagopa.it"
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
 
+probing_registry_reader_role_arn = "arn:aws:iam::010158505074:role/application/eks/pods/interop-be-probing-registry-reader-uat"
 probing_domain_ns_records = [
   "ns-1332.awsdns-38.org",
   "ns-1645.awsdns-13.co.uk",
