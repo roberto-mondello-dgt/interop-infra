@@ -45,7 +45,18 @@ resource "aws_iam_policy" "be_agreement_process" {
         Effect   = "Allow"
         Action   = "sqs:SendMessage"
         Resource = module.certified_mail_queue.queue_arn
-    }]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.archived_agreements_for_purposes_queue.queue_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.archived_agreements_for_eservices_queue.queue_arn
+      }
+    ]
   })
 }
 
@@ -466,6 +477,42 @@ resource "aws_iam_policy" "be_one_trust_notices" {
     }]
   })
 }
+
+resource "aws_iam_policy" "be_purposes_archiver" {
+  name = "InteropBePurposesArchiverPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = module.archived_agreements_for_purposes_queue.queue_arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_eservice_versions_archiver" {
+  name = "InteropBeEserviceVersionsArchiverPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = module.archived_agreements_for_eservices_queue.queue_arn
+    }]
+  })
+}
+
+
 
 data "aws_iam_policy" "cloudwatch_agent_server" {
   name = "CloudWatchAgentServerPolicy"

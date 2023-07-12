@@ -395,6 +395,42 @@ module "be_one_trust_notices_irsa" {
   }
 }
 
+module "be_purposes_archiver_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-purposes-archiver-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${var.env}:interop-be-purposes-archiver"]
+    }
+  }
+
+  role_policy_arns = {
+    be_purposes_archiver = aws_iam_policy.be_purposes_archiver.arn
+  }
+}
+
+module "be_eservice_versions_archiver_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-eservice-versions-archiver-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${var.env}:interop-be-eservice-versions-archiver"]
+    }
+  }
+
+  role_policy_arns = {
+    be_eservice_versions_archiver = aws_iam_policy.be_eservice_versions_archiver.arn
+  }
+}
+
 module "aws_load_balancer_controller_irsa" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 

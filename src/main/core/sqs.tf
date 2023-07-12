@@ -78,3 +78,29 @@ module "certified_mail_queue_monitoring" {
   alarm_threshold_seconds = "1800" # 30 minutes
   alarm_sns_topic_arn     = aws_sns_topic.platform_alarms.arn
 }
+
+module "archived_agreements_for_purposes_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "v4.0.1"
+
+  name = "archived-agreements-for-purposes"
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+}
+
+module "archived_agreements_for_eservices_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "v4.0.1"
+
+  name = "archived-agreements-for-eservices"
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+}
