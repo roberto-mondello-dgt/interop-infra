@@ -16,9 +16,9 @@ The version output of `terraform --version` should be equal to the one in `.terr
 ```bash
 brew install pre-commit
 
-DIR=~/.git-template
-git config --global init.templateDir ${DIR}
-pre-commit init-templatedir -t pre-commit ${DIR}
+PRE_COMMIT_DIR=~/.git-template
+git config --global init.templateDir ${PRE_COMMIT_DIR}
+pre-commit init-templatedir -t pre-commit ${PRE_COMMIT_DIR}
 ```
 
 ## Init TF backend resources
