@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "on_call_opsgenie" {
-  name = format("%s-on-call-opsgenie-%s", var.short_name, var.env)
+  name = "Opsgenie"
 }
 
 resource "aws_sns_topic_policy" "on_call_cw_alarms" {
