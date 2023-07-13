@@ -113,9 +113,9 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-dtd-catalog-exporter",
   "interop-be-eservices-monitoring-exporter",
   "interop-be-metrics-report-generator",
+  "interop-be-one-trust-notices",
   "interop-be-padigitale-report-generator",
   "interop-be-party-registry-proxy-refresher",
-  "interop-be-privacy-notices-updater",
   "interop-be-tenants-cert-attr-updater",
   "interop-be-token-details-persister"
 ]
