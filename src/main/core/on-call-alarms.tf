@@ -67,7 +67,7 @@ locals {
 resource "aws_cloudwatch_metric_alarm" "on_call_unavailable_pods" {
   for_each = local.on_call_deployments
 
-  alarm_name        = format("on-call-k8s-%s-unavailable-pods-%s", each.key, var.env)
+  alarm_name        = format("on-call-k8s-%s-unavailable-pods-%s", replace(each.key, "_", "-"), var.env)
   alarm_description = format("No available pods for %s K8s deployment", each.value)
 
   alarm_actions = [aws_sns_topic.on_call_opsgenie.arn]
