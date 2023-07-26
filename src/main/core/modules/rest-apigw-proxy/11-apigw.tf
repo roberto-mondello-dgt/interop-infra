@@ -48,7 +48,7 @@ resource "aws_api_gateway_integration" "proxy" {
 }
 
 resource "aws_api_gateway_method" "frontend_redirect" {
-  count = var.frontend_redirect_uri != null ? 1 : 0
+  count = var.is_bff ? 1 : 0
 
   resource_id = aws_api_gateway_rest_api.this.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.this.id
@@ -58,7 +58,7 @@ resource "aws_api_gateway_method" "frontend_redirect" {
 }
 
 resource "aws_api_gateway_integration" "frontend_redirect" {
-  count = var.frontend_redirect_uri != null ? 1 : 0
+  count = var.is_bff ? 1 : 0
 
   http_method = aws_api_gateway_method.frontend_redirect[0].http_method
   resource_id = aws_api_gateway_rest_api.this.root_resource_id
@@ -73,7 +73,7 @@ resource "aws_api_gateway_integration" "frontend_redirect" {
 }
 
 resource "aws_api_gateway_method_response" "frontend_redirect" {
-  count = var.frontend_redirect_uri != null ? 1 : 0
+  count = var.is_bff ? 1 : 0
 
   resource_id = aws_api_gateway_rest_api.this.root_resource_id
   http_method = aws_api_gateway_method.frontend_redirect[0].http_method
@@ -86,7 +86,7 @@ resource "aws_api_gateway_method_response" "frontend_redirect" {
 }
 
 resource "aws_api_gateway_integration_response" "frontend_redirect" {
-  count = var.frontend_redirect_uri != null ? 1 : 0
+  count = var.is_bff ? 1 : 0
 
   resource_id = aws_api_gateway_rest_api.this.root_resource_id
   http_method = aws_api_gateway_method.frontend_redirect[0].http_method

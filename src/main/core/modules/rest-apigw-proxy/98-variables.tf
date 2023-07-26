@@ -41,8 +41,19 @@ variable "access_log_group_arn" {
   default     = null
 }
 
+variable "is_bff" {
+  description = "Set to true if this APIGW is being used for the BFF"
+  type        = bool
+}
+
 variable "frontend_redirect_uri" {
   description = "URI location of frontend redirect (e.g. '/ui')"
+  type        = string
+  default     = "/ui"
+}
+
+variable "privacy_notices_bucket_name" {
+  description = "Name of the S3 bucket containing privacy notices"
   type        = string
   default     = null
 }

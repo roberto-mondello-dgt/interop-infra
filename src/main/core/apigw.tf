@@ -40,10 +40,12 @@ module "interop_selfcare_domain" {
 module "interop_selfcare_apigw" {
   source = "./modules/rest-apigw-proxy"
 
-  env                   = var.env
-  api_name              = "selfcare"
-  domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
-  frontend_redirect_uri = "/ui"
+  env         = var.env
+  api_name    = "selfcare"
+  domain_name = module.interop_selfcare_domain.apigw_custom_domain_name
+
+  is_bff                      = true
+  privacy_notices_bucket_name = module.privacy_notices_content_bucket.s3_bucket_id
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
   nlb_domain_name      = module.nlb_v2.lb_dns_name
