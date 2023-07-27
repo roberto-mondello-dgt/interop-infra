@@ -37,6 +37,7 @@ resource "aws_cloudwatch_query_definition" "waf_blocked_requests" {
   EOT
 }
 
+# TODO: iterate over apigws to create queries
 resource "aws_cloudwatch_query_definition" "apigw_auth_server_5xx" {
   name = "APIGW-Auth-Server-5xx"
 
@@ -46,6 +47,19 @@ resource "aws_cloudwatch_query_definition" "apigw_auth_server_5xx" {
     fields @timestamp, @message
     | filter apigwId = "${module.interop_auth_apigw.apigw_id}"
     | filter status like /5./
+    | sort @timestamp desc
+  EOT
+}
+
+resource "aws_cloudwatch_query_definition" "apigw_auth_server_waf_block" {
+  name = "APIGW-Auth-Server-WAF-Block"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter apigwId = "${module.interop_auth_apigw.apigw_id}"
+    | filter wafStatus != "200"
     | sort @timestamp desc
   EOT
 }
@@ -63,6 +77,19 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_5xx" {
   EOT
 }
 
+resource "aws_cloudwatch_query_definition" "apigw_bff_waf_block" {
+  name = "APIGW-BFF-WAF-Block"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter apigwId = "${module.interop_selfcare_apigw.apigw_id}"
+    | filter wafStatus != "200"
+    | sort @timestamp desc
+  EOT
+}
+
 resource "aws_cloudwatch_query_definition" "apigw_m2m_5xx" {
   name = "APIGW-M2M-5xx"
 
@@ -72,6 +99,19 @@ resource "aws_cloudwatch_query_definition" "apigw_m2m_5xx" {
     fields @timestamp, @message
     | filter apigwId = "${module.interop_api_1dot0_apigw.apigw_id}"
     | filter status like /5./
+    | sort @timestamp desc
+  EOT
+}
+
+resource "aws_cloudwatch_query_definition" "apigw_m2m_waf_block" {
+  name = "APIGW-M2M-WAF-Block"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter apigwId = "${module.interop_api_1dot0_apigw.apigw_id}"
+    | filter wafStatus != "200"
     | sort @timestamp desc
   EOT
 }
