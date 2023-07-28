@@ -43,7 +43,7 @@ read_model_parameter_group_name = "read-model-parameter-group"
 
 notification_events_table_ttl_enabled = true
 
-backend_integration_alb_name = "k8s-test-interops-1810b960f8"
+backend_integration_alb_name = "k8s-interopbe-d20020e3b0"
 
 github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
 github_runners_cpu           = 2048
@@ -75,7 +75,7 @@ eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
 eks_coredns_version    = "v1.9.3-eksbuild.3"
 eks_kube_proxy_version = "v1.26.2-eksbuild.1"
 
-backend_integration_v2_alb_name = "k8s-test-interops-488c927ce9"
+backend_integration_v2_alb_name = "k8s-interopbe-d20020e3b0"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-test/application"
 
