@@ -422,25 +422,27 @@ resource "kubernetes_config_map_v1" "adot_collector" {
 
         # convert cumulative sum datapoints to delta
         cumulativetodelta:
-          metrics:
-            - new_container_cpu_usage_seconds_total
-            - pod_cpu_usage_seconds_total
-            - pod_memory_pgfault
-            - pod_memory_pgmajfault
-            - pod_memory_hierarchical_pgfault
-            - pod_memory_hierarchical_pgmajfault
-            - pod_network_rx_bytes
-            - pod_network_rx_dropped
-            - pod_network_rx_errors
-            - pod_network_rx_packets
-            - pod_network_tx_bytes
-            - pod_network_tx_dropped
-            - pod_network_tx_errors
-            - pod_network_tx_packets
-            - new_container_memory_pgfault
-            - new_container_memory_pgmajfault
-            - new_container_memory_hierarchical_pgfault
-            - new_container_memory_hierarchical_pgmajfault
+          include:
+            metrics:
+              - new_container_cpu_usage_seconds_total
+              - pod_cpu_usage_seconds_total
+              - pod_memory_pgfault
+              - pod_memory_pgmajfault
+              - pod_memory_hierarchical_pgfault
+              - pod_memory_hierarchical_pgmajfault
+              - pod_network_rx_bytes
+              - pod_network_rx_dropped
+              - pod_network_rx_errors
+              - pod_network_rx_packets
+              - pod_network_tx_bytes
+              - pod_network_tx_dropped
+              - pod_network_tx_errors
+              - pod_network_tx_packets
+              - new_container_memory_pgfault
+              - new_container_memory_pgmajfault
+              - new_container_memory_hierarchical_pgfault
+              - new_container_memory_hierarchical_pgmajfault
+            match_type: strict
 
         # convert delta to rate
         deltatorate:
@@ -615,6 +617,7 @@ resource "kubernetes_config_map_v1" "adot_collector" {
           resource_to_telemetry_conversion:
             enabled: true
           eks_fargate_container_insights_enabled: true
+          parse_json_encoded_attr_values: ["kubernetes"]
           dimension_rollup_option: NoDimensionRollup
           max_retries: 5
           metric_declarations:
@@ -624,6 +627,7 @@ resource "kubernetes_config_map_v1" "adot_collector" {
                 - kube_deployment_status_replicas_available
                 - kube_statefulset_status_replicas
                 - kube_statefulset_status_replicas_available
+
       extensions:
         health_check:
 
