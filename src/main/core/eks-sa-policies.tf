@@ -495,8 +495,8 @@ resource "aws_iam_policy" "be_purposes_archiver" {
   })
 }
 
-resource "aws_iam_policy" "be_eservice_versions_archiver" {
-  name = "InteropBeEserviceVersionsArchiverPolicy"
+resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
+  name = "InteropBeEserviceDescriptorsArchiverPolicy"
 
   policy = jsonencode({
     Version = "2012-10-17"

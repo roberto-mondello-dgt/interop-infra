@@ -27,6 +27,7 @@ locals {
     "interop-be-party-registry-proxy",
     "interop-be-privacy-notices-updater",
     "interop-be-purposes-archiver",
+    "interop-be-eservice-descriptors-archiver",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
     "interop-be-tenant-management",

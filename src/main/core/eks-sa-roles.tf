@@ -413,21 +413,21 @@ module "be_purposes_archiver_irsa" {
   }
 }
 
-module "be_eservice_versions_archiver_irsa" {
+module "be_eservice_descriptors_archiver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-eservice-versions-archiver-%s", var.env)
+  role_name = format("interop-be-eservice-descriptors-archiver-%s", var.env)
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-eservice-versions-archiver"]
+      namespace_service_accounts = ["${var.env}:interop-be-eservice-descriptors-archiver"]
     }
   }
 
   role_policy_arns = {
-    be_eservice_versions_archiver = aws_iam_policy.be_eservice_versions_archiver.arn
+    be_eservice_descriptors_archiver = aws_iam_policy.be_eservice_descriptors_archiver.arn
   }
 }
 
