@@ -106,8 +106,8 @@ resource "kubernetes_config_map_v1" "adot_collector" {
           config:
             scrape_configs:
             - job_name: 'kubelets-cadvisor-metrics'
-              scrape_interval: 1m
-              scrape_timeout: 30s
+              scrape_interval: 20s
+              scrape_timeout: 10s
               scheme: https
 
               kubernetes_sd_configs:
@@ -579,7 +579,7 @@ resource "kubernetes_config_map_v1" "adot_collector" {
           detectors: [env, eks]
 
         batch:
-          timeout: 60s
+          timeout: 45s
         batch/deployment:
           timeout: 30s
 
