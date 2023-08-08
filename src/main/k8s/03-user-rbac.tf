@@ -82,3 +82,36 @@ resource "kubernetes_role_binding_v1" "readonly_group_port_forward" {
     name      = "readonly-group"
   }
 }
+
+resource "kubernetes_role_v1" "job_runner" {
+  metadata {
+    name      = "job-runner-role"
+    namespace = kubernetes_namespace_v1.env.metadata[0].name
+  }
+
+  rule {
+    api_groups = ["batch"]
+    resources  = ["jobs"]
+    verbs      = ["get", "list", "create", "delete"]
+  }
+}
+
+# TODO: temporary solution, needs refactor
+resource "kubernetes_role_binding_v1" "job_runner" {
+  metadata {
+    name      = "job-runner"
+    namespace = kubernetes_namespace_v1.env.metadata[0].name
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = kubernetes_role_v1.job_runner.metadata[0].name
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "User"
+    name      = "sso-readonly-carmine.porricelli-pagopa.it" # k8s replaces '@' with '-'
+  }
+}
