@@ -72,3 +72,27 @@ resource "aws_cloudwatch_event_target" "logs_automation_failure" {
   rule = aws_cloudwatch_event_rule.logs_automation_failure.name
   arn  = aws_sns_topic.logs_automation_errors.arn
 }
+
+resource "aws_cloudwatch_event_rule" "aws_health" {
+  count = var.env == "prod" ? 1 : 0
+
+  name = format("interop-aws-health-%s", var.env)
+
+  event_bus_name = "default"
+  event_pattern = jsonencode({
+    source      = ["aws.health"],
+    detail-type = ["AWS Health Event"],
+    detail = {
+      eventRegion = [var.aws_region]
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "aws_health_notification" {
+  count = var.env == "prod" ? 1 : 0
+
+  target_id = "SendNotification"
+
+  rule = aws_cloudwatch_event_rule.aws_health[0].name
+  arn  = aws_sns_topic.platform_alarms.arn
+}

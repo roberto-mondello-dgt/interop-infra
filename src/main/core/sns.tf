@@ -31,6 +31,7 @@ resource "aws_sns_topic_policy" "platform_alarms" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "AllowCloudWatchAlarms"
         Effect = "Allow"
         Principal = {
           Service = "cloudwatch.amazonaws.com"
@@ -45,6 +46,15 @@ resource "aws_sns_topic_policy" "platform_alarms" {
             "aws:SourceAccount" = data.aws_caller_identity.current.account_id
           }
         }
+      },
+      {
+        Sid    = "AllowEventBridge"
+        Effect = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+        Action   = "sns:Publish"
+        Resource = aws_sns_topic.platform_alarms.arn
       }
     ]
   })
