@@ -8,6 +8,8 @@ locals {
   docdb_read_model_cidrs     = ["10.0.57.0/24", "10.0.58.0/24", "10.0.59.0/24"]
   vpce_cidrs                 = ["10.0.60.0/24", "10.0.61.0/24", "10.0.62.0/24"]
   bastion_host_cidrs         = ["10.0.63.0/24"]
+  msk_interop_events_cidrs = (var.env == "dev" ?
+  ["10.0.64.0/24", "10.0.65.0/24", "10.0.66.0/24"] : [])
 
   eks_workload_subnets_names = [for idx, subn in local.eks_workload_cidrs :
   format("%s-eks-workload-%d-%s", var.short_name, idx + 1, var.env)]
@@ -33,8 +35,11 @@ locals {
   vpce_subnets_names = [for idx, subn in local.vpce_cidrs :
   format("%s-vpce-%d-%s", var.short_name, idx + 1, var.env)]
 
-  bastion_host_subnets_names = [for idx, subn in local.int_lbs_cidrs :
+  bastion_host_subnets_names = [for idx, subn in local.bastion_host_cidrs :
   format("%s-bastion-host-%d-%s", var.short_name, idx + 1, var.env)]
+
+  msk_interop_events_subnets_names = [for idx, subn in local.msk_interop_events_cidrs :
+  format("%s-msk-events-%d-%s", var.short_name, idx + 1, var.env) if var.env == "dev"]
 }
 
 # TODO: rename module and vpc after migration
@@ -62,9 +67,11 @@ module "vpc_v2" {
   private_subnets      = concat(local.eks_workload_cidrs, local.int_lbs_cidrs, local.eks_control_plane_cidrs, local.vpce_cidrs)
   private_subnet_names = concat(local.eks_workload_subnets_names, local.int_lbs_subnets_names, local.eks_control_plane_subnets_names, local.vpce_subnets_names)
 
-  database_subnets             = concat(local.aurora_persist_manag_cidrs, local.docdb_read_model_cidrs)
-  database_subnet_names        = concat(local.aurora_persist_manag_subnets_names, local.docdb_read_model_subnets_names)
-  create_database_subnet_group = false
+  database_subnets                   = concat(local.aurora_persist_manag_cidrs, local.docdb_read_model_cidrs, local.msk_interop_events_cidrs)
+  database_subnet_names              = concat(local.aurora_persist_manag_subnets_names, local.docdb_read_model_subnets_names, local.msk_interop_events_subnets_names)
+  create_database_subnet_group       = false
+  create_database_subnet_route_table = true
+  create_database_nat_gateway_route  = false
 }
 
 data "aws_subnets" "ext_lbs" {

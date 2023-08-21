@@ -15,6 +15,57 @@ data "aws_subnet" "bastion_host" {
   }
 }
 
+data "aws_iam_policy_document" "ec2_assume" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "bastion_host" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = format("interop-bastion-host-%s", var.env)
+
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
+
+  inline_policy {
+    name = "MSKInteropEvents"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "kafka-cluster:Connect",
+            "kafka-cluster:DescribeCluster",
+            "kafka-cluster:*Topic",
+            "kafka-cluster:*TopicDynamicConfiguration",
+            "kafka-cluster:*Data*",
+            "kafka-cluster:*Group",
+            "kafka-cluster:*TransactionalId"
+          ]
+          Resource = "*" # TODO: restrict
+        }
+      ]
+    })
+  }
+}
+
+resource "aws_iam_instance_profile" "bastion_host" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = format("interop-bastion-host-%s", var.env)
+  role = aws_iam_role.bastion_host[0].name
+}
+
 # TODO: rename after migration
 resource "aws_instance" "bastion_host_v2" {
   ami           = var.bastion_host_ami_id
@@ -24,6 +75,8 @@ resource "aws_instance" "bastion_host_v2" {
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnet.bastion_host.id
   vpc_security_group_ids      = [aws_security_group.bastion_host_v2.id]
+
+  iam_instance_profile = var.env == "dev" ? aws_iam_instance_profile.bastion_host[0].name : null
 
   tags = {
     Name = format("interop-bastion-host-v2-%s", var.env)
