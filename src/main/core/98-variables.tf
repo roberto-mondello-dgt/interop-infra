@@ -308,6 +308,12 @@ variable "dtd_share_sftp_hostname" {
   type        = string
 }
 
+variable "vpn_saml_metadata_path" {
+  description = "Path to the SAML metadata XML file. Used when federated authentication for VPN is enabled"
+  type        = string
+  default     = null
+}
+
 variable "k8s_monitoring_deployments_names" {
   description = "Names of K8s deployments to monitor"
   type        = list(string)

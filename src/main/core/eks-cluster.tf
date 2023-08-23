@@ -75,6 +75,14 @@ module "eks_v2" {
       protocol                 = "tcp"
       source_security_group_id = aws_security_group.github_runners_v2.id
     }
+
+    from_vpn_clients = {
+      type                     = "ingress"
+      from_port                = 0
+      to_port                  = 65535
+      protocol                 = "tcp"
+      source_security_group_id = aws_security_group.vpn_clients.id
+    }
   }
 
   cluster_endpoint_public_access  = true

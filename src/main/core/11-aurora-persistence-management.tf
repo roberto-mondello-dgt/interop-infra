@@ -118,6 +118,14 @@ module "persistence_management_aurora_cluster_v2" {
       protocol                 = "tcp"
       source_security_group_id = aws_security_group.github_runners_v2.id
     }
+
+    from_vpn_clients = {
+      type                     = "ingress"
+      from_port                = 5432
+      to_port                  = 5432
+      protocol                 = "tcp"
+      source_security_group_id = aws_security_group.vpn_clients.id
+    }
   }
 
   storage_encrypted       = true

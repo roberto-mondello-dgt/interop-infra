@@ -78,6 +78,14 @@ resource "aws_security_group" "read_model_v2" {
     to_port         = var.read_model_db_port
     security_groups = [aws_security_group.github_runners_v2.id]
   }
+
+  ingress {
+    description     = "Access from VPN clients"
+    protocol        = "tcp"
+    from_port       = var.read_model_db_port
+    to_port         = var.read_model_db_port
+    security_groups = [aws_security_group.vpn_clients.id]
+  }
 }
 
 # TODO: rename after migration

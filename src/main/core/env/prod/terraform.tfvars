@@ -85,6 +85,8 @@ eks_application_log_group_name = "/aws/eks/interop-eks-cluster-prod/application"
 
 dtd_share_sftp_hostname = "dtd-share.interop.pagopa.it"
 
+vpn_saml_metadata_path = "./assets/saml-metadata/interop-vpn-saml-prod.xml"
+
 k8s_monitoring_deployments_names = [
   "interop-be-agreement-management",
   "interop-be-agreement-process",
