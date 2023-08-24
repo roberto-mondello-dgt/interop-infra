@@ -54,6 +54,10 @@ resource "aws_secretsmanager_secret" "selfcare_api_key" {
   name = "selfcare-api-key"
 }
 
+resource "aws_secretsmanager_secret" "selfcare_broker_connection_string" {
+  name = "selfcare-broker-connection-string"
+}
+
 resource "aws_secretsmanager_secret" "metrics_reports_recipients" {
   name = "metrics-reports-recipients"
 }

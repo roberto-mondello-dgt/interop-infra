@@ -31,6 +31,7 @@ locals {
     "interop-be-eservice-descriptors-archiver",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
+    "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
     "interop-be-tenant-process",
     "interop-be-tenants-cert-attr-updater",

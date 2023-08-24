@@ -183,6 +183,24 @@ module "be_backend_for_frontend_irsa" {
   }
 }
 
+module "be_selfcare_onboarding_consumer_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-selfcare-onboarding-consumer-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${var.env}:interop-be-selfcare-onboarding-consumer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_selfcare_onboarding_consumer = aws_iam_policy.be_selfcare_onboarding_consumer.arn
+  }
+}
+
 module "be_attributes_loader_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"

@@ -246,6 +246,19 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
   })
 }
 
+resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
+  name = "InteropBeSelfcareOnboardingConsumerPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = "kms:Sign",
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
 resource "aws_iam_policy" "be_attributes_loader" {
   name = "InteropAttributesLoaderPolicy"
 
