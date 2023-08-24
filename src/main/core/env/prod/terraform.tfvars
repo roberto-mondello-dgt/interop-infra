@@ -118,6 +118,7 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-one-trust-notices",
   "interop-be-padigitale-report-generator",
   "interop-be-party-registry-proxy-refresher",
+  "interop-be-pn-consumers",
   "interop-be-tenants-cert-attr-updater",
   "interop-be-token-details-persister"
 ]
