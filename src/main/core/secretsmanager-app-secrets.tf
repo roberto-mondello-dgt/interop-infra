@@ -81,3 +81,7 @@ resource "aws_secretsmanager_secret" "onetrust_client_secret" {
 resource "aws_secretsmanager_secret" "pec_sender" {
   name = "interop-pec-sender"
 }
+
+resource "aws_secretsmanager_secret" "pn_consumers_recipients" {
+  name = "interop-pn-consumers-recipients"
+}
