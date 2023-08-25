@@ -352,7 +352,7 @@ module "metrics_reports_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = true
+    enabled = false
   }
 }
 
