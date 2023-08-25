@@ -85,3 +85,11 @@ resource "aws_secretsmanager_secret" "pec_sender" {
 resource "aws_secretsmanager_secret" "pn_consumers_recipients" {
   name = "interop-pn-consumers-recipients"
 }
+
+resource "aws_secretsmanager_secret" "anac_sftp_username" {
+  name = "anac-sftp-username"
+}
+
+resource "aws_secretsmanager_secret" "anac_sftp_private_key" {
+  name = "anac-sftp-private-key"
+}
