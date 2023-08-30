@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "kms_rsa_quota" {
   metric_query {
     id          = "pct_utilization"
     label       = "% Utilization"
-    expression  = "(usage_data/(SERVICE_QUOTA(usage_data)/60))*100"
+    expression  = "(usage_data/(SERVICE_QUOTA(usage_data)))*100"
     return_data = true
   }
 
