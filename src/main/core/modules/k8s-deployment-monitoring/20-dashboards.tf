@@ -3,11 +3,12 @@ data "template_file" "monitoring_dashboard" {
   template = file("${path.module}/k8s_deployment_dashboard.tpl.json")
 
   vars = {
-    Region      = data.aws_region.current.name
-    ClusterName = var.eks_cluster_name
-    Namespace   = var.k8s_namespace
-    Service     = var.k8s_deployment_name
-    ServiceType = "deployment"
+    Region                   = data.aws_region.current.name
+    ClusterName              = var.eks_cluster_name
+    Namespace                = var.k8s_namespace
+    Service                  = var.k8s_deployment_name
+    ServiceType              = "deployment"
+    NumberOfDigitsMultiplier = pow(10, var.number_of_digits)
   }
 }
 

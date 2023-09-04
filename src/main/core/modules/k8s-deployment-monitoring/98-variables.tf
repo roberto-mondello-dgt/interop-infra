@@ -60,3 +60,9 @@ variable "alarm_datapoints" {
   type        = number
   default     = 1
 }
+
+variable "number_of_digits" {
+  description = "Number of digits after the comma"
+  type        = number
+  default     = 0
+}

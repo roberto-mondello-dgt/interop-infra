@@ -8,7 +8,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_cpu_utilization_over_pod_limit", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_cpu_utilization_over_pod_limit", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_cpu_utilization_over_pod_limit",
@@ -46,7 +46,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_cpu_usage_total", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_cpu_usage_total", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_cpu_usage_total",
@@ -116,7 +116,7 @@
         "view": "timeSeries",
         "stacked": false,
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_memory_utilization_over_pod_limit", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_memory_utilization_over_pod_limit", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_memory_utilization_over_pod_limit",
@@ -143,7 +143,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(e1),FLOOR((SUM([e1,-FLOOR(e1)]))*10)/10])", "label": "pod_memory_utilization_over_pod_limit", "id": "e2" } ],
+          [ { "expression": "SUM([FLOOR(e1),FLOOR((SUM([e1,-FLOOR(e1)]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_memory_utilization_over_pod_limit", "id": "e2" } ],
           [
             {
               "expression": "SEARCH('{ContainerInsights,ClusterName,Namespace,PodName,Service} ClusterName=${ClusterName} Service=${Service} MetricName=pod_memory_utilization_over_pod_limit', 'Average', 300)",
@@ -208,7 +208,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_network_rx_bytes", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_network_rx_bytes", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_network_rx_bytes",
@@ -243,7 +243,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_network_tx_bytes", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_network_tx_bytes", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_network_tx_bytes",
@@ -401,7 +401,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(e1),FLOOR((SUM([e1,-FLOOR(e1)]))*10)/10])", "label": "pod_cpu_utilization_over_pod_limit", "id": "e2" } ],
+          [ { "expression": "SUM([FLOOR(e1),FLOOR((SUM([e1,-FLOOR(e1)]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_cpu_utilization_over_pod_limit", "id": "e2" } ],
           [
             {
               "expression": "SEARCH('{ContainerInsights,ClusterName,Namespace,PodName,Service} ClusterName=${ClusterName} Service=${Service} MetricName=pod_cpu_utilization_over_pod_limit', 'Average', 300)",
@@ -436,7 +436,7 @@
       "type": "metric",
       "properties": {
         "metrics": [
-          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*10)/10])", "label": "pod_memory_working_set", "id": "e1" } ],
+          [ { "expression": "SUM([FLOOR(METRICS()),FLOOR((SUM([METRICS(),-FLOOR(METRICS())]))*${NumberOfDigitsMultiplier})/${NumberOfDigitsMultiplier}])", "label": "pod_memory_working_set", "id": "e1" } ],
           [
             "ContainerInsights",
             "pod_memory_working_set",
