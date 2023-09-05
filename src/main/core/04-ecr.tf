@@ -1,6 +1,7 @@
 locals {
   is_prod = var.env == "prod"
   repository_name = [
+    "interop-be-anac-certified-attributes-importer",
     "interop-be-agreement-management",
     "interop-be-agreement-process",
     "interop-be-api-gateway",

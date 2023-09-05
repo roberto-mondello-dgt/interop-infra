@@ -93,3 +93,7 @@ resource "aws_secretsmanager_secret" "anac_sftp_username" {
 resource "aws_secretsmanager_secret" "anac_sftp_private_key" {
   name = "anac-sftp-private-key"
 }
+
+resource "aws_secretsmanager_secret" "anac_sftp_host" {
+  name = "anac-sftp-host"
+}
