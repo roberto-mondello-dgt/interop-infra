@@ -521,6 +521,11 @@ resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
           "sqs:DeleteMessage"
         ]
         Resource = module.archived_agreements_for_eservices_queue.queue_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
     }]
   })
 }
