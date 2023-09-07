@@ -149,4 +149,18 @@ resource "aws_cloudfront_distribution" "landing" {
     cache_policy_id = aws_cloudfront_cache_policy.public_catalog.id
     compress        = true
   }
+
+  ordered_cache_behavior {
+    path_pattern           = "/metrics.json"
+    target_origin_id       = "PublicDashboards"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    viewer_protocol_policy = "redirect-to-https"
+
+    cached_methods  = ["GET", "HEAD"]
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
+    compress        = true
+
+    origin_request_policy_id = (var.env == "test" ?
+    data.aws_cloudfront_origin_request_policy.cors_s3_origin.id : null)
+  }
 }
