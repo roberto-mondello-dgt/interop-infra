@@ -530,7 +530,19 @@ resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
   })
 }
 
+resource "aws_iam_policy" "be_dtd_metrics" {
+  name = "InteropBeDtdMetricsPolicy"
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
+    }]
+  })
+}
 
 data "aws_iam_policy" "cloudwatch_agent_server" {
   name = "CloudWatchAgentServerPolicy"
