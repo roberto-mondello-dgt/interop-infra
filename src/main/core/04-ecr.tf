@@ -17,6 +17,7 @@ locals {
     "interop-be-certified-mail-sender",
     "interop-be-dashboard-metrics-report-generator",
     "interop-be-dtd-catalog-exporter",
+    "interop-be-dtd-metrics",
     "interop-be-eservices-monitoring-exporter",
     "interop-be-metrics-report-generator",
     "interop-be-notifier",
