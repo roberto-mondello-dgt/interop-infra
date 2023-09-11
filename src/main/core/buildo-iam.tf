@@ -126,12 +126,33 @@ resource "aws_iam_role" "buildo_developers" {
   }
 
   inline_policy {
+    name = "CloudWatchReadOnly"
+
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "cloudwatch:List*",
+            "cloudwatch:Get*",
+            "cloudwatch:Describe*"
+          ]
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
+  inline_policy {
     name = "MSKInteropEvents"
 
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
+          Sid    = "KafkaTopicsActions"
           Effect = "Allow"
           Action = [
             "kafka-cluster:Connect",
@@ -146,6 +167,16 @@ resource "aws_iam_role" "buildo_developers" {
             "${local.msk_iam_prefix}:*/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}",
             "${local.msk_iam_prefix}:*/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}/*"
           ]
+        },
+        {
+          Sid    = "MSKActions"
+          Effect = "Allow"
+          Action = [
+            "kafka:List*",
+            "kafka:Get*",
+            "kafka:Describe*"
+          ]
+          Resource = "*"
         }
       ]
     })
