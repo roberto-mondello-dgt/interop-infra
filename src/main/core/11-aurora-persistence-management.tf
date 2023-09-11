@@ -63,9 +63,10 @@ module "persistence_management_aurora_cluster_v2" {
   master_username             = jsondecode(aws_secretsmanager_secret_version.persistence_management_credentials_v2.secret_string).username
   master_password             = jsondecode(aws_secretsmanager_secret_version.persistence_management_credentials_v2.secret_string).password
 
-  engine         = "aurora-postgresql"
-  engine_version = var.persistence_management_engine_version
-  instance_class = var.persistence_management_instance_class
+  engine             = "aurora-postgresql"
+  engine_version     = var.persistence_management_engine_version
+  instance_class     = var.persistence_management_instance_class
+  ca_cert_identifier = var.persistence_management_ca_cert_id
 
   instances_use_identifier_prefix = false
   instances = { for n in range(var.persistence_management_number_instances) : "instance-${n + 1}" =>

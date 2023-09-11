@@ -23,6 +23,7 @@ eks_cluster_name = "interop-eks-test"
 persistence_management_cluster_id             = "interop-rds-test-auroradbcluster-u2a45bkp2iqr"
 persistence_management_database_name          = "persistence_management"
 persistence_management_engine_version         = "13.9"
+persistence_management_ca_cert_id             = "rds-ca-rsa2048-g1"
 persistence_management_instance_class         = "db.t4g.large"
 persistence_management_number_instances       = 3
 persistence_management_subnet_group_name      = "interop-rds-test-dbsubnetgroup-ex5iby3uhnbt"

@@ -76,6 +76,11 @@ variable "persistence_management_engine_version" {
   type        = string
 }
 
+variable "persistence_management_ca_cert_id" {
+  description = "ID of the Certificate Authority to apply to db instances for SSL connections"
+  type        = string
+}
+
 variable "persistence_management_instance_class" {
   description = "Instance class of the Aurora cluster - persistence management"
   type        = string
