@@ -134,7 +134,7 @@ module "generated_jwt_details_bucket" {
   lifecycle_rule = [
     {
       id         = "GlacierRule"
-      enabled    = true
+      enabled    = false
       expiration = { days : 3650 } # delete after 10 years
       transition = {
         days : 365
