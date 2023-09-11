@@ -20,7 +20,7 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
 }
 
 
-resource "aws_iam_policy" "be_refactor_catalog_process" {
+resource "aws_iam_policy" "be_refactor_event_consumer" {
   count = var.env == "dev" ? 1 : 0
 
   name = "InteropBeEventConsumerRefactorPolicy"
