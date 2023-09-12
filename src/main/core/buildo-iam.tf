@@ -59,6 +59,8 @@ resource "aws_iam_role" "buildo_developers" {
 
   name = format("%s-buildo-developers-%s", var.short_name, var.env)
 
+  max_session_duration = 43200 # 12 hours
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
