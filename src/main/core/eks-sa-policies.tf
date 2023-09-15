@@ -537,6 +537,11 @@ resource "aws_iam_policy" "be_dtd_metrics" {
     Version = "2012-10-17"
     Statement = [
       {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.public_dashboards_bucket.s3_bucket_arn
+      },
+      {
         Effect = "Allow",
         Action = [
           "s3:GetObject",
