@@ -38,6 +38,6 @@ module "be_refactor_event_consumer_irsa" {
   }
 
   role_policy_arns = {
-    be_refactor_event_consumer = aws_iam_policy.be_refactor_event_consumer[0].arn
+    be_refactor_msk_catalog_public_topic_reader = aws_iam_policy.be_refactor_msk_catalog_public_topic_reader[0].arn
   }
 }
