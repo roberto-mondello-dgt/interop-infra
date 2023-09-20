@@ -134,7 +134,7 @@ module "generated_jwt_details_bucket" {
   lifecycle_rule = [
     {
       id         = "GlacierRule"
-      enabled    = false
+      enabled    = false           # TODO: move to S3-IA instead? Need to handle existing objects in Glacier
       expiration = { days : 3650 } # delete after 10 years
       transition = {
         days : 365
@@ -142,6 +142,123 @@ module "generated_jwt_details_bucket" {
       }
     }
   ]
+}
+
+resource "aws_iam_role" "generated_jwt_details_fallback_replication" {
+  name = format("%s-generated-jwt-details-fallback-replication-%s", var.short_name, var.env)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  inline_policy {
+    name = "ReplicateFallbackToMain"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:GetReplicationConfiguration",
+            "s3:ListBucket"
+          ],
+          Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:GetObjectVersionForReplication",
+            "s3:GetObjectVersionAcl",
+            "s3:GetObjectVersionTagging"
+          ],
+          Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:ReplicateObject",
+            "s3:ReplicateDelete",
+            "s3:ReplicateTags"
+          ],
+          Resource = format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn)
+        }
+      ]
+    })
+  }
+}
+
+module "generated_jwt_details_fallback_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.8.2"
+
+  bucket = format("%s-generated-jwt-details-fallback-%s", var.short_name, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  object_lock_enabled = true
+  object_lock_configuration = {
+    rule = {
+      default_retention = {
+        mode  = var.env == "prod" ? "COMPLIANCE" : "GOVERNANCE"
+        years = 10
+      }
+    }
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "InfrequentAccessRule"
+      enabled    = false           # TODO: move to S3-IA instead? Need to handle existing objects in Glacier
+      expiration = { days : 3650 } # delete after 10 years
+      transition = {
+        days : 30
+        storage_class : "STANDARD_IA"
+      }
+    }
+  ]
+
+  # replication_configuration = {
+  #   role = aws_iam_role.generated_jwt_details_fallback_replication.arn
+  #
+  #   rules = [
+  #     {
+  #       id     = "ReplicateToMainBucket"
+  #       status = true
+  #
+  #       destination = {
+  #         bucket        = module.generated_jwt_details_bucket.s3_bucket_arn
+  #         storage_class = "STANDARD"
+  #
+  #         replication_time = {
+  #           status  = true
+  #           minutes = 15
+  #         }
+  #
+  #         metrics = {
+  #           status  = true
+  #           minutes = 15
+  #         }
+  #       }
+  #     }
+  #   ]
+  # }
 }
 
 module "application_logs_bucket" {
