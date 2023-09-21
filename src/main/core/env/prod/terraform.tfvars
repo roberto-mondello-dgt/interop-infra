@@ -104,6 +104,7 @@ k8s_monitoring_deployments_names = [
   "interop-be-party-registry-proxy",
   "interop-be-purpose-management",
   "interop-be-purpose-process",
+  "interop-be-selfcare-onboarding-consumer",
   "interop-be-tenant-management",
   "interop-be-tenant-process",
   "interop-frontend",
@@ -111,6 +112,7 @@ k8s_monitoring_deployments_names = [
 ]
 
 k8s_monitoring_cronjobs_names = [
+  "interop-be-anac-certified-attributes-importer",
   "interop-be-attributes-loader",
   "interop-be-dashboard-metrics-report-generator",
   "interop-be-dtd-catalog-exporter",
