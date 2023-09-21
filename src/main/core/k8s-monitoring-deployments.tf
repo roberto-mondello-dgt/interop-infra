@@ -1,6 +1,6 @@
 # TODO: make alarms more configurable?
 module "k8s_deployment_monitoring" {
-  for_each = toset(var.k8s_monitoring_deployments_names)
+  for_each = toset(concat(var.k8s_monitoring_deployments_names, var.k8s_monitoring_internal_deployments_names))
 
   source = "./modules/k8s-deployment-monitoring"
 
@@ -17,7 +17,12 @@ module "k8s_deployment_monitoring" {
   performance_alarms_period_seconds = 300 # 5 minutes
 
   create_dashboard = true
+
+  cloudwatch_app_logs_errors_metric_name      = contains(var.k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].name : null
+  cloudwatch_app_logs_errors_metric_namespace = contains(var.k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].namespace : null
 }
+
+
 
 # TODO: refactor module to better support StatefulSets? the "unavailable-pods" alarm won't work
 module "k8s_adot_monitoring" {

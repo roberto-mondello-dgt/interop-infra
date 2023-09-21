@@ -119,3 +119,28 @@ resource "aws_cloudwatch_metric_alarm" "unavailable_pods" {
     }
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "app_errors" {
+  count = var.cloudwatch_app_logs_errors_metric_name != null && var.cloudwatch_app_logs_errors_metric_namespace != null ? 1 : 0
+
+  alarm_name        = format("k8s-%s-errors-%s", var.k8s_deployment_name, var.env)
+  alarm_description = format("Application errors alarm for %s", var.k8s_deployment_name)
+
+  alarm_actions = var.sns_topics_arns
+
+  metric_name = var.cloudwatch_app_logs_errors_metric_name
+  namespace   = var.cloudwatch_app_logs_errors_metric_namespace
+
+  dimensions = {
+    PodApp = var.k8s_deployment_name
+  }
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  statistic           = "Sum"
+  treat_missing_data  = "notBreaching"
+
+  threshold           = 1
+  period              = 60 # 1 minute
+  evaluation_periods  = 5
+  datapoints_to_alarm = 1
+}

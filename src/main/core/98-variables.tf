@@ -320,7 +320,12 @@ variable "vpn_saml_metadata_path" {
 }
 
 variable "k8s_monitoring_deployments_names" {
-  description = "Names of K8s deployments to monitor"
+  description = "Names of K8s deployments to monitor using HTTP status codes through APIGW"
+  type        = list(string)
+}
+
+variable "k8s_monitoring_internal_deployments_names" {
+  description = "Names of K8s deployments to monitor using application logs instead of HTTP requests"
   type        = list(string)
 }
 

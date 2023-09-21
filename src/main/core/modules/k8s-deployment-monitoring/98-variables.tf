@@ -66,3 +66,15 @@ variable "number_of_digits" {
   type        = number
   default     = 0
 }
+
+variable "cloudwatch_app_logs_errors_metric_name" {
+  description = "Name of the app logs metric in CloudWatch"
+  type        = string
+  default     = null
+}
+
+variable "cloudwatch_app_logs_errors_metric_namespace" {
+  description = "Namespace of the app logs metric in CloudWatch"
+  type        = string
+  default     = null
+}
