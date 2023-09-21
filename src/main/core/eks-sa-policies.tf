@@ -259,6 +259,19 @@ resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
   })
 }
 
+resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
+  name = "InteropBeAnacCertifiedAttributesImporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = "kms:Sign",
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
 resource "aws_iam_policy" "be_attributes_loader" {
   name = "InteropAttributesLoaderPolicy"
 

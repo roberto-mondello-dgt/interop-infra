@@ -201,6 +201,24 @@ module "be_selfcare_onboarding_consumer_irsa" {
   }
 }
 
+module "be_anac_certified_attributes_importer_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-anac-certified-attributes-importer-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${var.env}:interop-be-anac-certified-attributes-importer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_anac_certified_attributes_importer = aws_iam_policy.be_anac_certified_attributes_importer.arn
+  }
+}
+
 module "be_attributes_loader_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
