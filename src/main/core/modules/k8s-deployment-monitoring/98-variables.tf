@@ -37,16 +37,19 @@ variable "create_dashboard" {
 variable "avg_cpu_alarm_threshold" {
   description = "Threshold to trigger the AVG cpu alarm"
   type        = number
+  default     = null
 }
 
 variable "avg_memory_alarm_threshold" {
   description = "Threshold to trigger the AVG memory alarm"
   type        = number
+  default     = null
 }
 
 variable "performance_alarms_period_seconds" {
   description = "Period (in seconds) over which the alarm statistic is applied for performance alarms"
   type        = number
+  default     = null
 }
 
 variable "alarm_eval_periods" {

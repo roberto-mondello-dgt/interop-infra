@@ -42,3 +42,18 @@ module "k8s_adot_monitoring" {
 
   create_dashboard = true
 }
+
+# TODO: remove once PoC is completed
+module "k8s_auth_server_poc_monitoring" {
+  count = var.env == "dev" ? 1 : 0
+
+  source = "./modules/k8s-deployment-monitoring"
+
+  env                 = var.env
+  eks_cluster_name    = "interop-poc-token-eks-cluster-dev"
+  k8s_namespace       = var.env
+  k8s_deployment_name = "interop-be-authorization-server-poc-ts"
+
+  create_alarms    = false
+  create_dashboard = true
+}
