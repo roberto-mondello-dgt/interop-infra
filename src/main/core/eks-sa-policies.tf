@@ -98,6 +98,11 @@ resource "aws_iam_policy" "be_authorization_server" {
         Effect   = "Allow"
         Action   = "kms:Sign"
         Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn)
     }]
   })
 }
