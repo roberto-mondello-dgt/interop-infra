@@ -1,6 +1,5 @@
 locals {
-  is_prod = var.env == "prod"
-  repository_name = [
+  repository_names = [
     "interop-be-anac-certified-attributes-importer",
     "interop-be-agreement-management",
     "interop-be-agreement-process",
@@ -43,16 +42,15 @@ locals {
   ]
 }
 
-# TODO: refactor the for_each -> count
 resource "aws_ecr_repository" "app" {
-  for_each = { for repo in local.repository_name : repo => repo }
+  for_each = toset(local.repository_names)
 
-  image_tag_mutability = local.is_prod ? "IMMUTABLE" : "MUTABLE"
+  image_tag_mutability = var.env == "test" || var.env == "prod" ? "IMMUTABLE" : "MUTABLE"
   name                 = each.key
 }
 
 resource "aws_ecr_lifecycle_policy" "app" {
-  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if local.is_prod == false }
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" }
 
   repository = each.value.name
   policy     = <<EOF
@@ -74,4 +72,109 @@ resource "aws_ecr_lifecycle_policy" "app" {
     ]
   }
   EOF
+}
+
+# TODO: restrict to only GH ECR role once new CI is ready
+resource "aws_ecr_repository_policy" "dev_cross_account" {
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" }
+
+  repository = each.value.name
+
+  policy = jsonencode({
+    Version = "2008-10-17",
+    Statement = [
+      {
+        Sid    = "Test Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::895646477129:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "Prod Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GitubEcrPullFromTest"
+        Effect = "Allow"
+        Principal = {
+          AWS = [
+            "arn:aws:iam::895646477129:role/interop-github-ecr-test",
+            "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+          ]
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GithubEcrRetagFromTest"
+        Effect = "Allow"
+        Principal = {
+          AWS = [
+            "arn:aws:iam::895646477129:role/interop-github-ecr-test",
+            "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+          ]
+        },
+        Action = [
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_ecr_repository_policy" "uat_cross_account" {
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "test" }
+
+  repository = each.value.name
+
+  policy = jsonencode({
+    Version = "2008-10-17",
+    Statement = [
+      {
+        Sid    = "GitubEcrPullFromProd"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GithubEcrRetagFromProd"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+        },
+        Action = [
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      }
+    ]
+  })
 }
