@@ -147,3 +147,29 @@ resource "aws_s3_bucket_replication_configuration" "generated_jwt_details_fallba
     }
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "generated_jwt_fallback_replication_failed" {
+  count = var.env == "dev" ? 1 : 0
+
+  alarm_name        = format("generated-jwt-fallback-replication-failed-%s", var.env)
+  alarm_description = "Object replication errors from fallback bucket to main bucket"
+
+  alarm_actions = [aws_sns_topic.platform_alarms.arn]
+
+  namespace   = "S3"
+  metric_name = "OperationsFailedReplication"
+
+  dimensions = {
+    SourceBucket = module.generated_jwt_details_fallback_bucket.s3_bucket_id
+    RuleId       = aws_s3_bucket_replication_configuration.generated_jwt_details_fallback[0].rule[0].id
+  }
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  statistic           = "Sum"
+  treat_missing_data  = "notBreaching"
+
+  threshold           = 1
+  period              = 60 # 1 minute
+  evaluation_periods  = 60
+  datapoints_to_alarm = 1
+}
