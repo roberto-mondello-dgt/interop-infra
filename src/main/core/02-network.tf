@@ -64,9 +64,11 @@ module "vpc_v2" {
   public_subnets      = concat(local.egress_cidrs, local.ext_lbs_cidrs, local.bastion_host_cidrs)
   public_subnet_names = concat(local.egress_subnets_names, local.ext_lbs_subnets_names, local.bastion_host_subnets_names)
 
+  # TODO: some of these subnets should be in the 'intra' class, but we need to move the TF address without destroying the subnets
   private_subnets      = concat(local.eks_workload_cidrs, local.int_lbs_cidrs, local.eks_control_plane_cidrs, local.vpce_cidrs)
   private_subnet_names = concat(local.eks_workload_subnets_names, local.int_lbs_subnets_names, local.eks_control_plane_subnets_names, local.vpce_subnets_names)
 
+  # TODO: MSK subnets should be in the 'intra' class, but we need to move the TF address without destroying the subnets
   database_subnets                   = concat(local.aurora_persist_manag_cidrs, local.docdb_read_model_cidrs, local.msk_interop_events_cidrs)
   database_subnet_names              = concat(local.aurora_persist_manag_subnets_names, local.docdb_read_model_subnets_names, local.msk_interop_events_subnets_names)
   create_database_subnet_group       = false

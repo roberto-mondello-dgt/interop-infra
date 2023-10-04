@@ -120,7 +120,9 @@ resource "aws_iam_role" "buildo_developers" {
           ]
           Resource = [
             data.aws_cloudwatch_log_group.eks_application.arn,
-            "${data.aws_cloudwatch_log_group.eks_application.arn}:log-stream:*"
+            "${data.aws_cloudwatch_log_group.eks_application.arn}:log-stream:*",
+            aws_cloudwatch_log_group.debezium_postgresql[0].arn,
+            "${aws_cloudwatch_log_group.debezium_postgresql[0].arn}:log-stream:*"
           ]
         }
       ]
@@ -174,11 +176,45 @@ resource "aws_iam_role" "buildo_developers" {
           Sid    = "MSKActions"
           Effect = "Allow"
           Action = [
-            "kafka:List*",
+            "ec2:CreateNetworkInterface",
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "iam:GetRole*",
+            "iam:ListAttachedRolePolicies",
+            "iam:ListRole*",
+            "iam:PassRole",
+            "kafka:Describe*",
             "kafka:Get*",
-            "kafka:Describe*"
+            "kafka:List*",
+            "kafkaconnect:*",
+            "logs:CreateLogDelivery",
+            "logs:DeleteLogDelivery",
+            "logs:DescribeLogGroups",
+            "logs:DescribeResourcePolicies",
+            "logs:GetLogDelivery",
+            "logs:ListLogDeliveries",
+            "logs:PutResourcePolicy"
           ]
           Resource = "*"
+        },
+        {
+          Sid    = "IAMReadOnly"
+          Effect = "Allow"
+          Action = [
+            "iam:GetRole*",
+            "iam:ListRole*",
+            "iam:ListAttachedRolePolicies"
+          ]
+          Resource = "*"
+        },
+        {
+          Sid    = "PassMSKConnectRole"
+          Effect = "Allow"
+          Action = [
+            "iam:PassRole"
+          ]
+          Resource = aws_iam_role.debezium_postgresql[0].arn
         }
       ]
     })

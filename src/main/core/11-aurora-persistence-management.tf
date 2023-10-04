@@ -44,6 +44,19 @@ resource "aws_secretsmanager_secret_version" "persistence_management_credentials
   }
 }
 
+locals {
+  persistence_management_common_parameters = [
+    {
+      name  = "rds.force_ssl"
+      value = 1
+    }
+  ]
+  # TODO: temporary, refactor/remove
+  persistence_management_parameters = (var.env == "dev"
+    ? concat(local.persistence_management_common_parameters, [{ name = "rds.logical_replication", value = 1, apply_method = "pending-reboot" }])
+  : local.persistence_management_common_parameters)
+}
+
 # TODO: rename after migration
 module "persistence_management_aurora_cluster_v2" {
   source  = "terraform-aws-modules/rds-aurora/aws"
@@ -79,12 +92,7 @@ module "persistence_management_aurora_cluster_v2" {
   db_cluster_parameter_group_use_name_prefix = false
   db_cluster_parameter_group_name            = format("%s-persistence-management-cluster-param-group-%s", var.short_name, var.env)
   db_cluster_parameter_group_family          = var.persistence_management_parameter_group_family
-  db_cluster_parameter_group_parameters = [
-    {
-      name  = "rds.force_ssl"
-      value = 1
-    }
-  ]
+  db_cluster_parameter_group_parameters      = local.persistence_management_parameters
 
   vpc_id             = module.vpc_v2.vpc_id
   subnets            = data.aws_subnets.aurora_persistence_management_v2.ids
@@ -144,4 +152,28 @@ module "persistence_management_aurora_cluster_v2" {
   performance_insights_retention_period = var.env == "prod" ? 372 : 7
   monitoring_interval                   = 60
   performance_insights_kms_key_id       = aws_kms_key.persistence_management.arn
+}
+
+# TODO: move into module when ready
+resource "aws_vpc_security_group_ingress_rule" "from_debezium_msk_connector" {
+  count = var.env == "dev" ? 1 : 0
+
+  security_group_id = module.persistence_management_aurora_cluster_v2.security_group_id
+
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.debezium_postgresql[0].id
+}
+
+# TODO: remove
+resource "aws_vpc_security_group_ingress_rule" "from_msk" {
+  count = var.env == "dev" ? 1 : 0
+
+  security_group_id = module.persistence_management_aurora_cluster_v2.security_group_id
+
+  from_port                    = 5432
+  to_port                      = 5432
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.msk_interop_events[0].id
 }

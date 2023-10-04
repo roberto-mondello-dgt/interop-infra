@@ -10,6 +10,12 @@ resource "aws_secretsmanager_secret" "postgres_db_password_refactor" {
   name = "postgres-db-password-refactor"
 }
 
+resource "aws_secretsmanager_secret" "debezium_credentials" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "persistence-management-debezium-credentials"
+}
+
 resource "aws_secretsmanager_secret" "docdb_username_refactor" {
   count = var.env == "dev" ? 1 : 0
 
