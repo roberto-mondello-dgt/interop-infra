@@ -1,3 +1,7 @@
+data "aws_iam_policy" "transfer_logging" {
+  name = "AWSTransferLoggingAccess"
+}
+
 resource "aws_iam_role" "sftp_anac_logging" {
   count = var.env == "dev" ? 1 : 0
 
