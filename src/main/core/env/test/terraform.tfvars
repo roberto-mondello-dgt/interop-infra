@@ -65,7 +65,7 @@ probing_domain_ns_records = [
 ]
 
 interop_auth_openapi_path = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-d3dfe1725cee1cac81b6b34d8746b71e93598b15.yaml"
+interop_api_openapi_path  = "./openapi/test/internal-api-gateway/interop-api-v1.0-316e901f76e444ce898a6b087780efa2d51c3cf8.yaml"
 
 interop_landing_domain_name = "uat.interop.pagopa.it"
 
