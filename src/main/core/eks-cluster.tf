@@ -85,7 +85,7 @@ module "eks_v2" {
     }
   }
 
-  cluster_endpoint_public_access  = true
+  cluster_endpoint_public_access  = var.env == "test" ? false : true
   cluster_endpoint_private_access = true
 
   cluster_security_group_use_name_prefix = false
