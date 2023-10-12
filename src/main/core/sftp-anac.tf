@@ -3,9 +3,7 @@ data "aws_iam_policy" "transfer_logging" {
 }
 
 resource "aws_iam_role" "sftp_anac_logging" {
-  count = var.env == "dev" ? 1 : 0
-
-  name = format("InteropSftpAnacLogging%s", var.env)
+  name = format("InteropSftpAnacLogging%s", title(var.env))
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,19 +20,15 @@ resource "aws_iam_role" "sftp_anac_logging" {
 }
 
 resource "aws_transfer_server" "sftp_anac" {
-  count = var.env == "dev" ? 1 : 0
-
   endpoint_type          = "PUBLIC"
   protocols              = ["SFTP"]
   identity_provider_type = "SERVICE_MANAGED"
   domain                 = "S3"
-  logging_role           = aws_iam_role.sftp_anac_logging[0].arn
+  logging_role           = aws_iam_role.sftp_anac_logging.arn
 }
 
 resource "aws_iam_role" "sftp_anac_readonly" {
-  count = var.env == "dev" ? 1 : 0
-
-  name = format("InteropSftpAnacS3%s", var.env)
+  name = format("InteropSftpAnacS3%s", title(var.env))
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -56,40 +50,36 @@ resource "aws_iam_role" "sftp_anac_readonly" {
         {
           Effect   = "Allow"
           Action   = "s3:ListBucket"
-          Resource = module.anac_sftp_bucket[0].s3_bucket_arn
+          Resource = module.anac_sftp_bucket.s3_bucket_arn
         },
         {
           Effect = "Allow"
           Action = "s3:Get*"
           Resource = [
-            module.anac_sftp_bucket[0].s3_bucket_arn,
-            "${module.anac_sftp_bucket[0].s3_bucket_arn}/*"
+            module.anac_sftp_bucket.s3_bucket_arn,
+            "${module.anac_sftp_bucket.s3_bucket_arn}/*"
           ]
       }]
     })
   }
 }
 
-resource "aws_transfer_user" "anac_attributes_loader" {
-  count = var.env == "dev" ? 1 : 0
-
-  user_name = "interop-anac-attributes-loader"
-  server_id = aws_transfer_server.sftp_anac[0].id
-  role      = aws_iam_role.sftp_anac_readonly[0].arn
+resource "aws_transfer_user" "anac_certified_attributes_importer" {
+  user_name = "interop-anac-certified-attributes-importer"
+  server_id = aws_transfer_server.sftp_anac.id
+  role      = aws_iam_role.sftp_anac_readonly.arn
 
   home_directory_type = "LOGICAL"
 
   home_directory_mappings {
     entry  = "/"
-    target = "/${module.anac_sftp_bucket[0].s3_bucket_id}"
+    target = "/${module.anac_sftp_bucket.s3_bucket_id}"
   }
 }
 
-resource "aws_transfer_ssh_key" "anac_attributes_loader" {
-  count = var.env == "dev" ? 1 : 0
+resource "aws_transfer_ssh_key" "anac_certified_attributes_importer" {
+  server_id = aws_transfer_server.sftp_anac.id
+  user_name = aws_transfer_user.anac_certified_attributes_importer.user_name
 
-  server_id = aws_transfer_server.sftp_anac[0].id
-  user_name = aws_transfer_user.anac_attributes_loader[0].user_name
-
-  body = file("${path.module}/assets/ssh-public-keys/sftp_anac_cronjob_id_ecdsa_dev.pub")
+  body = file("${path.module}/assets/ssh-public-keys/interop-anac-certified-attributes-importer-${var.env}.pub")
 }

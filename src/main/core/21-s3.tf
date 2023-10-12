@@ -558,8 +558,6 @@ module "alb_logs_bucket" {
 }
 
 module "anac_sftp_bucket" {
-  count = var.env == "dev" ? 1 : 0
-
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.8.2"
 
