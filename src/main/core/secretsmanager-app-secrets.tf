@@ -97,3 +97,7 @@ resource "aws_secretsmanager_secret" "anac_sftp_private_key" {
 resource "aws_secretsmanager_secret" "anac_sftp_host" {
   name = "anac-sftp-host"
 }
+
+resource "aws_secretsmanager_secret" "external_integration_github_bot_pat" {
+  name = "interop-external-integration-github-bot-pat"
+}
