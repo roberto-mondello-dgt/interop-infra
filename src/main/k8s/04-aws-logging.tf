@@ -32,7 +32,7 @@ resource "kubernetes_config_map_v1" "aws_logging" {
       [FILTER]
           Name                kubernetes
           Match               kube.*
-          Merge_Log           On
+          Merge_Log           Off
           Keep_log            Off
           Labels              On
           Buffer_Size         0
