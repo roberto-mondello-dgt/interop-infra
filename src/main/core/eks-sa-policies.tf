@@ -375,6 +375,16 @@ resource "aws_iam_policy" "be_metrics_report_generator" {
         Effect   = "Allow",
         Action   = "s3:PutObject"
         Resource = format("%s/*", module.metrics_reports_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.application_documents_bucket.s3_bucket_arn
     }]
   })
 }
