@@ -69,7 +69,7 @@ data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
 
 interop_auth_openapi_path = "./openapi/prod/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path  = "./openapi/prod/internal-api-gateway/interop-api-v1.0-de7c5afc376ba48725bf976b4813cfb1e3f763ca.yaml"
+interop_api_openapi_path  = "./openapi/prod/internal-api-gateway/interop-api-v1.0-316e901f76e444ce898a6b087780efa2d51c3cf8.yaml"
 
 interop_landing_domain_name = "interop.pagopa.it"
 
