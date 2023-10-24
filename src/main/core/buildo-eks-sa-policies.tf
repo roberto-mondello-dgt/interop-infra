@@ -29,10 +29,10 @@ locals {
 }
 
 
-resource "aws_iam_policy" "be_refactor_msk_catalog_public_topic_reader" {
+resource "aws_iam_policy" "be_refactor_catalog_topic_consumer" {
   count = var.env == "dev" ? 1 : 0
 
-  name = "InteropBeMskTopicCatalogPublicReader"
+  name = "InteropBeCatalogTopicConsumer"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -46,9 +46,10 @@ resource "aws_iam_policy" "be_refactor_msk_catalog_public_topic_reader" {
           "kafka-cluster:DescribeTopic",
           "kafka-cluster:ReadData"
         ]
+        #TODO: restrict group
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/catalog.public.event",
+          "${local.msk_topic_iam_prefix}/event-store.catalog.events",
           "${local.msk_group_iam_prefix}/*"
         ]
       }
