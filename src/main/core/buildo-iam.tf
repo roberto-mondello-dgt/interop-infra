@@ -121,8 +121,8 @@ resource "aws_iam_role" "buildo_developers" {
           Resource = [
             data.aws_cloudwatch_log_group.eks_application.arn,
             "${data.aws_cloudwatch_log_group.eks_application.arn}:log-stream:*",
-            aws_cloudwatch_log_group.debezium_postgresql[0].arn,
-            "${aws_cloudwatch_log_group.debezium_postgresql[0].arn}:log-stream:*"
+            aws_cloudwatch_log_group.debezium_postgresql_event_store[0].arn,
+            "${aws_cloudwatch_log_group.debezium_postgresql_event_store[0].arn}:log-stream:*"
           ]
         }
       ]

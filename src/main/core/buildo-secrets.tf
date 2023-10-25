@@ -27,3 +27,15 @@ resource "aws_secretsmanager_secret" "docdb_password_refactor" {
 
   name = "documentdb-password-refactor"
 }
+
+# resource "aws_secretsmanager_secret" "postgres_migration_username" {
+#   count = var.env == "dev" ? 1 : 0
+#
+#   name = "postgres-migration-username"
+# }
+#
+# resource "aws_secretsmanager_secret" "postgres_migration_password" {
+#   count = var.env == "dev" ? 1 : 0
+#
+#   name = "postgres-migration-password"
+# }

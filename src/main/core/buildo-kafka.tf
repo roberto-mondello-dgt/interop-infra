@@ -102,6 +102,10 @@ resource "aws_mskconnect_custom_plugin" "debezium_postgresql" {
   }
 }
 
+locals {
+  debezium_event_store_offsets_topic = "debezium.event-store.offsets"
+}
+
 resource "aws_iam_role" "debezium_postgresql" {
   count = var.env == "dev" ? 1 : 0
 
@@ -136,6 +140,7 @@ resource "aws_iam_role" "debezium_postgresql" {
           Effect = "Allow"
           Action = [
             "kafka-cluster:Connect",
+            "kafka-cluster:CreateTopic",
             "kafka-cluster:DescribeCluster",
             "kafka-cluster:DescribeTopic",
             "kafka-cluster:ReadData",
@@ -144,7 +149,7 @@ resource "aws_iam_role" "debezium_postgresql" {
           # TODO: restrict to specific topics
           Resource = [
             aws_msk_serverless_cluster.interop_events[0].arn,
-            "${local.msk_topic_iam_prefix}/*",
+            "${local.msk_topic_iam_prefix}/event-store.*",
           ]
         },
         {
@@ -159,8 +164,9 @@ resource "aws_iam_role" "debezium_postgresql" {
           ]
           Resource = [
             "${local.msk_topic_iam_prefix}/__amazon_msk_connect_*",
+            "${local.msk_topic_iam_prefix}/${local.debezium_event_store_offsets_topic}",
             "${local.msk_group_iam_prefix}/__amazon_msk_connect_*",
-            "${local.msk_group_iam_prefix}/connect-*"
+            "${local.msk_group_iam_prefix}/connect-*",
           ]
         },
         {
@@ -194,84 +200,107 @@ resource "aws_mskconnect_worker_configuration" "secretsmanager_provider" {
   EOT
 }
 
-resource "aws_cloudwatch_log_group" "debezium_postgresql" {
+resource "aws_mskconnect_worker_configuration" "debezium_postgresql_event_store" {
   count = var.env == "dev" ? 1 : 0
 
-  name = format("/aws/msk-connect/workers/debezium-postgresql-%s", var.env)
+  name = "debezium-postgresql-event-store-dev-4"
+
+  properties_file_content = <<-EOT
+    key.converter=org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable=false
+    value.converter=org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable=false
+    config.providers=secretsmanager
+    config.providers.secretsmanager.class=com.amazonaws.kafka.config.providers.SecretsManagerConfigProvider
+    config.providers.secretsmanager.param.region=${var.aws_region}
+    offset.storage.topic=${local.debezium_event_store_offsets_topic}
+  EOT
+}
+
+resource "aws_cloudwatch_log_group" "debezium_postgresql_event_store" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = format("/aws/msk-connect/workers/debezium-postgresql-event-store-%s", var.env)
 
   retention_in_days = var.env == "prod" ? 90 : 30
 }
 
 
-# resource "aws_mskconnect_connector" "debezium_postgresql" {
-#   count = var.env == "dev" ? 1 : 0
-#
-#   name = "debezium-postgresql-2-3-3-with-config-provider"
-#
-#   kafkaconnect_version = "2.7.1"
-#
-#   service_execution_role_arn = aws_iam_role.debezium_postgresql[0].arn
-#
-#   plugin {
-#     custom_plugin {
-#       arn      = aws_mskconnect_custom_plugin.debezium_postgresql[0].arn
-#       revision = aws_mskconnect_custom_plugin.debezium_postgresql[0].latest_revision
-#     }
-#   }
-#
-#   # TODO: refactor some of these fields using variables
-#   connector_configuration = {
-#     "connector.class"      = "io.debezium.connector.postgresql.PostgresConnector"
-#     "tasks.max"            = 1
-#     "database.hostname"    = module.persistence_management_aurora_cluster_v2.cluster_endpoint
-#     "database.port"        = module.persistence_management_aurora_cluster_v2.cluster_port
-#     "database.user"        = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:username}"
-#     "database.password"    = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:password}"
-#     "database.dbname"      = "persistence_management_refactor"
-#     "topic.prefix"         = "catalog"
-#     "schema.include.list"  = "public"
-#     "plugin.name"          = "pgoutput"
-#     "binary.handling.mode" = "hex"
-#   }
-#
-#   worker_configuration {
-#     arn      = aws_mskconnect_worker_configuration.secretsmanager_provider[0].arn
-#     revision = aws_mskconnect_worker_configuration.secretsmanager_provider[0].latest_revision
-#   }
-#
-#   capacity {
-#     provisioned_capacity {
-#       mcu_count    = 1
-#       worker_count = 1
-#     }
-#   }
-#
-#   log_delivery {
-#     worker_log_delivery {
-#       cloudwatch_logs {
-#         enabled   = true
-#         log_group = aws_cloudwatch_log_group.debezium_postgresql[0].name
-#       }
-#     }
-#   }
-#
-#   kafka_cluster {
-#     apache_kafka_cluster {
-#       # TODO: get this endpoint remotely (msk_serverless_cluster TF resource doesn't expose this attribute)
-#       bootstrap_servers = "boot-yqksbq44.c3.kafka-serverless.eu-central-1.amazonaws.com:9098"
-#
-#       vpc {
-#         security_groups = [aws_security_group.debezium_postgresql[0].id]
-#         subnets         = data.aws_subnets.msk_interop_events[0].ids
-#       }
-#     }
-#   }
-#
-#   kafka_cluster_client_authentication {
-#     authentication_type = "IAM"
-#   }
-#
-#   kafka_cluster_encryption_in_transit {
-#     encryption_type = "TLS"
-#   }
-# }
+resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "debezium-postgresql-2-3-3-event-store"
+
+  kafkaconnect_version = "2.7.1"
+
+  service_execution_role_arn = aws_iam_role.debezium_postgresql[0].arn
+
+  plugin {
+    custom_plugin {
+      arn      = aws_mskconnect_custom_plugin.debezium_postgresql[0].arn
+      revision = aws_mskconnect_custom_plugin.debezium_postgresql[0].latest_revision
+    }
+  }
+
+  # TODO: refactor some of these fields using variables
+  connector_configuration = {
+    "connector.class"                           = "io.debezium.connector.postgresql.PostgresConnector"
+    "tasks.max"                                 = 1
+    "database.hostname"                         = module.persistence_management_aurora_cluster_v2.cluster_endpoint
+    "database.port"                             = module.persistence_management_aurora_cluster_v2.cluster_port
+    "database.user"                             = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:username}"
+    "database.password"                         = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:password}"
+    "database.dbname"                           = "persistence_management_refactor"
+    "topic.prefix"                              = "event-store"
+    "plugin.name"                               = "pgoutput"
+    "binary.handling.mode"                      = "hex"
+    "slot.name"                                 = "debezium_event_store"
+    "publication.name"                          = "events_publication"
+    "publication.autocreate.mode"               = "disabled"
+    "topic.creation.default.replication.factor" = 3
+    "topic.creation.default.partitions"         = 1
+    "topic.creation.default.cleanup.policy"     = "delete"
+    "topic.creation.default.compression.type"   = "producer"
+  }
+
+  worker_configuration {
+    arn      = aws_mskconnect_worker_configuration.debezium_postgresql_event_store[0].arn
+    revision = aws_mskconnect_worker_configuration.debezium_postgresql_event_store[0].latest_revision
+  }
+
+  capacity {
+    provisioned_capacity {
+      mcu_count    = 1
+      worker_count = 1
+    }
+  }
+
+  log_delivery {
+    worker_log_delivery {
+      cloudwatch_logs {
+        enabled   = true
+        log_group = aws_cloudwatch_log_group.debezium_postgresql_event_store[0].name
+      }
+    }
+  }
+
+  kafka_cluster {
+    apache_kafka_cluster {
+      # TODO: get this endpoint remotely (msk_serverless_cluster TF resource doesn't expose this attribute)
+      bootstrap_servers = "boot-yqksbq44.c3.kafka-serverless.eu-central-1.amazonaws.com:9098"
+
+      vpc {
+        security_groups = [aws_security_group.debezium_postgresql[0].id]
+        subnets         = data.aws_subnets.msk_interop_events[0].ids
+      }
+    }
+  }
+
+  kafka_cluster_client_authentication {
+    authentication_type = "IAM"
+  }
+
+  kafka_cluster_encryption_in_transit {
+    encryption_type = "TLS"
+  }
+}
