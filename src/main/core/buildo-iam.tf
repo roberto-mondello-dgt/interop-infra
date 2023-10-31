@@ -219,6 +219,36 @@ resource "aws_iam_role" "buildo_developers" {
       ]
     })
   }
+
+  inline_policy {
+    name = "DebugRefreshRole"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Sid    = "RevokeSessions"
+          Effect = "Allow"
+          Action = [
+            "iam:GetRole",
+            "iam:GetPolicyVersion",
+            "iam:ListRoleTags",
+            "iam:GetPolicy",
+            "iam:PutRolePolicy",
+            "iam:ListRolePolicies",
+            "iam:GetRolePolicy"
+          ]
+          Resource = module.be_refactor_catalog_consumer_irsa[0].iam_role_arn
+        },
+        {
+          Sid      = "ListRolesForDebug"
+          Effect   = "Allow"
+          Action   = "iam:ListRoles"
+          Resource = "*"
+        }
+      ]
+    })
+  }
 }
 
 
