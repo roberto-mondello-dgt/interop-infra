@@ -224,14 +224,6 @@ module "platform_metrics_bucket" {
   versioning = {
     enabled = false
   }
-
-  lifecycle_rule = [
-    {
-      id         = "Expiration"
-      enabled    = true
-      expiration = { days : 183 } # delete after 6 months
-    }
-  ]
 }
 
 module "allow_list_bucket" {
