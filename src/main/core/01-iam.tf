@@ -50,7 +50,13 @@ resource "aws_iam_group_policy_attachment" "external_backend_devs_read_only" {
   policy_arn = data.aws_iam_policy.read_only.arn
 }
 
+locals {
+  data_lake_access_enabled = var.data_lake_account_id != null && var.data_lake_external_id != null
+}
+
 resource "aws_iam_role" "data_lake_tokens" {
+  count = local.data_lake_access_enabled ? 1 : 0
+
   name = format("%s-datalake-bucket-token-%s", var.short_name, var.env)
 
   assume_role_policy = jsonencode({
@@ -93,6 +99,8 @@ resource "aws_iam_role" "data_lake_tokens" {
 }
 
 resource "aws_iam_role" "data_lake_metrics" {
+  count = local.data_lake_access_enabled ? 1 : 0
+
   name = format("%s-datalake-platform-metrics-%s", var.short_name, var.env)
 
   assume_role_policy = jsonencode({

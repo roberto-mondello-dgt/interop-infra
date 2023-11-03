@@ -181,11 +181,13 @@ variable "dns_interop_uat_ns_records" {
 variable "data_lake_account_id" {
   description = "AWS account ID of the DataLake team for token data ingestion"
   type        = string
+  default     = null
 }
 
 variable "data_lake_external_id" {
   description = "External ID of the DataLake team for token data ingestion. Passed by them when assuming the role"
   type        = string
+  default     = null
 }
 
 variable "probing_registry_reader_role_arn" {
