@@ -41,16 +41,6 @@ variable "bastion_host_instance_type" {
   type        = string
 }
 
-variable "bastion_host_private_ip" {
-  description = "Private IP of the bastion host on EC2"
-  type        = string
-}
-
-variable "bastion_host_security_group_name" {
-  description = "Name of the bastion host security group"
-  type        = string
-}
-
 variable "bastion_host_ssh_cidr" {
   description = "CIDR from where bastion host will accept ssh"
   type        = string
@@ -58,11 +48,6 @@ variable "bastion_host_ssh_cidr" {
 
 variable "bastion_host_key_pair" {
   description = "Name of the bastion host key pair"
-  type        = string
-}
-
-variable "persistence_management_cluster_id" {
-  description = "ID of the Aurora cluster - persistence management"
   type        = string
 }
 
@@ -96,16 +81,6 @@ variable "persistence_management_number_instances" {
   }
 }
 
-variable "persistence_management_subnet_group_name" {
-  description = "Subnet group name of the Aurora cluster - persistence management"
-  type        = string
-}
-
-variable "persistence_management_parameter_group_name" {
-  description = "Name of the DB parameter group for Aurora cluster - persistence management"
-  type        = string
-}
-
 variable "persistence_management_parameter_group_family" {
   description = "Family of the DB parameter group for Aurora cluster - persistence management"
   type        = string
@@ -113,21 +88,6 @@ variable "persistence_management_parameter_group_family" {
 
 variable "persistence_management_master_username" {
   description = "Master username - persistence management"
-  type        = string
-}
-
-variable "persistence_management_primary_instance_id" {
-  description = "Identifier of the primary instance in the Aurora cluster - persistence management"
-  type        = string
-}
-
-variable "persistence_management_replica1_instance_id" {
-  description = "Identifier of the replica1 instance in the Aurora cluster - persistence management"
-  type        = string
-}
-
-variable "persistence_management_replica2_instance_id" {
-  description = "Identifier of the replica2 instance in the Aurora cluster - persistence management"
   type        = string
 }
 
@@ -167,16 +127,6 @@ variable "read_model_number_instances" {
   }
 }
 
-variable "read_model_subnet_group_name" {
-  description = "Subnet group name of the DocDB cluster - read model"
-  type        = string
-}
-
-variable "read_model_parameter_group_name" {
-  description = "Name of cluster parameter group for the DocDB cluster - read model"
-  type        = string
-}
-
 variable "read_model_parameter_group_family" {
   description = "Family of the parameter group (based on engine version) for the DocDB cluster - read model"
   type        = map(any)
@@ -189,11 +139,6 @@ variable "read_model_parameter_group_family" {
 variable "notification_events_table_ttl_enabled" {
   description = "Enable or disable TTL in 'interop-notification-events' table"
   type        = bool
-}
-
-variable "backend_integration_alb_name" {
-  description = "Name of the ALB created by the aws-load-balancer-controller"
-  type        = string
 }
 
 variable "github_runners_allowed_repos" {
@@ -270,12 +215,6 @@ variable "interop_landing_domain_name" {
   type        = string
 }
 
-# TODO: remove once this log group is imported
-variable "lambda_eks_application_log_group_arn" {
-  description = "EKS Application log group arn"
-  type        = string
-}
-
 variable "eks_k8s_version" {
   type        = string
   description = "K8s version used in the EKS cluster"
@@ -306,11 +245,6 @@ variable "eks_application_log_group_name" {
   description = "Name of the application log group created by FluentBit"
   type        = string
   default     = null
-}
-
-variable "dtd_share_sftp_hostname" {
-  description = "Custom hostname for the DTD share SFTP server"
-  type        = string
 }
 
 variable "vpn_saml_metadata_path" {
