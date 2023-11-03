@@ -12,7 +12,6 @@ module "jwt_well_known_bucket" {
 
   bucket = format("%s-jwt-well-known-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -52,7 +51,6 @@ module "application_documents_bucket" {
 
   bucket = format("%s-application-documents-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -77,7 +75,6 @@ module "cfn_templates_bucket" {
 
   bucket = format("%s-cfn-templates-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -94,7 +91,6 @@ module "open_api_bucket" {
 
   bucket = format("%s-open-api-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -111,7 +107,6 @@ module "generated_jwt_details_bucket" {
 
   bucket = format("%s-generated-jwt-details-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -150,7 +145,6 @@ module "application_logs_bucket" {
 
   bucket = format("%s-application-logs-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -190,7 +184,6 @@ module "athena_query_results_bucket" {
 
   bucket = format("%s-athena-query-results-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -215,7 +208,6 @@ module "platform_metrics_bucket" {
 
   bucket = format("%s-platform-metrics-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -232,7 +224,6 @@ module "allow_list_bucket" {
 
   bucket = format("%s-allow-list-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -249,7 +240,6 @@ module "public_dashboards_bucket" {
 
   bucket = format("%s-public-dashboards-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -296,7 +286,6 @@ module "probing_eservices_bucket" {
 
   bucket = format("%s-probing-eservices-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -337,7 +326,6 @@ module "metrics_reports_bucket" {
 
   bucket = format("%s-metrics-reports-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -354,7 +342,6 @@ module "interop_landing_bucket" {
 
   bucket = format("%s-landing-%s", var.short_name, var.env)
 
-  acl                     = "private"
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
