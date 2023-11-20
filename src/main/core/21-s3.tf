@@ -567,3 +567,21 @@ module "s3_batch_reports_bucket" {
     enabled = false
   }
 }
+
+module "msk_custom_plugins_bucket" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.14.1"
+
+  bucket = format("interop-msk-custom-plugins-%s", var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}

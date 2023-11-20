@@ -46,9 +46,9 @@ notification_events_table_ttl_enabled = true
 
 backend_integration_alb_name = "k8s-interopbe-2e63f79573"
 
-github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws"]
-github_runners_cpu           = 2048
-github_runners_memory        = 4096
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws", "pagopa/interop-be-monorepo-scala-poc"]
+github_runners_cpu           = 16384
+github_runners_memory        = 32768
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
 
 dns_interop_base_domain = "interop.pagopa.it"

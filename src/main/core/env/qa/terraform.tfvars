@@ -50,9 +50,9 @@ eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
 eks_coredns_version    = "v1.9.3-eksbuild.3"
 eks_kube_proxy_version = "v1.26.2-eksbuild.1"
 
-backend_integration_v2_alb_name = "k8s-interopbe-2e63f79573"
+backend_integration_v2_alb_name = "k8s-interopbe-e296f81b2b"
 
-eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
+eks_application_log_group_name = "/aws/eks/interop-eks-cluster-qa/application"
 
 # deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [

@@ -1,5 +1,5 @@
 data "aws_subnets" "vpce" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   filter {
     name   = "vpc-id"
@@ -14,7 +14,7 @@ data "aws_subnets" "vpce" {
 
 # TODO: restrict?
 resource "aws_security_group" "vpce_common" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name        = format("vpce-common-%s", var.env)
   description = "Common SG across all VPC Endpoints"
@@ -30,7 +30,7 @@ resource "aws_security_group" "vpce_common" {
 }
 
 module "vpce" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "4.0.2"

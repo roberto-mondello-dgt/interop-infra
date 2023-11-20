@@ -115,9 +115,6 @@ resource "random_id" "read_model_final_snapshot_id" {
 
 # TODO: rename after migration
 resource "aws_docdb_cluster" "read_model_v2" {
-  # TODO: remove after migration
-  snapshot_identifier = "arn:aws:rds:eu-central-1:505630707203:cluster-snapshot:vpc-migration-20220505"
-
   cluster_identifier = format("%s-read-model-%s", var.short_name, var.env)
   engine             = "docdb"
   engine_version     = var.read_model_engine_version

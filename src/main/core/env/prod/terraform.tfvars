@@ -64,6 +64,12 @@ dns_interop_uat_ns_records = [
   "ns-317.awsdns-39.com.",
   "ns-1395.awsdns-46.org.",
 ]
+dns_interop_qa_ns_records = [
+  "ns-975.awsdns-57.net.",
+  "ns-1569.awsdns-04.co.uk.",
+  "ns-41.awsdns-05.com.",
+  "ns-1108.awsdns-10.org."
+]
 
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"

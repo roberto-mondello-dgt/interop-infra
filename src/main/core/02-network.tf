@@ -8,7 +8,7 @@ locals {
   docdb_read_model_cidrs     = ["10.0.57.0/24", "10.0.58.0/24", "10.0.59.0/24"]
   vpce_cidrs                 = ["10.0.60.0/24", "10.0.61.0/24", "10.0.62.0/24"]
   bastion_host_cidrs         = ["10.0.63.0/24"]
-  msk_interop_events_cidrs = (var.env == "dev" ?
+  msk_interop_events_cidrs = (local.deploy_be_refactor_infra ?
   ["10.0.64.0/24", "10.0.65.0/24", "10.0.66.0/24"] : [])
 
   eks_workload_subnets_names = [for idx, subn in local.eks_workload_cidrs :

@@ -52,7 +52,7 @@ locals {
     }
   ]
   # TODO: temporary, refactor/remove
-  persistence_management_parameters = (var.env == "dev"
+  persistence_management_parameters = (local.deploy_be_refactor_infra
     ? concat(local.persistence_management_common_parameters, [{ name = "rds.logical_replication", value = 1, apply_method = "pending-reboot" }])
   : local.persistence_management_common_parameters)
 }
@@ -61,9 +61,6 @@ locals {
 module "persistence_management_aurora_cluster_v2" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "~> 8.0.2"
-
-  # TODO: remove after migration
-  snapshot_identifier = "arn:aws:rds:eu-central-1:697818730278:cluster-snapshot:vpc-migration-aurora-pg-20230525"
 
   name                = format("%s-persistence-management-%s", var.short_name, var.env)
   database_name       = var.persistence_management_database_name
@@ -156,7 +153,7 @@ module "persistence_management_aurora_cluster_v2" {
 
 # TODO: move into module when ready
 resource "aws_vpc_security_group_ingress_rule" "from_debezium_msk_connector" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   security_group_id = module.persistence_management_aurora_cluster_v2.security_group_id
 
@@ -164,16 +161,4 @@ resource "aws_vpc_security_group_ingress_rule" "from_debezium_msk_connector" {
   to_port                      = 5432
   ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.debezium_postgresql[0].id
-}
-
-# TODO: remove
-resource "aws_vpc_security_group_ingress_rule" "from_msk" {
-  count = var.env == "dev" ? 1 : 0
-
-  security_group_id = module.persistence_management_aurora_cluster_v2.security_group_id
-
-  from_port                    = 5432
-  to_port                      = 5432
-  ip_protocol                  = "tcp"
-  referenced_security_group_id = aws_security_group.msk_interop_events[0].id
 }

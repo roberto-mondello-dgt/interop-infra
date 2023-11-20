@@ -1,5 +1,5 @@
 data "aws_subnets" "msk_interop_events" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   filter {
     name   = "vpc-id"
@@ -13,7 +13,7 @@ data "aws_subnets" "msk_interop_events" {
 }
 
 resource "aws_security_group" "debezium_postgresql" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name        = format("msk-connect-debezium-pgsql-workers-%s", var.env)
   description = "MSK Connect Debezium PostgreSQL workers"
@@ -31,7 +31,7 @@ resource "aws_security_group" "debezium_postgresql" {
 }
 
 resource "aws_security_group" "msk_interop_events" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   description = "MSK interop-events-${var.env}"
   name        = "MSK interop-events-${var.env}"
@@ -70,7 +70,7 @@ resource "aws_security_group" "msk_interop_events" {
 }
 
 resource "aws_msk_serverless_cluster" "interop_events" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   cluster_name = format("interop-events-%s", var.env)
 
@@ -88,26 +88,26 @@ resource "aws_msk_serverless_cluster" "interop_events" {
   }
 }
 
-resource "aws_mskconnect_custom_plugin" "debezium_postgresql" {
-  count = var.env == "dev" ? 1 : 0
-
-  name         = "debezium-postgresql-2-3-3-with-config-provider"
-  content_type = "ZIP"
-
-  location {
-    s3 {
-      bucket_arn = module.msk_custom_plugins_bucket[0].s3_bucket_arn
-      file_key   = "debezium-postgresql-2-3-3-with-config-provider.zip"
-    }
-  }
-}
-
 locals {
+  msk_iam_prefix = "arn:aws:kafka:${var.aws_region}:${data.aws_caller_identity.current.account_id}"
+
+  interop_events_cluster_name = (local.deploy_be_refactor_infra ?
+  aws_msk_serverless_cluster.interop_events[0].cluster_name : null)
+
+  interop_events_cluster_uuid = (local.deploy_be_refactor_infra ?
+  split("/", aws_msk_serverless_cluster.interop_events[0].arn)[2] : null)
   debezium_event_store_offsets_topic = "debezium.event-store.offsets"
+
+  msk_topic_iam_prefix = (local.deploy_be_refactor_infra
+    ? "${local.msk_iam_prefix}:topic/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
+  : null)
+  msk_group_iam_prefix = (local.deploy_be_refactor_infra
+    ? "${local.msk_iam_prefix}:group/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
+  : null)
 }
 
 resource "aws_iam_role" "debezium_postgresql" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name = format("interop-msk-connector-debezium-postgresql-%s", var.env)
 
@@ -201,9 +201,9 @@ resource "aws_mskconnect_worker_configuration" "secretsmanager_provider" {
 }
 
 resource "aws_mskconnect_worker_configuration" "debezium_postgresql_event_store" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "debezium-postgresql-event-store-dev-4"
+  name = "debezium-postgresql-event-store-${var.env}-4"
 
   properties_file_content = <<-EOT
     key.converter=org.apache.kafka.connect.json.JsonConverter
@@ -218,16 +218,40 @@ resource "aws_mskconnect_worker_configuration" "debezium_postgresql_event_store"
 }
 
 resource "aws_cloudwatch_log_group" "debezium_postgresql_event_store" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name = format("/aws/msk-connect/workers/debezium-postgresql-event-store-%s", var.env)
 
   retention_in_days = var.env == "prod" ? 90 : 30
 }
 
+# msk_serverless_cluster TF resource doesn't expose the bootstrap servers attribute
+data "external" "interop_events_bootstrap_servers" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  depends_on = [aws_msk_serverless_cluster.interop_events[0]]
+
+  program = ["aws", "kafka", "get-bootstrap-brokers",
+  "--cluster-arn", "${aws_msk_serverless_cluster.interop_events[0].arn}"]
+}
+
+resource "aws_mskconnect_custom_plugin" "debezium_postgresql" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name         = "debezium-postgresql-2-3-3-with-config-provider"
+  content_type = "ZIP"
+
+  location {
+    s3 {
+      bucket_arn = module.msk_custom_plugins_bucket[0].s3_bucket_arn
+      file_key   = "debezium-postgresql-2-3-3-with-config-provider.zip"
+    }
+  }
+}
 
 resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
-  count = var.env == "dev" ? 1 : 0
+  count      = local.deploy_be_refactor_infra ? 1 : 0
+  depends_on = [data.external.interop_events_bootstrap_servers]
 
   name = "debezium-postgresql-2-3-3-event-store"
 
@@ -286,8 +310,7 @@ resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
 
   kafka_cluster {
     apache_kafka_cluster {
-      # TODO: get this endpoint remotely (msk_serverless_cluster TF resource doesn't expose this attribute)
-      bootstrap_servers = "boot-yqksbq44.c3.kafka-serverless.eu-central-1.amazonaws.com:9098"
+      bootstrap_servers = data.external.interop_events_bootstrap_servers[0].result.BootstrapBrokerStringSaslIam
 
       vpc {
         security_groups = [aws_security_group.debezium_postgresql[0].id]

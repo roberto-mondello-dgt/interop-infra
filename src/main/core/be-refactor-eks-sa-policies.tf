@@ -19,16 +19,6 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
   })
 }
 
-locals {
-  msk_topic_iam_prefix = (var.env == "dev"
-    ? "${local.msk_iam_prefix}:topic/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
-  : null)
-  msk_group_iam_prefix = (var.env == "dev"
-    ? "${local.msk_iam_prefix}:group/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
-  : null)
-}
-
-
 resource "aws_iam_policy" "be_refactor_catalog_topic_consumer" {
   count = var.env == "dev" ? 1 : 0
 

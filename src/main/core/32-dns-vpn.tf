@@ -1,6 +1,6 @@
 # this is the imported certificate from the private CA, used for mutual authentication
 data "aws_acm_certificate" "vpn" {
-  count = var.env == "dev" || var.env == "test" ? 1 : 0
+  count = var.env != "prod" ? 1 : 0
 
   domain = format("vpn.%s", local.interop_env_dns_domain)
 }

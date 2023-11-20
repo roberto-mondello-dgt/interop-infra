@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret" "postgres_db_password_refactor" {
 }
 
 resource "aws_secretsmanager_secret" "debezium_credentials" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name = "persistence-management-debezium-credentials"
 }

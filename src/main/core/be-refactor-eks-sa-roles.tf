@@ -3,7 +3,7 @@ locals {
 }
 
 module "be_refactor_catalog_process_irsa" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
@@ -23,7 +23,7 @@ module "be_refactor_catalog_process_irsa" {
 }
 
 module "be_refactor_catalog_consumer_irsa" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"

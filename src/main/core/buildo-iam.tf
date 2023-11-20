@@ -44,16 +44,6 @@ resource "aws_iam_role" "buildo_github_k8s" {
   }
 }
 
-locals {
-  msk_iam_prefix = "arn:aws:kafka:${var.aws_region}:${data.aws_caller_identity.current.account_id}"
-
-  interop_events_cluster_name = (var.env == "dev" ?
-  aws_msk_serverless_cluster.interop_events[0].cluster_name : null)
-
-  interop_events_cluster_uuid = (var.env == "dev" ?
-  split("/", aws_msk_serverless_cluster.interop_events[0].arn)[2] : null)
-}
-
 resource "aws_iam_role" "buildo_developers" {
   count = var.env == "dev" ? 1 : 0
 
@@ -119,8 +109,8 @@ resource "aws_iam_role" "buildo_developers" {
             "logs:StartQuery"
           ]
           Resource = [
-            data.aws_cloudwatch_log_group.eks_application.arn,
-            "${data.aws_cloudwatch_log_group.eks_application.arn}:log-stream:*",
+            # data.aws_cloudwatch_log_group.eks_application.arn,
+            # "${data.aws_cloudwatch_log_group.eks_application.arn}:log-stream:*",
             aws_cloudwatch_log_group.debezium_postgresql_event_store[0].arn,
             "${aws_cloudwatch_log_group.debezium_postgresql_event_store[0].arn}:log-stream:*"
           ]

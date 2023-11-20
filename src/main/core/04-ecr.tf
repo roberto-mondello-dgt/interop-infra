@@ -85,6 +85,18 @@ resource "aws_ecr_repository_policy" "dev_cross_account" {
     Version = "2008-10-17",
     Statement = [
       {
+        Sid    = "QA Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::755649575658:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
         Sid    = "Test Pull",
         Effect = "Allow",
         Principal = {
