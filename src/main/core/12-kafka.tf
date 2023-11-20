@@ -268,23 +268,28 @@ resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
 
   # TODO: refactor some of these fields using variables
   connector_configuration = {
-    "connector.class"                           = "io.debezium.connector.postgresql.PostgresConnector"
-    "tasks.max"                                 = 1
-    "database.hostname"                         = module.persistence_management_aurora_cluster_v2.cluster_endpoint
-    "database.port"                             = module.persistence_management_aurora_cluster_v2.cluster_port
-    "database.user"                             = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:username}"
-    "database.password"                         = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:password}"
-    "database.dbname"                           = "persistence_management_refactor"
-    "topic.prefix"                              = "event-store"
-    "plugin.name"                               = "pgoutput"
-    "binary.handling.mode"                      = "hex"
-    "slot.name"                                 = "debezium_event_store"
-    "publication.name"                          = "events_publication"
-    "publication.autocreate.mode"               = "disabled"
-    "topic.creation.default.replication.factor" = 3
-    "topic.creation.default.partitions"         = 1
-    "topic.creation.default.cleanup.policy"     = "delete"
-    "topic.creation.default.compression.type"   = "producer"
+    "connector.class"                                      = "io.debezium.connector.postgresql.PostgresConnector"
+    "tasks.max"                                            = 1
+    "database.hostname"                                    = module.persistence_management_aurora_cluster_v2.cluster_endpoint
+    "database.port"                                        = module.persistence_management_aurora_cluster_v2.cluster_port
+    "database.user"                                        = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:username}"
+    "database.password"                                    = "$${secretsmanager:${aws_secretsmanager_secret.debezium_credentials[0].name}:password}"
+    "database.dbname"                                      = "persistence_management_refactor"
+    "topic.prefix"                                         = "event-store"
+    "plugin.name"                                          = "pgoutput"
+    "binary.handling.mode"                                 = "hex"
+    "slot.name"                                            = "debezium_event_store"
+    "publication.name"                                     = "events_publication"
+    "publication.autocreate.mode"                          = "disabled"
+    "topic.creation.default.replication.factor"            = 3
+    "topic.creation.default.partitions"                    = 3
+    "topic.creation.default.cleanup.policy"                = "delete"
+    "topic.creation.default.compression.type"              = "producer"
+    "transforms"                                           = "PartitionRouting"
+    "transforms.PartitionRouting.type"                     = "io.debezium.transforms.partitions.PartitionRouting",
+    "transforms.PartitionRouting.partition.payload.fields" = "change.stream_id"
+    "transforms.PartitionRouting.partition.topic.num"      = 3
+
   }
 
   worker_configuration {
