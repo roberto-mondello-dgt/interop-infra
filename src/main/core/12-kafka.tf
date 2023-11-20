@@ -227,8 +227,7 @@ resource "aws_cloudwatch_log_group" "debezium_postgresql_event_store" {
 
 # msk_serverless_cluster TF resource doesn't expose the bootstrap servers attribute
 data "external" "interop_events_bootstrap_servers" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
-
+  count      = local.deploy_be_refactor_infra ? 1 : 0
   depends_on = [aws_msk_serverless_cluster.interop_events[0]]
 
   program = ["aws", "kafka", "get-bootstrap-brokers",
@@ -286,10 +285,9 @@ resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
     "topic.creation.default.cleanup.policy"                = "delete"
     "topic.creation.default.compression.type"              = "producer"
     "transforms"                                           = "PartitionRouting"
-    "transforms.PartitionRouting.type"                     = "io.debezium.transforms.partitions.PartitionRouting",
+    "transforms.PartitionRouting.type"                     = "io.debezium.transforms.partitions.PartitionRouting"
     "transforms.PartitionRouting.partition.payload.fields" = "change.stream_id"
     "transforms.PartitionRouting.partition.topic.num"      = 3
-
   }
 
   worker_configuration {
