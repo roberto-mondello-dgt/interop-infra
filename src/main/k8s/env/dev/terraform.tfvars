@@ -22,7 +22,7 @@ fargate_profiles_roles_names = ["Interop-EKS-SystemProfile", "Interop-EKS-Applic
 k8s_admin_roles_names = ["GitHubActionIACRole", "interop-github-runner-task-dev"]
 
 users_k8s_admin    = ["a.gallitano", "s.perazzolo", "a.gelameris", "e.nardelli", "m.desimone", "m.cipri", "r.castagnola"]
-users_k8s_readonly = ["f.musella", "r.pavia", "r.torsoli"]
+users_k8s_readonly = ["f.musella", "r.pavia", "r.torsoli", "feda.abdallah"]
 
 kube_state_metrics_image_version_tag = "v2.6.0"
 kube_state_metrics_cpu               = "250m"
