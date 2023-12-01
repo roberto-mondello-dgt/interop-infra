@@ -43,10 +43,9 @@ resource "kubernetes_role" "port_forward" {
   }
 }
 
-resource "kubernetes_role_binding_v1" "readonly_group_view" {
+resource "kubernetes_cluster_role_binding_v1" "readonly_group_view" {
   metadata {
-    name      = "readonly-group-view"
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    name = "readonly-group-view"
   }
 
   role_ref {
