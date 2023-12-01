@@ -65,7 +65,7 @@ probing_domain_ns_records = [
 ]
 
 interop_auth_openapi_path = "./openapi/dev/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-316e901f76e444ce898a6b087780efa2d51c3cf8.yaml"
+interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0-79a6c14fea726bfa66fe057d7880546ebac0e6d6.yaml"
 
 interop_landing_domain_name = "dev.interop.pagopa.it"
 
