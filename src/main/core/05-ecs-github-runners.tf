@@ -181,3 +181,101 @@ resource "aws_security_group" "github_runners_v2" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
+
+resource "aws_iam_role" "github_qa_runner_task" {
+  count = var.env == "qa" ? 1 : 0
+
+  name = format("%s-github-qa-runner-task-%s", var.short_name, var.env)
+
+  assume_role_policy = data.aws_iam_policy_document.ecs_tasks_assume_condition.json
+
+  inline_policy {
+    name = "KubeConfigPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Action   = "eks:DescribeCluster"
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
+  inline_policy {
+    name = "SecretsAccessPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Action   = "secretsmanager:GetSecretValue"
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
+  inline_policy {
+    name = "BucketAccessPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:GetObject",
+            "s3:ListBucket"
+          ]
+          Resource = [
+            module.data_preparation_bucket[0].s3_bucket_arn,
+            "${module.data_preparation_bucket[0].s3_bucket_arn}/*"
+          ]
+        }
+      ]
+    })
+  }
+}
+
+resource "aws_ecs_task_definition" "github_qa_runner" {
+  count = var.env == "qa" ? 1 : 0
+
+  family = format("%s-github-qa-runner-%s", var.short_name, var.env)
+
+  cpu                = 2048
+  memory             = 4096
+  network_mode       = "awsvpc"
+  execution_role_arn = aws_iam_role.github_runner_task_exec.arn
+  task_role_arn      = aws_iam_role.github_qa_runner_task[0].arn
+
+  container_definitions = jsonencode([
+    {
+      name      = "github-qa-runner"
+      cpu       = 2048
+      memory    = 4096
+      essential = true
+      image     = "ghcr.io/pagopa/interop-qa-runner:v1.0.0"
+
+      portMappngs = [
+        {
+          containerPort = 443
+          hostPort      = 443
+        }
+      ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-region        = var.aws_region
+          awslogs-group         = "/aws/ecs"
+          awslogs-stream-prefix = "github-qa-runners"
+          awslogs-create-group  = "true"
+        }
+      }
+    }
+  ])
+}
