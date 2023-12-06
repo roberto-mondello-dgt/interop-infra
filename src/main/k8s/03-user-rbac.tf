@@ -114,3 +114,59 @@ resource "kubernetes_role_binding_v1" "job_runner" {
     name      = "sso-readonly-carmine.porricelli-pagopa.it" # k8s replaces '@' with '-'
   }
 }
+
+resource "kubernetes_role_v1" "deployments_scaler" {
+  count = var.env == "qa" ? 1 : 0
+
+  metadata {
+    name      = "deployments-scaler-role"
+    namespace = kubernetes_namespace_v1.env.metadata[0].name
+  }
+
+  rule {
+    api_groups = ["apps"]
+    resources  = ["deployments/scale"]
+    verbs      = ["put", "patch"]
+  }
+}
+
+resource "kubernetes_cluster_role_binding_v1" "qa_runner_view" {
+  count = var.env == "qa" ? 1 : 0
+
+  metadata {
+    name = "qa-runner-group-view"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "view"
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Group"
+    name      = "qa-runner-group"
+  }
+}
+
+resource "kubernetes_role_binding_v1" "qa_runner_scaler" {
+  count = var.env != "qa" ? 1 : 0
+
+  metadata {
+    name      = "qa-runner-group-scaler"
+    namespace = kubernetes_namespace_v1.env.metadata[0].name
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = kubernetes_role_v1.deployments_scaler[0].metadata[0].name
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Group"
+    name      = "qa-runner-group"
+  }
+}
