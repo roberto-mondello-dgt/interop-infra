@@ -151,7 +151,7 @@ resource "kubernetes_cluster_role_binding_v1" "qa_runner_view" {
 }
 
 resource "kubernetes_role_binding_v1" "qa_runner_scaler" {
-  count = var.env != "qa" ? 1 : 0
+  count = var.env == "qa" ? 1 : 0
 
   metadata {
     name      = "qa-runner-group-scaler"
@@ -168,5 +168,26 @@ resource "kubernetes_role_binding_v1" "qa_runner_scaler" {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Group"
     name      = "qa-runner-group"
+  }
+}
+
+resource "kubernetes_role_binding_v1" "morini_scaler" {
+  count = var.env == "qa" ? 1 : 0
+
+  metadata {
+    name      = "morini-scaler"
+    namespace = kubernetes_namespace_v1.env.metadata[0].name
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = kubernetes_role_v1.deployments_scaler[0].metadata[0].name
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "User"
+    name      = "manuel.morini"
   }
 }
