@@ -277,6 +277,26 @@ resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
   })
 }
 
+resource "aws_iam_policy" "be_ivass_certified_attributes_importer" {
+  name = "InteropBeIvassCertifiedAttributesImporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "kms:Sign",
+        Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.ivass_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_attributes_loader" {
   name = "InteropAttributesLoaderPolicy"
 

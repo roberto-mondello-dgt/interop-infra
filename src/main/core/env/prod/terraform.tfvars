@@ -131,6 +131,7 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-dtd-catalog-total-load-exporter",
   "interop-be-dtd-metrics",
   "interop-be-eservices-monitoring-exporter",
+  "interop-be-ivass-certified-attributes-importer",
   "interop-be-metrics-report-generator",
   "interop-be-one-trust-notices",
   "interop-be-padigitale-report-generator",
