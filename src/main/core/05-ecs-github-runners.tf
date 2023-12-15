@@ -239,6 +239,24 @@ resource "aws_iam_role" "github_qa_runner_task" {
       ]
     })
   }
+
+  inline_policy {
+    name = "SignSessionTokens"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "kms:Sign",
+            "kms:Verify"
+          ]
+          Resource = aws_kms_key.interop.arn
+        }
+      ]
+    })
+  }
 }
 
 resource "aws_ecs_task_definition" "github_qa_runner" {
