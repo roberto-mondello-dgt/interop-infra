@@ -151,4 +151,8 @@ resource "aws_docdb_cluster_instance" "read_model_v2" {
   enable_performance_insights = true
 
   apply_immediately = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
