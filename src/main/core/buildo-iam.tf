@@ -228,7 +228,7 @@ resource "aws_iam_role" "buildo_developers" {
             "iam:ListRolePolicies",
             "iam:GetRolePolicy"
           ]
-          Resource = module.be_refactor_catalog_consumer_irsa[0].iam_role_arn
+          Resource = module.be_refactor_catalog_readmodel_writer_irsa[0].iam_role_arn
         },
         {
           Sid      = "ListRolesForDebug"

@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "be_refactor_catalog_process" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   name = "InteropBeCatalogProcessRefactorPolicy"
 
@@ -19,10 +19,11 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
   })
 }
 
-resource "aws_iam_policy" "be_refactor_catalog_topic_consumer" {
-  count = var.env == "dev" ? 1 : 0
+# TODO: refactor Kafka policies to be reusable
+resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeCatalogTopicConsumer"
+  name = "InteropBeCatalogReadModelWriter"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -36,11 +37,39 @@ resource "aws_iam_policy" "be_refactor_catalog_topic_consumer" {
           "kafka-cluster:DescribeTopic",
           "kafka-cluster:ReadData"
         ]
-        #TODO: restrict group
+
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.catalog.events",
-          "${local.msk_group_iam_prefix}/*"
+          "${local.msk_group_iam_prefix}/catalog-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAgreementReadModelWriter"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.agreement.events",
+          "${local.msk_group_iam_prefix}/agreement-readmodel-writer"
         ]
       }
     ]
