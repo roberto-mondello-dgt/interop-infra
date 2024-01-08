@@ -6,14 +6,6 @@ data "aws_sqs_queue" "queue" {
   name = var.queue_name
 }
 
-data "template_file" "monitoring_dashboard_templates" {
-  template = file("${path.module}/queue_monitoring_dahsboard.json")
-  vars = {
-    QueueName = var.queue_name,
-    Region    = var.region
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "sqs_alarm" {
   alarm_name          = "${var.queue_name}-message-age-${var.env}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -34,5 +26,10 @@ resource "aws_cloudwatch_metric_alarm" "sqs_alarm" {
 
 resource "aws_cloudwatch_dashboard" "main" {
   dashboard_name = "sqs-${replace(var.queue_name, ".", "-")}"
-  dashboard_body = data.template_file.monitoring_dashboard_templates.rendered
+  dashboard_body = templatefile("${path.module}/queue_monitoring_dahsboard.json",
+    {
+      QueueName = var.queue_name,
+      Region    = var.region
+    }
+  )
 }
