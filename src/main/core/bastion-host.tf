@@ -93,7 +93,7 @@ resource "aws_security_group" "bastion_host_v2" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = [var.bastion_host_ssh_cidr]
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = []
     security_groups  = []
   }

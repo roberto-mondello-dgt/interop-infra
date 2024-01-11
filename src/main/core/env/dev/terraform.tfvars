@@ -11,40 +11,25 @@ tags = {
 
 sso_admin_role_name = "AWSReservedSSO_FullAdmin_51f0f6735b64a7f9"
 
-bastion_host_ami_id              = "ami-094c442a8e9a67935"
-bastion_host_instance_type       = "t2.micro"
-bastion_host_private_ip          = "172.32.0.7"
-bastion_host_security_group_name = "interop-bastion-host-dev-BastionSecurityGroup-WP1X6VLMIUMW"
-bastion_host_ssh_cidr            = "0.0.0.0/0"
-bastion_host_key_pair            = "interop-bh-key-dev"
+bastion_host_ami_id        = "ami-094c442a8e9a67935"
+bastion_host_instance_type = "t2.micro"
+bastion_host_key_pair      = "interop-bh-key-dev"
 
-eks_cluster_name = "interop-eks-dev"
-
-persistence_management_cluster_id             = "interop-rds-dev-auroradbcluster-1ws49gkll6459"
 persistence_management_database_name          = "persistence_management"
 persistence_management_engine_version         = "13.9"
 persistence_management_ca_cert_id             = "rds-ca-rsa2048-g1"
 persistence_management_instance_class         = "db.t4g.medium"
 persistence_management_number_instances       = 3
-persistence_management_subnet_group_name      = "interop-rds-dev-dbsubnetgroup-fk3mnuj6th50"
-persistence_management_parameter_group_name   = "interop-rds-dev-rdsdbclusterparametergroup-pmkjrep8gv9p"
 persistence_management_parameter_group_family = "aurora-postgresql13"
 persistence_management_master_username        = "root"
-persistence_management_primary_instance_id    = "iaf29k8l5z7a59"
-persistence_management_replica1_instance_id   = "ia191bvain9ri2q"
-persistence_management_replica2_instance_id   = "iacgbfxq3g2q6b"
 
-read_model_cluster_id           = "read-model"
-read_model_master_username      = "root"
-read_model_engine_version       = "4.0.0"
-read_model_instance_class       = "db.t4g.medium"
-read_model_number_instances     = 3
-read_model_subnet_group_name    = "docdbsubnetgroup-juvy8znmt1bi"
-read_model_parameter_group_name = "read-model-parameter-group"
+read_model_cluster_id       = "read-model"
+read_model_master_username  = "root"
+read_model_engine_version   = "4.0.0"
+read_model_instance_class   = "db.t4g.medium"
+read_model_number_instances = 3
 
 notification_events_table_ttl_enabled = true
-
-backend_integration_alb_name = "k8s-interopbe-2e63f79573"
 
 github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws", "pagopa/interop-be-monorepo-scala-poc"]
 github_runners_cpu           = 16384
@@ -69,8 +54,6 @@ interop_api_openapi_path  = "./openapi/dev/internal-api-gateway/interop-api-v1.0
 
 interop_landing_domain_name = "dev.interop.pagopa.it"
 
-lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:505630707203:log-group:/aws/eks/interop-eks-dev/application:*"
-
 eks_k8s_version        = "1.26"
 eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
 eks_coredns_version    = "v1.9.3-eksbuild.3"
@@ -79,8 +62,6 @@ eks_kube_proxy_version = "v1.26.2-eksbuild.1"
 backend_integration_v2_alb_name = "k8s-interopbe-2e63f79573"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
-
-dtd_share_sftp_hostname = "dtd-share.dev.interop.pagopa.it"
 
 # deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [

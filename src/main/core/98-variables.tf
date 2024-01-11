@@ -41,11 +41,6 @@ variable "bastion_host_instance_type" {
   type        = string
 }
 
-variable "bastion_host_ssh_cidr" {
-  description = "CIDR from where bastion host will accept ssh"
-  type        = string
-}
-
 variable "bastion_host_key_pair" {
   description = "Name of the bastion host key pair"
   type        = string
