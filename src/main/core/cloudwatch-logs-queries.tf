@@ -8,7 +8,7 @@ resource "aws_cloudwatch_query_definition" "app_logs_errors" {
     | sort @timestamp asc
     | filter (@message like /ERROR/ or stream = "stderr")
     | filter @logStream not like /adot-collector/
-    # | filter pod_app = "interop-be-authorization-server"
+    # | filter pod_app like /interop-be-authorization-server/
   EOT
 }
 
