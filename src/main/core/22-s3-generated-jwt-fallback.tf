@@ -8,7 +8,7 @@ data "aws_secretsmanager_secret_version" "generated_jwt_fallback_replication_tok
 
 module "generated_jwt_details_fallback_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-generated-jwt-details-fallback-%s", var.short_name, var.env)
 

@@ -53,7 +53,7 @@ resource "aws_iam_policy" "fargate_profile_logging" {
 # TODO: rename after migration
 module "eks_v2" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.13.1"
+  version = "19.17.2"
 
   cluster_name    = format("%s-eks-cluster-%s", var.short_name, var.env)
   cluster_version = var.eks_k8s_version

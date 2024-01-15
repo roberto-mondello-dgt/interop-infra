@@ -6,7 +6,7 @@ data "aws_lb" "backend_alb_v2" {
 # TODO: rename after migration
 module "nlb_v2" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "8.4.0"
+  version = "8.7.0"
 
   name = format("be-integration-nlb2-%s", var.env)
 

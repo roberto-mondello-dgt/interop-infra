@@ -1,6 +1,6 @@
 module "persistence_events_queue" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "v4.0.1"
+  version = "4.0.2"
 
   name       = "persistence-events.fifo"
   fifo_queue = true
@@ -28,7 +28,7 @@ module "persistence_events_queue_monitoring" {
 
 module "generated_jwt_queue" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "v4.0.1"
+  version = "4.0.2"
 
   name = "generated-jwt"
 
@@ -52,7 +52,7 @@ module "generated_jwt_queue_monitoring" {
 
 module "certified_mail_queue" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "v4.0.1"
+  version = "4.0.2"
 
   name       = "certified-mail.fifo"
   fifo_queue = true
@@ -81,7 +81,7 @@ module "certified_mail_queue_monitoring" {
 
 module "archived_agreements_for_purposes_queue" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "v4.0.1"
+  version = "4.0.2"
 
   name = "archived-agreements-for-purposes"
 
@@ -105,7 +105,7 @@ module "archived_agreements_for_purposes_queue_monitoring" {
 
 module "archived_agreements_for_eservices_queue" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "v4.0.1"
+  version = "v4.0.2"
 
   name = "archived-agreements-for-eservices"
 

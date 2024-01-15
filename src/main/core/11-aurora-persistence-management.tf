@@ -60,7 +60,7 @@ locals {
 # TODO: rename after migration
 module "persistence_management_aurora_cluster_v2" {
   source  = "terraform-aws-modules/rds-aurora/aws"
-  version = "~> 8.0.2"
+  version = "8.5.0"
 
   name                = format("%s-persistence-management-%s", var.short_name, var.env)
   database_name       = var.persistence_management_database_name

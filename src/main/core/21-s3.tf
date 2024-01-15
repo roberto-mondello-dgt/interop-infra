@@ -8,7 +8,7 @@ locals {
 
 module "jwt_well_known_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-jwt-well-known-%s", var.short_name, var.env)
 
@@ -47,7 +47,7 @@ module "jwt_well_known_bucket" {
 
 module "application_documents_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-application-documents-%s", var.short_name, var.env)
 
@@ -71,7 +71,7 @@ module "application_documents_bucket" {
 
 module "cfn_templates_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-cfn-templates-%s", var.short_name, var.env)
 
@@ -87,7 +87,7 @@ module "cfn_templates_bucket" {
 
 module "open_api_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-open-api-%s", var.short_name, var.env)
 
@@ -103,7 +103,7 @@ module "open_api_bucket" {
 
 module "generated_jwt_details_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-generated-jwt-details-%s", var.short_name, var.env)
 
@@ -141,7 +141,7 @@ module "generated_jwt_details_bucket" {
 
 module "application_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-application-logs-%s", var.short_name, var.env)
 
@@ -180,7 +180,7 @@ module "application_logs_bucket" {
 
 module "athena_query_results_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-athena-query-results-%s", var.short_name, var.env)
 
@@ -204,7 +204,7 @@ module "athena_query_results_bucket" {
 
 module "platform_metrics_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-platform-metrics-%s", var.short_name, var.env)
 
@@ -220,7 +220,7 @@ module "platform_metrics_bucket" {
 
 module "allow_list_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-allow-list-%s", var.short_name, var.env)
 
@@ -236,7 +236,7 @@ module "allow_list_bucket" {
 
 module "public_dashboards_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-public-dashboards-%s", var.short_name, var.env)
 
@@ -282,7 +282,7 @@ module "public_dashboards_bucket" {
 
 module "probing_eservices_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-probing-eservices-%s", var.short_name, var.env)
 
@@ -322,7 +322,7 @@ module "probing_eservices_bucket" {
 
 module "metrics_reports_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-metrics-reports-%s", var.short_name, var.env)
 
@@ -338,7 +338,7 @@ module "metrics_reports_bucket" {
 
 module "interop_landing_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-landing-%s", var.short_name, var.env)
 
@@ -376,7 +376,7 @@ module "interop_landing_bucket" {
 
 module "public_catalog_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-public-catalog-%s", var.short_name, var.env)
 
@@ -414,7 +414,7 @@ module "public_catalog_bucket" {
 
 module "privacy_notices_history_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-privacy-notices-history-%s", var.short_name, var.env)
 
@@ -442,7 +442,7 @@ module "privacy_notices_history_bucket" {
 
 module "privacy_notices_content_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-privacy-notices-content-%s", var.short_name, var.env)
 
@@ -459,7 +459,7 @@ module "privacy_notices_content_bucket" {
 # TODO: refactor this bucket, the contents can be exposed by other AWS services
 module "public_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-%s-public", var.short_name, var.env)
 
@@ -499,7 +499,7 @@ module "public_bucket" {
 
 module "alb_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-alb-logs-%s", var.short_name, var.env)
 
@@ -538,7 +538,7 @@ module "alb_logs_bucket" {
 
 module "anac_sftp_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-anac-sftp-%s", var.short_name, var.env)
 
@@ -570,7 +570,7 @@ module "ivass_bucket" {
 
 module "s3_batch_reports_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "~> 3.8.2"
+  version = "3.15.1"
 
   bucket = format("%s-s3-batch-reports-%s", var.short_name, var.env)
 

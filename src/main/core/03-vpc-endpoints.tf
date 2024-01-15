@@ -33,7 +33,7 @@ module "vpce" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
-  version = "4.0.2"
+  version = "5.1.2"
 
   vpc_id = module.vpc_v2.vpc_id
   # Create one VPCE per AZ only in prod

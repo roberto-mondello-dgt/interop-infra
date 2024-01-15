@@ -45,7 +45,7 @@ locals {
 # TODO: rename module and vpc after migration
 module "vpc_v2" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.2"
+  version = "5.1.2"
 
   name = format("%s-vpc-v2-%s", var.short_name, var.env)
   cidr = "10.0.0.0/16"
