@@ -77,14 +77,14 @@ jobs:
         run: |
           ./terraform.sh plan "$NORM_ENV"
 
-      - name: Terraform Init (main/k8s)
-        id: init_k8s
-        working-directory: src/main/k8s
-        run: |
-          ./terraform.sh init "$NORM_ENV"
-
-      - name: Terraform Plan (main/k8s)
-        id: plan_k8s
-        working-directory: src/main/k8s
-        run: |
-          ./terraform.sh plan "$NORM_ENV"
+      # - name: Terraform Init (main/k8s)
+      #   id: init_k8s
+      #   working-directory: src/main/k8s
+      #   run: |
+      #     ./terraform.sh init "$NORM_ENV"
+      #
+      # - name: Terraform Plan (main/k8s)
+      #   id: plan_k8s
+      #   working-directory: src/main/k8s
+      #   run: |
+      #     ./terraform.sh plan "$NORM_ENV"
