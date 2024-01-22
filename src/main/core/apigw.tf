@@ -37,9 +37,12 @@ module "interop_selfcare_domain" {
   hosted_zone_id = aws_route53_zone.interop_public.zone_id
 }
 
-module "interop_selfcare_apigw" {
-  count = var.env != "dev" ? 1 : 0
+locals {
+  deploy_new_bff_apigw = var.env == "dev" || var.env == "qa" ? true : false
+}
 
+module "interop_selfcare_apigw" {
+  count = local.deploy_new_bff_apigw ? 0 : 1
 
   source = "./modules/rest-apigw-proxy"
 
@@ -57,7 +60,7 @@ module "interop_selfcare_apigw" {
 }
 
 module "interop_selfcare_1dot0_apigw" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -77,7 +80,7 @@ module "interop_selfcare_1dot0_apigw" {
 }
 
 module "interop_selfcare_0dot0_apigw" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -97,7 +100,7 @@ module "interop_selfcare_0dot0_apigw" {
 }
 
 module "interop_frontend_assets_apigw" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/apigw-frontend-assets"
 

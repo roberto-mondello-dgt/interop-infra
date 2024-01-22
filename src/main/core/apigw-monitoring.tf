@@ -12,7 +12,7 @@ module "interop_auth_apigw_monitoring" {
 }
 
 module "interop_selfcare_apigw_monitoring" {
-  count = var.env != "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 0 : 1
 
   source = "./modules/apigw-monitoring"
 
@@ -27,7 +27,7 @@ module "interop_selfcare_apigw_monitoring" {
 }
 
 module "interop_selfcare_0dot0_apigw_monitoring" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/apigw-monitoring"
 
@@ -42,7 +42,7 @@ module "interop_selfcare_0dot0_apigw_monitoring" {
 }
 
 module "interop_selfcare_1dot0_apigw_monitoring" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/apigw-monitoring"
 
@@ -57,7 +57,7 @@ module "interop_selfcare_1dot0_apigw_monitoring" {
 }
 
 module "interop_frontend_assets_apigw_monitoring" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/apigw-monitoring"
 

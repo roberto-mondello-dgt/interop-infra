@@ -66,7 +66,7 @@ resource "aws_cloudwatch_query_definition" "apigw_auth_server_waf_block" {
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_5xx" {
-  count = var.env != "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 0 : 1
 
   name = "APIGW-BFF-5xx"
 
@@ -81,7 +81,7 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_5xx" {
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_5xx" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   name = "APIGW-BFF-5xx"
 
@@ -96,7 +96,7 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_5xx" {
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_waf_block" {
-  count = var.env != "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 0 : 1
 
   name = "APIGW-BFF-WAF-Block"
 
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_waf_block" {
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_waf_block" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   name = "APIGW-BFF-WAF-Block"
 

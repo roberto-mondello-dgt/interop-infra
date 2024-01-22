@@ -621,7 +621,7 @@ module "data_preparation_bucket" {
 }
 
 module "frontend_additional_assets_bucket" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_new_bff_apigw ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.14.1"
