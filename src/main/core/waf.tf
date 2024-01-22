@@ -1,3 +1,7 @@
+locals {
+  waf_bff_prefix_regex = var.env == "dev" ? "^/\\d\\.\\d/backend-for-frontend" : "^/backend-for-frontend/.*"
+}
+
 resource "aws_wafv2_web_acl" "interop" {
   name  = format("%s-web-acl-%s", var.short_name, var.env)
   scope = "REGIONAL"
@@ -47,23 +51,7 @@ resource "aws_wafv2_web_acl" "interop" {
                     field_to_match {
                       uri_path {}
                     }
-                    regex_string = "^/catalog-process/.*/eservices/.*/descriptors/.*/documents$"
-                    text_transformation {
-                      priority = 0
-                      type     = "NONE"
-                    }
-                  }
-                }
-              }
-            }
-            statement {
-              not_statement {
-                statement {
-                  regex_match_statement {
-                    field_to_match {
-                      uri_path {}
-                    }
-                    regex_string = "^/backend-for-frontend/.*/eservices/.*/descriptors/.*/documents$"
+                    regex_string = "${local.waf_bff_prefix_regex}/eservices/.*/descriptors/.*/documents$"
                     text_transformation {
                       priority = 0
                       type     = "NONE"
@@ -80,7 +68,7 @@ resource "aws_wafv2_web_acl" "interop" {
                     field_to_match {
                       uri_path {}
                     }
-                    regex_string = "^/backend-for-frontend/.*/agreements/.*/consumer-documents$"
+                    regex_string = "${local.waf_bff_prefix_regex}/agreements/.*/consumer-documents$"
                     text_transformation {
                       priority = 0
                       type     = "NONE"
@@ -142,7 +130,7 @@ resource "aws_wafv2_web_acl" "interop" {
                 field_to_match {
                   uri_path {}
                 }
-                regex_string = "^/catalog-process/.*/eservices/.*/descriptors/.*/documents$"
+                regex_string = "${local.waf_bff_prefix_regex}/eservices/.*/descriptors/.*/documents$"
                 text_transformation {
                   priority = 0
                   type     = "NONE"
@@ -155,20 +143,7 @@ resource "aws_wafv2_web_acl" "interop" {
                 field_to_match {
                   uri_path {}
                 }
-                regex_string = "^/backend-for-frontend/.*/eservices/.*/descriptors/.*/documents$"
-                text_transformation {
-                  priority = 0
-                  type     = "NONE"
-                }
-              }
-            }
-
-            statement {
-              regex_match_statement {
-                field_to_match {
-                  uri_path {}
-                }
-                regex_string = "^/backend-for-frontend/.*/agreements/.*/consumer-documents$"
+                regex_string = "${local.waf_bff_prefix_regex}/agreements/.*/consumer-documents$"
                 text_transformation {
                   priority = 0
                   type     = "NONE"
