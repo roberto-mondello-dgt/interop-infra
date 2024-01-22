@@ -213,6 +213,16 @@ variable "interop_api_openapi_path" {
   type        = string
 }
 
+variable "interop_bff_openapi_path" {
+  description = "Relative path of Interop BFF OpenAPI definition file"
+  type        = string
+}
+
+variable "interop_frontend_assets_openapi_path" {
+  description = "Relative path of Interop Frontend Assets OpenAPI definition file"
+  type        = string
+}
+
 variable "interop_landing_domain_name" {
   description = "Domain name of the Interop landing page"
   type        = string

@@ -66,26 +66,60 @@ resource "aws_cloudwatch_query_definition" "apigw_auth_server_waf_block" {
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_5xx" {
+  count = var.env != "dev" ? 1 : 0
+
   name = "APIGW-BFF-5xx"
 
   log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
 
   query_string = <<-EOT
     fields @timestamp, @message
-    | filter apigwId = "${module.interop_selfcare_apigw.apigw_id}"
+    | filter apigwId = "${module.interop_selfcare_apigw[0].apigw_id}"
+    | filter status like /5./
+    | sort @timestamp desc
+  EOT
+}
+
+resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_5xx" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "APIGW-BFF-5xx"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter (apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}" or apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}")
     | filter status like /5./
     | sort @timestamp desc
   EOT
 }
 
 resource "aws_cloudwatch_query_definition" "apigw_bff_waf_block" {
+  count = var.env != "dev" ? 1 : 0
+
   name = "APIGW-BFF-WAF-Block"
 
   log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
 
   query_string = <<-EOT
     fields @timestamp, @message
-    | filter apigwId = "${module.interop_selfcare_apigw.apigw_id}"
+    | filter apigwId = "${module.interop_selfcare_apigw[0].apigw_id}"
+    | filter wafStatus != "200"
+    | sort @timestamp desc
+  EOT
+}
+
+resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_waf_block" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "APIGW-BFF-WAF-Block"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter (apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}" or apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}")
     | filter wafStatus != "200"
     | sort @timestamp desc
   EOT
