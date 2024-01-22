@@ -49,10 +49,10 @@ probing_domain_ns_records = [
   "ns-826.awsdns-39.net",
 ]
 
-interop_frontend_assets_openapi_path = "./openapi/dev/frontend-assets/frontend-assets.yaml"
-interop_bff_openapi_path             = "./openapi/dev/backend-for-frontend/interop-backend-for-frontend.yaml"
-interop_auth_openapi_path            = "./openapi/dev/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path             = "./openapi/dev/internal-api-gateway/interop-api-v1.0-79a6c14fea726bfa66fe057d7880546ebac0e6d6.yaml"
+interop_frontend_assets_openapi_path = "./openapi/dev/interop-frontend-assets.yaml"
+interop_bff_openapi_path             = "./openapi/dev/interop-backend-for-frontend-v1.0.yaml"
+interop_auth_openapi_path            = "./openapi/dev/interop-auth-server.yaml"
+interop_api_openapi_path             = "./openapi/dev/interop-api-v1.0.yaml"
 
 interop_landing_domain_name = "dev.interop.pagopa.it"
 
