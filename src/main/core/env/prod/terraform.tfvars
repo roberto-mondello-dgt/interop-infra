@@ -71,11 +71,20 @@ dns_interop_qa_ns_records = [
   "ns-1108.awsdns-10.org."
 ]
 
+signalhub_domain_ns_records = [
+  "ns-252.awsdns-31.com.",
+  "ns-552.awsdns-05.net.",
+  "ns-1597.awsdns-07.co.uk.",
+  "ns-1348.awsdns-40.org."
+]
+
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
 
-interop_auth_openapi_path = "./openapi/prod/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path  = "./openapi/prod/internal-api-gateway/interop-api-v1.0-316e901f76e444ce898a6b087780efa2d51c3cf8.yaml"
+interop_frontend_assets_openapi_path = ""
+interop_bff_openapi_path             = ""
+interop_auth_openapi_path            = "./openapi/prod/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
+interop_api_openapi_path             = "./openapi/prod/internal-api-gateway/interop-api-v1.0-316e901f76e444ce898a6b087780efa2d51c3cf8.yaml"
 
 interop_landing_domain_name = "interop.pagopa.it"
 
