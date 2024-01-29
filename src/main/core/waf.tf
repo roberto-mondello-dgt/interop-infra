@@ -1,5 +1,8 @@
 locals {
-  waf_bff_prefix_regex = var.env == "dev" ? "^/\\d\\.\\d/backend-for-frontend" : "^/backend-for-frontend/.*"
+  waf_bff_prefix_regex = (var.env == "dev" || var.env == "qa"
+    ? "^/\\d\\.\\d/backend-for-frontend"
+    : "^/backend-for-frontend/.*"
+  )
 }
 
 resource "aws_wafv2_web_acl" "interop" {
