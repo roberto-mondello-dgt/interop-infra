@@ -1,4 +1,4 @@
-module "application_documents_refactor_bucket" {
+module "be_refactor_application_documents_bucket" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"

@@ -13,7 +13,7 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Resource = format("%s/*", module.application_documents_refactor_bucket[0].s3_bucket_arn)
+        Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
       }
     ]
   })
@@ -44,6 +44,37 @@ resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
           "${local.msk_group_iam_prefix}/catalog-readmodel-writer"
         ]
       }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_agreement_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAgreementProcessRefactorPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.be_refactor_persistence_events_queue[0].queue_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.be_refactor_certified_mail_queue[0].queue_arn
+      },
     ]
   })
 }
