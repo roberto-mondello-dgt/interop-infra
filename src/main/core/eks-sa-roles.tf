@@ -1,6 +1,9 @@
 # TODO: rename roles after migration
 locals {
   role_prefix = format("interop-iam-service-%s", var.env)
+
+  # workaround to allow both 'dev' and 'dev-refactor'
+  k8s_namespace_irsa = local.deploy_be_refactor_infra ? "dev*" : var.env
 }
 
 module "be_agreement_management_irsa" {
@@ -12,7 +15,7 @@ module "be_agreement_management_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-agreement-management"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-management"]
     }
   }
 
@@ -30,7 +33,7 @@ module "be_authorization_management_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-authorization-management"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-management"]
     }
   }
 
@@ -48,7 +51,7 @@ module "be_agreement_process_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-agreement-process"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-process"]
     }
   }
 
@@ -66,7 +69,7 @@ module "be_catalog_management_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-catalog-management"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-management"]
     }
   }
 
@@ -84,7 +87,7 @@ module "be_authorization_server_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-authorization-server"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-server"]
     }
   }
 
@@ -102,7 +105,7 @@ module "be_catalog_process_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-catalog-process"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-process"]
     }
   }
 
@@ -120,7 +123,7 @@ module "be_purpose_management_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-purpose-management"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-management"]
     }
   }
 
@@ -138,7 +141,7 @@ module "be_notifier_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-notifier"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-notifier"]
     }
   }
 
@@ -156,7 +159,7 @@ module "be_purpose_process_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-purpose-process"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-process"]
     }
   }
 
@@ -174,7 +177,7 @@ module "be_backend_for_frontend_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-backend-for-frontend"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-backend-for-frontend"]
     }
   }
 
@@ -192,7 +195,7 @@ module "be_selfcare_onboarding_consumer_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-selfcare-onboarding-consumer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-selfcare-onboarding-consumer"]
     }
   }
 
@@ -210,7 +213,7 @@ module "be_anac_certified_attributes_importer_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-anac-certified-attributes-importer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-anac-certified-attributes-importer"]
     }
   }
 
@@ -228,7 +231,7 @@ module "be_ivass_certified_attributes_importer_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-ivass-certified-attributes-importer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-ivass-certified-attributes-importer"]
     }
   }
 
@@ -246,7 +249,7 @@ module "be_attributes_loader_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-attributes-loader"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-attributes-loader"]
     }
   }
 
@@ -264,7 +267,7 @@ module "be_token_details_persister_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-token-details-persister"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-token-details-persister"]
     }
   }
 
@@ -282,7 +285,7 @@ module "be_eservices_monitoring_exporter_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-eservices-monitoring-exporter"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservices-monitoring-exporter"]
     }
   }
 
@@ -300,7 +303,7 @@ module "be_tenants_certified_attributes_updater_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-tenants-cert-attr-updater"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-tenants-cert-attr-updater"]
     }
   }
 
@@ -318,7 +321,7 @@ module "be_certified_mail_sender_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-certified-mail-sender"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-certified-mail-sender"]
     }
   }
 
@@ -336,7 +339,7 @@ module "be_party_registry_refresher_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-party-registry-refresher"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-party-registry-refresher"]
     }
   }
 }
@@ -350,7 +353,7 @@ module "be_metrics_report_generator_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-metrics-report-generator"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-metrics-report-generator"]
     }
   }
 
@@ -368,7 +371,7 @@ module "be_pa_digitale_report_generator_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-padigitale-report-generator"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-padigitale-report-generator"]
     }
   }
 
@@ -386,7 +389,7 @@ module "be_dashboard_metrics_report_generator_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-dashboard-metrics-report-generator"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-dashboard-metrics-report-generator"]
     }
   }
 
@@ -404,7 +407,7 @@ module "be_dtd_catalog_exporter_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-dtd-catalog-exporter"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-dtd-catalog-exporter"]
     }
   }
 
@@ -422,7 +425,7 @@ module "be_privacy_notices_updater_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-privacy-notices-updater"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-privacy-notices-updater"]
     }
   }
 
@@ -440,7 +443,7 @@ module "be_one_trust_notices_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-one-trust-notices"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-one-trust-notices"]
     }
   }
 
@@ -458,7 +461,7 @@ module "be_purposes_archiver_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-purposes-archiver"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purposes-archiver"]
     }
   }
 
@@ -476,7 +479,7 @@ module "be_eservice_descriptors_archiver_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-eservice-descriptors-archiver"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver"]
     }
   }
 
@@ -494,7 +497,7 @@ module "be_dtd_metrics_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${var.env}:interop-be-dtd-metrics"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-dtd-metrics"]
     }
   }
 
