@@ -112,6 +112,11 @@ variable "read_model_instance_class" {
   type        = string
 }
 
+variable "read_model_ca_cert_id" {
+  description = "ID of the Certificate Authority to apply to db instances for SSL connections"
+  type        = string
+}
+
 variable "read_model_number_instances" {
   description = "Number of instances of the DocDB cluster - read model"
   type        = number

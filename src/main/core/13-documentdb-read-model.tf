@@ -148,6 +148,7 @@ resource "aws_docdb_cluster_instance" "read_model_v2" {
   cluster_identifier          = aws_docdb_cluster.read_model_v2.id
   availability_zone           = element(module.vpc_v2.azs, count.index)
   instance_class              = var.read_model_instance_class
+  ca_cert_identifier          = var.read_model_ca_cert_id
   enable_performance_insights = true
 
   apply_immediately = true
