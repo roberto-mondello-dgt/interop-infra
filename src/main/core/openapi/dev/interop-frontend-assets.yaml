@@ -206,7 +206,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/
+        uri: http://${stageVariables.CustomDomainName}/ui/
     head:
       tags:
         - UI
@@ -227,7 +227,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/
+        uri: http://${stageVariables.CustomDomainName}/ui/
     options:
       tags:
         - UI
@@ -248,7 +248,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/
+        uri: http://${stageVariables.CustomDomainName}/ui/
   /ui/{proxy+}:
     get:
       tags:
@@ -270,7 +270,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/{proxy}
+        uri: http://${stageVariables.CustomDomainName}/ui/{proxy}
         requestParameters:
           integration.request.path.proxy: "method.request.path.proxy"
     head:
@@ -293,7 +293,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/{proxy}
+        uri: http://${stageVariables.CustomDomainName}/ui/{proxy}
         requestParameters:
           integration.request.path.proxy: "method.request.path.proxy"
     options:
@@ -316,6 +316,6 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/ui/{proxy}
+        uri: http://${stageVariables.CustomDomainName}/ui/{proxy}
         requestParameters:
           integration.request.path.proxy: "method.request.path.proxy"

@@ -53,7 +53,7 @@ resource "aws_iam_role" "apigw_privacy_notices" {
 resource "aws_iam_role" "apigw_m2m_interface_specification" {
   count = var.m2m_interface_specification_bucket_name != null ? 1 : 0
 
-  name               = format("interop-%s-apigw-m2m-interface-specification-%s", var.api_name, var.env)
+  name               = format("interop-%s-apigw-m2m-spec-%s", var.api_name, var.env)
   assume_role_policy = data.aws_iam_policy_document.apigw_assume[0].json
 
   inline_policy {

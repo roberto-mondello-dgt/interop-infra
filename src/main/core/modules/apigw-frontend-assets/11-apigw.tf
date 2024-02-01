@@ -54,8 +54,8 @@ resource "aws_api_gateway_stage" "env" {
   stage_name = var.env
 
   variables = {
-    VpcLinkId = var.vpc_link_id
-    NLBDomain = var.nlb_domain_name
+    VpcLinkId        = var.vpc_link_id
+    CustomDomainName = var.domain_name
   }
 
   dynamic "access_log_settings" {

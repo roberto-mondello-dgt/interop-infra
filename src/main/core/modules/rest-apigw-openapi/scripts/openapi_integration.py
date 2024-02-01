@@ -7,7 +7,7 @@ import json
 http_methods = ["get", "head", "options", "trace", "post", "put", "patch", "delete"]
 
 def generate_apigw_integration(path_uri, path_parameters, api_version, use_service_prefix):
-    base_integration_uri = "http://${stageVariables.NLBDomain}"
+    base_integration_uri = "http://${stageVariables.CustomDomainName}"
 
     if use_service_prefix:
         base_integration_uri += "/${stageVariables.ServicePrefix}"
