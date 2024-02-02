@@ -23,11 +23,6 @@ variable "vpc_link_id" {
   type        = string
 }
 
-variable "nlb_domain_name" {
-  description = "Domain name of the NLB used to route backend requests"
-  type        = string
-}
-
 variable "web_acl_arn" {
   description = "ARN of the WAF Web ACL to associate to this APIGW's stage"
   type        = string
@@ -43,11 +38,9 @@ variable "access_log_group_arn" {
 variable "privacy_notices_bucket_name" {
   description = "Name of the S3 bucket containing the privacy notices"
   type        = string
-  default     = null
 }
 
-variable "m2m_interface_specification_bucket_name" {
-  description = "Name of the S3 bucket containing the M2M interface specification"
+variable "frontend_additional_assets_bucket_name" {
+  description = "Name of the S3 bucket containing frontend additional assets"
   type        = string
-  default     = null
 }

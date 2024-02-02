@@ -65,92 +65,69 @@ def integrate_openapi(openapi, api_version, use_service_prefix):
 def main(argv):
     input_file = ''
     output_file = ''
+    api_name = ''
     api_version = ''
     use_service_prefix = False
-    is_bff = False
-    swagger_additional_path_file = ''
+    swagger_file = ''
     openapi = None
     integrated_openapi = None
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:v:pbs:", ["input=", "output=", "api-version=", "use-service-prefix", "backend-for-frontend", "swagger"])
+        opts, args = getopt.getopt(argv, "hi:o:n:v:ps:", ["input=", "output=", "api-name=", "api-version=", "use-service-prefix", "swagger="])
     except getopt.GetoptError:
-        print('openapi_integration.py -i <input-file> [-o <output-file>] [-v <api-version>] [-p] [-b] [-s <swagger-additional-path-file>]')
+        print('openapi_integration.py -i <input-file> [-o <output-file>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            print('openapi_integration.py -i <input-file> [-o <output-file>] [-v <api-version>] [-p] [-b]')
+            print('openapi_integration.py -i <input-file> [-o <output-file>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
             sys.exit()
         elif opt in ("-i", "--input"):
             input_file = arg
         elif opt in ("-o", "--output"):
             output_file = arg
+        elif opt in ("-n", "--api-name"):
+            api_name = arg
         elif opt in ("-v", "--api-version"):
             api_version = arg
         elif opt in ("-p", "--use-service-prefix"):
             use_service_prefix = True
-        elif opt in ("-b", "--backend-for-frontend"):
-            is_bff = True
         elif opt in ("-s", "--swagger"):
-            swagger_additional_path_file = arg
+            swagger_file = arg
 
     if input_file == '':
-        print('openapi_integration.py -i <inputfile> [-o <outputfile>] [-v <api-version>] [-p] [-b]')
+        print('openapi_integration.py -i <inputfile> [-o <outputfile>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
         sys.exit(2)
 
-    '''
-    #Get the JSON input from the Terraform query object
-    input_json = sys.stdin.read()
-    #Convert the JSON input into a dictionary
-    input_data = json.loads(input_json)
-    '''
-    
     with open(input_file, mode="r", encoding="utf-8") as f:
         openapi = yaml.load(f, Loader=yaml.FullLoader)
 
-    #Integrate the OpenAPI
     integrated_openapi = integrate_openapi(openapi, api_version, use_service_prefix)
 
-    if swagger_additional_path_file != '':
-        #Open the Swagger additional path file
-        with open(swagger_additional_path_file, mode="r", encoding="utf-8") as f:
-            #Load the content of the Swagger additional path file into the swagger_additional_paths_content variable
-            swagger_additional_paths_file_content = yaml.load(f, Loader=yaml.FullLoader)
-            #Copy the content of the paths object into the swagger_additional_paths variable
-            swagger_additional_paths_file_paths = copy.deepcopy(swagger_additional_paths_file_content.get("paths", {}))
-            #Append the content of the bff_openapi_additional_paths to the bottom of the paths object into the integrated_openapi variable
-            integrated_openapi['paths'].update(swagger_additional_paths_file_paths)
-
-
-    #If the APIGW is related to the BFF, then:
-    if is_bff:
+    #If we're creating the BFF APIGW, then:
+    if api_name == "selfcare":
         #Add the prefix "/backend-for-frontend" to any path in the "paths object" of the BFF OpenAPI
         for path in list(integrated_openapi.get('paths', {}).keys()):
             edited_path = f'/backend-for-frontend{path}'
             integrated_openapi['paths'][edited_path] = integrated_openapi['paths'].pop(path)
-        
-        '''
-        #Load the additional paths file
-        additional_paths_file = input_data.get("additional_paths_file")
 
-        #Open the BFF OpenAPI Additional Paths file
-        with open(additional_paths_file, mode="r", encoding="utf-8") as f:
-            #Load the content of the BFF OpenAPI Additional Paths file into the additional_paths_content variable
-            additional_paths_content = yaml.load(f, Loader=yaml.FullLoader)
+    #If the path of the "Swagger additional path" file is available, then:
+    if swagger_file != '':
+        #Open the Swagger additional path file
+        with open(swagger_file, mode="r", encoding="utf-8") as f:
+            #Load the content of the Swagger additional path file into the swagger_additional_paths_content variable
+            swagger_openapi = yaml.load(f, Loader=yaml.FullLoader)
 
-            #Edit the uri and credentials attributes into the BFF OpenAPI Additional Paths file with the input received from Terraform
-            additional_paths_content['paths']['/consent/latest/{lang}/pp.json']['get']['x-amazon-apigateway-integration']['uri'] = privacy_notices_s3_bucket_arn + "/consent/latest/{lang}/pp.json"
-            additional_paths_content['paths']['/consent/latest/{lang}/pp.json']['get']['x-amazon-apigateway-integration']['credentials'] = privacy_notices_role_arn
-            additional_paths_content['paths']['/consent/latest/{lang}/tos.json']['get']['x-amazon-apigateway-integration']['uri'] = privacy_notices_s3_bucket_arn + "/consent/latest/{lang}/tos.json"
-            additional_paths_content['paths']['/consent/latest/{lang}/tos.json']['get']['x-amazon-apigateway-integration']['credentials'] = privacy_notices_role_arn
+            if api_name == "selfcare":
+                #Add the prefix "/backend-for-frontend" to any path in the "paths object" of the Swagger OpenAPI
+                for path in list(swagger_openapi.get('paths', {}).keys()):
+                    edited_path = f'/backend-for-frontend{path}'
+                    swagger_openapi['paths'][edited_path] = swagger_openapi['paths'].pop(path)
 
-            #Copy the content of the paths object into the bff_openapi_additional_paths variable
-            bff_openapi_additional_paths = copy.deepcopy(additional_paths_content.get("paths", {}))
-
-            #Append the content of the bff_openapi_additional_paths to the bottom of the paths object into the integrated_openapi variable
-            integrated_openapi['paths'].update(bff_openapi_additional_paths)
-        '''
+            #Copy the content of the paths object into the swagger_paths variable
+            swagger_paths = copy.deepcopy(swagger_openapi.get("paths", {}))
+            #Append the content of the swagger_paths to the bottom of the paths object into the integrated_openapi variable
+            integrated_openapi['paths'].update(swagger_paths)
 
     if output_file != '':
         with open(output_file, mode="w", encoding="utf-8") as f:

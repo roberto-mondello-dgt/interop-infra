@@ -29,11 +29,6 @@ variable "vpc_link_id" {
   type        = string
 }
 
-variable "nlb_domain_name" {
-  description = "Domain name of the NLB used to route backend requests"
-  type        = string
-}
-
 variable "service_prefix" {
   description = "Prefix to use when building backend integration URI"
   type        = string
@@ -50,9 +45,4 @@ variable "access_log_group_arn" {
   description = "ARN of the log group where to store APIGW access logs"
   type        = string
   default     = null
-}
-
-variable "is_bff" {
-  description = "Set to true if this APIGW is being used for the BFF"
-  type        = bool
 }

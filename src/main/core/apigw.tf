@@ -21,9 +21,7 @@ module "interop_auth_apigw" {
   openapi_relative_path = var.interop_auth_openapi_path
   domain_name           = module.interop_auth_domain.apigw_custom_domain_name
 
-  is_bff               = false
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "authorization-server"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -70,10 +68,7 @@ module "interop_selfcare_1dot0_apigw" {
   openapi_relative_path = var.interop_bff_openapi_path
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
 
-  is_bff = true
-
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "backend-for-frontend"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -90,10 +85,7 @@ module "interop_selfcare_0dot0_apigw" {
   openapi_relative_path = var.interop_bff_openapi_path
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
 
-  is_bff = true
-
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "backend-for-frontend"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -109,11 +101,10 @@ module "interop_frontend_assets_apigw" {
   openapi_relative_path = var.interop_frontend_assets_openapi_path
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
 
-  privacy_notices_bucket_name             = module.privacy_notices_content_bucket.s3_bucket_id
-  m2m_interface_specification_bucket_name = module.frontend_additional_assets_bucket[0].s3_bucket_id
+  privacy_notices_bucket_name            = module.privacy_notices_content_bucket.s3_bucket_id
+  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket[0].s3_bucket_id
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
 }
@@ -135,9 +126,7 @@ module "interop_api_1dot0_apigw" {
   openapi_relative_path = var.interop_api_openapi_path
   domain_name           = module.interop_api_domain.apigw_custom_domain_name
 
-  is_bff               = false
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
@@ -154,9 +143,7 @@ module "interop_api_0dot0_apigw" {
   openapi_relative_path = var.interop_api_openapi_path
   domain_name           = module.interop_api_domain.apigw_custom_domain_name
 
-  is_bff               = false
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
-  nlb_domain_name      = module.nlb_v2.lb_dns_name
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn

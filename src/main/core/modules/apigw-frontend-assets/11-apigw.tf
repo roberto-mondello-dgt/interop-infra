@@ -1,17 +1,17 @@
 locals {
   openapi_abs_path = abspath(var.openapi_relative_path)
+  api_name_options = ["-n", var.api_name]
 }
 
 data "external" "openapi_integration" {
-  program = concat(["python3", "${path.module}/scripts/openapi_append_parameters.py",
-  "-i", local.openapi_abs_path])
+  program = concat(["python3", "${path.module}/scripts/openapi_integration.py",
+  "-i", local.openapi_abs_path], local.api_name_options)
 
-  query = {
-    privacy_notices_s3_bucket_arn             = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.privacy_notices[0].bucket}"
-    privacy_notices_role_arn                  = aws_iam_role.apigw_privacy_notices[0].arn
-    m2m_interface_specification_s3_bucket_arn = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.m2m_interface_specification[0].bucket}"
-    m2m_interface_specification_role_arn      = aws_iam_role.apigw_m2m_interface_specification[0].arn
-  }
+  query = var.api_name == "frontend-assets" ? {
+    privacy_notices_s3_bucket_arn            = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.privacy_notices.bucket}"
+    frontend_additional_assets_s3_bucket_arn = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.frontend_additional_assets.bucket}"
+    frontend_additional_assets_role_arn      = aws_iam_role.apigw_frontend_additional_assets.arn
+  } : {}
 }
 
 resource "aws_api_gateway_rest_api" "this" {
@@ -19,7 +19,7 @@ resource "aws_api_gateway_rest_api" "this" {
 
   name = (format("interop-%s-%s", var.api_name, var.env))
 
-  body               = data.external.openapi_integration.result.computed_openapi_yaml
+  body               = data.external.openapi_integration.result.integrated_openapi_yaml
   put_rest_api_mode  = "overwrite"
   binary_media_types = ["multipart/form-data"]
 
@@ -37,7 +37,7 @@ resource "aws_api_gateway_deployment" "this" {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.this.body,
       var.vpc_link_id,
-      var.nlb_domain_name,
+      var.domain_name,
     ]))
   }
 

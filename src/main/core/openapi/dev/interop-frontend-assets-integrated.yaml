@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: interop-frontend-assets
-  description: Provides endpoints to request UI, Policy Notices and M2M Interface Specification.
+  description: Provides endpoints to request UI, Policy Notices, M2M Interface Specification, and other frontend assets.
   version: 0.0
   contact:
     name: API Support
@@ -20,6 +20,10 @@ tags:
     description: Returns Privacy Notices
   - name: interface specification
     description: Returns M2M Interface Specification
+  - name: maintenance window
+    description: Returns Maintenance Window data
+  - name: temp-blacklist
+    description: Returns Temp Blacklist data
 paths:
   /:
     get:
@@ -53,6 +57,7 @@ paths:
         - consent
         - privacy
         - notices
+        - s3
       summary: Get pp.json
       description: Returns a JSON containing privacy notices.
       responses:
@@ -78,7 +83,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionType: INTERNET
         uri: $PrivacyNoticesS3BucketARN
-        credentials: $PrivacyNoticesRoleARN
+        credentials: $FrontendAdditionalAssetsRoleARN
         requestParameters:
           integration.request.path.lang: "method.request.path.lang"
         responses:
@@ -100,6 +105,7 @@ paths:
         - consent
         - privacy
         - notices
+        - s3
       summary: Get tos.json
       description: Returns a JSON containing privacy notices.
       responses:
@@ -125,7 +131,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionType: INTERNET
         uri: $PrivacyNoticesS3BucketARN
-        credentials: $PrivacyNoticesRoleARN
+        credentials: $FrontendAdditionalAssetsRoleARN
         requestParameters:
           integration.request.path.lang: "method.request.path.lang"
         responses:
@@ -146,6 +152,7 @@ paths:
       tags:
         - m2m
         - api
+        - s3
       summary: Get interface-specification.yaml
       description: Returns a YAML containing m2m interface specification.
       responses:
@@ -170,8 +177,97 @@ paths:
         httpMethod: GET
         passthroughBehavior: when_no_match
         connectionType: INTERNET
-        uri: $M2MInterfaceSpecificationS3BucketARN
-        credentials: $M2MInterfaceSpecificationRoleARN
+        uri: $FrontendAdditionalAssetsS3BucketARN
+        credentials: $FrontendAdditionalAssetsRoleARN
+        responses:
+          '':
+            statusCode: 200
+            responseParameters:
+              method.response.header.Content-Length: "integration.response.header.Content-Length"
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Timestamp: "integration.response.header.Date"
+          '403':
+            statusCode: 404
+            responseTemplates:
+              application/xml: "#set($inputRoot = $input.path('$'))"
+          '5\\d{2}':
+            statusCode: 500
+  /maintenance-window/data.json:
+    get:
+      tags:
+        - maintenance
+        - window
+        - s3
+      summary: Get /maintenance-window/data.json
+      description: Returns a JSON containing maintenance window data.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Length:
+              schema:
+                type: string
+            Content-Type:
+              schema:
+                type: string
+            Timestamp:
+              schema:
+                type: string
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: $FrontendAdditionalAssetsS3BucketARN
+        credentials: $FrontendAdditionalAssetsRoleARN
+        responses:
+          '':
+            statusCode: 200
+            responseParameters:
+              method.response.header.Content-Length: "integration.response.header.Content-Length"
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Timestamp: "integration.response.header.Date"
+          '403':
+            statusCode: 404
+            responseTemplates:
+              application/xml: "#set($inputRoot = $input.path('$'))"
+          '5\\d{2}':
+            statusCode: 500
+  /temp-blacklist.json:
+    get:
+      tags:
+        - blacklist
+        - s3
+      summary: Get temp-blacklist.json
+      description: Returns a JSON containing the blacklist.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Length:
+              schema:
+                type: string
+            Content-Type:
+              schema:
+                type: string
+            Timestamp:
+              schema:
+                type: string
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: $FrontendAdditionalAssetsS3BucketARN
+        credentials: $FrontendAdditionalAssetsRoleARN
         responses:
           '':
             statusCode: 200

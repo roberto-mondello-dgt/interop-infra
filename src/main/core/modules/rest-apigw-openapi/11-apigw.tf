@@ -1,15 +1,15 @@
 locals {
   openapi_abs_path       = abspath(var.openapi_relative_path)
+  api_name_options       = ["-n", var.api_name]
   api_version_options    = var.api_version != null ? ["-v", var.api_version] : []
   service_prefix_options = var.service_prefix != null ? ["-p"] : []
-  bff_options            = var.is_bff ? ["-b"] : []
-  swagger_options        = (var.env == "dev" && (var.service_prefix == "backend-for-frontend" || var.service_prefix == "api-gateway")) ? ["-s", "${path.module}/scripts/swagger-additional-path.yaml"] : []
+  swagger_options        = (var.env == "dev" && (var.api_name == "selfcare" || var.api_name == "api")) ? ["-s", "${path.module}/scripts/swagger-additional-paths.yaml"] : []
 }
 
 data "external" "openapi_integration" {
   program = concat(["python3", "${path.module}/scripts/openapi_integration.py",
     "-i", local.openapi_abs_path],
-  local.api_version_options, local.service_prefix_options, local.bff_options, local.swagger_options)
+  local.api_name_options, local.api_version_options, local.service_prefix_options, local.swagger_options)
 }
 
 resource "aws_api_gateway_rest_api" "this" {
@@ -36,7 +36,7 @@ resource "aws_api_gateway_deployment" "this" {
     redeployment = sha1(jsonencode([
       aws_api_gateway_rest_api.this.body,
       var.vpc_link_id,
-      var.nlb_domain_name,
+      var.domain_name,
       var.service_prefix
     ]))
   }

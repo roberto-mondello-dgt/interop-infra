@@ -50,7 +50,7 @@ probing_domain_ns_records = [
   "ns-826.awsdns-39.net",
 ]
 
-interop_frontend_assets_openapi_path = "./openapi/dev/interop-frontend-assets.yaml"
+interop_frontend_assets_openapi_path = "./openapi/dev/interop-frontend-assets-integrated.yaml"
 interop_bff_openapi_path             = "./openapi/dev/interop-backend-for-frontend-v1.0.yaml"
 interop_auth_openapi_path            = "./openapi/dev/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/dev/interop-api-v1.0.yaml"
