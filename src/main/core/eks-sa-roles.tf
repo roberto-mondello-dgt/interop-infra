@@ -372,6 +372,8 @@ module "be_party_registry_refresher_irsa" {
 
   role_name = format("%s-interop-be-party-registry-refresher", local.role_prefix)
 
+  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
@@ -405,6 +407,8 @@ module "be_pa_digitale_report_generator_irsa" {
   version = "5.20.0"
 
   role_name = format("interop-be-padigitale-report-generator-%s", var.env)
+
+  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -444,6 +448,8 @@ module "be_dtd_catalog_exporter_irsa" {
 
   role_name = format("interop-be-dtd-catalog-exporter-%s", var.env)
 
+  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
@@ -482,6 +488,8 @@ module "be_one_trust_notices_irsa" {
 
   role_name = format("interop-be-one-trust-notices-%s", var.env)
 
+  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
@@ -519,6 +527,8 @@ module "be_eservice_descriptors_archiver_irsa" {
   version = "5.20.0"
 
   role_name = format("interop-be-eservice-descriptors-archiver-%s", var.env)
+
+  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
