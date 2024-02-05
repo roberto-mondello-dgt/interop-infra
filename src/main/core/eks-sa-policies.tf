@@ -462,7 +462,26 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
         Effect   = "Allow",
         Action   = "s3:PutObject"
         Resource = format("%s/*", module.public_catalog_bucket.s3_bucket_arn)
-    }]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "athena:GetQueryExecution",
+          "athena:GetQueryResults",
+          "athena:StartQueryExecution",
+          "athena:StopQueryExecution"
+        ]
+        Resource = aws_athena_workgroup.interop_queries.arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.athena_query_results_bucket.s3_bucket_arn)
+      },
+    ]
   })
 }
 
