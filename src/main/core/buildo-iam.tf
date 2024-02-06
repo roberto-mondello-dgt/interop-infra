@@ -49,6 +49,8 @@ resource "aws_iam_role" "buildo_developers" {
 
   name = format("%s-buildo-developers-%s", var.short_name, var.env)
 
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
+
   max_session_duration = 43200 # 12 hours
 
   assume_role_policy = jsonencode({
@@ -211,30 +213,18 @@ resource "aws_iam_role" "buildo_developers" {
   }
 
   inline_policy {
-    name = "DebugRefreshRole"
+    name = "S3ApplicationDocuments"
 
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
-          Sid    = "RevokeSessions"
           Effect = "Allow"
           Action = [
-            "iam:GetRole",
-            "iam:GetPolicyVersion",
-            "iam:ListRoleTags",
-            "iam:GetPolicy",
-            "iam:PutRolePolicy",
-            "iam:ListRolePolicies",
-            "iam:GetRolePolicy"
+            "s3:PutObject",
+            "s3:DeleteObject"
           ]
-          Resource = module.be_refactor_catalog_readmodel_writer_irsa[0].iam_role_arn
-        },
-        {
-          Sid      = "ListRolesForDebug"
-          Effect   = "Allow"
-          Action   = "iam:ListRoles"
-          Resource = "*"
+          Resource = module.be_refactor_application_documents_bucket[0].s3_bucket_arn
         }
       ]
     })
