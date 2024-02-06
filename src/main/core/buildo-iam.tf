@@ -224,7 +224,7 @@ resource "aws_iam_role" "buildo_developers" {
             "s3:PutObject",
             "s3:DeleteObject"
           ]
-          Resource = module.be_refactor_application_documents_bucket[0].s3_bucket_arn
+          Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
         }
       ]
     })
