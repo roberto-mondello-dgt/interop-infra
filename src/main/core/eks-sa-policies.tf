@@ -97,15 +97,18 @@ resource "aws_iam_policy" "be_authorization_server" {
       {
         Effect = "Allow"
         Action = "kms:Sign"
-        Resource = [
+        Resource = compact([
           aws_kms_key.interop.arn,
           try(aws_kms_key.be_refactor_interop[0].arn, "")
-        ]
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "s3:PutObject"
-        Resource = format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn)
+        Effect = "Allow"
+        Action = "s3:PutObject"
+        Resource = compact([
+          format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_generated_jwt_details_fallback_bucket[0].s3_bucket_arn), "")
+        ])
     }]
   })
 }
@@ -173,10 +176,10 @@ resource "aws_iam_policy" "be_notifier" {
       {
         Effect = "Allow"
         Action = "kms:Sign"
-        Resource = [
+        Resource = compact([
           aws_kms_key.interop.arn,
           try(aws_kms_key.be_refactor_interop[0].arn, "")
-        ]
+        ])
     }]
   })
 }
@@ -227,10 +230,10 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
       {
         Effect = "Allow"
         Action = "kms:Sign"
-        Resource = [
+        Resource = compact([
           aws_kms_key.interop.arn,
           try(aws_kms_key.be_refactor_interop[0].arn, "")
-        ]
+        ])
       },
       {
         Effect = "Allow"
@@ -268,10 +271,10 @@ resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
     Statement = [{
       Effect = "Allow",
       Action = "kms:Sign",
-      Resource = [
+      Resource = compact([
         aws_kms_key.interop.arn,
         try(aws_kms_key.be_refactor_interop[0].arn, "")
-      ]
+      ])
     }]
   })
 }
@@ -284,10 +287,10 @@ resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
     Statement = [{
       Effect = "Allow",
       Action = "kms:Sign",
-      Resource = [
+      Resource = compact([
         aws_kms_key.interop.arn,
         try(aws_kms_key.be_refactor_interop[0].arn, "")
-      ]
+      ])
     }]
   })
 }
@@ -301,10 +304,10 @@ resource "aws_iam_policy" "be_ivass_certified_attributes_importer" {
       {
         Effect = "Allow",
         Action = "kms:Sign",
-        Resource = [
+        Resource = compact([
           aws_kms_key.interop.arn,
           try(aws_kms_key.be_refactor_interop[0].arn, "")
-        ]
+        ])
       },
       {
         Effect   = "Allow",
@@ -323,10 +326,10 @@ resource "aws_iam_policy" "be_attributes_loader" {
     Statement = [{
       Effect = "Allow"
       Action = "kms:Sign"
-      Resource = [
+      Resource = compact([
         aws_kms_key.interop.arn,
         try(aws_kms_key.be_refactor_interop[0].arn, "")
-      ]
+      ])
     }]
   })
 }
@@ -346,9 +349,12 @@ resource "aws_iam_policy" "be_token_details_persister" {
         Resource = module.generated_jwt_queue.queue_arn
       },
       {
-        Effect   = "Allow",
-        Action   = "s3:PutObject",
-        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+        Effect = "Allow",
+        Action = "s3:PutObject",
+        Resource = compact([
+          format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_generated_jwt_details_bucket[0].s3_bucket_arn))
+        ])
     }]
   })
 }
@@ -375,10 +381,10 @@ resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
     Statement = [{
       Effect = "Allow",
       Action = "kms:Sign",
-      Resource = [
+      Resource = compact([
         aws_kms_key.interop.arn,
         try(aws_kms_key.be_refactor_interop[0].arn, "")
-      ]
+      ])
     }]
   })
 }
@@ -611,10 +617,10 @@ resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
       {
         Effect = "Allow"
         Action = "kms:Sign"
-        Resource = [
+        Resource = compact([
           aws_kms_key.interop.arn,
           try(aws_kms_key.be_refactor_interop[0].arn, "")
-        ]
+        ])
     }]
   })
 }
