@@ -11,7 +11,7 @@ paths:
         passthroughBehavior: when_no_match
         connectionId: ${stageVariables.VpcLinkId}
         connectionType: VPC_LINK
-        uri: http://${stageVariables.NLBDomain}/${stageVariables.ServicePrefix}/${stageVariables.ApiVersion}/swagger/docs/{proxy}
+        uri: http://${stageVariables.CustomDomainName}/${stageVariables.ServicePrefix}/${stageVariables.ApiVersion}/swagger/docs/{proxy}
         requestParameters:
           integration.request.path.proxy: "method.request.path.proxy"
         cacheKeyParameters:
