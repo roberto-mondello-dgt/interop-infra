@@ -38,6 +38,7 @@ read_model_cluster_id           = "read-model"
 read_model_master_username      = "root"
 read_model_engine_version       = "4.0.0"
 read_model_instance_class       = "db.r6g.large"
+read_model_ca_cert_id           = "rds-ca-rsa2048-g1"
 read_model_number_instances     = 3
 read_model_subnet_group_name    = "docdbsubnetgroup-o9tsiei6mmwh"
 read_model_parameter_group_name = "read-model-parameter-group"
@@ -128,6 +129,7 @@ k8s_monitoring_deployments_names = [
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
   "interop-be-certified-mail-sender",
+  "interop-be-eservice-descriptors-archiver",
   "interop-be-selfcare-onboarding-consumer",
   "redis"
 ]
