@@ -19,9 +19,12 @@ resource "aws_iam_policy" "be_authorization_management" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = "sqs:SendMessage"
-      Resource = module.persistence_events_queue.queue_arn
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
     }]
   })
 }
@@ -42,19 +45,28 @@ resource "aws_iam_policy" "be_agreement_process" {
         Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.certified_mail_queue.queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.certified_mail_queue.queue_arn,
+          try(module.be_refactor_certified_mail_queue[0].queue_arn, "")
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.archived_agreements_for_purposes_queue.queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.archived_agreements_for_purposes_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_purposes_queue[0].queue_arn, "")
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.archived_agreements_for_eservices_queue.queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.archived_agreements_for_eservices_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_eservices_queue[0].queue_arn, "")
+        ])
       }
     ]
   })
@@ -133,9 +145,12 @@ resource "aws_iam_policy" "be_purpose_management" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = "sqs:SendMessage"
-      Resource = module.persistence_events_queue.queue_arn
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
     }]
   })
 }
@@ -151,7 +166,10 @@ resource "aws_iam_policy" "be_notifier" {
         "sqs:ReceiveMessage",
         "sqs:DeleteMessage"
       ]
-      Resource = module.persistence_events_queue.queue_arn
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
       },
       {
         Effect = "Allow"
@@ -168,10 +186,12 @@ resource "aws_iam_policy" "be_notifier" {
           "dynamodb:Update*",
           "dynamodb:PutItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.notification_events.arn,
-          aws_dynamodb_table.notification_resources.arn
-        ]
+          aws_dynamodb_table.notification_resources.arn,
+          try(aws_dynamodb_table.be_refactor_notification_events[0].arn, ""),
+          try(aws_dynamodb_table.be_refactor_notification_resources[0].arn, ""),
+        ])
       },
       {
         Effect = "Allow"
@@ -196,12 +216,18 @@ resource "aws_iam_policy" "be_purpose_process" {
           "s3:GetObject",
           "s3:PutObject",
         ]
-        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.persistence_events_queue.queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.persistence_events_queue.queue_arn,
+          try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+        ])
     }]
   })
 }
@@ -218,7 +244,10 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
           "s3:GetObject",
           "s3:PutObject",
         ]
-        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
       },
       {
         Effect = "Allow"
@@ -248,7 +277,10 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
           "dynamodb:GetItem",
           "dynamodb:Query"
         ]
-        Resource = aws_dynamodb_table.privacy_notices.arn
+        Resource = compact([
+          aws_dynamodb_table.privacy_notices.arn,
+          try(aws_dynamodb_table.be_refactor_privacy_notices[0].arn, "")
+        ])
       },
       {
         Effect = "Allow",
@@ -258,7 +290,10 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
           "dynamodb:PutItem",
           "dynamodb:UpdateItem",
         ]
-        Resource = aws_dynamodb_table.privacy_notices_acceptances.arn
+        Resource = compact([
+          aws_dynamodb_table.privacy_notices_acceptances.arn,
+          try(aws_dynamodb_table.be_refactor_privacy_notices_acceptances[0].arn, "")
+        ])
     }]
   })
 }
@@ -346,14 +381,17 @@ resource "aws_iam_policy" "be_token_details_persister" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage"
         ]
-        Resource = module.generated_jwt_queue.queue_arn
+        Resource = compact([
+          module.generated_jwt_queue.queue_arn,
+          try(module.be_refactor_generated_jwt_queue[0].queue_arn, "")
+        ])
       },
       {
         Effect = "Allow",
         Action = "s3:PutObject",
         Resource = compact([
           format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn),
-          try(format("%s/*", module.be_refactor_generated_jwt_details_bucket[0].s3_bucket_arn))
+          try(format("%s/*", module.be_refactor_generated_jwt_details_bucket[0].s3_bucket_arn), "")
         ])
     }]
   })
@@ -492,25 +530,7 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
         Effect   = "Allow",
         Action   = "s3:PutObject"
         Resource = format("%s/*", module.public_catalog_bucket.s3_bucket_arn)
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "athena:GetQueryExecution",
-          "athena:GetQueryResults",
-          "athena:StartQueryExecution",
-          "athena:StopQueryExecution"
-        ]
-        Resource = aws_athena_workgroup.interop_queries.arn
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject"
-        ]
-        Resource = format("%s/*", module.athena_query_results_bucket.s3_bucket_arn)
-      },
+      }
     ]
   })
 }
@@ -595,7 +615,10 @@ resource "aws_iam_policy" "be_purposes_archiver" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage"
         ]
-        Resource = module.archived_agreements_for_purposes_queue.queue_arn
+        Resource = compact([
+          module.archived_agreements_for_purposes_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_purposes_queue[0].queue_arn, "")
+        ])
     }]
   })
 }
@@ -612,7 +635,10 @@ resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage"
         ]
-        Resource = module.archived_agreements_for_eservices_queue.queue_arn
+        Resource = compact([
+          module.archived_agreements_for_eservices_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_eservices_queue[0].queue_arn, "")
+        ])
       },
       {
         Effect = "Allow"
@@ -643,7 +669,41 @@ resource "aws_iam_policy" "be_dtd_metrics" {
           "s3:PutObject"
         ]
         Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
-    }]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "athena:GetQueryExecution",
+          "athena:GetQueryResults",
+          "athena:StartQueryExecution",
+          "athena:StopQueryExecution"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          module.athena_query_results_bucket.s3_bucket_arn,
+          format("%s/*", module.athena_query_results_bucket.s3_bucket_arn),
+          module.generated_jwt_details_bucket.s3_bucket_arn,
+          format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetTable*"
+        ]
+        Resource = "*"
+      },
+    ]
   })
 }
 
