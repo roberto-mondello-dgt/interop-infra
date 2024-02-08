@@ -28,14 +28,15 @@ resource "aws_secretsmanager_secret" "docdb_password_refactor" {
   name = "documentdb-password-refactor"
 }
 
-# resource "aws_secretsmanager_secret" "postgres_migration_username" {
-#   count = var.env == "dev" ? 1 : 0
-#
-#   name = "postgres-migration-username"
-# }
-#
-# resource "aws_secretsmanager_secret" "postgres_migration_password" {
-#   count = var.env == "dev" ? 1 : 0
-#
-#   name = "postgres-migration-password"
-# }
+resource "aws_secretsmanager_secret" "flyway_event_store_username" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "flyway-event-store-username"
+}
+
+resource "aws_secretsmanager_secret" "flyway_event_store_password" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "flyway-event-store-password"
+}
+
