@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debezium-event-store
+  labels:
+    app: debezium-event-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debezium-event-store
+  template:
+    metadata:
+      labels:
+        app: debezium-event-store
+    spec:
+      volumes:
+        - name: configuration
+          configMap:
+            name: debezium-event-store
+      containers:
+        - name: debezium-event-store
+          image: debezium/connect:2.4.0.Final
+          volumeMounts:
+            - name: configuration
+              mountPath: /kafka/config/connect-distributed.properties
+              subPath: connect-distributed.properties
+          command: ['/kafka/bin/connect-distributed.sh', '/kafka/config/connect-distributed.properties']
+          livenessProbe:
+            exec:
+              command: ['/bin/sh', '-c', '! curl 127.0.0.1:8083/connectors/debezium-event-store/status 2>/dev/null | grep -q  "state":"FAILED" && if [ "$(curl 127.0.0.1:9071 2>/dev/null | grep debezium | wc -l)" -lt "10" ]; then exit 1; else exit 0; fi']
+            initialDelaySeconds: 60
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command: ['/bin/sh', '-c', '! curl 127.0.0.1:8083/connectors/debezium-event-store/status 2>/dev/null | grep -q  "state":"FAILED" && if [ "$(curl 127.0.0.1:9071 2>/dev/null | grep debezium | wc -l)" -lt "10" ]; then exit 1; else exit 0; fi']
+            initialDelaySeconds: 60
+            periodSeconds: 5
+          lifecycle:
+            postStart:
+              exec:
+                command: ['/bin/sh', '-c', 'sleep 60; curl --request PUT --header "Accept:application/json" --header "Content-Type:application/json" "http://127.0.0.1:8083/connectors/{{ .Values.debezium.connector.name }}/config" --data "@/etc/debezium/connector.json"']
+          resources:
+            requests:
+              cpu: 2
+              memory: 2Gi
+
+

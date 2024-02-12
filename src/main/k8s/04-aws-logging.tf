@@ -58,11 +58,16 @@ resource "kubernetes_config_map_v1" "aws_logging" {
           Match               application.*
           Rename              kubernetes_labels_app pod_app
       [FILTER]
+          Name                modify
+          Match               application.*
+          Rename              kubernetes_namespace_name pod_namespace
+      [FILTER]
           Name                record_modifier
           Match               application.*
           Allowlist_key       log
           Allowlist_key       stream
           Allowlist_key       pod_app
+          Allowlist_key       pod_namespace
     EOT
 
     "output.conf" = <<-EOT

@@ -32,12 +32,6 @@ data "aws_iam_role" "buildo_devs" {
   name = "interop-buildo-developers-dev"
 }
 
-data "aws_iam_role" "buildo_gh_actions" {
-  count = var.env == "dev" ? 1 : 0
-
-  name = "interop-buildo-github-k8s-dev"
-}
-
 data "aws_iam_role" "qa_runner" {
   count = var.env == "qa" ? 1 : 0
 
@@ -103,13 +97,6 @@ locals {
       k8s_groups   = ["buildo-devs"]
   }) : ""
 
-  buildo_gh_actions_mapping = var.env == "dev" ? templatefile("./templates/aws-auth-role.tpl",
-    {
-      role_arn     = data.aws_iam_role.buildo_gh_actions[0].arn
-      k8s_username = "buildo-gh-actions-{{SessionName}}"
-      k8s_groups   = ["buildo-gh-actions"]
-  }) : ""
-
   qa_runner_mapping = var.env == "qa" ? templatefile("./templates/aws-auth-role.tpl",
     {
       role_arn     = data.aws_iam_role.qa_runner[0].arn
@@ -127,7 +114,7 @@ resource "kubernetes_config_map_v1" "aws_auth" {
   # TODO: refactor with yamlencode once TF version is updated
   data = {
     mapRoles = join("", concat(local.fargate_profiles_mapping,
-      [local.sso_full_admin_mapping, local.sso_readonly_mapping, local.iac_readonly_role_mapping, local.buildo_devs_mapping, local.buildo_gh_actions_mapping, local.qa_runner_mapping],
+      [local.sso_full_admin_mapping, local.sso_readonly_mapping, local.iac_readonly_role_mapping, local.buildo_devs_mapping, local.qa_runner_mapping],
     local.admin_roles_mapping))
     mapUsers = join("", local.admin_users_mapping, local.readonly_users_mapping)
   }
