@@ -40,3 +40,8 @@ resource "aws_secretsmanager_secret" "flyway_event_store_password" {
   name = "flyway-event-store-password"
 }
 
+resource "aws_secretsmanager_secret" "selfcare_api_key_refactor" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "selfcare-api-key-refactor"
+}
