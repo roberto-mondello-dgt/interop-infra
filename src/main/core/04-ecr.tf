@@ -17,6 +17,7 @@ locals {
     "interop-be-catalog-readmodel-writer",
     "interop-be-certified-mail-sender",
     "interop-be-dashboard-metrics-report-generator",
+    "interop-be-datalake-data-export",
     "interop-be-dtd-catalog-exporter",
     "interop-be-dtd-catalog-total-load-exporter",
     "interop-be-dtd-metrics",

@@ -139,6 +139,22 @@ module "generated_jwt_details_bucket" {
   ]
 }
 
+module "data_lake_exports_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "3.15.1"
+
+  bucket = format("%s-data-lake-exports-%s", var.short_name, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+}
+
 module "application_logs_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"

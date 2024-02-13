@@ -958,3 +958,19 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
     }
   EOT
 }
+
+resource "aws_iam_policy" "be_datalake_data_export" {
+  name = "InteropBeDatalakeDataExportPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.data_lake_exports_bucket.s3_bucket_arn)
+    }]
+  })
+}
