@@ -138,6 +138,7 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-anac-certified-attributes-importer",
   "interop-be-attributes-loader",
   "interop-be-dashboard-metrics-report-generator",
+  "interop-be-datalake-data-export",
   "interop-be-dtd-catalog-exporter",
   "interop-be-dtd-catalog-total-load-exporter",
   "interop-be-dtd-metrics",
