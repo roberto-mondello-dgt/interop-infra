@@ -105,7 +105,7 @@ def main(argv):
     integrated_openapi = integrate_openapi(openapi, api_version, use_service_prefix)
 
     #If we're creating the BFF APIGW, then:
-    if api_name == "selfcare":
+    if api_name.startswith("selfcare"):
         #Add the prefix "/backend-for-frontend" to any path in the "paths object" of the BFF OpenAPI
         for path in list(integrated_openapi.get('paths', {}).keys()):
             edited_path = f'/backend-for-frontend{path}'
