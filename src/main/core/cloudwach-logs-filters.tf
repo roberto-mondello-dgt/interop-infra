@@ -13,7 +13,8 @@ resource "aws_cloudwatch_log_metric_filter" "eks_app_logs_errors" {
     value     = "1"
 
     dimensions = {
-      PodApp = "$.pod_app"
+      PodApp       = "$.pod_app"
+      PodNamespace = "$.pod_namespace"
     }
   }
 }
