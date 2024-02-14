@@ -2561,6 +2561,115 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+  /eservices/{eServiceId}/descriptors/{descriptorId}/update:
+    parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - eservices
+      summary: Publish the selected descriptor.
+      operationId: updateDescriptor
+      parameters:
+        - name: eServiceId
+          in: path
+          description: the eservice id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: descriptorId
+          in: path
+          description: the descriptor Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEServiceDescriptorQuotas'
+      responses:
+        '200':
+          description: EService descriptor updated.
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+        '400':
+          description: Invalid input
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'              
   /eservices/{eServiceId}/descriptors/{descriptorId}/publish:
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
@@ -4028,13 +4137,6 @@ paths:
   '/producers/eservices/{eserviceId}':
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
-      - name: eserviceId
-        in: path
-        description: the eservice id
-        required: true
-        schema:
-          type: string
-          format: uuid
     get:
       tags:
         - eservices
@@ -4129,20 +4231,6 @@ paths:
   '/producers/eservices/{eserviceId}/descriptors/{descriptorId}':
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
-      - name: eserviceId
-        in: path
-        description: the eservice id
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: descriptorId
-        in: path
-        description: the descriptor id
-        required: true
-        schema:
-          type: string
-          format: uuid
     get:
       tags:
         - eservices
@@ -4398,20 +4486,6 @@ paths:
   '/catalog/eservices/{eserviceId}/descriptor/{descriptorId}':
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
-      - name: eserviceId
-        in: path
-        description: the eservice id
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: descriptorId
-        in: path
-        description: the descriptor id
-        required: true
-        schema:
-          type: string
-          format: uuid
     get:
       tags:
         - eservices
@@ -6449,13 +6523,7 @@ paths:
               description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
   '/tenants/{tenantId}/attributes/declared':
     parameters:
-      - name: tenantId
-        in: path
-        description: Tenant id
-        required: true
-        schema:
-          type: string
-          format: uuid
+      - $ref: '#/components/parameters/CorrelationIdHeader'
     get:
       tags:
         - tenants
@@ -6530,9 +6598,10 @@ paths:
               description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
   '/tenants/{tenantId}/attributes/verified':
     parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
       - name: tenantId
         in: path
-        description: Tenant id
+        description: The internal identifier of the tenant
         required: true
         schema:
           type: string
@@ -6543,14 +6612,6 @@ paths:
       summary: Gets the verified attributes of an institution using internal institution id
       description: Gets verified attributes for institution using internal institution id
       operationId: getVerifiedAttributes
-      parameters:
-        - name: tenantId
-          in: path
-          description: The internal identifier of the tenant
-          required: true
-          schema:
-            type: string
-            format: uuid
       responses:
         '200':
           description: successful operation
@@ -7359,7 +7420,9 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/AttributeKind'
+            default: []   
           required: true
+          explode: false
       responses:
         '200':
           description: A List of Attributes
@@ -10325,6 +10388,27 @@ components:
           $ref: '#/components/schemas/EServiceTechnology'
         mode:
           $ref: '#/components/schemas/EServiceMode'
+    UpdateEServiceDescriptorQuotas:
+      required:
+        - voucherLifespan
+        - dailyCallsPerConsumer
+        - dailyCallsTotal
+      type: object
+      properties:
+        voucherLifespan:
+          type: integer
+          format: int32
+          minimum: 0
+        dailyCallsPerConsumer:
+          description: 'maximum number of daily calls that this descriptor can afford.'
+          type: integer
+          format: int32
+          minimum: 0
+        dailyCallsTotal:
+          description: 'total daily calls available for this e-service.'
+          type: integer
+          format: int32
+          minimum: 0
     UpdateEServiceDescriptorSeed:
       required:
         - audience
