@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "cronjob_errors" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "be_refactor_cronjob_errors" {
-  for_each = toset([for c in var.k8s_monitoring_cronjobs_names : c if local.deploy_be_refactor_infra])
+  for_each = toset([for c in var.be_refactor_k8s_monitoring_cronjobs_names : c if local.deploy_be_refactor_infra])
 
   alarm_name        = format("k8s-cronjob-%s-errors-refactor-%s", each.key, var.env)
   alarm_description = format("Cronjob errors alarm for %s-refactor", each.key)

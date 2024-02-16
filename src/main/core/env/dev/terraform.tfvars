@@ -88,7 +88,7 @@ k8s_monitoring_deployments_names = [
   "interop-frontend",
 ]
 
-# deployments which require monitoring from application logs instead of HTTP requests
+# (dev-refactor NS deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
   "interop-be-certified-mail-sender",
   "interop-be-eservice-descriptors-archiver",
@@ -97,6 +97,56 @@ k8s_monitoring_internal_deployments_names = [
 ]
 
 k8s_monitoring_cronjobs_names = [
+  "interop-be-anac-certified-attributes-importer",
+  "interop-be-attributes-loader",
+  "interop-be-dashboard-metrics-report-generator",
+  "interop-be-datalake-data-export",
+  "interop-be-dtd-catalog-exporter",
+  "interop-be-dtd-catalog-total-load-exporter",
+  "interop-be-dtd-metrics",
+  "interop-be-eservices-monitoring-exporter",
+  "interop-be-ivass-certified-attributes-importer",
+  "interop-be-metrics-report-generator",
+  "interop-be-one-trust-notices",
+  "interop-be-padigitale-report-generator",
+  "interop-be-party-registry-proxy-refresher",
+  "interop-be-pn-consumers",
+  "interop-be-tenants-cert-attr-updater",
+  "interop-be-token-details-persister"
+]
+
+# (dev-refactor NS) deployments which can be monitored using response HTTP status codes through APIGW
+be_refactor_k8s_monitoring_deployments_names = [
+  "interop-be-agreement-management",
+  "interop-be-agreement-process",
+  "interop-be-api-gateway",
+  "interop-be-attribute-registry-management",
+  "interop-be-attribute-registry-process",
+  "interop-be-authorization-management",
+  "interop-be-authorization-process",
+  "interop-be-authorization-server",
+  "interop-be-backend-for-frontend",
+  "interop-be-catalog-process-refactor",
+  "interop-be-notifier",
+  "interop-be-party-registry-proxy",
+  "interop-be-purpose-management",
+  "interop-be-purpose-process",
+  "interop-be-tenant-management",
+  "interop-be-tenant-process",
+  "interop-frontend",
+]
+
+# (dev-refactor NS) deployments which require monitoring from application logs instead of HTTP requests
+be_refactor_k8s_monitoring_internal_deployments_names = [
+  "interop-be-catalog-readmodel-writer",
+  "interop-be-certified-mail-sender",
+  "interop-be-eservice-descriptors-archiver",
+  "interop-be-selfcare-onboarding-consumer",
+  "redis"
+]
+
+# (dev-refactor NS)
+be_refactor_k8s_monitoring_cronjobs_names = [
   "interop-be-anac-certified-attributes-importer",
   "interop-be-attributes-loader",
   "interop-be-dashboard-metrics-report-generator",

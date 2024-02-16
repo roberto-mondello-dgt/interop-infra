@@ -291,3 +291,21 @@ variable "k8s_monitoring_cronjobs_names" {
   description = "Names of K8s cronjobs to monitor"
   type        = list(string)
 }
+
+variable "be_refactor_k8s_monitoring_deployments_names" {
+  description = "Names of K8s deployments (be-refactor) to monitor using HTTP status codes through APIGW"
+  type        = list(string)
+  default     = []
+}
+
+variable "be_refactor_k8s_monitoring_internal_deployments_names" {
+  description = "Names of K8s deployments (be-refactor) to monitor using application logs instead of HTTP requests"
+  type        = list(string)
+  default     = []
+}
+
+variable "be_refactor_k8s_monitoring_cronjobs_names" {
+  description = "Names of K8s cronjobs (be-refactor) to monitor"
+  type        = list(string)
+  default     = []
+}
