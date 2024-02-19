@@ -29,6 +29,7 @@ read_model_cluster_id       = "read-model"
 read_model_master_username  = "root"
 read_model_engine_version   = "4.0.0"
 read_model_instance_class   = "db.t4g.medium"
+read_model_ca_cert_id       = "rds-ca-rsa2048-g1"
 read_model_number_instances = 3
 
 notification_events_table_ttl_enabled = true
