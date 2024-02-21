@@ -16,16 +16,28 @@ resource "aws_secretsmanager_secret" "debezium_credentials" {
   name = "persistence-management-debezium-credentials"
 }
 
-resource "aws_secretsmanager_secret" "docdb_username_refactor" {
+resource "aws_secretsmanager_secret" "docdb_ro_username_refactor" {
   count = var.env == "dev" ? 1 : 0
 
-  name = "documentdb-username-refactor"
+  name = "documentdb-ro-username-refactor"
 }
 
-resource "aws_secretsmanager_secret" "docdb_password_refactor" {
+resource "aws_secretsmanager_secret" "docdb_ro_password_refactor" {
   count = var.env == "dev" ? 1 : 0
 
-  name = "documentdb-password-refactor"
+  name = "documentdb-ro-password-refactor"
+}
+
+resource "aws_secretsmanager_secret" "docdb_projection_username_refactor" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "documentdb-projection-username-refactor"
+}
+
+resource "aws_secretsmanager_secret" "docdb_projection_password_refactor" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "documentdb-projection-password-refactor"
 }
 
 resource "aws_secretsmanager_secret" "flyway_event_store_username" {
