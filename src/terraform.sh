@@ -53,7 +53,7 @@ function target_action() {
 
   local temp_file=$(mktemp)
   for file in $target_files; do
-    grep -E '^resource|^module' $file >> $temp_file
+    grep -E '^resource|^module|^data' $file >> $temp_file
   done
 
   local resource_type
@@ -66,6 +66,10 @@ function target_action() {
     if [ "$resource_type" == "module" ]; then
         module_name=$(echo $line | cut -d '"' -f 2)
         tf_targets+=("-target=module.$module_name ")
+    elif [ "$resource_type" == "data" ]; then
+        resource_class=$(echo $line | cut -d '"' -f 2)
+        resource_name=$(echo $line | cut -d '"' -f 4)
+        tf_targets+=("-target=data.$resource_class.$resource_name ")
     else
         resource_class=$(echo $line | cut -d '"' -f 2)
         resource_name=$(echo $line | cut -d '"' -f 4)
@@ -89,7 +93,7 @@ if echo "init plan apply refresh import output state taint destroy summ" | grep 
   elif [ $action = "summ" ]; then
     terraform init -reconfigure -backend-config="./env/$env/backend.tfvars"
     tf_summarize
-  elif [[ $action =~ plan|apply ]] && [[ $other =~ ^-target-files[[:space:]] ]]; then
+  elif [[ $action =~ plan|apply|destroy ]] && [[ $other =~ ^-target-files[[:space:]] ]]; then
     terraform init -reconfigure -backend-config="./env/$env/backend.tfvars"
     shift 1
     target_action "$@"
