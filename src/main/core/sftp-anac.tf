@@ -1,8 +1,16 @@
+locals {
+  deploy_anac_sftp = var.env == "dev" || var.env == "test" ? true : false
+}
+
 data "aws_iam_policy" "transfer_logging" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   name = "AWSTransferLoggingAccess"
 }
 
 data "archive_file" "sftp_anac_authorizer" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   type       = "zip"
   source_dir = "${path.module}/lambda/sftp_anac_authorizer/"
   excludes   = ["node_modules", "dist.zip"]
@@ -11,6 +19,8 @@ data "archive_file" "sftp_anac_authorizer" {
 }
 
 resource "aws_iam_role" "sftp_anac_authorizer" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   name = "interop-sftp-anac-authorizer-${var.env}"
 
   assume_role_policy = jsonencode({
@@ -47,35 +57,41 @@ resource "aws_iam_role" "sftp_anac_authorizer" {
 }
 
 resource "aws_lambda_function" "sftp_anac_authorizer" {
-  filename         = data.archive_file.sftp_anac_authorizer.output_path
+  count = local.deploy_anac_sftp ? 1 : 0
+
+  filename         = data.archive_file.sftp_anac_authorizer[0].output_path
   function_name    = "interop-sftp-anac-authorizer-${var.env}"
   handler          = "index.handler"
   memory_size      = 128
   package_type     = "Zip"
-  role             = aws_iam_role.sftp_anac_authorizer.arn
+  role             = aws_iam_role.sftp_anac_authorizer[0].arn
   runtime          = "nodejs18.x"
-  source_code_hash = data.archive_file.sftp_anac_authorizer.output_base64sha256
+  source_code_hash = data.archive_file.sftp_anac_authorizer[0].output_base64sha256
   architectures    = ["x86_64"]
 
   environment {
     variables = {
       SFTP_ANAC_USERNAME_SECRET_NAME      = aws_secretsmanager_secret.anac_sftp_username.name
       SFTP_ANAC_USER_PASSWORD_SECRET_NAME = aws_secretsmanager_secret.anac_sftp_password.name
-      SFTP_ANAC_BUCKET_NAME               = module.anac_sftp_bucket.s3_bucket_id
-      SFTP_ANAC_BUCKET_ACCESS_ROLE_ARN    = aws_iam_role.sftp_anac_readonly.arn
+      SFTP_ANAC_BUCKET_NAME               = module.anac_sftp_bucket[0].s3_bucket_id
+      SFTP_ANAC_BUCKET_ACCESS_ROLE_ARN    = aws_iam_role.sftp_anac_readonly[0].arn
     }
   }
 }
 
 resource "aws_lambda_permission" "allow_sftp_anac" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   statement_id  = "AllowInvokeFromSftpAnac"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.sftp_anac_authorizer.function_name
+  function_name = aws_lambda_function.sftp_anac_authorizer[0].function_name
   principal     = "transfer.amazonaws.com"
-  source_arn    = aws_transfer_server.sftp_anac.arn
+  source_arn    = aws_transfer_server.sftp_anac[0].arn
 }
 
 resource "aws_iam_role" "sftp_anac_logging" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   name = format("InteropSftpAnacLogging%s", title(var.env))
 
   assume_role_policy = jsonencode({
@@ -89,10 +105,12 @@ resource "aws_iam_role" "sftp_anac_logging" {
     }]
   })
 
-  managed_policy_arns = [data.aws_iam_policy.transfer_logging.arn]
+  managed_policy_arns = [data.aws_iam_policy.transfer_logging[0].arn]
 }
 
 resource "aws_security_group" "sftp_anac" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   description = "SFTP ANAC"
   name        = "interop-sftp-anac-${var.env}"
 
@@ -112,22 +130,26 @@ resource "aws_security_group" "sftp_anac" {
 }
 
 resource "aws_transfer_server" "sftp_anac" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   protocols              = ["SFTP"]
   identity_provider_type = "AWS_LAMBDA"
-  function               = aws_lambda_function.sftp_anac_authorizer.arn
+  function               = aws_lambda_function.sftp_anac_authorizer[0].arn
   domain                 = "S3"
-  logging_role           = aws_iam_role.sftp_anac_logging.arn
+  logging_role           = aws_iam_role.sftp_anac_logging[0].arn
 
   endpoint_type = "VPC"
 
   endpoint_details {
     vpc_id             = module.vpc_v2.vpc_id
-    security_group_ids = [aws_security_group.sftp_anac.id]
+    security_group_ids = [aws_security_group.sftp_anac[0].id]
     subnet_ids         = [data.aws_subnets.int_lbs.ids[0]]
   }
 }
 
 resource "aws_iam_role" "sftp_anac_readonly" {
+  count = local.deploy_anac_sftp ? 1 : 0
+
   name = format("InteropSftpAnacS3%s", title(var.env))
 
   assume_role_policy = jsonencode({
@@ -150,14 +172,14 @@ resource "aws_iam_role" "sftp_anac_readonly" {
         {
           Effect   = "Allow"
           Action   = "s3:ListBucket"
-          Resource = module.anac_sftp_bucket.s3_bucket_arn
+          Resource = module.anac_sftp_bucket[0].s3_bucket_arn
         },
         {
           Effect = "Allow"
           Action = "s3:Get*"
           Resource = [
-            module.anac_sftp_bucket.s3_bucket_arn,
-            "${module.anac_sftp_bucket.s3_bucket_arn}/*"
+            module.anac_sftp_bucket[0].s3_bucket_arn,
+            "${module.anac_sftp_bucket[0].s3_bucket_arn}/*"
           ]
       }]
     })
