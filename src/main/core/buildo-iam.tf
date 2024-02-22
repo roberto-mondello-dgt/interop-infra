@@ -183,6 +183,24 @@ resource "aws_iam_role" "buildo_developers" {
       ]
     })
   }
+
+  inline_policy {
+    name = "KMS"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "kms:Sign",
+            "kms:Verify"
+          ]
+          Resource = aws_kms_key.interop.arn
+        }
+      ]
+    })
+  }
 }
 
 
