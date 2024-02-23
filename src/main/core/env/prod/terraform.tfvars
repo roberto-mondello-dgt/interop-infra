@@ -71,6 +71,12 @@ dns_interop_qa_ns_records = [
   "ns-41.awsdns-05.com.",
   "ns-1108.awsdns-10.org."
 ]
+dns_interop_att_ns_records = [
+  "ns-1788.awsdns-31.co.uk.",
+  "ns-633.awsdns-15.net.",
+  "ns-28.awsdns-03.com.",
+  "ns-1174.awsdns-18.org."
+]
 
 signalhub_domain_ns_records = [
   "ns-252.awsdns-31.com.",
