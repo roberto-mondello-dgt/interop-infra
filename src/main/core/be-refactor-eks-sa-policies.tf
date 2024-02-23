@@ -40,7 +40,7 @@ resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
 
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/event-store.catalog.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_group_iam_prefix}/catalog-readmodel-writer"
         ]
       }
@@ -99,7 +99,7 @@ resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
 
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/event-store.agreement.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
           "${local.msk_group_iam_prefix}/agreement-readmodel-writer"
         ]
       }
