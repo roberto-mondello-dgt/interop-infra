@@ -7,6 +7,7 @@ locals {
     "interop-be-api-gateway",
     "interop-be-attribute-registry-management",
     "interop-be-attribute-registry-process",
+    "interop-be-attribute-registry-readmodel-writer",
     "interop-be-attributes-loader",
     "interop-be-authorization-management",
     "interop-be-authorization-process",
