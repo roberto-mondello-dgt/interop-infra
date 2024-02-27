@@ -12,6 +12,15 @@ data "aws_subnets" "vpce" {
   }
 }
 
+data "aws_route_tables" "vpce" {
+  count = var.env == "dev" ? 1 : 0
+
+  filter {
+    name   = "vpc-id"
+    values = [module.vpc_v2.vpc_id]
+  }
+}
+
 # TODO: restrict?
 resource "aws_security_group" "vpce_common" {
   count = local.deploy_be_refactor_infra ? 1 : 0
@@ -51,3 +60,31 @@ module "vpce" {
   }
 }
 
+module "vpce-gateway" {
+  count = var.env == "dev" ? 1 : 0
+
+  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+  version = "5.1.2"
+
+  vpc_id = module.vpc_v2.vpc_id
+  # Create one VPCE per AZ only in prod
+  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce[0].ids : [data.aws_subnets.vpce[0].ids[0]]
+  security_group_ids = [aws_security_group.vpce_common[0].id]
+
+  endpoints = {
+    s3 = {
+      service_name    = "com.amazonaws.${var.aws_region}.s3"
+      service_type    = "Gateway"
+      route_table_ids = data.aws_route_tables.vpce[0].ids
+
+      tags = { Name = "s3" }
+    },
+    dynamodb = {
+      service_name    = "com.amazonaws.${var.aws_region}.dynamodb"
+      service_type    = "Gateway"
+      route_table_ids = data.aws_route_tables.vpce[0].ids
+
+      tags = { Name = "dynamodb" }
+    }
+  }
+}

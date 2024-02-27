@@ -55,6 +55,12 @@ resource "aws_ecr_repository" "app" {
   name                 = each.key
 }
 
+resource "aws_ecr_repository" "vpce_testing" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "interop-vpce-routing-testing"
+}
+
 resource "aws_ecr_lifecycle_policy" "app" {
   for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" }
 
