@@ -426,29 +426,38 @@ resource "aws_iam_policy" "be_metrics_report_generator" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = "s3:GetObject"
-        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+        Effect = "Allow",
+        Action = [
+          "athena:GetQueryExecution",
+          "athena:GetQueryResults",
+          "athena:StartQueryExecution",
+          "athena:StopQueryExecution"
+        ],
+        Resource = "*"
       },
       {
-        Effect   = "Allow",
-        Action   = "s3:ListBucket"
-        Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+        Effect = "Allow",
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+        ],
+        Resource = module.athena_query_results_bucket.s3_bucket_arn
       },
       {
-        Effect   = "Allow",
-        Action   = "s3:PutObject"
-        Resource = format("%s/*", module.metrics_reports_bucket.s3_bucket_arn)
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
+        Resource = format("%s/*", module.athena_query_results_bucket.s3_bucket_arn)
       },
       {
-        Effect   = "Allow",
-        Action   = "s3:GetObject"
-        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
-      },
-      {
-        Effect   = "Allow",
-        Action   = "s3:ListBucket"
-        Resource = module.application_documents_bucket.s3_bucket_arn
+        Effect = "Allow",
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetTable*"
+        ],
+        Resource = "*"
     }]
   })
 }
