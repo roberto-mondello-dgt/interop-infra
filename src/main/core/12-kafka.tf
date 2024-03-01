@@ -248,6 +248,10 @@ resource "aws_mskconnect_custom_plugin" "debezium_postgresql" {
   }
 }
 
+locals {
+  debezium_include_schema_prefix = var.env == "dev" ? "dev-refactor" : var.env
+}
+
 resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
   count      = local.deploy_be_refactor_infra ? 1 : 0
   depends_on = [data.external.interop_events_bootstrap_servers]
@@ -288,6 +292,7 @@ resource "aws_mskconnect_connector" "debezium_postgresql_event_store" {
     "transforms.PartitionRouting.type"                     = "io.debezium.transforms.partitions.PartitionRouting"
     "transforms.PartitionRouting.partition.payload.fields" = "change.stream_id"
     "transforms.PartitionRouting.partition.topic.num"      = 3
+    "table.include.list"                                   = "${local.debezium_include_schema_prefix}_.*\\.events"
   }
 
   worker_configuration {
