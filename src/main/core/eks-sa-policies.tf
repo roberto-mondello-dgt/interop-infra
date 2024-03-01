@@ -947,3 +947,24 @@ resource "aws_iam_policy" "be_datalake_data_export" {
     }]
   })
 }
+
+resource "aws_iam_policy" "be_vpce_routing_testing" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "InteropBeVPCERoutingTesting"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = module.frontend_additional_assets_bucket[0].s3_bucket_arn
+      },
+      {
+        Effect = "Allow"
+        Action = "dynamodb:ListTables"
+      }
+    ]
+  })
+}
