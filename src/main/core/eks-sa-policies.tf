@@ -972,6 +972,11 @@ resource "aws_iam_policy" "be_vpce_routing_testing" {
       },
       {
         Effect   = "Allow"
+        Action   = "secretsmanager:ListSecrets"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
         Action   = "dynamodb:ListTables"
         Resource = "*"
       }
