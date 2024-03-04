@@ -971,8 +971,9 @@ resource "aws_iam_policy" "be_vpce_routing_testing" {
         Resource = module.frontend_additional_assets_bucket[0].s3_bucket_arn
       },
       {
-        Effect = "Allow"
-        Action = "dynamodb:ListTables"
+        Effect   = "Allow"
+        Action   = "dynamodb:ListTables"
+        Resource = "*"
       }
     ]
   })
