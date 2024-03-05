@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "avg_cpu" {
   count = var.create_alarms ? 1 : 0
 
-  alarm_name        = format("k8s-%s-avg-cpu-%s", var.k8s_deployment_name, var.env)
+  alarm_name        = format("k8s-%s-avg-cpu-%s", var.k8s_deployment_name, var.k8s_namespace)
   alarm_description = format("AVG CPU usage alarm for %s", var.k8s_deployment_name)
 
   metric_name = "pod_cpu_utilization_over_pod_limit"
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "avg_cpu" {
 resource "aws_cloudwatch_metric_alarm" "avg_memory" {
   count = var.create_alarms ? 1 : 0
 
-  alarm_name        = format("k8s-%s-avg-memory-%s", var.k8s_deployment_name, var.env)
+  alarm_name        = format("k8s-%s-avg-memory-%s", var.k8s_deployment_name, var.k8s_namespace)
   alarm_description = format("AVG memory usage alarm for %s", var.k8s_deployment_name)
 
   metric_name = "pod_memory_utilization_over_pod_limit"
@@ -49,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "avg_memory" {
 resource "aws_cloudwatch_composite_alarm" "composite_performance" {
   count = var.create_alarms ? 1 : 0
 
-  alarm_name        = format("k8s-%s-performance-%s", var.k8s_deployment_name, var.env)
+  alarm_name        = format("k8s-%s-performance-%s", var.k8s_deployment_name, var.k8s_namespace)
   alarm_description = format("Composite performance alarm for %s", var.k8s_deployment_name)
 
   alarm_actions = var.sns_topics_arns
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_composite_alarm" "composite_performance" {
 resource "aws_cloudwatch_metric_alarm" "unavailable_pods" {
   count = var.create_alarms ? 1 : 0
 
-  alarm_name        = format("k8s-%s-unavailable-pods-%s", var.k8s_deployment_name, var.env)
+  alarm_name        = format("k8s-%s-unavailable-pods-%s", var.k8s_deployment_name, var.k8s_namespace)
   alarm_description = format("Unavailable pods alarm for %s", var.k8s_deployment_name)
 
   alarm_actions = var.sns_topics_arns
@@ -123,7 +123,7 @@ resource "aws_cloudwatch_metric_alarm" "unavailable_pods" {
 resource "aws_cloudwatch_metric_alarm" "app_errors" {
   count = var.cloudwatch_app_logs_errors_metric_name != null && var.cloudwatch_app_logs_errors_metric_namespace != null ? 1 : 0
 
-  alarm_name        = format("k8s-%s-errors-%s", var.k8s_deployment_name, var.env)
+  alarm_name        = format("k8s-%s-errors-%s", var.k8s_deployment_name, var.k8s_namespace)
   alarm_description = format("Application errors alarm for %s", var.k8s_deployment_name)
 
   alarm_actions = var.sns_topics_arns
