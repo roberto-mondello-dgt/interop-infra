@@ -120,6 +120,18 @@ resource "aws_ecr_repository_policy" "dev_cross_account" {
         ]
       },
       {
+        Sid    = "Att Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::533267098416:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
         Sid    = "Prod Pull",
         Effect = "Allow",
         Principal = {
