@@ -56,6 +56,55 @@ module "vpce" {
       private_dns_enabled = true
 
       tags = { Name = "secrets-manager" }
+    },
+    kms = {
+      service_name        = "com.amazonaws.${var.aws_region}.kms"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "kms" }
+    },
+    dkr_ecr = {
+      service_name        = "com.amazonaws.${var.aws_region}.ecr.dkr"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "ecr" }
+    },
+    api_ecr = {
+      service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "ecr" }
+    },
+    sqs = {
+      service_name        = "com.amazonaws.${var.aws_region}.sqs"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "sqs" }
+    },
+    sns = {
+      service_name        = "com.amazonaws.${var.aws_region}.sns"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "sns" }
+    },
+    cloudwatch_monitoring = {
+      service_name        = "com.amazonaws.${var.aws_region}.monitoring"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "cloudwatch" }
+    }
+    cloudwatch_logs = {
+      service_name        = "com.amazonaws.${var.aws_region}.logs"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "cloudwatch" }
     }
   }
 }

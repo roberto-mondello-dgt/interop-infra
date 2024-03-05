@@ -979,6 +979,36 @@ resource "aws_iam_policy" "be_vpce_routing_testing" {
         Effect   = "Allow"
         Action   = "dynamodb:ListTables"
         Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "secretsmanager:ListSecrets"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:ListKeys"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "ecr:ListImages"
+        Resource = format("%s/*", aws_ecr_repository.vpce_testing[0].arn)
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:ListQueues"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sns:ListTopics"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "cloudwatch:ListMetrics"
+        Resource = "*"
       }
     ]
   })
