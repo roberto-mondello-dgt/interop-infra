@@ -32,7 +32,7 @@ read_model_number_instances = 3
 
 notification_events_table_ttl_enabled = true
 
-github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/pdnd-interop-platform-deployment", "pagopa/interop-github-runner-aws", "pagopa/interop-be-monorepo-scala-poc"]
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/pdnd-interop-platform-deployment-refactor", "pagopa/interop-github-runner-aws", "pagopa/interop-be-monorepo-scala-poc"]
 github_runners_cpu           = 16384
 github_runners_memory        = 32768
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
