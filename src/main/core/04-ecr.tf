@@ -12,6 +12,7 @@ locals {
     "interop-be-authorization-management",
     "interop-be-authorization-process",
     "interop-be-authorization-server",
+    "interop-be-authorization-updater",
     "interop-be-backend-for-frontend",
     "interop-be-catalog-management",
     "interop-be-catalog-process",
