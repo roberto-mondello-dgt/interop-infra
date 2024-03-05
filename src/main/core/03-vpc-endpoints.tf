@@ -69,14 +69,14 @@ module "vpce" {
       service_type        = "Interface"
       private_dns_enabled = true
 
-      tags = { Name = "ecr" }
+      tags = { Name = "ecr_dkr" }
     },
     api_ecr = {
       service_name        = "com.amazonaws.${var.aws_region}.ecr.api"
       service_type        = "Interface"
       private_dns_enabled = true
 
-      tags = { Name = "ecr" }
+      tags = { Name = "ecr_api" }
     },
     sqs = {
       service_name        = "com.amazonaws.${var.aws_region}.sqs"
@@ -97,14 +97,14 @@ module "vpce" {
       service_type        = "Interface"
       private_dns_enabled = true
 
-      tags = { Name = "cloudwatch" }
+      tags = { Name = "cloudwatch_monitoring" }
     }
     cloudwatch_logs = {
       service_name        = "com.amazonaws.${var.aws_region}.logs"
       service_type        = "Interface"
       private_dns_enabled = true
 
-      tags = { Name = "cloudwatch" }
+      tags = { Name = "cloudwatch_logs" }
     }
   }
 }
