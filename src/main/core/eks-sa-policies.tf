@@ -993,7 +993,7 @@ resource "aws_iam_policy" "be_vpce_routing_testing" {
       {
         Effect   = "Allow"
         Action   = "ecr:ListImages"
-        Resource = format("%s/*", aws_ecr_repository.vpce_testing[0].arn)
+        Resource = aws_ecr_repository.vpce_testing[0].arn
       },
       {
         Effect   = "Allow"
