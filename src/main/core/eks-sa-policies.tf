@@ -1009,6 +1009,11 @@ resource "aws_iam_policy" "be_vpce_routing_testing" {
         Effect   = "Allow"
         Action   = "cloudwatch:ListMetrics"
         Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "logs:DescribeLogGroups"
+        Resource = "*"
       }
     ]
   })
