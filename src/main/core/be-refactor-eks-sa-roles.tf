@@ -61,3 +61,23 @@ module "be_refactor_agreement_readmodel_writer_irsa" {
     be_refactor_agreement_readmodel_writer = aws_iam_policy.be_refactor_agreement_readmodel_writer[0].arn
   }
 }
+
+module "be_refactor_authorization_updater_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-authorization-updater-%s", var.env)
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-authorization-updater"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_authorization_updater = aws_iam_policy.be_refactor_authorization_updater[0].arn
+  }
+}
