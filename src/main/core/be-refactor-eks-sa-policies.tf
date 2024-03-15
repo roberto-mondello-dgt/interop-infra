@@ -1,3 +1,47 @@
+resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "DebeziumPostgresqlPolicy"
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:CreateTopic",
+          "kafka-cluster:DescribeCluster",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/debezium.*",
+          "${local.msk_topic_iam_prefix}/experimental.*",
+          "${local.msk_topic_iam_prefix}/event-store.*",
+          "${local.msk_group_iam_prefix}/debezium.*",
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecretVersionIds"
+        ]
+        Resource = aws_secretsmanager_secret.debezium_credentials[0].arn
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_refactor_catalog_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 

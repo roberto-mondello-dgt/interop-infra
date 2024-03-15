@@ -1,5 +1,6 @@
 locals {
   repository_names = [
+    "debezium-postgresql",
     "interop-be-anac-certified-attributes-importer",
     "interop-be-agreement-management",
     "interop-be-agreement-process",
