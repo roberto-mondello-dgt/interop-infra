@@ -26,6 +26,7 @@ resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
           "${local.msk_topic_iam_prefix}/experimental.*",
           "${local.msk_topic_iam_prefix}/event-store.*",
           "${local.msk_group_iam_prefix}/debezium.*",
+          "${local.msk_group_iam_prefix}/experimental.*",
         ]
       },
       {
