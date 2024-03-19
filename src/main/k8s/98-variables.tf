@@ -109,3 +109,21 @@ variable "aws_load_balancer_controller_role_name" {
   type        = string
   description = "Name of the IAM role to be assumed by the AWS Load Balancer Controller service account"
 }
+
+variable "debezium_postgresql_image_uri" {
+  type        = string
+  description = "Image URI for Debezium Postgresql connector"
+  default     = null
+}
+
+variable "debezium_postgresql_replicas" {
+  type        = number
+  description = "Number of replicas for Debezium Postgresql connector"
+  default     = 0
+}
+
+variable "debezium_postgresql_role_name" {
+  type        = string
+  description = "Name of the IAM role for Debezium Postgresql"
+  default     = null
+}
