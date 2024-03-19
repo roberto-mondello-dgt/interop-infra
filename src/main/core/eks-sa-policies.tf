@@ -44,7 +44,7 @@ resource "aws_iam_policy" "be_agreement_process" {
         ]
         Resource = compact([
           format("%s/*", module.application_documents_bucket.s3_bucket_arn),
-          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
         ])
       },
       {
