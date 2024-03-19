@@ -38,4 +38,6 @@ container_logs_cloudwatch_retention_days = 30
 
 debezium_postgresql_image_uri = "505630707203.dkr.ecr.eu-central-1.amazonaws.com/debezium-postgresql:latest"
 debezium_postgresql_replicas  = 1
+debezium_postgresql_cpu       = "2"
+debezium_postgresql_memory    = "4Gi"
 debezium_postgresql_role_name = "interop-debezium-postgresql-dev"

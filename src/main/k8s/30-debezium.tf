@@ -191,13 +191,13 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
 
           resources {
             requests = {
-              cpu    = "2"
-              memory = "4Gi"
+              cpu    = var.debezium_postgresql_cpu
+              memory = var.debezium_postgresql_memory
             }
 
             limits = {
-              cpu    = "2"
-              memory = "4Gi"
+              cpu    = var.debezium_postgresql_cpu
+              memory = var.debezium_postgresql_memory
             }
           }
         }

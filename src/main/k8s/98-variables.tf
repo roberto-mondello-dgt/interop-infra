@@ -122,8 +122,20 @@ variable "debezium_postgresql_replicas" {
   default     = 0
 }
 
+variable "debezium_postgresql_cpu" {
+  type        = string
+  description = "CPU for Debezium Postgresql deployment"
+  default     = null
+}
+
+variable "debezium_postgresql_memory" {
+  type        = string
+  description = "Memory for Debezium Postgresql deployment"
+  default     = null
+}
+
 variable "debezium_postgresql_role_name" {
   type        = string
-  description = "Name of the IAM role for Debezium Postgresql"
+  description = "Name of the IAM role for Debezium Postgresql service account"
   default     = null
 }
