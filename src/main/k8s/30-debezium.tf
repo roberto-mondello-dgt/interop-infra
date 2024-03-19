@@ -4,6 +4,18 @@ data "aws_iam_role" "debezium_postgresql" {
   name = var.debezium_postgresql_role_name
 }
 
+data "aws_rds_cluster" "event_store" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  cluster_identifier = var.debezium_postgresql_cluster_id
+}
+
+data "aws_secretsmanager_secret" "debezium_credentials" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = var.debezium_postgresql_credentials_secret_name
+}
+
 resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -25,6 +37,10 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
     CONNECT_PLUGIN_PATH                       = "/kafka/connect"
     CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE      = "false"
     CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE    = "false"
+
+    CONFIG_PROVIDERS                             = "secretsmanager"
+    CONFIG_PROVIDERS_SECRETSMANAGER_CLASS        = "com.amazonaws.kafka.config.providers.SecretsManagerConfigProvider"
+    CONFIG_PROVIDERS_SECRETSMANAGER_PARAM_REGION = var.aws_region
 
     CONNECT_SECURITY_PROTOCOL                  = "SASL_SSL"
     CONNECT_SASL_MECHANISM                     = "AWS_MSK_IAM"
@@ -59,26 +75,26 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
     "connector.json" : <<-EOT
       {
         "name": "debezium-postgresql",
-         "config": {
-            "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
-            "tasks.max": 1,
-            "database.hostname": "interop-persistence-management-dev.cluster-c9zr6t2swdpb.eu-central-1.rds.amazonaws.com",
-            "database.port": "5432",
-            "database.user": "debezium_user",
-            "database.password": "bYJ%nWMYd859%^Tx",
-            "database.dbname": "persistence_management_refactor",
-            "topic.prefix": "experimental.event-store",
-            "plugin.name": "pgoutput",
-            "binary.handling.mode": "hex",
-            "slot.name": "debezium_postgresql",
-            "publication.name": "events_publication",
-            "publication.autocreate.mode": "disabled",
-            "transforms": "PartitionRouting",
-            "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
-            "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
-            "transforms.PartitionRouting.partition.topic.num": 3,
-            "table.include.list": "experimental.events"
-         }
+        "config": {
+           "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+           "tasks.max": 1,
+           "database.hostname": "${data.aws_rds_cluster.event_store[0].endpoint}",
+           "database.port": "${data.aws_rds_cluster.event_store[0].port}",
+           "database.user": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:username}",
+           "database.password": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:password}",
+           "database.dbname": "${var.debezium_postgresql_database_name}",
+           "topic.prefix": "experimental.event-store",
+           "plugin.name": "pgoutput",
+           "binary.handling.mode": "hex",
+           "slot.name": "debezium_postgresql",
+           "publication.name": "events_publication",
+           "publication.autocreate.mode": "disabled",
+           "transforms": "PartitionRouting",
+           "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
+           "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
+           "transforms.PartitionRouting.partition.topic.num": 3,
+           "table.include.list": "experimental.events"
+        }
       }
     EOT
   }

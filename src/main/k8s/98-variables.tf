@@ -139,3 +139,21 @@ variable "debezium_postgresql_role_name" {
   description = "Name of the IAM role for Debezium Postgresql service account"
   default     = null
 }
+
+variable "debezium_postgresql_cluster_id" {
+  type        = string
+  description = "ID of the Aurora cluster hosting the Postgresql database"
+  default     = null
+}
+
+variable "debezium_postgresql_database_name" {
+  type        = string
+  description = "Name of the Postgresql database"
+  default     = null
+}
+
+variable "debezium_postgresql_credentials_secret_name" {
+  type        = string
+  description = "Name of the secret containing Postgresql credentials for Debezium"
+  default     = null
+}
