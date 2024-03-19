@@ -65,10 +65,10 @@ probing_domain_ns_records = [
   "ns-913.awsdns-50.net"
 ]
 
-interop_frontend_assets_openapi_path = ""
-interop_bff_openapi_path             = ""
-interop_auth_openapi_path            = "./openapi/test/auth-server/interop-auth-server-adc891fab798b0da9fd9990d686e97c3ee6493ff.yaml"
-interop_api_openapi_path             = "./openapi/test/internal-api-gateway/interop-api-v1.0-79a6c14fea726bfa66fe057d7880546ebac0e6d6.yaml"
+interop_frontend_assets_openapi_path = "./openapi/test/interop-frontend-assets-integrated.yaml"
+interop_bff_openapi_path             = "./openapi/test/interop-backend-for-frontend-v1.0.yaml"
+interop_auth_openapi_path            = "./openapi/test/interop-auth-server.yaml"
+interop_api_openapi_path             = "./openapi/test/interop-api-v1.0.yaml"
 
 interop_landing_domain_name = "uat.interop.pagopa.it"
 
