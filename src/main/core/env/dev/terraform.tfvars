@@ -138,6 +138,8 @@ be_refactor_k8s_monitoring_deployments_names = [
 
 # (dev-refactor NS) deployments which require monitoring from application logs instead of HTTP requests
 be_refactor_k8s_monitoring_internal_deployments_names = [
+  "debezium-postgresql",
+  "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-eservice-descriptors-archiver",
