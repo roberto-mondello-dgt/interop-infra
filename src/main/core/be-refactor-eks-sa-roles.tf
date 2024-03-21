@@ -10,6 +10,8 @@ module "be_refactor_debezium_postgresql_irsa" {
 
   role_name = format("interop-debezium-postgresql-%s", var.env)
 
+  max_session_duration = 43200
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
