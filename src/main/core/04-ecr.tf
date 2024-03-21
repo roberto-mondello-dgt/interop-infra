@@ -1,10 +1,9 @@
 locals {
   repository_names = [
-    "debezium-postgresql",
-    "interop-be-anac-certified-attributes-importer",
     "interop-be-agreement-management",
     "interop-be-agreement-process",
     "interop-be-agreement-readmodel-writer",
+    "interop-be-anac-certified-attributes-importer",
     "interop-be-api-gateway",
     "interop-be-attribute-registry-management",
     "interop-be-attribute-registry-process",
@@ -24,6 +23,7 @@ locals {
     "interop-be-dtd-catalog-exporter",
     "interop-be-dtd-catalog-total-load-exporter",
     "interop-be-dtd-metrics",
+    "interop-be-eservice-descriptors-archiver",
     "interop-be-eservices-monitoring-exporter",
     "interop-be-ivass-certified-attributes-importer",
     "interop-be-metrics-report-generator",
@@ -36,16 +36,16 @@ locals {
     "interop-be-party-registry-proxy",
     "interop-be-pn-consumers",
     "interop-be-privacy-notices-updater",
-    "interop-be-purposes-archiver",
-    "interop-be-eservice-descriptors-archiver",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
+    "interop-be-purposes-archiver",
     "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
     "interop-be-tenant-process",
+    "interop-be-tenants-attributes-checker",
     "interop-be-tenants-cert-attr-updater",
     "interop-be-token-details-persister",
-    "interop-be-tenants-attributes-checker",
+    "interop-debezium-postgresql",
     "interop-frontend"
   ]
 }
