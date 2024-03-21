@@ -132,7 +132,8 @@ resource "aws_cloudwatch_metric_alarm" "app_errors" {
   namespace   = var.cloudwatch_app_logs_errors_metric_namespace
 
   dimensions = {
-    PodApp = var.k8s_deployment_name
+    PodApp       = var.k8s_deployment_name
+    PodNamespace = var.k8s_namespace
   }
 
   comparison_operator = "GreaterThanOrEqualToThreshold"

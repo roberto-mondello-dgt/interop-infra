@@ -42,8 +42,8 @@ module "be_refactor_k8s_deployment_monitoring" {
 
   create_dashboard = true
 
-  cloudwatch_app_logs_errors_metric_name      = contains(var.k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].name : null
-  cloudwatch_app_logs_errors_metric_namespace = contains(var.k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].namespace : null
+  cloudwatch_app_logs_errors_metric_name      = contains(var.be_refactor_k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].name : null
+  cloudwatch_app_logs_errors_metric_namespace = contains(var.be_refactor_k8s_monitoring_internal_deployments_names, each.key) ? aws_cloudwatch_log_metric_filter.eks_app_logs_errors.metric_transformation[0].namespace : null
 }
 
 
