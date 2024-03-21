@@ -37,6 +37,7 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
     CONNECT_PLUGIN_PATH                       = "/kafka/connect"
     CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE      = "false"
     CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE    = "false"
+    CONNECT_CONNECTIONS_MAX_IDLE_MS           = "540000"
 
     CONFIG_PROVIDERS                             = "secretsmanager"
     CONFIG_PROVIDERS_SECRETSMANAGER_CLASS        = "com.amazonaws.kafka.config.providers.SecretsManagerConfigProvider"
