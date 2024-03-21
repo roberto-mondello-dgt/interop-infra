@@ -19,7 +19,8 @@ data "aws_iam_policy_document" "github_assume_ecr" {
       # TODO: these repo names should not use wildcard (branch * is ok)
       values = [
         "repo:pagopa/interop-be-*:*",
-        "repo:pagopa/pdnd-interop-frontend:*"
+        "repo:pagopa/pdnd-interop-frontend:*",
+        "repo:pagopa/interop-debezium-postgresql:*"
       ]
     }
   }
