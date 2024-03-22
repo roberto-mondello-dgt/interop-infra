@@ -22,7 +22,7 @@ resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
 
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/debezium.*",
+          "${local.msk_topic_iam_prefix}/__debezium.*",
           "${local.msk_topic_iam_prefix}/experimental.*",
           "${local.msk_topic_iam_prefix}/event-store.*",
           "${local.msk_group_iam_prefix}/debezium.*",

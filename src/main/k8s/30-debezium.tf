@@ -26,10 +26,10 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
 
   data = {
     BOOTSTRAP_SERVERS                         = "boot-yqksbq44.c3.kafka-serverless.eu-central-1.amazonaws.com:9098"
-    GROUP_ID                                  = "experimental.debezium.postgresql"
-    CONFIG_STORAGE_TOPIC                      = "experimental.debezium.postgresql.config"
-    STATUS_STORAGE_TOPIC                      = "experimental.debezium.postgresql.status"
-    OFFSET_STORAGE_TOPIC                      = "experimental.debezium.postgresql.offset"
+    GROUP_ID                                  = "debezium.postgresql"
+    CONFIG_STORAGE_TOPIC                      = "__debezium.postgresql.config"
+    STATUS_STORAGE_TOPIC                      = "__debezium.postgresql.status"
+    OFFSET_STORAGE_TOPIC                      = "__debezium.postgresql.offset"
     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR = "3"
     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR = "3"
     CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR = "3"
@@ -39,9 +39,9 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
     CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE    = "false"
     CONNECT_CONNECTIONS_MAX_IDLE_MS           = "540000"
 
-    CONFIG_PROVIDERS                             = "secretsmanager"
-    CONFIG_PROVIDERS_SECRETSMANAGER_CLASS        = "com.amazonaws.kafka.config.providers.SecretsManagerConfigProvider"
-    CONFIG_PROVIDERS_SECRETSMANAGER_PARAM_REGION = var.aws_region
+    CONNECT_CONFIG_PROVIDERS                             = "secretsmanager"
+    CONNECT_CONFIG_PROVIDERS_SECRETSMANAGER_CLASS        = "com.amazonaws.kafka.config.providers.SecretsManagerConfigProvider"
+    CONNECT_CONFIG_PROVIDERS_SECRETSMANAGER_PARAM_REGION = var.aws_region
 
     CONNECT_SECURITY_PROTOCOL                  = "SASL_SSL"
     CONNECT_SASL_MECHANISM                     = "AWS_MSK_IAM"
@@ -61,6 +61,10 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
     CONNECT_CONSUMER_SASL_CLIENT_CALLBACK_HANDLER_CLASS = "software.amazon.msk.auth.iam.IAMClientCallbackHandler"
     # CONNECT_CONSUMER_SSL_TRUSTSTORE_LOCATION= /opt/ssl/kafka.client.truststore.jks
   }
+}
+
+locals {
+  debezium_include_schema_prefix = var.env == "dev" ? "dev-refactor" : var.env
 }
 
 resource "kubernetes_config_map_v1" "debezium_postgresql" {
@@ -84,7 +88,7 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "database.user": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:username}",
            "database.password": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:password}",
            "database.dbname": "${var.debezium_postgresql_database_name}",
-           "topic.prefix": "experimental.event-store",
+           "topic.prefix": "event-store",
            "plugin.name": "pgoutput",
            "binary.handling.mode": "hex",
            "slot.name": "debezium_postgresql",
@@ -94,7 +98,7 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
            "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
            "transforms.PartitionRouting.partition.topic.num": 3,
-           "table.include.list": "experimental.events"
+           "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events"
         }
       }
     EOT
