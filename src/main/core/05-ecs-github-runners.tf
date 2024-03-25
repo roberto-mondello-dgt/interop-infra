@@ -285,6 +285,34 @@ resource "aws_iam_role" "github_qa_runner_task" {
       ]
     })
   }
+
+  dynamic "inline_policy" {
+    for_each = local.deploy_be_refactor_infra ? [1] : []
+
+    content {
+      name = "KafkaTopics"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "kafka-cluster:Connect",
+              "kafka-cluster:CreateTopic",
+              "kafka-cluster:DeleteTopic",
+              "kafka-cluster:DescribeCluster",
+              "kafka-cluster:DescribeTopic",
+            ]
+            Resource = [
+              aws_msk_serverless_cluster.interop_events[0].arn,
+              "${local.msk_topic_iam_prefix}/event-store.*",
+            ]
+          }
+        ]
+      })
+    }
+  }
 }
 
 resource "aws_ecs_task_definition" "github_qa_runner" {
