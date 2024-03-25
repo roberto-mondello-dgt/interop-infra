@@ -171,7 +171,7 @@ resource "aws_iam_role" "github_ecs" {
             aws_ecs_task_definition.github_runner.arn_without_revision,
             "${aws_ecs_task_definition.github_runner.arn_without_revision}:*"
             ],
-            var.env == "qa" ? [
+            var.env == "dev" || var.env == "qa" ? [
               aws_ecs_task_definition.github_qa_runner[0].arn_without_revision,
               "${aws_ecs_task_definition.github_qa_runner[0].arn_without_revision}:*"
           ] : [])
@@ -197,7 +197,7 @@ resource "aws_iam_role" "github_ecs" {
           Resource = concat([
             aws_iam_role.github_runner_task_exec.arn,
             aws_iam_role.github_runner_task.arn
-          ], var.env == "qa" ? [aws_iam_role.github_qa_runner_task[0].arn] : [])
+          ], var.env == "dev" || var.env == "qa" ? [aws_iam_role.github_qa_runner_task[0].arn] : [])
         }
       ]
     })
