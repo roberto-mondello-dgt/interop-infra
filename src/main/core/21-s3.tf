@@ -621,7 +621,7 @@ module "msk_custom_plugins_bucket" {
 }
 
 module "data_preparation_bucket" {
-  count = var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.14.1"

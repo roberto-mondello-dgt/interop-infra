@@ -112,6 +112,34 @@ resource "aws_iam_role" "github_runner_task" {
       ]
     })
   }
+
+  dynamic "inline_policy" {
+    for_each = local.deploy_be_refactor_infra ? [1] : []
+
+    content {
+      name = "KafkaTopics"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "kafka-cluster:Connect",
+              "kafka-cluster:CreateTopic",
+              "kafka-cluster:DeleteTopic",
+              "kafka-cluster:DescribeCluster",
+              "kafka-cluster:DescribeTopic",
+            ]
+            Resource = [
+              aws_msk_serverless_cluster.interop_events[0].arn,
+              "${local.msk_topic_iam_prefix}/event-store.*",
+            ]
+          }
+        ]
+      })
+    }
+  }
 }
 
 resource "aws_ecs_cluster" "github_runners" {
@@ -183,7 +211,7 @@ resource "aws_security_group" "github_runners_v2" {
 }
 
 resource "aws_iam_role" "github_qa_runner_task" {
-  count = var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" ? 1 : 0
 
   name = format("%s-github-qa-runner-task-%s", var.short_name, var.env)
 
@@ -260,7 +288,7 @@ resource "aws_iam_role" "github_qa_runner_task" {
 }
 
 resource "aws_ecs_task_definition" "github_qa_runner" {
-  count = var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" ? 1 : 0
 
   family = format("%s-github-qa-runner-%s", var.short_name, var.env)
 
@@ -276,7 +304,7 @@ resource "aws_ecs_task_definition" "github_qa_runner" {
       cpu       = 2048
       memory    = 4096
       essential = true
-      image     = "ghcr.io/pagopa/interop-qa-runner:v1.3.0"
+      image     = "ghcr.io/pagopa/interop-qa-runner:v1.4.0"
 
       portMappngs = [
         {
