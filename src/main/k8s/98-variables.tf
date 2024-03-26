@@ -140,7 +140,13 @@ variable "debezium_postgresql_role_name" {
   default     = null
 }
 
-variable "debezium_postgresql_cluster_id" {
+variable "debezium_postgresql_msk_cluster_arn" {
+  type        = string
+  description = "ARN of the MSK cluster"
+  default     = null
+}
+
+variable "debezium_postgresql_aurora_cluster_id" {
   type        = string
   description = "ID of the Aurora cluster hosting the Postgresql database"
   default     = null

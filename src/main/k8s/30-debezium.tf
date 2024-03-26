@@ -4,10 +4,18 @@ data "aws_iam_role" "debezium_postgresql" {
   name = var.debezium_postgresql_role_name
 }
 
+# msk_serverless_cluster TF resource doesn't expose the bootstrap servers attribute
+data "external" "msk_bootstrap_servers" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  program = ["aws", "kafka", "get-bootstrap-brokers",
+  "--cluster-arn", "${var.debezium_postgresql_msk_cluster_arn}"]
+}
+
 data "aws_rds_cluster" "event_store" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  cluster_identifier = var.debezium_postgresql_cluster_id
+  cluster_identifier = var.debezium_postgresql_aurora_cluster_id
 }
 
 data "aws_secretsmanager_secret" "debezium_credentials" {
@@ -25,7 +33,7 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
   }
 
   data = {
-    BOOTSTRAP_SERVERS                         = "boot-yqksbq44.c3.kafka-serverless.eu-central-1.amazonaws.com:9098"
+    BOOTSTRAP_SERVERS                         = data.external.msk_bootstrap_servers[0].result.BootstrapBrokerStringSaslIam
     GROUP_ID                                  = "debezium.postgresql"
     CONFIG_STORAGE_TOPIC                      = "__debezium.postgresql.config"
     STATUS_STORAGE_TOPIC                      = "__debezium.postgresql.status"
