@@ -88,21 +88,3 @@ resource "aws_msk_serverless_cluster" "interop_events" {
     }
   }
 }
-
-locals {
-  msk_iam_prefix = "arn:aws:kafka:${var.aws_region}:${data.aws_caller_identity.current.account_id}"
-
-  interop_events_cluster_name = (local.deploy_be_refactor_infra ?
-  aws_msk_serverless_cluster.interop_events[0].cluster_name : null)
-
-  interop_events_cluster_uuid = (local.deploy_be_refactor_infra ?
-  split("/", aws_msk_serverless_cluster.interop_events[0].arn)[2] : null)
-  debezium_event_store_offsets_topic = "debezium.event-store.offsets"
-
-  msk_topic_iam_prefix = (local.deploy_be_refactor_infra
-    ? "${local.msk_iam_prefix}:topic/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
-  : null)
-  msk_group_iam_prefix = (local.deploy_be_refactor_infra
-    ? "${local.msk_iam_prefix}:group/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}"
-  : null)
-}
