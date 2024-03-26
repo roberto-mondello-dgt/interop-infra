@@ -3,7 +3,10 @@ resource "aws_iam_role" "buildo_developers" {
 
   name = format("%s-buildo-developers-%s", var.short_name, var.env)
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonSQSReadOnlyAccess"
+  ]
 
   max_session_duration = 43200 # 12 hours
 
@@ -197,6 +200,23 @@ resource "aws_iam_role" "buildo_developers" {
             "kms:Verify"
           ]
           Resource = aws_kms_key.interop.arn
+        }
+      ]
+    })
+  }
+
+  inline_policy {
+    name = "SQS"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "sqs:*Message"
+          ]
+          Resource = module.be_refactor_persistence_events_queue[0].queue_arn
         }
       ]
     })
