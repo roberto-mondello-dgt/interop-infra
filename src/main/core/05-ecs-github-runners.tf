@@ -303,11 +303,20 @@ resource "aws_iam_role" "github_qa_runner_task" {
               "kafka-cluster:DeleteTopic",
               "kafka-cluster:DescribeCluster",
               "kafka-cluster:DescribeTopic",
+              "kafka-cluster:DescribeTopicDynamicConfiguration"
             ]
             Resource = [
               aws_msk_serverless_cluster.interop_events[0].arn,
-              "${local.msk_topic_iam_prefix}/event-store.*",
+              "${local.msk_topic_iam_prefix}/*",
             ]
+          },
+          {
+            Effect = "Deny"
+            Action = [
+              "kafka-cluster:CreateTopic",
+              "kafka-cluster:DeleteTopic",
+            ]
+            Resource = "${local.msk_topic_iam_prefix}/__*"
           }
         ]
       })
@@ -332,7 +341,7 @@ resource "aws_ecs_task_definition" "github_qa_runner" {
       cpu       = 2048
       memory    = 4096
       essential = true
-      image     = "ghcr.io/pagopa/interop-qa-runner:v1.4.0"
+      image     = "ghcr.io/pagopa/interop-qa-runner:v1.7.0"
 
       portMappngs = [
         {
