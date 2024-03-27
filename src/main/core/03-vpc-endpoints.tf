@@ -1,5 +1,5 @@
 data "aws_subnets" "vpce" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env != "prod" ? 1 : 0
 
   filter {
     name   = "vpc-id"
@@ -13,7 +13,7 @@ data "aws_subnets" "vpce" {
 }
 
 data "aws_route_tables" "vpce" {
-  count = var.env == "dev" ? 1 : 0
+  count = var.env != "prod" ? 1 : 0
 
   filter {
     name   = "vpc-id"
@@ -23,7 +23,7 @@ data "aws_route_tables" "vpce" {
 
 # TODO: restrict?
 resource "aws_security_group" "vpce_common" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env != "prod" ? 1 : 0
 
   name        = format("vpce-common-%s", var.env)
   description = "Common SG across all VPC Endpoints"
@@ -38,8 +38,8 @@ resource "aws_security_group" "vpce_common" {
   }
 }
 
-module "vpce" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+module "vpce_interface" {
+  count = var.env != "prod" ? 1 : 0
 
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "5.1.2"
@@ -102,16 +102,13 @@ module "vpce" {
   }
 }
 
-module "vpce-gateway" {
-  count = var.env == "dev" ? 1 : 0
+module "vpce_gateway" {
+  count = var.env != "prod" ? 1 : 0
 
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "5.1.2"
 
   vpc_id = module.vpc_v2.vpc_id
-  # Create one VPCE per AZ only in prod
-  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce[0].ids : [data.aws_subnets.vpce[0].ids[0]]
-  security_group_ids = [aws_security_group.vpce_common[0].id]
 
   endpoints = {
     s3 = {
