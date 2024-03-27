@@ -85,13 +85,6 @@ module "vpce" {
 
       tags = { Name = "sqs" }
     },
-    sns = {
-      service_name        = "com.amazonaws.${var.aws_region}.sns"
-      service_type        = "Interface"
-      private_dns_enabled = true
-
-      tags = { Name = "sns" }
-    },
     cloudwatch_monitoring = {
       service_name        = "com.amazonaws.${var.aws_region}.monitoring"
       service_type        = "Interface"
