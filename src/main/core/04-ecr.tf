@@ -42,6 +42,7 @@ locals {
     "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
     "interop-be-tenant-process",
+    "interop-be-tenant-readmodel-writer",
     "interop-be-tenants-attributes-checker",
     "interop-be-tenants-cert-attr-updater",
     "interop-be-token-details-persister",
