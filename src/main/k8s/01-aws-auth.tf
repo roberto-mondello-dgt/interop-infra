@@ -33,9 +33,9 @@ data "aws_iam_role" "buildo_devs" {
 }
 
 data "aws_iam_role" "qa_runner" {
-  count = var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" ? 1 : 0
 
-  name = "interop-github-qa-runner-task-qa"
+  name = "interop-github-qa-runner-task-${var.env}"
 }
 
 locals {
@@ -97,7 +97,7 @@ locals {
       k8s_groups   = ["buildo-devs"]
   }) : ""
 
-  qa_runner_mapping = var.env == "qa" ? templatefile("./templates/aws-auth-role.tpl",
+  qa_runner_mapping = var.env == "dev" || var.env == "qa" ? templatefile("./templates/aws-auth-role.tpl",
     {
       role_arn     = data.aws_iam_role.qa_runner[0].arn
       k8s_username = data.aws_iam_role.qa_runner[0].name
