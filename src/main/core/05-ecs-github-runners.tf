@@ -130,6 +130,7 @@ resource "aws_iam_role" "github_runner_task" {
               "kafka-cluster:DeleteTopic",
               "kafka-cluster:DescribeCluster",
               "kafka-cluster:DescribeTopic",
+              "kafka-cluster:DescribeTopicDynamicConfiguration"
             ]
             Resource = [
               aws_msk_serverless_cluster.interop_events[0].arn,
