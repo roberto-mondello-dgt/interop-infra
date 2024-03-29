@@ -341,7 +341,7 @@ resource "aws_ecs_task_definition" "github_qa_runner" {
       cpu       = 2048
       memory    = 4096
       essential = true
-      image     = "ghcr.io/pagopa/interop-qa-runner:v1.7.0"
+      image     = "ghcr.io/pagopa/interop-qa-runner:v1.12.0"
 
       portMappngs = [
         {
