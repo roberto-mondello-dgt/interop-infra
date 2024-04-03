@@ -106,7 +106,10 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
            "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
            "transforms.PartitionRouting.partition.topic.num": 3,
-           "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events"
+           "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events",
+           "heartbeat.interval.ms": 30000,
+           "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
+           "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();"
         }
       }
     EOT
