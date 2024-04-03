@@ -106,6 +106,7 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
            "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
            "transforms.PartitionRouting.partition.topic.num": 3,
+           "message.key.columns": "${local.debezium_include_schema_prefix}_(.*).events:stream_id",
            "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
