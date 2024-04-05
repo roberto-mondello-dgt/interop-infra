@@ -110,7 +110,9 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
-           "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();"
+           "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
+           "snapshot.select.statement.overrides": "${local.debezium_include_schema_prefix}_catalog.events",
+           "snapshot.select.statement.overrides.${local.debezium_include_schema_prefix}_catalog.events": "SELECT * FROM \"${local.debezium_include_schema_prefix}_catalog\".\"events\" ORDER BY sequence_num ASC"
         }
       }
     EOT
