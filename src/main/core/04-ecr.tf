@@ -28,6 +28,7 @@ locals {
     "interop-be-ivass-certified-attributes-importer",
     "interop-be-metrics-report-generator",
     "interop-be-notifier",
+    "interop-be-notifier-seeder",
     "interop-be-one-trust-notices",
     "interop-be-padigitale-report-generator",
     "interop-be-party-management",
