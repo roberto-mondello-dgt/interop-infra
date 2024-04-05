@@ -203,3 +203,37 @@ resource "aws_iam_policy" "be_refactor_authorization_updater" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_refactor_notifier_seeder" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeNotifierSeeder"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_group_iam_prefix}/notifier-seeder"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage",
+        Resource = module.be_refactor_persistence_events_queue[0].queue_arn
+      }
+    ]
+  })
+}
