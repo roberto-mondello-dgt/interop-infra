@@ -32,6 +32,8 @@ resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
           "kafka-cluster:CreateTopic",
           "kafka-cluster:DescribeCluster",
           "kafka-cluster:DescribeTopic",
+          "kafka-cluster:DescribeTopicDynamicConfiguration",
+          "kafka-cluster:AlterTopicDynamicConfiguration",
           "kafka-cluster:AlterGroup",
           "kafka-cluster:DescribeGroup",
           "kafka-cluster:ReadData",
