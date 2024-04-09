@@ -73,6 +73,10 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
 
 locals {
   debezium_include_schema_prefix = var.env == "dev" ? "dev-refactor" : var.env
+  debezium_app_schemas           = ["catalog"]
+
+  debezium_fq_table_names         = [for schema in local.debezium_app_schemas : format("%s_%s.events", local.debezium_include_schema_prefix, schema)]
+  debezium_escaped_fq_table_names = [for fq_name in local.debezium_fq_table_names : format("\\\"%s\\\".\\\"%s\\\"", split(".", fq_name)[0], split(".", fq_name)[1])]
 }
 
 resource "kubernetes_config_map_v1" "debezium_postgresql" {
@@ -111,8 +115,10 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
            "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
-           "snapshot.select.statement.overrides": "${local.debezium_include_schema_prefix}_catalog.events",
-           "snapshot.select.statement.overrides.${local.debezium_include_schema_prefix}_catalog.events": "SELECT * FROM \"${local.debezium_include_schema_prefix}_catalog\".\"events\" ORDER BY sequence_num ASC"
+           "snapshot.select.statement.overrides": "${join(",", local.debezium_fq_table_names)}",
+           %{~for i, fq_name in local.debezium_fq_table_names~}
+           "snapshot.select.statement.overrides.${fq_name}": "SELECT * FROM ${local.debezium_escaped_fq_table_names[i]} ORDER BY sequence_num ASC"%{if i < length(local.debezium_fq_table_names) - 1},%{endif}
+           %{~endfor~}
         }
       }
     EOT
