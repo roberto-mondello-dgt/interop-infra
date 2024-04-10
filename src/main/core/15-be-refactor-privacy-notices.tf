@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "be_refactor_privacy_notices" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   name         = format("interop-privacy-notices-refactor-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"
@@ -13,7 +13,7 @@ resource "aws_dynamodb_table" "be_refactor_privacy_notices" {
 }
 
 resource "aws_dynamodb_table" "be_refactor_privacy_notices_acceptances" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   name         = format("interop-privacy-notices-acceptances-refactor-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"

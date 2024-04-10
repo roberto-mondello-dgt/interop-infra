@@ -3,7 +3,7 @@ locals {
   role_prefix = format("interop-iam-service-%s", var.env)
 
   # workaround to allow both 'dev' and 'dev-refactor'
-  k8s_namespace_irsa = local.deploy_be_refactor_infra ? "dev*" : var.env
+  k8s_namespace_irsa = var.env == "dev" ? "dev*" : var.env
 }
 
 module "be_agreement_management_irsa" {
@@ -12,7 +12,7 @@ module "be_agreement_management_irsa" {
 
   role_name = format("%s-interop-be-agreement-management", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -32,7 +32,7 @@ module "be_authorization_management_irsa" {
 
   role_name = format("%s-interop-be-authorization-management", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -52,7 +52,7 @@ module "be_agreement_process_irsa" {
 
   role_name = format("%s-interop-be-agreement-process", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -72,7 +72,7 @@ module "be_catalog_management_irsa" {
 
   role_name = format("%s-interop-be-catalog-management", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -92,7 +92,7 @@ module "be_authorization_server_irsa" {
 
   role_name = format("%s-interop-be-authorization-server", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -112,7 +112,7 @@ module "be_catalog_process_irsa" {
 
   role_name = format("%s-interop-be-catalog-process", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -132,7 +132,7 @@ module "be_purpose_management_irsa" {
 
   role_name = format("%s-interop-be-purpose-management", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -152,7 +152,7 @@ module "be_notifier_irsa" {
 
   role_name = format("%s-interop-be-notifier", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -172,7 +172,7 @@ module "be_purpose_process_irsa" {
 
   role_name = format("%s-interop-be-purpose-process", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -192,7 +192,7 @@ module "be_backend_for_frontend_irsa" {
 
   role_name = format("%s-interop-be-backend-for-frontend", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -212,7 +212,7 @@ module "be_selfcare_onboarding_consumer_irsa" {
 
   role_name = format("interop-be-selfcare-onboarding-consumer-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -232,7 +232,7 @@ module "be_anac_certified_attributes_importer_irsa" {
 
   role_name = format("interop-be-anac-certified-attributes-importer-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -252,7 +252,7 @@ module "be_ivass_certified_attributes_importer_irsa" {
 
   role_name = format("interop-be-ivass-certified-attributes-importer-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -272,7 +272,7 @@ module "be_attributes_loader_irsa" {
 
   role_name = format("%s-interop-be-attributes-loader", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -292,7 +292,7 @@ module "be_token_details_persister_irsa" {
 
   role_name = format("%s-interop-be-token-details-persister", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -312,7 +312,7 @@ module "be_eservices_monitoring_exporter_irsa" {
 
   role_name = format("interop-be-eservices-monitoring-exporter-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -332,7 +332,7 @@ module "be_tenants_certified_attributes_updater_irsa" {
 
   role_name = format("%s-interop-be-tenants-cert-attr-updater", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -352,7 +352,7 @@ module "be_certified_mail_sender_irsa" {
 
   role_name = format("%s-interop-be-certified-mail-sender", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -372,7 +372,7 @@ module "be_party_registry_refresher_irsa" {
 
   role_name = format("%s-interop-be-party-registry-refresher", local.role_prefix)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -388,7 +388,7 @@ module "be_metrics_report_generator_irsa" {
 
   role_name = format("interop-be-metrics-report-generator-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -408,7 +408,7 @@ module "be_pa_digitale_report_generator_irsa" {
 
   role_name = format("interop-be-padigitale-report-generator-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -428,7 +428,7 @@ module "be_dashboard_metrics_report_generator_irsa" {
 
   role_name = format("interop-be-dashboard-metrics-report-generator-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -448,7 +448,7 @@ module "be_dtd_catalog_exporter_irsa" {
 
   role_name = format("interop-be-dtd-catalog-exporter-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -468,7 +468,7 @@ module "be_privacy_notices_updater_irsa" {
 
   role_name = format("interop-be-privacy-notices-updater-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -488,7 +488,7 @@ module "be_one_trust_notices_irsa" {
 
   role_name = format("interop-be-one-trust-notices-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -508,7 +508,7 @@ module "be_purposes_archiver_irsa" {
 
   role_name = format("interop-be-purposes-archiver-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -528,7 +528,7 @@ module "be_eservice_descriptors_archiver_irsa" {
 
   role_name = format("interop-be-eservice-descriptors-archiver-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -548,7 +548,7 @@ module "be_dtd_metrics_irsa" {
 
   role_name = format("interop-be-dtd-metrics-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -568,7 +568,7 @@ module "be_datalake_data_export_irsa" {
 
   role_name = format("interop-be-datalake-data-export-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
@@ -602,6 +602,7 @@ module "aws_load_balancer_controller_irsa" {
 }
 
 module "aws_load_balancer_controller_irsa_v2" {
+  count  = var.env == "dev" ? 1 : 0
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
   role_name = format("aws-load-balancer-controller-v2-%s", var.env)
@@ -644,7 +645,7 @@ module "be_vpce_routing_testing_irsa" {
 
   role_name = format("interop-be-vpce-routing-testing-%s", var.env)
 
-  assume_role_condition_test = local.deploy_be_refactor_infra ? "StringLike" : "StringEquals"
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {

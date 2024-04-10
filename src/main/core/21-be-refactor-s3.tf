@@ -1,5 +1,5 @@
 module "be_refactor_application_documents_bucket" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
@@ -17,7 +17,7 @@ module "be_refactor_application_documents_bucket" {
 }
 
 module "be_refactor_generated_jwt_details_bucket" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
@@ -45,7 +45,7 @@ module "be_refactor_generated_jwt_details_bucket" {
 }
 
 module "be_refactor_generated_jwt_details_fallback_bucket" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
@@ -92,7 +92,7 @@ module "be_refactor_generated_jwt_details_fallback_bucket" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "be_refactor_generated_jwt_fallback_write_activity" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   alarm_name        = format("generated-jwt-fallback-refactor-write-activity-%s", var.env)
   alarm_description = format("Write activity on %s bucket", module.be_refactor_generated_jwt_details_fallback_bucket[0].s3_bucket_id)

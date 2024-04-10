@@ -1,5 +1,5 @@
 module "be_refactor_persistence_events_queue" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.2"
@@ -18,7 +18,7 @@ module "be_refactor_persistence_events_queue" {
 }
 
 module "be_refactor_persistence_events_queue_monitoring" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source     = "./modules/queue-monitoring"
   depends_on = [module.be_refactor_persistence_events_queue]
@@ -31,7 +31,7 @@ module "be_refactor_persistence_events_queue_monitoring" {
 }
 
 module "be_refactor_generated_jwt_queue" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.2"
@@ -46,7 +46,7 @@ module "be_refactor_generated_jwt_queue" {
 }
 
 module "be_refactor_archived_agreements_for_purposes_queue" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.2"
@@ -61,7 +61,7 @@ module "be_refactor_archived_agreements_for_purposes_queue" {
 }
 
 module "be_refactor_archived_agreements_for_eservices_queue" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/sqs/aws"
   version = "v4.0.2"
@@ -76,7 +76,7 @@ module "be_refactor_archived_agreements_for_eservices_queue" {
 }
 
 module "be_refactor_certified_mail_queue" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.0.2"

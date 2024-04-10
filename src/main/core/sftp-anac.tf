@@ -1,5 +1,5 @@
 locals {
-  deploy_anac_sftp = var.env == "dev" || var.env == "test" ? true : false
+  deploy_anac_sftp = var.env == "dev" || var.env == "test"
 }
 
 data "aws_iam_policy" "transfer_logging" {

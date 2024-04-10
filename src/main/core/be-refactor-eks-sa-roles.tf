@@ -1,5 +1,6 @@
 locals {
-  be_refactor_ns = "dev-refactor"
+  be_refactor_ns     = var.env == "dev" ? "dev-refactor" : var.env
+  be_refactor_suffix = var.env == "dev" ? "-refactor" : ""
 }
 
 module "be_refactor_debezium_postgresql_irsa" {
@@ -30,12 +31,12 @@ module "be_refactor_catalog_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-catalog-process-refactor-%s", var.env)
+  role_name = format("interop-be-catalog-process${local.be_refactor_suffix}-%s", var.env)
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-catalog-process-refactor"]
+      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-catalog-process${local.be_refactor_suffix}"]
     }
   }
 
@@ -65,7 +66,7 @@ module "be_refactor_catalog_readmodel_writer_irsa" {
 }
 
 module "be_refactor_agreement_readmodel_writer_irsa" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"

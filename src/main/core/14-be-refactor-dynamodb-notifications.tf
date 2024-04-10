@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "be_refactor_notification_events" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   name         = "interop-notification-events-refactor"
   billing_mode = "PAY_PER_REQUEST"
@@ -24,7 +24,7 @@ resource "aws_dynamodb_table" "be_refactor_notification_events" {
 }
 
 resource "aws_dynamodb_table" "be_refactor_notification_resources" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   name         = "interop-notification-resources-refactor"
   billing_mode = "PAY_PER_REQUEST"

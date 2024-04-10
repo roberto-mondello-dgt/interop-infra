@@ -39,7 +39,7 @@ locals {
   format("%s-bastion-host-%d-%s", var.short_name, idx + 1, var.env)]
 
   msk_interop_events_subnets_names = [for idx, subn in local.msk_interop_events_cidrs :
-  format("%s-msk-events-%d-%s", var.short_name, idx + 1, var.env) if var.env == "dev"]
+  format("%s-msk-events-%d-%s", var.short_name, idx + 1, var.env) if local.deploy_be_refactor_infra]
 }
 
 # TODO: rename module and vpc after migration

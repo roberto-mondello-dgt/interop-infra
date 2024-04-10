@@ -552,6 +552,11 @@ module "alb_logs_bucket" {
   })
 }
 
+# moved {
+#   from = module.anac_sftp_bucket
+#   to = module.anac_sftp_bucket[0]
+# }
+
 module "anac_sftp_bucket" {
   count = local.deploy_anac_sftp ? 1 : 0
 
@@ -603,7 +608,7 @@ module "s3_batch_reports_bucket" {
 }
 
 module "msk_custom_plugins_bucket" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.14.1"

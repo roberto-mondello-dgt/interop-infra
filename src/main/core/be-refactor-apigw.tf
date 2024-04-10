@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "be_refactor_apigw_access_logs" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   name = format("amazon-apigateway-interop-access-logs-refactor-%s", var.env)
 
@@ -8,7 +8,7 @@ resource "aws_cloudwatch_log_group" "be_refactor_apigw_access_logs" {
 }
 
 module "be_refactor_interop_auth_domain" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/apigw-dns-domain"
 
@@ -18,7 +18,7 @@ module "be_refactor_interop_auth_domain" {
 }
 
 module "be_refactor_interop_auth_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -34,7 +34,7 @@ module "be_refactor_interop_auth_apigw" {
 }
 
 module "be_refactor_interop_selfcare_domain" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/apigw-dns-domain"
 
@@ -44,7 +44,7 @@ module "be_refactor_interop_selfcare_domain" {
 }
 
 module "be_refactor_interop_selfcare_1dot0_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -61,7 +61,7 @@ module "be_refactor_interop_selfcare_1dot0_apigw" {
 }
 
 module "be_refactor_interop_selfcare_0dot0_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -79,7 +79,7 @@ module "be_refactor_interop_selfcare_0dot0_apigw" {
 }
 
 module "be_refactor_interop_frontend_assets_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/apigw-frontend-assets"
 
@@ -97,7 +97,7 @@ module "be_refactor_interop_frontend_assets_apigw" {
 }
 
 module "be_refactor_interop_api_domain" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/apigw-dns-domain"
 
@@ -107,7 +107,7 @@ module "be_refactor_interop_api_domain" {
 }
 
 module "be_refactor_interop_api_1dot0_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
@@ -124,7 +124,7 @@ module "be_refactor_interop_api_1dot0_apigw" {
 }
 
 module "be_refactor_interop_api_0dot0_apigw" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
