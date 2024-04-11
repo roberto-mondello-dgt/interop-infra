@@ -92,6 +92,7 @@ k8s_monitoring_deployments_names = [
 k8s_monitoring_internal_deployments_names = [
   "interop-be-certified-mail-sender",
   "interop-be-eservice-descriptors-archiver",
+  "interop-be-notifier",
   "interop-be-selfcare-onboarding-consumer",
   "redis"
 ]
@@ -143,6 +144,7 @@ be_refactor_k8s_monitoring_internal_deployments_names = [
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-eservice-descriptors-archiver",
+  "interop-be-notifier",
   "interop-be-notifier-seeder",
   "interop-be-selfcare-onboarding-consumer",
   "redis"
