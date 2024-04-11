@@ -6,9 +6,12 @@ resource "aws_iam_policy" "be_agreement_management" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = "sqs:SendMessage"
-      Resource = module.persistence_events_queue.queue_arn
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
     }]
   })
 }
