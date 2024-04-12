@@ -163,3 +163,8 @@ variable "debezium_postgresql_credentials_secret_name" {
   description = "Name of the secret containing Postgresql credentials for Debezium"
   default     = null
 }
+
+variable "debezium_routing_partitions" {
+  type        = number
+  description = "Number of topic partitions for transforms.PartitionRouting"
+}

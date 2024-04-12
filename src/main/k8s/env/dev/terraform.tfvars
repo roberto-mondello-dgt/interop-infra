@@ -45,3 +45,4 @@ debezium_postgresql_msk_cluster_arn         = "arn:aws:kafka:eu-central-1:505630
 debezium_postgresql_aurora_cluster_id       = "interop-persistence-management-dev"
 debezium_postgresql_database_name           = "persistence_management_refactor"
 debezium_postgresql_credentials_secret_name = "persistence-management-debezium-credentials"
+debezium_routing_partitions                 = 3
