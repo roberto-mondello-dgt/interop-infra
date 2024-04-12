@@ -37,7 +37,7 @@ notification_events_table_ttl_enabled = true
 github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-qa-development"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
-github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
+github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.15.0"
 
 dns_interop_base_domain = "interop.pagopa.it"
 
