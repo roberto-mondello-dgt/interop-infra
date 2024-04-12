@@ -1,12 +1,12 @@
 resource "aws_iam_role" "buildo_developers" {
-  count = var.env == "dev" ? 1 : 0
+  count = var.env == "dev" || var.env == "test" ? 1 : 0
 
   name = format("%s-buildo-developers-%s", var.short_name, var.env)
 
-  managed_policy_arns = [
+  managed_policy_arns = var.env == "dev" ? [
     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
     "arn:aws:iam::aws:policy/AmazonSQSReadOnlyAccess"
-  ]
+  ] : ["arn:aws:iam::aws:policy/AmazonSQSReadOnlyAccess"]
 
   max_session_duration = 43200 # 12 hours
 
@@ -79,7 +79,6 @@ resource "aws_iam_role" "buildo_developers" {
   inline_policy {
     name = "CloudWatchReadOnly"
 
-
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
@@ -97,7 +96,7 @@ resource "aws_iam_role" "buildo_developers" {
   }
 
   inline_policy {
-    name = "MSKInteropEvents"
+    name = "MSKReadOnly"
 
     policy = jsonencode({
       Version = "2012-10-17"
@@ -108,72 +107,109 @@ resource "aws_iam_role" "buildo_developers" {
           Action = [
             "kafka-cluster:Connect",
             "kafka-cluster:DescribeCluster",
-            "kafka-cluster:*Topic",
-            "kafka-cluster:*TopicDynamicConfiguration",
-            "kafka-cluster:*Data*",
-            "kafka-cluster:*Group",
-            "kafka-cluster:*TransactionalId"
+            "kafka-cluster:DescribeTopic",
+            "kafka-cluster:DescribeTopicDynamicConfiguration",
+            "kafka-cluster:DescribeGroup",
+            "kafka-cluster:AlterGroup",
+            "kafka-cluster:ReadData",
           ]
           Resource = [
             "${local.msk_iam_prefix}:*/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}",
-            "${local.msk_iam_prefix}:*/${local.interop_events_cluster_name}/${local.interop_events_cluster_uuid}/*"
+            "${local.msk_topic_iam_prefix}/event-store.*",
+            "${local.msk_group_iam_prefix}/buildo.*",
           ]
         }
       ]
     })
   }
 
-  inline_policy {
-    name = "S3ApplicationDocuments"
+  dynamic "inline_policy" {
+    for_each = var.env == "dev" ? [1] : []
 
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "s3:PutObject",
-            "s3:DeleteObject"
-          ]
-          Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
-        }
-      ]
-    })
+    content {
+      name = "MSKWriteTopics"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Sid    = "KafkaTopicsActions"
+            Effect = "Allow"
+            Action = [
+              "kafka-cluster:WriteData"
+            ]
+            Resource = [
+              "${local.msk_topic_iam_prefix}/buildo.*",
+            ]
+          }
+        ]
+      })
+    }
   }
 
-  inline_policy {
-    name = "KMS"
+  dynamic "inline_policy" {
+    for_each = var.env == "dev" ? [1] : []
 
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "kms:Sign",
-            "kms:Verify"
-          ]
-          Resource = aws_kms_key.interop.arn
-        }
-      ]
-    })
+    content {
+      name = "S3WriteApplicationDocuments"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "s3:PutObject",
+              "s3:DeleteObject"
+            ]
+            Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
+          }
+        ]
+      })
+    }
   }
 
-  inline_policy {
-    name = "SQS"
+  dynamic "inline_policy" {
+    for_each = var.env == "dev" ? [1] : []
 
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "sqs:*Message"
-          ]
-          Resource = module.be_refactor_persistence_events_queue[0].queue_arn
-        }
-      ]
-    })
+    content {
+      name = "KMS"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "kms:Sign",
+              "kms:Verify"
+            ]
+            Resource = aws_kms_key.interop.arn
+          }
+        ]
+      })
+    }
+  }
+
+  dynamic "inline_policy" {
+    for_each = var.env == "dev" ? [1] : []
+
+    content {
+      name = "SQS"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "sqs:*Message"
+            ]
+            Resource = module.be_refactor_persistence_events_queue[0].queue_arn
+          }
+        ]
+      })
+    }
   }
 }
 
