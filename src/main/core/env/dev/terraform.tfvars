@@ -121,8 +121,7 @@ be_refactor_k8s_monitoring_deployments_names = [
   "interop-be-agreement-management",
   "interop-be-agreement-process",
   "interop-be-api-gateway",
-  "interop-be-attribute-registry-management",
-  "interop-be-attribute-registry-process",
+  "interop-be-attribute-registry-process-refactor",
   "interop-be-authorization-management",
   "interop-be-authorization-process",
   "interop-be-authorization-server",
@@ -140,6 +139,7 @@ be_refactor_k8s_monitoring_deployments_names = [
 # (dev-refactor NS) deployments which require monitoring from application logs instead of HTTP requests
 be_refactor_k8s_monitoring_internal_deployments_names = [
   "debezium-postgresql",
+  "interop-be-attribute-registry-readmodel-writer",
   "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
