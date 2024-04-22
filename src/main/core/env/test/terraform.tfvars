@@ -109,6 +109,7 @@ k8s_monitoring_deployments_names = [
 
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
+  "debezium-postgresql",
   "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
