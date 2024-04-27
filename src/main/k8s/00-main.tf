@@ -52,5 +52,5 @@ provider "helm" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  deploy_be_refactor_infra = var.env == "dev" || var.env == "test"
+  deploy_be_refactor_infra = var.env == "dev" || var.env == "test" || var.env == "prod"
 }

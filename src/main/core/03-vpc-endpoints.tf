@@ -1,6 +1,4 @@
 data "aws_subnets" "vpce" {
-  count = var.env != "prod" ? 1 : 0
-
   filter {
     name   = "vpc-id"
     values = [module.vpc_v2.vpc_id]
@@ -13,8 +11,6 @@ data "aws_subnets" "vpce" {
 }
 
 data "aws_route_tables" "vpce" {
-  count = var.env != "prod" ? 1 : 0
-
   filter {
     name   = "vpc-id"
     values = [module.vpc_v2.vpc_id]
@@ -23,8 +19,6 @@ data "aws_route_tables" "vpce" {
 
 # TODO: restrict?
 resource "aws_security_group" "vpce_common" {
-  count = var.env != "prod" ? 1 : 0
-
   name        = format("vpce-common-%s", var.env)
   description = "Common SG across all VPC Endpoints"
 
@@ -39,15 +33,13 @@ resource "aws_security_group" "vpce_common" {
 }
 
 module "vpce_interface" {
-  count = var.env != "prod" ? 1 : 0
-
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "5.1.2"
 
   vpc_id = module.vpc_v2.vpc_id
   # Create one VPCE per AZ only in prod
-  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce[0].ids : [data.aws_subnets.vpce[0].ids[0]]
-  security_group_ids = [aws_security_group.vpce_common[0].id]
+  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce.ids : [data.aws_subnets.vpce.ids[0]]
+  security_group_ids = [aws_security_group.vpce_common.id]
 
   endpoints = {
     secrets_manager = {
@@ -103,8 +95,6 @@ module "vpce_interface" {
 }
 
 module "vpce_gateway" {
-  count = var.env != "prod" ? 1 : 0
-
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "5.1.2"
 
@@ -114,14 +104,14 @@ module "vpce_gateway" {
     s3 = {
       service_name    = "com.amazonaws.${var.aws_region}.s3"
       service_type    = "Gateway"
-      route_table_ids = data.aws_route_tables.vpce[0].ids
+      route_table_ids = data.aws_route_tables.vpce.ids
 
       tags = { Name = "s3" }
     },
     dynamodb = {
       service_name    = "com.amazonaws.${var.aws_region}.dynamodb"
       service_type    = "Gateway"
-      route_table_ids = data.aws_route_tables.vpce[0].ids
+      route_table_ids = data.aws_route_tables.vpce.ids
 
       tags = { Name = "dynamodb" }
     }
