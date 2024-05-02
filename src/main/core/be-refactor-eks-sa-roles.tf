@@ -1,5 +1,4 @@
 locals {
-  be_refactor_ns     = var.env == "dev" ? "dev-refactor" : var.env
   be_refactor_suffix = var.env == "dev" ? "-refactor" : ""
 }
 
@@ -11,12 +10,14 @@ module "be_refactor_debezium_postgresql_irsa" {
 
   role_name = format("interop-debezium-postgresql-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   max_session_duration = 43200
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:debezium-postgresql"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:debezium-postgresql"]
     }
   }
 
@@ -33,10 +34,12 @@ module "be_refactor_catalog_process_irsa" {
 
   role_name = format("interop-be-catalog-process${local.be_refactor_suffix}-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-catalog-process${local.be_refactor_suffix}"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-process${local.be_refactor_suffix}"]
     }
   }
 
@@ -53,10 +56,12 @@ module "be_refactor_catalog_readmodel_writer_irsa" {
 
   role_name = format("interop-be-catalog-readmodel-writer-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-catalog-readmodel-writer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-readmodel-writer"]
     }
   }
 
@@ -73,10 +78,12 @@ module "be_refactor_attribute_registry_readmodel_writer_irsa" {
 
   role_name = format("interop-be-attribute-registry-readmodel-writer-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-attribute-registry-readmodel-writer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-attribute-registry-readmodel-writer"]
     }
   }
 
@@ -93,10 +100,12 @@ module "be_refactor_agreement_readmodel_writer_irsa" {
 
   role_name = format("interop-be-agreement-readmodel-writer-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-agreement-readmodel-writer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-readmodel-writer"]
     }
   }
 
@@ -113,10 +122,12 @@ module "be_refactor_authorization_updater_irsa" {
 
   role_name = format("interop-be-authorization-updater-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-authorization-updater"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-updater"]
     }
   }
 
@@ -133,10 +144,12 @@ module "be_refactor_notifier_seeder_irsa" {
 
   role_name = format("interop-be-notifier-seeder-%s", var.env)
 
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.be_refactor_ns}:interop-be-notifier-seeder"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-notifier-seeder"]
     }
   }
 
