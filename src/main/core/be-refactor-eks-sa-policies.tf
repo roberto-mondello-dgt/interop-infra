@@ -106,7 +106,7 @@ resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
-          "${local.msk_group_iam_prefix}/catalog-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*-catalog-readmodel-writer"
         ]
       }
     ]
@@ -135,7 +135,7 @@ resource "aws_iam_policy" "be_refactor_attribute_registry_readmodel_writer" {
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_attribute_registry.events",
-          "${local.msk_group_iam_prefix}/attribute-registry-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*-attribute-registry-readmodel-writer"
         ]
       }
     ]
@@ -194,7 +194,7 @@ resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
-          "${local.msk_group_iam_prefix}/agreement-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*-agreement-readmodel-writer"
         ]
       }
     ]
@@ -223,7 +223,7 @@ resource "aws_iam_policy" "be_refactor_authorization_updater" {
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
-          "${local.msk_group_iam_prefix}/authorization-updater"
+          "${local.msk_group_iam_prefix}/*-authorization-updater"
         ]
       },
       {
@@ -257,13 +257,16 @@ resource "aws_iam_policy" "be_refactor_notifier_seeder" {
           aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
-          "${local.msk_group_iam_prefix}/notifier-seeder"
+          "${local.msk_group_iam_prefix}/*-notifier-seeder"
         ]
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage",
-        Resource = var.env == "dev" ? module.be_refactor_persistence_events_queue[0].queue_arn : module.persistence_events_queue.queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage",
+        Resource = compact([
+          module.persistence_events_queue.queue_arn,
+          try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+        ])
       }
     ]
   })
