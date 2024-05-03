@@ -43,6 +43,6 @@ debezium_postgresql_memory                  = "4Gi"
 debezium_postgresql_role_name               = "interop-debezium-postgresql-dev"
 debezium_postgresql_msk_cluster_arn         = "arn:aws:kafka:eu-central-1:505630707203:cluster/interop-events-dev/6fcdbd46-1fa8-4772-8737-231355352f73-s3"
 debezium_postgresql_aurora_cluster_id       = "interop-persistence-management-dev"
-debezium_postgresql_database_name           = "persistence_management_refactor"
+debezium_postgresql_database_name           = "persistence_management"
 debezium_postgresql_credentials_secret_name = "persistence-management-debezium-credentials"
 debezium_routing_partitions                 = 3

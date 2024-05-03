@@ -1,34 +1,8 @@
-data "aws_iam_role" "debezium_postgresql" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
-
-  name = var.debezium_postgresql_role_name
-}
-
-# msk_serverless_cluster TF resource doesn't expose the bootstrap servers attribute
-data "external" "msk_bootstrap_servers" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
-
-  program = ["aws", "kafka", "get-bootstrap-brokers",
-  "--cluster-arn", "${var.debezium_postgresql_msk_cluster_arn}"]
-}
-
-data "aws_rds_cluster" "event_store" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
-
-  cluster_identifier = var.debezium_postgresql_aurora_cluster_id
-}
-
-data "aws_secretsmanager_secret" "debezium_credentials" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
-
-  name = var.debezium_postgresql_credentials_secret_name
-}
-
-resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+resource "kubernetes_config_map_v1" "dev_refactor_kafka_connect_distributed" {
+  count = var.env == "dev" ? 1 : 0
 
   metadata {
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    namespace = kubernetes_namespace_v1.dev_refactor[0].metadata[0].name
     name      = "kafka-connect-distributed"
   }
 
@@ -70,18 +44,18 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
 }
 
 locals {
-  debezium_include_schema_prefix = var.env
-  debezium_app_schemas           = ["attribute_registry", "catalog"]
+  dev_ref_debezium_include_schema_prefix = "dev-refactor"
+  dev_ref_debezium_app_schemas           = ["attribute_registry", "catalog"]
 
-  debezium_fq_table_names         = [for schema in local.debezium_app_schemas : format("%s_%s.events", local.debezium_include_schema_prefix, schema)]
-  debezium_escaped_fq_table_names = [for fq_name in local.debezium_fq_table_names : format("\\\"%s\\\".\\\"%s\\\"", split(".", fq_name)[0], split(".", fq_name)[1])]
+  dev_ref_debezium_fq_table_names         = [for schema in local.dev_ref_debezium_app_schemas : format("%s_%s.events", local.debezium_include_schema_prefix, schema)]
+  dev_ref_debezium_escaped_fq_table_names = [for fq_name in local.dev_ref_debezium_fq_table_names : format("\\\"%s\\\".\\\"%s\\\"", split(".", fq_name)[0], split(".", fq_name)[1])]
 }
 
-resource "kubernetes_config_map_v1" "debezium_postgresql" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+resource "kubernetes_config_map_v1" "dev_refactor_debezium_postgresql" {
+  count = var.env == "dev" ? 1 : 0
 
   metadata {
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    namespace = kubernetes_namespace_v1.dev_refactor[0].metadata[0].name
     name      = "debezium-postgresql"
   }
 
@@ -89,7 +63,7 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
     CONNECTOR_CONFIG_PATH = "/etc/debezium/connector.json"
     "connector.json" : <<-EOT
       {
-        "name": "debezium-postgresql",
+        "name": "debezium-postgresql-${kubernetes_namespace_v1.dev_refactor[0].metadata[0].name}",
         "config": {
            "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
            "tasks.max": 1,
@@ -97,25 +71,25 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "database.port": "${data.aws_rds_cluster.event_store[0].port}",
            "database.user": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:username}",
            "database.password": "$${secretsmanager:${data.aws_secretsmanager_secret.debezium_credentials[0].name}:password}",
-           "database.dbname": "${var.debezium_postgresql_database_name}",
+           "database.dbname": "persistence_management_refactor",
            "topic.prefix": "event-store",
            "plugin.name": "pgoutput",
            "binary.handling.mode": "hex",
-           "slot.name": "${var.env}_debezium_postgresql",
+           "slot.name": "dev_refactor_debezium_postgresql",
            "publication.name": "events_publication",
            "publication.autocreate.mode": "disabled",
            "transforms": "PartitionRouting",
            "transforms.PartitionRouting.type": "io.debezium.transforms.partitions.PartitionRouting",
            "transforms.PartitionRouting.partition.payload.fields": "change.stream_id",
            "transforms.PartitionRouting.partition.topic.num": ${var.debezium_routing_partitions},
-           "message.key.columns": "${local.debezium_include_schema_prefix}_(.*).events:stream_id",
-           "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events",
+           "message.key.columns": "${local.dev_ref_debezium_include_schema_prefix}_(.*).events:stream_id",
+           "table.include.list": "${local.dev_ref_debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
-           "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('${var.env}_debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
-           "snapshot.select.statement.overrides": "${join(",", local.debezium_fq_table_names)}",
-           %{~for i, fq_name in local.debezium_fq_table_names~}
-           "snapshot.select.statement.overrides.${fq_name}": "SELECT * FROM ${local.debezium_escaped_fq_table_names[i]} ORDER BY sequence_num ASC"%{if i < length(local.debezium_fq_table_names) - 1},%{endif}
+           "heartbeat.action.query": "INSERT INTO \"${local.dev_ref_debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
+           "snapshot.select.statement.overrides": "${join(",", local.dev_ref_debezium_fq_table_names)}",
+           %{~for i, fq_name in local.dev_ref_debezium_fq_table_names~}
+           "snapshot.select.statement.overrides.${fq_name}": "SELECT * FROM ${local.dev_ref_debezium_escaped_fq_table_names[i]} ORDER BY sequence_num ASC"%{if i < length(local.dev_ref_debezium_fq_table_names) - 1},%{endif}
            %{~endfor~}
         }
       }
@@ -123,11 +97,11 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
   }
 }
 
-resource "kubernetes_service_account_v1" "debezium_postgresql" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+resource "kubernetes_service_account_v1" "dev_refactor_debezium_postgresql" {
+  count = var.env == "dev" ? 1 : 0
 
   metadata {
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    namespace = kubernetes_namespace_v1.dev_refactor[0].metadata[0].name
     name      = "debezium-postgresql"
 
     labels = {
@@ -140,11 +114,11 @@ resource "kubernetes_service_account_v1" "debezium_postgresql" {
   }
 }
 
-resource "kubernetes_deployment_v1" "debezium_postgresql" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+resource "kubernetes_deployment_v1" "dev_refactor_debezium_postgresql" {
+  count = var.env == "dev" ? 1 : 0
 
   metadata {
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    namespace = kubernetes_namespace_v1.dev_refactor[0].metadata[0].name
     name      = "debezium-postgresql"
 
     labels = {
@@ -169,13 +143,13 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
       }
 
       spec {
-        service_account_name = kubernetes_service_account_v1.debezium_postgresql[0].metadata[0].name
+        service_account_name = kubernetes_service_account_v1.dev_refactor_debezium_postgresql[0].metadata[0].name
 
         volume {
           name = "connector-config"
 
           config_map {
-            name = kubernetes_config_map_v1.debezium_postgresql[0].metadata[0].name
+            name = kubernetes_config_map_v1.dev_refactor_debezium_postgresql[0].metadata[0].name
           }
         }
 
@@ -191,7 +165,7 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
 
           env_from {
             config_map_ref {
-              name = kubernetes_config_map_v1.kafka_connect_distributed[0].metadata[0].name
+              name = kubernetes_config_map_v1.dev_refactor_kafka_connect_distributed[0].metadata[0].name
             }
           }
 
@@ -204,7 +178,7 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
             name = "CONNECTOR_CONFIG_PATH"
             value_from {
               config_map_key_ref {
-                name = kubernetes_config_map_v1.debezium_postgresql[0].metadata[0].name
+                name = kubernetes_config_map_v1.dev_refactor_debezium_postgresql[0].metadata[0].name
                 key  = "CONNECTOR_CONFIG_PATH"
               }
             }
