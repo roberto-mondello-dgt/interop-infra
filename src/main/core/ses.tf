@@ -252,7 +252,7 @@ module "vpce_interface_ses" {
 
   vpc_id = module.vpc_v2.vpc_id
   # Create one VPCE per AZ only in prod
-  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce[0].ids : [data.aws_subnets.vpce[0].ids[0]]
+  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce.ids : [data.aws_subnets.vpce.ids[0]]
   security_group_ids = [aws_security_group.vpce_ses[0].id]
 
   endpoints = {
