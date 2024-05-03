@@ -17,6 +17,11 @@ data "aws_route_tables" "vpce" {
   }
 }
 
+moved {
+  from = aws_security_group.vpce_common[0]
+  to   = aws_security_group.vpce_common
+}
+
 # TODO: restrict?
 resource "aws_security_group" "vpce_common" {
   name        = format("vpce-common-%s", var.env)
@@ -30,6 +35,11 @@ resource "aws_security_group" "vpce_common" {
     protocol    = "-1"
     cidr_blocks = [module.vpc_v2.vpc_cidr_block]
   }
+}
+
+moved {
+  from = module.vpce_interface[0]
+  to   = module.vpce_interface
 }
 
 module "vpce_interface" {
@@ -91,7 +101,20 @@ module "vpce_interface" {
 
       tags = { Name = "cloudwatch_logs" }
     }
+    ses = {
+      service_name        = "com.amazonaws.${var.aws_region}.email-smtp"
+      service_type        = "Interface"
+      private_dns_enabled = true
+
+      tags = { Name = "ses" }
+    }
   }
+}
+
+
+moved {
+  from = module.vpce_gateway[0]
+  to   = module.vpce_gateway
 }
 
 module "vpce_gateway" {
