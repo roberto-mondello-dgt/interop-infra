@@ -39,6 +39,7 @@ locals {
     "interop-be-privacy-notices-updater",
     "interop-be-purpose-management",
     "interop-be-purpose-process",
+    "interop-be-purpose-readmodel-writer",
     "interop-be-purposes-archiver",
     "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
