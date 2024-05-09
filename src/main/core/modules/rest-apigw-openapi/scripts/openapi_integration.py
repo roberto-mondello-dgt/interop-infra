@@ -62,50 +62,22 @@ def integrate_openapi(openapi, api_version, use_service_prefix):
 
     return integrated_openapi
 
-def main(argv):
-    input_file = ''
-    output_file = ''
-    api_name = ''
-    api_version = ''
-    use_service_prefix = False
-    swagger_file = ''
-    openapi = None
-    integrated_openapi = None
+def maintenance_integration(maintenance_openapi_path):
+    integrated_openapi = ''
+    
+    with open(maintenance_openapi_path, mode="r", encoding="utf-8") as f:
+        integrated_openapi = yaml.load(f, Loader=yaml.FullLoader)  
+    
+    return integrated_openapi
 
-    try:
-        opts, args = getopt.getopt(argv, "hi:o:n:v:ps:", ["input=", "output=", "api-name=", "api-version=", "use-service-prefix", "swagger="])
-    except getopt.GetoptError:
-        print('openapi_integration.py -i <input-file> [-o <output-file>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
-        sys.exit(2)
-
-    for opt, arg in opts:
-        if opt == '-h':
-            print('openapi_integration.py -i <input-file> [-o <output-file>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
-            sys.exit()
-        elif opt in ("-i", "--input"):
-            input_file = arg
-        elif opt in ("-o", "--output"):
-            output_file = arg
-        elif opt in ("-n", "--api-name"):
-            api_name = arg
-        elif opt in ("-v", "--api-version"):
-            api_version = arg
-        elif opt in ("-p", "--use-service-prefix"):
-            use_service_prefix = True
-        elif opt in ("-s", "--swagger"):
-            swagger_file = arg
-
-    if input_file == '':
-        print('openapi_integration.py -i <inputfile> [-o <outputfile>] [-n <api-name>] [-v <api-version>] [-p] [-s <swagger-file>]')
-        sys.exit(2)
-
+def default_integration(input_file, type, api_version, use_service_prefix, swagger_file, openapi):
     with open(input_file, mode="r", encoding="utf-8") as f:
         openapi = yaml.load(f, Loader=yaml.FullLoader)
 
     integrated_openapi = integrate_openapi(openapi, api_version, use_service_prefix)
 
     #If we're creating the BFF APIGW, then:
-    if api_name.startswith("selfcare"):
+    if type == "bff":
         #Add the prefix "/backend-for-frontend" to any path in the "paths object" of the BFF OpenAPI
         for path in list(integrated_openapi.get('paths', {}).keys()):
             edited_path = f'/backend-for-frontend{path}'
@@ -118,7 +90,7 @@ def main(argv):
             #Load the content of the Swagger additional path file into the swagger_additional_paths_content variable
             swagger_openapi = yaml.load(f, Loader=yaml.FullLoader)
 
-            if api_name == "selfcare":
+            if type == "bff":
                 #Add the prefix "/backend-for-frontend" to any path in the "paths object" of the Swagger OpenAPI
                 for path in list(swagger_openapi.get('paths', {}).keys()):
                     edited_path = f'/backend-for-frontend{path}'
@@ -128,6 +100,54 @@ def main(argv):
             swagger_paths = copy.deepcopy(swagger_openapi.get("paths", {}))
             #Append the content of the swagger_paths to the bottom of the paths object into the integrated_openapi variable
             integrated_openapi['paths'].update(swagger_paths)
+    
+    return integrated_openapi
+
+
+def main(argv):
+    input_file = ''
+    output_file = ''
+    type = ''
+    api_version = ''
+    use_service_prefix = False
+    swagger_file = ''
+    maintenance_openapi_path = ''
+    openapi = None
+    integrated_openapi = None
+
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:t:v:ps:m:", ["input=", "output=", "type=", "api-version=", "use-service-prefix", "swagger=", "maintenance-openapi="])
+    except getopt.GetoptError:
+        print('openapi_integration.py -i <input-file> [-o <output-file>] [-t <type>] [-v <api-version>] [-p] [-s <swagger-file>] [-m <maintenance-openapi>]')
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print('openapi_integration.py -i <input-file> [-o <output-file>] [-t <type>] [-v <api-version>] [-p] [-s <swagger-file>] [-m <maintenance-openapi>]')
+            sys.exit()
+        elif opt in ("-i", "--input"):
+            input_file = arg
+        elif opt in ("-o", "--output"):
+            output_file = arg
+        elif opt in ("-t", "--type"):
+            type = arg
+        elif opt in ("-v", "--api-version"):
+            api_version = arg
+        elif opt in ("-p", "--use-service-prefix"):
+            use_service_prefix = True
+        elif opt in ("-s", "--swagger"):
+            swagger_file = arg
+        elif opt in ("-m", "--maintenance-openapi"):
+            maintenance_openapi_path = arg
+
+    if input_file == '':
+        print('openapi_integration.py -i <inputfile> [-o <outputfile>] [-t <type>] [-v <api-version>] [-p] [-s <swagger-file>] [-m <maintenance-openapi>]')
+        sys.exit(2)
+
+    if maintenance_openapi_path == '':
+        integrated_openapi = default_integration(input_file, type, api_version, use_service_prefix, swagger_file, openapi)
+    else:
+        integrated_openapi = maintenance_integration(maintenance_openapi_path)
 
     if output_file != '':
         with open(output_file, mode="w", encoding="utf-8") as f:

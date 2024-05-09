@@ -44,3 +44,15 @@ variable "frontend_additional_assets_bucket_name" {
   description = "Name of the S3 bucket containing frontend additional assets"
   type        = string
 }
+
+variable "maintenance_mode" {
+  description = "Determines whether the API Gateway is in maintenance mode or not"
+  type        = bool
+  default     = false
+}
+
+variable "maintenance_openapi_path" {
+  description = "Path to the OpenAPI maintenance file, relative to TF root module (e.g. './openapi/foo/bar.yaml')"
+  type        = string
+  default     = null
+}

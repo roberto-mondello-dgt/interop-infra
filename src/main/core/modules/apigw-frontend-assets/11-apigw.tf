@@ -1,17 +1,18 @@
 locals {
   openapi_abs_path = abspath(var.openapi_relative_path)
-  api_name_options = ["-n", var.api_name]
+
+  maintenance_options = (var.maintenance_mode && var.maintenance_openapi_path != null) ? ["-m", abspath(var.maintenance_openapi_path)] : []
 }
 
 data "external" "openapi_integration" {
   program = concat(["python3", "${path.module}/scripts/openapi_integration.py",
-  "-i", local.openapi_abs_path], local.api_name_options)
+  "-i", local.openapi_abs_path], local.maintenance_options)
 
-  query = var.api_name == "frontend-assets" ? {
+  query = {
     privacy_notices_s3_bucket_arn            = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.privacy_notices.bucket}"
     frontend_additional_assets_s3_bucket_arn = "arn:aws:apigateway:${data.aws_region.current.name}:s3:path/${data.aws_s3_bucket.frontend_additional_assets.bucket}"
     frontend_additional_assets_role_arn      = aws_iam_role.apigw_frontend_additional_assets.arn
-  } : {}
+  }
 }
 
 resource "aws_api_gateway_rest_api" "this" {

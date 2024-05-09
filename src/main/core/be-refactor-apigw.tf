@@ -23,6 +23,7 @@ module "be_refactor_interop_auth_apigw" {
   source = "./modules/rest-apigw-openapi"
 
   env                   = var.env
+  type                  = "generic"
   api_name              = "auth-server"
   openapi_relative_path = var.interop_auth_openapi_path
   domain_name           = module.be_refactor_interop_auth_domain[0].apigw_custom_domain_name
@@ -49,6 +50,7 @@ module "be_refactor_interop_selfcare_1dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
 
   env                   = var.env
+  type                  = "bff"
   api_name              = "selfcare-refactor"
   api_version           = "1.0"
   openapi_relative_path = var.interop_bff_openapi_path
@@ -66,6 +68,7 @@ module "be_refactor_interop_selfcare_0dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
 
   env                   = var.env
+  type                  = "bff"
   api_name              = "selfcare-refactor"
   api_version           = "0.0"
   openapi_relative_path = var.interop_bff_openapi_path
@@ -112,6 +115,7 @@ module "be_refactor_interop_api_1dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
 
   env                   = var.env
+  type                  = "generic"
   api_name              = "api-refactor"
   api_version           = "1.0"
   openapi_relative_path = var.interop_api_openapi_path
@@ -129,6 +133,7 @@ module "be_refactor_interop_api_0dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
 
   env                   = var.env
+  type                  = "generic"
   api_name              = "api-refactor"
   api_version           = "0.0"
   openapi_relative_path = var.interop_api_openapi_path

@@ -1,15 +1,17 @@
 locals {
   openapi_abs_path       = abspath(var.openapi_relative_path)
-  api_name_options       = ["-n", var.api_name]
+  type_options           = var.api_version != null ? ["-t", var.type] : []
   api_version_options    = var.api_version != null ? ["-v", var.api_version] : []
   service_prefix_options = var.service_prefix != null ? ["-p"] : []
   swagger_options        = (var.env == "dev" && (var.api_name == "selfcare" || var.api_name == "api")) ? ["-s", "${path.module}/scripts/swagger-additional-paths.yaml"] : []
+
+  maintenance_options = (var.maintenance_mode && var.maintenance_openapi_path != null) ? ["-m", abspath(var.maintenance_openapi_path)] : []
 }
 
 data "external" "openapi_integration" {
   program = concat(["python3", "${path.module}/scripts/openapi_integration.py",
     "-i", local.openapi_abs_path],
-  local.api_name_options, local.api_version_options, local.service_prefix_options, local.swagger_options)
+  local.type_options, local.api_version_options, local.service_prefix_options, local.swagger_options, local.maintenance_options)
 }
 
 resource "aws_api_gateway_rest_api" "this" {
