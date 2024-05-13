@@ -82,49 +82,19 @@ resource "aws_route53_record" "interop_mx" {
   records = ["10 feedback-smtp.${var.aws_region}.amazonses.com"]
 }
 
-resource "aws_iam_user" "reports_sender" {
+module "reports_sender" {
   count = var.env == "dev" ? 1 : 0
 
-  name = format("interop-reports-sender-%s", var.env)
-}
+  source = "./modules/ses-smtp-user"
 
-resource "aws_iam_policy" "reports_sender" {
-  count = var.env == "dev" ? 1 : 0
-
-  name = format("interop-reports-sender-%s-policy", var.env)
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow",
-      Action = [
-        "ses:SendRawEmail"
-      ]
-      Resource = [
-        aws_sesv2_configuration_set.standard[0].arn,
-        aws_sesv2_email_identity.interop[0].arn
-      ],
-      Condition = {
-        "ForAllValues:StringLike" = {
-          "ses:Recipients" = ["*@pagopa.it"]
-        },
-        StringEquals = {
-          "ses:FromAddress"     = format("noreply@%s", aws_sesv2_email_identity.interop[0].email_identity),
-          "ses:FromDisplayName" = "reports"
-        },
-        "ForAllValues:IpAddress" : {
-          "aws:SourceIp" : [module.vpc_v2.vpc_cidr_block]
-        }
-      }
-    }]
-  })
-}
-
-resource "aws_iam_user_policy_attachment" "reports_sender" {
-  count = var.env == "dev" ? 1 : 0
-
-  user       = aws_iam_user.reports_sender[0].name
-  policy_arn = aws_iam_policy.reports_sender[0].arn
+  env                            = var.env
+  iam_username                   = "reports-sender"
+  ses_identity_arn               = aws_sesv2_email_identity.interop[0].arn
+  ses_configuration_set_arn      = aws_sesv2_configuration_set.standard[0].arn
+  allowed_recipients_regex       = ["*@pagopa.it"]
+  allowed_from_addresses_literal = [format("noreply@%s", aws_sesv2_email_identity.interop[0].email_identity)]
+  allowed_from_display_names     = ["reports"]
+  allowed_source_vpcs_id         = [module.vpc_v2.vpc_id]
 }
 
 resource "aws_cloudwatch_metric_alarm" "reports_sender_reject" {
