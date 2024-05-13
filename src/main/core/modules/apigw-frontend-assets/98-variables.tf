@@ -56,3 +56,43 @@ variable "maintenance_openapi_path" {
   type        = string
   default     = null
 }
+
+variable "create_cloudwatch_alarm" {
+  description = "If true, a CloudWatch alarm for the 5XXError metric is created for the current API Gateway"
+  type        = bool
+}
+
+variable "create_cloudwatch_dashboard" {
+  description = "If true, a CloudWatch dashboard is created for the current API Gateway"
+  type        = bool
+}
+
+variable "sns_topic_arn" {
+  description = "ARN of the SNS topic for alarms notifications"
+  type        = string
+  default     = null
+}
+
+variable "alarm_5xx_threshold" {
+  description = "Threshold to trigger 5xx APIGW alarm"
+  type        = number
+  default     = 0
+}
+
+variable "alarm_5xx_period" {
+  description = "Period (in seconds) over which the 5xx APIGW alarm statistic is applied"
+  type        = number
+  default     = 0
+}
+
+variable "alarm_5xx_eval_periods" {
+  description = "Number of periods to evaluate for the 5xx APIGW alarm"
+  type        = number
+  default     = 0
+}
+
+variable "alarm_5xx_datapoints" {
+  description = "Number of breaching datapoints in the evaluation period to trigger the 5xx APIGW alarm"
+  type        = number
+  default     = 0
+}

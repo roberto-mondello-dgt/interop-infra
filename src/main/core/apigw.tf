@@ -26,6 +26,14 @@ module "interop_auth_apigw" {
   service_prefix       = "authorization-server"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
 
 module "interop_selfcare_domain" {
@@ -74,6 +82,14 @@ module "interop_selfcare_1dot0_apigw" {
   service_prefix       = "backend-for-frontend"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
 
 module "interop_selfcare_0dot0_apigw" {
@@ -92,6 +108,14 @@ module "interop_selfcare_0dot0_apigw" {
   service_prefix       = "backend-for-frontend"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
 
 module "interop_frontend_assets_apigw" {
@@ -110,6 +134,14 @@ module "interop_frontend_assets_apigw" {
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
 
 module "interop_api_domain" {
@@ -134,6 +166,14 @@ module "interop_api_1dot0_apigw" {
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
 
 module "interop_api_0dot0_apigw" {
@@ -152,4 +192,12 @@ module "interop_api_0dot0_apigw" {
   service_prefix       = "api-gateway"
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
   access_log_group_arn = aws_cloudwatch_log_group.apigw_access_logs.arn
+
+  create_cloudwatch_alarm     = true
+  create_cloudwatch_dashboard = true
+  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  alarm_5xx_threshold         = 1
+  alarm_5xx_period            = 60
+  alarm_5xx_eval_periods      = 1
+  alarm_5xx_datapoints        = 1
 }
