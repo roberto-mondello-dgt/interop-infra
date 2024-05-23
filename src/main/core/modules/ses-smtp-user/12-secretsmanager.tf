@@ -3,8 +3,7 @@ resource "aws_iam_access_key" "this" {
 }
 
 resource "aws_secretsmanager_secret" "this" {
-  name        = "ses/smtp/${aws_iam_user.this.name}"
-  description = "Secret containing the STMP credentials to be used to send email via SMTP interface."
+  name = "ses/smtp/${aws_iam_user.this.name}"
 }
 
 resource "aws_secretsmanager_secret_version" "this" {

@@ -1,157 +1,29 @@
-resource "aws_sesv2_configuration_set" "standard" {
+module "reports_sender_identity" {
   count = var.env == "dev" ? 1 : 0
 
-  configuration_set_name = format("standard-config-%s", var.env)
+  source = "./modules/ses-identity"
 
-  delivery_options {
-    tls_policy = "REQUIRE"
-  }
-
-  reputation_options {
-    reputation_metrics_enabled = true
-  }
+  env                           = var.env
+  ses_identity_name             = aws_route53_zone.interop_public.name
+  hosted_zone_id                = aws_route53_zone.interop_public.zone_id
+  create_alarms                 = true
+  sns_topics_arn                = [aws_sns_topic.platform_alarms.arn]
+  ses_reputation_sns_topics_arn = [aws_sns_topic.platform_alarms.arn, aws_sns_topic.ses_reputation[0].arn]
 }
 
-resource "aws_sesv2_configuration_set_event_destination" "standard" {
-  count = var.env == "dev" ? 1 : 0
-
-  configuration_set_name = aws_sesv2_configuration_set.standard[0].configuration_set_name
-  event_destination_name = format("standard-config-cloudwatch-%s", var.env)
-
-  event_destination {
-    cloud_watch_destination {
-      dimension_configuration {
-        default_dimension_value = aws_route53_zone.interop_public.name
-        dimension_name          = "ses:from-domain"
-        dimension_value_source  = "MESSAGE_TAG"
-      }
-    }
-
-    enabled              = true
-    matching_event_types = ["BOUNCE", "COMPLAINT", "REJECT", "SEND"]
-  }
-}
-
-resource "aws_sesv2_email_identity" "interop" {
-  count = var.env == "dev" ? 1 : 0
-
-  email_identity         = aws_route53_zone.interop_public.name
-  configuration_set_name = aws_sesv2_configuration_set.standard[0].configuration_set_name
-
-  dkim_signing_attributes {
-    next_signing_key_length = "RSA_2048_BIT"
-  }
-}
-
-resource "aws_route53_record" "interop_dkim" {
-  count = var.env == "dev" ? 3 : 0
-
-  zone_id = aws_route53_zone.interop_public.zone_id
-  name    = format("%s._domainkey.%s", aws_sesv2_email_identity.interop[0].dkim_signing_attributes[0].tokens[count.index], aws_sesv2_email_identity.interop[0].email_identity)
-  type    = "CNAME"
-  ttl     = "600"
-  records = ["${aws_sesv2_email_identity.interop[0].dkim_signing_attributes[0].tokens[count.index]}.dkim.amazonses.com"]
-}
-
-resource "aws_sesv2_email_identity_mail_from_attributes" "interop" {
-  count = var.env == "dev" ? 1 : 0
-
-  email_identity = aws_sesv2_email_identity.interop[0].email_identity
-
-  behavior_on_mx_failure = "REJECT_MESSAGE"
-  mail_from_domain       = "mail.${aws_sesv2_email_identity.interop[0].email_identity}"
-}
-
-resource "aws_route53_record" "interop_spf" {
-  count = var.env == "dev" ? 1 : 0
-
-  zone_id = aws_route53_zone.interop_public.zone_id
-  name    = aws_sesv2_email_identity_mail_from_attributes.interop[0].mail_from_domain
-  type    = "TXT"
-  ttl     = "600"
-  records = ["v=spf1 include:amazonses.com -all"]
-}
-
-resource "aws_route53_record" "interop_mx" {
-  count = var.env == "dev" ? 1 : 0
-
-  zone_id = aws_route53_zone.interop_public.zone_id
-  name    = aws_sesv2_email_identity_mail_from_attributes.interop[0].mail_from_domain
-  type    = "MX"
-  ttl     = "600"
-  records = ["10 feedback-smtp.${var.aws_region}.amazonses.com"]
-}
-
-module "reports_sender" {
+module "reports_sender_smtp_user" {
   count = var.env == "dev" ? 1 : 0
 
   source = "./modules/ses-smtp-user"
 
   env                            = var.env
   iam_username                   = "reports-sender"
-  ses_identity_arn               = aws_sesv2_email_identity.interop[0].arn
-  ses_configuration_set_arn      = aws_sesv2_configuration_set.standard[0].arn
+  ses_identity_arn               = module.reports_sender_identity[0].ses_identity_arn
+  ses_configuration_set_arn      = module.reports_sender_identity[0].ses_configuration_set_arn
   allowed_recipients_regex       = ["*@pagopa.it"]
-  allowed_from_addresses_literal = [format("noreply@%s", aws_sesv2_email_identity.interop[0].email_identity)]
+  allowed_from_addresses_literal = [format("noreply@%s", module.reports_sender_identity[0].ses_identity_name)]
   allowed_from_display_names     = ["reports"]
   allowed_source_vpcs_id         = [module.vpc_v2.vpc_id]
-}
-
-resource "aws_cloudwatch_metric_alarm" "reports_sender_reject" {
-  count = var.env == "dev" ? 1 : 0
-
-  alarm_name          = format("reports-sender-%s-reject-alarm", var.env)
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  metric_name         = "Reject"
-  namespace           = "AWS/SES"
-  period              = "60"
-  evaluation_periods  = "5"
-  threshold           = "1"
-  datapoints_to_alarm = "1"
-  statistic           = "Sum"
-  alarm_description   = "This metric checks for reject rate"
-  alarm_actions       = [aws_sns_topic.platform_alarms.arn]
-  dimensions = {
-    Identity = aws_sesv2_email_identity.interop[0].email_identity
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "reports_sender_bounce" {
-  count = var.env == "dev" ? 1 : 0
-
-  alarm_name          = format("reports-sender-%s-bounce-alarm", var.env)
-  comparison_operator = "GreaterThanThreshold"
-  metric_name         = "Reputation.BounceRate"
-  namespace           = "AWS/SES"
-  period              = "60"
-  evaluation_periods  = "5"
-  threshold           = "0"
-  datapoints_to_alarm = "1"
-  statistic           = "Average"
-  alarm_description   = "This metric checks for bounce rate"
-  alarm_actions       = [aws_sns_topic.platform_alarms.arn, aws_sns_topic.ses_reputation[0].arn]
-  dimensions = {
-    Identity = aws_sesv2_email_identity.interop[0].email_identity
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "reports_sender_complaint" {
-  count = var.env == "dev" ? 1 : 0
-
-  alarm_name          = format("reports-sender-%s-complaint-alarm", var.env)
-  comparison_operator = "GreaterThanThreshold"
-  metric_name         = "Reputation.ComplaintRate"
-  namespace           = "AWS/SES"
-  period              = "60"
-  evaluation_periods  = "5"
-  threshold           = "0"
-  datapoints_to_alarm = "1"
-  statistic           = "Average"
-  alarm_description   = "This metric checks for complaint rate"
-  alarm_actions       = [aws_sns_topic.platform_alarms.arn, aws_sns_topic.ses_reputation[0].arn]
-  dimensions = {
-    Identity = aws_sesv2_email_identity.interop[0].email_identity
-  }
 }
 
 resource "aws_sns_topic" "ses_reputation" {
