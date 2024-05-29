@@ -35,3 +35,14 @@ aws_load_balancer_controller_role_name = "aws-load-balancer-controller-qa"
 
 enable_fluentbit_process_logs            = false
 container_logs_cloudwatch_retention_days = 30
+
+debezium_postgresql_image_uri               = "505630707203.dkr.ecr.eu-central-1.amazonaws.com/interop-debezium-postgresql:1.1.0"
+debezium_postgresql_replicas                = 1
+debezium_postgresql_cpu                     = "2"
+debezium_postgresql_memory                  = "4Gi"
+debezium_postgresql_role_name               = "interop-debezium-postgresql-qa"
+debezium_postgresql_msk_cluster_arn         = "arn:aws:kafka:eu-central-1:755649575658:cluster/interop-events-qa/0c185564-4175-445c-a74d-3c0e6ce324a1-s2"
+debezium_postgresql_aurora_cluster_id       = "interop-persistence-management-qa"
+debezium_postgresql_database_name           = "persistence_management"
+debezium_postgresql_credentials_secret_name = "persistence-management-debezium-credentials"
+debezium_routing_partitions                 = 3
