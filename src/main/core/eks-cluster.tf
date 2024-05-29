@@ -53,17 +53,14 @@ resource "aws_iam_policy" "fargate_profile_logging" {
 # TODO: rename after migration
 module "eks_v2" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.17.2"
+  version = "20.11.1"
 
   cluster_name    = format("%s-eks-cluster-%s", var.short_name, var.env)
   cluster_version = var.eks_k8s_version
 
-  # managed outside of this module
-  manage_aws_auth_configmap = false
-
-  vpc_id            = module.vpc_v2.vpc_id
-  subnet_ids        = data.aws_subnets.eks_control_plane.ids
-  cluster_ip_family = "ipv4"
+  vpc_id                   = module.vpc_v2.vpc_id
+  control_plane_subnet_ids = data.aws_subnets.eks_control_plane.ids
+  cluster_ip_family        = "ipv4"
   # CIDR range for K8s services IPs. Just to avoid potential overlap with other networks
   cluster_service_ipv4_cidr = "10.1.0.0/21"
 
@@ -88,6 +85,9 @@ module "eks_v2" {
   cluster_endpoint_public_access  = var.env == "dev" ? true : false
   cluster_endpoint_private_access = true
 
+  authentication_mode                      = "API_AND_CONFIG_MAP"
+  enable_cluster_creator_admin_permissions = false
+
   cluster_security_group_use_name_prefix = false
 
   iam_role_use_name_prefix = false
@@ -103,18 +103,21 @@ module "eks_v2" {
 
   cluster_addons = {
     vpc-cni = {
-      addon_version     = var.eks_vpc_cni_version
-      resolve_conflicts = "OVERWRITE"
+      addon_version               = var.eks_vpc_cni_version
+      resolve_conflicts_on_create = "NONE"
+      resolve_conflicts_on_update = "NONE"
     }
 
     coredns = {
-      addon_version     = var.eks_coredns_version
-      resolve_conflicts = "OVERWRITE"
+      addon_version               = var.eks_coredns_version
+      resolve_conflicts_on_create = "NONE"
+      resolve_conflicts_on_update = "NONE"
     }
 
     kube-proxy = {
-      addon_version     = var.eks_kube_proxy_version
-      resolve_conflicts = "OVERWRITE"
+      addon_version               = var.eks_kube_proxy_version
+      resolve_conflicts_on_create = "NONE"
+      resolve_conflicts_on_update = "NONE"
     }
   }
 
@@ -144,6 +147,7 @@ module "eks_v2" {
     }
   }
 }
+
 
 # applied to nodes
 resource "aws_vpc_security_group_ingress_rule" "from_vpn_clients" {
