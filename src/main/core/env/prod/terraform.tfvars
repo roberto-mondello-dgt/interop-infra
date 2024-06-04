@@ -79,10 +79,10 @@ dns_interop_att_ns_records = [
 ]
 
 signalhub_domain_ns_records = [
-  "ns-252.awsdns-31.com.",
-  "ns-552.awsdns-05.net.",
-  "ns-1597.awsdns-07.co.uk.",
-  "ns-1348.awsdns-40.org."
+  "ns-2046.awsdns-63.co.uk.",
+  "ns-230.awsdns-28.com.",
+  "ns-1452.awsdns-53.org.",
+  "ns-917.awsdns-50.net."
 ]
 
 data_lake_account_id  = "688071769384"
