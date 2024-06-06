@@ -41,34 +41,6 @@ variable "sso_full_admin_role_name" {
   description = "Name of the SSO 'FullAdmin' role"
 }
 
-variable "sso_readonly_role_name" {
-  type        = string
-  description = "Name of the SSO readonly role"
-}
-
-variable "iac_k8s_readonly_role_name" {
-  type        = string
-  description = "Name of the IaC IAM role to be granted readonly access in the cluster"
-}
-
-variable "k8s_admin_roles_names" {
-  type        = list(string)
-  description = "IAM role names to be granted admin access in the cluster"
-  default     = []
-}
-
-variable "users_k8s_admin" {
-  type        = list(string)
-  description = "IAM users to be granted admin access in the cluster"
-  default     = []
-}
-
-variable "users_k8s_readonly" {
-  type        = list(string)
-  description = "IAM users to be granted readonly access in the cluster"
-  default     = []
-}
-
 variable "enable_fluentbit_process_logs" {
   type        = bool
   description = "Enables FluentBit process logs to help with debugging. WARNING: produces A LOT of logs and could significantly increase CloudWatch costs"
