@@ -1,0 +1,90 @@
+{
+  "iam_principals": [
+    {
+      "principal_arn": "arn:aws:iam::505630707203:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_InteropReadOnly_95566a05491ab23a",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev", "dev-refactor"]
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_InteropDeveloper_d09da974ea710a77",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev", "dev-refactor"]          
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:role/interop-buildo-developers-dev",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev-refactor"]
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:role/GitHubActionIACRole",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:role/interop-github-runner-task-dev",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:user/e.nardelli",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev", "dev-refactor"]
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:user/manuel.morini",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev", "dev-refactor"]
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::505630707203:user/r.torsoli",
+      "kubernetes_groups": ["port-forwarders-group"],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
+          "scope": "namespace",
+          "namespaces": ["dev", "dev-refactor"]
+        }
+      ]
+    }
+  ]
+}

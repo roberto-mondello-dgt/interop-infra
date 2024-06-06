@@ -28,12 +28,11 @@ resource "kubernetes_cluster_role_binding_v1" "iac_readonly" {
   }
 }
 
-resource "kubernetes_role" "port_forward" {
+resource "kubernetes_cluster_role_v1" "port_forward" {
   count = var.env != "prod" ? 1 : 0
 
   metadata {
-    name      = "port-forward-role"
-    namespace = kubernetes_namespace_v1.env.metadata[0].name
+    name = "port-forward-role"
   }
 
   rule {
@@ -71,14 +70,47 @@ resource "kubernetes_role_binding_v1" "readonly_group_port_forward" {
 
   role_ref {
     api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = kubernetes_role.port_forward[0].metadata[0].name
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.port_forward[0].metadata[0].name
   }
 
   subject {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Group"
     name      = "readonly-group"
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Group"
+    name      = "port-forwarders-group"
+  }
+}
+
+resource "kubernetes_role_binding_v1" "readonly_group_port_forward_dev_refactor" {
+  count = var.env == "dev" ? 1 : 0
+
+  metadata {
+    name      = "readonly-group-port-forward"
+    namespace = kubernetes_namespace_v1.dev_refactor[0].metadata[0].name
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = kubernetes_cluster_role.port_forward[0].metadata[0].name
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Group"
+    name      = "readonly-group"
+  }
+
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Group"
+    name      = "port-forwarders-group"
   }
 }
 
