@@ -92,8 +92,30 @@ module "be_refactor_attribute_registry_readmodel_writer_irsa" {
   }
 }
 
+module "be_refactor_agreement_process_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-agreement-process${local.be_refactor_suffix}-%s", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-process${local.be_refactor_suffix}"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_agreement_process = aws_iam_policy.be_refactor_agreement_process[0].arn
+  }
+}
+
 module "be_refactor_agreement_readmodel_writer_irsa" {
-  count = var.env == "dev" ? 1 : 0
+  count = local.deploy_be_refactor_infra ? 1 : 0
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
@@ -111,6 +133,72 @@ module "be_refactor_agreement_readmodel_writer_irsa" {
 
   role_policy_arns = {
     be_refactor_agreement_readmodel_writer = aws_iam_policy.be_refactor_agreement_readmodel_writer[0].arn
+  }
+}
+
+module "be_refactor_eservice_descriptors_archiver_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-eservice-descriptors-archiver${local.be_refactor_suffix}-%s", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver${local.be_refactor_suffix}"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_eservice_descriptors_archiver = aws_iam_policy.be_refactor_eservice_descriptors_archiver[0].arn
+  }
+}
+
+module "be_refactor_purpose_process_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-purpose-process${local.be_refactor_suffix}-%s", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-process${local.be_refactor_suffix}"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_purpose_process = aws_iam_policy.be_refactor_purpose_process[0].arn
+  }
+}
+
+module "be_refactor_purpose_readmodel_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-purpose-readmodel-writer-%s", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks_v2.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-readmodel-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_purpose_readmodel_writer = aws_iam_policy.be_refactor_purpose_readmodel_writer[0].arn
   }
 }
 
