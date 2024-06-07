@@ -71,7 +71,7 @@ resource "kubernetes_role_binding_v1" "readonly_group_port_forward" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.port_forward[0].metadata[0].name
+    name      = kubernetes_cluster_role_v1.port_forward[0].metadata[0].name
   }
 
   subject {
@@ -98,7 +98,7 @@ resource "kubernetes_role_binding_v1" "readonly_group_port_forward_dev_refactor"
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.port_forward[0].metadata[0].name
+    name      = kubernetes_cluster_role_v1.port_forward[0].metadata[0].name
   }
 
   subject {
