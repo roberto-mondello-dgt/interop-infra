@@ -1,5 +1,5 @@
 locals {
-  json_data = jsondecode(file("./assets/eks-access/dev/eks-access-dev.json"))
+  json_data = jsondecode(file("./assets/eks-access/eks-access-${var.env}.json"))
 
   principals = [
     for p in local.json_data.iam_principals : {
