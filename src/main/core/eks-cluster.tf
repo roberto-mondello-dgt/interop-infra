@@ -146,6 +146,23 @@ module "eks_v2" {
       selectors = [for ns in local.observability_namespaces : { namespace = ns }]
     }
   }
+
+  access_entries = {
+    sso_full_admin = {
+      kubernetes_groups = []
+      principal_arn     = data.aws_iam_role.sso_admin.arn
+
+      policy_associations = {
+        admin_policy = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    }
+  }
 }
 
 
