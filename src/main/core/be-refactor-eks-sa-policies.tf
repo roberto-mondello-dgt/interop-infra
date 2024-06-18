@@ -157,17 +157,26 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
+        Resource = compact([
+          module.application_documents_bucket.s3_bucket_arn,
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.be_refactor_persistence_events_queue[0].queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.persistence_events_queue.queue_arn,
+          try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.be_refactor_certified_mail_queue[0].queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.certified_mail_queue.queue_arn,
+          try(module.be_refactor_certified_mail_queue[0].queue_arn, "")
+        ])
       },
     ]
   })
@@ -248,12 +257,18 @@ resource "aws_iam_policy" "be_refactor_purpose_process" {
           "s3:GetObject",
           "s3:PutObject",
         ]
-        Resource = format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn)
+        Resource = compact([
+          module.application_documents_bucket.s3_bucket_arn,
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
+        ])
       },
       {
-        Effect   = "Allow"
-        Action   = "sqs:SendMessage"
-        Resource = module.be_refactor_persistence_events_queue[0].queue_arn
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.persistence_events_queue.queue_arn,
+          try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+        ])
       }
     ]
   })

@@ -539,6 +539,7 @@ module "be_eservice_descriptors_archiver_irsa" {
 
   role_policy_arns = {
     be_eservice_descriptors_archiver = aws_iam_policy.be_eservice_descriptors_archiver.arn
+    be_refactor                      = aws_iam_policy.be_refactor_eservice_descriptors_archiver[0].arn
   }
 }
 
