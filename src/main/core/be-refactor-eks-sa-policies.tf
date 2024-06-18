@@ -78,7 +78,10 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Resource = format("%s/*", var.env == "dev" ? module.be_refactor_application_documents_bucket[0].s3_bucket_arn : module.application_documents_bucket.s3_bucket_arn)
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
       }
     ]
   })
@@ -158,7 +161,7 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
           "s3:DeleteObject"
         ]
         Resource = compact([
-          module.application_documents_bucket.s3_bucket_arn,
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
           try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
         ])
       },
@@ -258,7 +261,7 @@ resource "aws_iam_policy" "be_refactor_purpose_process" {
           "s3:PutObject",
         ]
         Resource = compact([
-          module.application_documents_bucket.s3_bucket_arn,
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
           try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
         ])
       },
@@ -360,6 +363,7 @@ resource "aws_iam_policy" "be_refactor_notifier_seeder" {
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
           "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
           "${local.msk_group_iam_prefix}/*notifier-seeder"
         ]
       },
