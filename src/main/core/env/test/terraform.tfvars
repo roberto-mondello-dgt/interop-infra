@@ -108,6 +108,7 @@ k8s_monitoring_deployments_names = [
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
   "debezium-postgresql",
+  "interop-be-agreement-readmodel-writer",
   "interop-be-attribute-registry-readmodel-writer",
   "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
@@ -115,6 +116,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",
+  "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
   "redis"
 ]
