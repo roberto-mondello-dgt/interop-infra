@@ -69,9 +69,8 @@
       "kubernetes_groups": [],
       "access_policies": [
         {
-          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
-          "scope": "namespace",
-          "namespaces": ["dev", "dev-refactor"]
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
         }
       ]
     },
