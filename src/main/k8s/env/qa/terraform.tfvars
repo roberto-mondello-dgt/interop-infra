@@ -29,7 +29,7 @@ kube_state_metrics_cpu               = "250m"
 kube_state_metrics_memory            = "128Mi"
 
 adot_collector_role_name = "adot-collector-qa"
-adot_collector_image_uri = "amazon/aws-otel-collector:v0.30.0"
+adot_collector_image_uri = "amazon/aws-otel-collector:v0.39.1"
 
 aws_load_balancer_controller_role_name = "aws-load-balancer-controller-qa"
 
