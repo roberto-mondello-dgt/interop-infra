@@ -44,16 +44,6 @@
       ]
     },
     {
-      "principal_arn": "arn:aws:iam::505630707203:role/interop-github-runner-task-dev",
-      "kubernetes_groups": [],
-      "access_policies": [
-        {
-          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
-          "scope": "cluster"
-        }
-      ]
-    },
-    {
       "principal_arn": "arn:aws:iam::505630707203:user/e.nardelli",
       "kubernetes_groups": [],
       "access_policies": [

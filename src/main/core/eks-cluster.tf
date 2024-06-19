@@ -162,6 +162,21 @@ module "eks_v2" {
         }
       }
     }
+
+    gh_runner = {
+      kubernetes_groups = []
+      principal_arn     = aws_iam_role.github_runner_task.arn
+
+      policy_associations = {
+        admin_policy = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = []
+            type       = "cluster"
+          }
+        }
+      }
+    }
   }
 }
 
