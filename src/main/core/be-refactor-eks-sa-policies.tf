@@ -145,6 +145,34 @@ resource "aws_iam_policy" "be_refactor_attribute_registry_readmodel_writer" {
   })
 }
 
+resource "aws_iam_policy" "be_refactor_agreement_email_sender" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAgreementEmailSender"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_group_iam_prefix}/*agreement-email-sender"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_refactor_agreement_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
