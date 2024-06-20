@@ -1,5 +1,6 @@
 locals {
   repository_names = [
+    "interop-be-agreement-email-sender",
     "interop-be-agreement-management",
     "interop-be-agreement-process",
     "interop-be-agreement-readmodel-writer",
