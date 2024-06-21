@@ -1,7 +1,3 @@
-locals {
-  be_refactor_suffix = var.env == "dev" ? "-refactor" : ""
-}
-
 module "be_refactor_debezium_postgresql_irsa" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -32,14 +28,14 @@ module "be_refactor_catalog_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-catalog-process${local.be_refactor_suffix}-%s", var.env)
+  role_name = format("interop-be-catalog-process-%s", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-process${local.be_refactor_suffix}"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-catalog-process*}"] : ["${local.k8s_namespace_irsa}:interop-be-catalog-process"]
     }
   }
 
@@ -120,14 +116,14 @@ module "be_refactor_agreement_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-agreement-process${local.be_refactor_suffix}-%s", var.env)
+  role_name = format("interop-be-agreement-process-%s", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-process${local.be_refactor_suffix}"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-agreement-process*}"] : ["${local.k8s_namespace_irsa}:interop-be-agreement-process"]
     }
   }
 
@@ -164,14 +160,14 @@ module "be_refactor_eservice_descriptors_archiver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-eservice-descriptors-archiver${local.be_refactor_suffix}-%s", var.env)
+  role_name = format("interop-be-eservice-descriptors-archiver-%s", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver${local.be_refactor_suffix}"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver*}"] : ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver"]
     }
   }
 
@@ -186,14 +182,14 @@ module "be_refactor_purpose_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-purpose-process${local.be_refactor_suffix}-%s", var.env)
+  role_name = format("interop-be-purpose-process-%s", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-process${local.be_refactor_suffix}"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-purpose-process*}"] : ["${local.k8s_namespace_irsa}:interop-be-purpose-process"]
     }
   }
 
