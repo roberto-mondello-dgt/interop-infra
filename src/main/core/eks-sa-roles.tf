@@ -533,14 +533,16 @@ module "be_eservice_descriptors_archiver_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks_v2.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver*"] : ["${local.k8s_namespace_irsa}:interop-be-eservice-descriptors-archiver"]
     }
   }
 
-  role_policy_arns = {
+  role_policy_arns = merge({
     be_eservice_descriptors_archiver = aws_iam_policy.be_eservice_descriptors_archiver.arn
-    be_refactor                      = aws_iam_policy.be_refactor_eservice_descriptors_archiver[0].arn
-  }
+
+    },
+    local.deploy_be_refactor_infra ? { be_refactor = aws_iam_policy.be_refactor_eservice_descriptors_archiver[0].arn }
+  : {})
 }
 
 module "be_dtd_metrics_irsa" {
