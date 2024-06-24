@@ -291,7 +291,16 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
           aws_dynamodb_table.privacy_notices_acceptances.arn,
           try(aws_dynamodb_table.be_refactor_privacy_notices_acceptances[0].arn, "")
         ])
-    }]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.application_import_export_bucket.s3_bucket_arn)
+      }
+    ]
   })
 }
 

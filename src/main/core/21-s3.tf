@@ -660,3 +660,27 @@ module "frontend_additional_assets_bucket" {
     enabled = false
   }
 }
+
+module "application_import_export_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.14.1"
+
+  bucket = format("interop-application-import-export-%s", var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = false
+  }
+
+  lifecycle_rule = [
+    {
+      id         = "Expiration"
+      enabled    = true
+      expiration = { days : 15 }
+    }
+  ]
+}
