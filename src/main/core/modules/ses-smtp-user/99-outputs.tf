@@ -8,12 +8,12 @@ output "iam_user_name" {
   value       = aws_iam_user.this.name
 }
 
-output "secretsmanager_secret_id" {
-  description = "ID of the secret managed by this module"
-  value       = aws_secretsmanager_secret.this.arn
+output "smtp_username_secret_arn" {
+  description = "ARN of the secret managed by this module containing SMTP username"
+  value       = aws_secretsmanager_secret.this_username.arn
 }
 
-output "secretsmanager_secret_arn" {
-  description = "ARN of the secret managed by this module"
-  value       = aws_secretsmanager_secret.this.arn
+output "smtp_password_secret_arn" {
+  description = "ARN of the secret managed by this module containing SMTP password"
+  value       = aws_secretsmanager_secret.this_password.arn
 }
