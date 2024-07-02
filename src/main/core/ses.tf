@@ -42,5 +42,5 @@ module "notifiche_ses_smtp_user" {
   ses_configuration_set_arn      = module.notifiche_ses_identity.ses_configuration_set_arn
   allowed_from_addresses_literal = [format("noreply@%s", module.notifiche_ses_identity.ses_identity_name)]
   # allowed_from_display_names     = ["Notifiche Interop"]
-  allowed_source_vpcs_id = [module.vpc_v2.vpc_id]
+  # allowed_source_vpcs_id = [module.vpc_v2.vpc_id]
 }
