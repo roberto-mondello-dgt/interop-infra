@@ -8,10 +8,10 @@ resource "kubernetes_config_map_v1" "dev_refactor_kafka_connect_distributed" {
 
   data = {
     BOOTSTRAP_SERVERS    = data.external.msk_bootstrap_servers[0].result.BootstrapBrokerStringSaslIam
-    GROUP_ID             = "debezium.postgresql"
-    CONFIG_STORAGE_TOPIC = "__debezium.postgresql.config"
-    STATUS_STORAGE_TOPIC = "__debezium.postgresql.status"
-    OFFSET_STORAGE_TOPIC = "__debezium.postgresql.offset"
+    GROUP_ID             = "dev-refactor.debezium.postgresql"
+    CONFIG_STORAGE_TOPIC = "__dev-refactor.debezium.postgresql.config"
+    STATUS_STORAGE_TOPIC = "__dev-refactor.debezium.postgresql.status"
+    OFFSET_STORAGE_TOPIC = "__dev-refactor.debezium.postgresql.offset"
 
     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR = "3"
     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR = "3"
@@ -85,7 +85,7 @@ resource "kubernetes_config_map_v1" "dev_refactor_debezium_postgresql" {
            "message.key.columns": "${local.dev_ref_debezium_include_schema_prefix}_(.*).events:stream_id",
            "table.include.list": "${local.dev_ref_debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
-           "topic.heartbeat.prefix": "__debezium.postgresql.heartbeat",
+           "topic.heartbeat.prefix": "__dev-refactor.debezium.postgresql.heartbeat",
            "heartbeat.action.query": "INSERT INTO \"${local.dev_ref_debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
            "snapshot.select.statement.overrides": "${join(",", local.dev_ref_debezium_fq_table_names)}",
            %{~for i, fq_name in local.dev_ref_debezium_fq_table_names~}
