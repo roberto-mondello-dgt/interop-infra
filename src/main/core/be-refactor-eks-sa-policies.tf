@@ -331,6 +331,62 @@ resource "aws_iam_policy" "be_refactor_purpose_readmodel_writer" {
   })
 }
 
+resource "aws_iam_policy" "be_refactor_client_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeClientReadModelWriter"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
+          "${local.msk_group_iam_prefix}/*client-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeKeyReadModelWriter"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_serverless_cluster.interop_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
+          "${local.msk_group_iam_prefix}/*key-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_refactor_authorization_updater" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
