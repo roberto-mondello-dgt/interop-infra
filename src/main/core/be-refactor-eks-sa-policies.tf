@@ -351,7 +351,7 @@ resource "aws_iam_policy" "be_refactor_client_readmodel_writer" {
 
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
           "${local.msk_group_iam_prefix}/*client-readmodel-writer"
         ]
       }
@@ -379,7 +379,7 @@ resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
 
         Resource = [
           aws_msk_serverless_cluster.interop_events[0].arn,
-          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
           "${local.msk_group_iam_prefix}/*key-readmodel-writer"
         ]
       }
@@ -410,6 +410,7 @@ resource "aws_iam_policy" "be_refactor_authorization_updater" {
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
           "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
           "${local.msk_group_iam_prefix}/*authorization-updater"
         ]
       },
@@ -445,7 +446,7 @@ resource "aws_iam_policy" "be_refactor_notifier_seeder" {
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
           "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
-          "${local.msk_topic_iam_prefix}/event-store.*_authz.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
           "${local.msk_group_iam_prefix}/*notifier-seeder"
         ]
       },
