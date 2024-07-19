@@ -3778,6 +3778,329 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+  /eservices/{eServiceId}/update:
+    parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - eservices
+      summary: Update an e-service description
+      operationId: updateEServiceDescription
+      parameters:
+        - name: eServiceId
+          in: path
+          description: the eservice id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: A payload containing the new description
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EServiceDescriptionSeed"
+      responses:
+        "200":
+          description: EService description updated
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedResource"
+        "403":
+          description: Forbidden
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "404":
+          description: EService not found
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "400":
+          description: Bad request
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /export/eservices/{eserviceId}/descriptors/{descriptorId}:
+    parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
+      - in: path
+        name: eserviceId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: descriptorId
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - eservices
+      summary: Export EService descriptor
+      operationId: exportEServiceDescriptor
+      responses:
+        '200':
+          description: EService descriptor exported
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResource'
+        '400':
+          description: Invalid input
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+        '404':
+          description: Not found
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /import/eservices/presignedUrl:
+    parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
+      - in: query
+        name: fileName
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - eservices
+      summary: Get presigned URL
+      operationId: getImportEservicePresignedUrl
+      responses:
+        '200':
+          description: Presigned URL retrieved
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresignedUrl'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+  /import/eservices:
+    parameters:
+      - $ref: '#/components/parameters/CorrelationIdHeader'
+    post:
+      tags:
+        - eservices
+      summary: Import EService
+      operationId: importEService
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileResource'
+      responses:
+        '200':
+          description: EServices imported
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedEServiceDescriptor'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+          headers:
+            'X-Rate-Limit-Limit':
+              schema:
+                type: integer
+              description: Max allowed requests within time interval
+            'X-Rate-Limit-Remaining':
+              schema:
+                type: integer
+              description: Remaining requests within time interval
+            'X-Rate-Limit-Interval':
+              schema:
+                type: integer
+              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
   '/producers':
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
@@ -6046,57 +6369,6 @@ paths:
                 type: integer
               description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
       description: suspends the purpose version by id
-  /purposes/{purposeId}/versions/{versionId}/update/waitingForApproval:
-    parameters:
-      - $ref: '#/components/parameters/CorrelationIdHeader'
-      - name: purposeId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: versionId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-    post:
-      tags:
-        - purposes
-      summary: Update a purpose version in waiting for approval
-      operationId: updateWaitingForApprovalPurposeVersion
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WaitingForApprovalPurposeVersionUpdateContentSeed'
-        required: true
-      responses:
-        '200':
-          description: Purpose Version updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PurposeVersionResource'
-        '400':
-          description: Invalid input
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '403':
-          description: Forbidden
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
   /purposes/{purposeId}/versions/{versionId}/activate:
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
@@ -9756,87 +10028,6 @@ paths:
               schema:
                 type: integer
               description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
-  '/clients/{clientId}/users/{userId}/keys':
-    parameters:
-      - $ref: '#/components/parameters/CorrelationIdHeader'
-      - name: clientId
-        in: path
-        description: ID of the client holding the key
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        required: true
-        description: ID of the User that the added keys MUST belong to
-        schema:
-          type: string
-          format: uuid
-    get:
-      tags:
-        - clients
-      summary: Returns a set of keys by user ID and client ID.
-      description: 'Given a user and a client it returns its corresponding set of keys, if any'
-      operationId: getClientUserKeys
-      responses:
-        '200':
-          description: returns the corresponding array of keys
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublicKeys'
-          headers:
-            'X-Rate-Limit-Limit':
-              schema:
-                type: integer
-              description: Max allowed requests within time interval
-            'X-Rate-Limit-Remaining':
-              schema:
-                type: integer
-              description: Remaining requests within time interval
-            'X-Rate-Limit-Interval':
-              schema:
-                type: integer
-              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-          headers:
-            'X-Rate-Limit-Limit':
-              schema:
-                type: integer
-              description: Max allowed requests within time interval
-            'X-Rate-Limit-Remaining':
-              schema:
-                type: integer
-              description: Remaining requests within time interval
-            'X-Rate-Limit-Interval':
-              schema:
-                type: integer
-              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
-        '404':
-          description: Client id not found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-          headers:
-            'X-Rate-Limit-Limit':
-              schema:
-                type: integer
-              description: Max allowed requests within time interval
-            'X-Rate-Limit-Remaining':
-              schema:
-                type: integer
-              description: Remaining requests within time interval
-            'X-Rate-Limit-Interval':
-              schema:
-                type: integer
-              description: Time interval in milliseconds. Allowed requests will be constantly replenished during the interval. At the end of the interval the max allowed requests will be available
   /purposes/riskAnalysis/latest:
     parameters:
       - $ref: '#/components/parameters/CorrelationIdHeader'
@@ -10314,7 +10505,6 @@ components:
           nullable: true
       required:
         - SAMLResponse
-        - RelayState
     SAMLTokenRequest:
       type: object
       properties:
@@ -10585,6 +10775,13 @@ components:
           type: string
         description:
           type: string
+    EServiceDescriptionSeed:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+        - description
     EServiceDescriptorSeed:
       required:
         - audience
@@ -11319,16 +11516,6 @@ components:
         - description
         - isFreeOfCharge
         - dailyCalls
-    WaitingForApprovalPurposeVersionUpdateContentSeed:
-      type: object
-      description: contains the expected payload for purpose version update.
-      properties:
-        expectedApprovalDate:
-          description: 'Estimated expected approval date for a purpose version'
-          type: string
-          format: date-time
-      required:
-        - expectedApprovalDate
     CompactOrganization:
       type: object
       required:
@@ -11428,6 +11615,14 @@ components:
         - offset
         - limit
         - totalCount
+    PresignedUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+      required:
+        - url
     ProducerEService:
       type: object
       required:
@@ -11533,6 +11728,8 @@ components:
           items:
             $ref: '#/components/schemas/CompactClient'
         waitingForApprovalVersion:
+          $ref: '#/components/schemas/PurposeVersion'
+        rejectedVersion:
           $ref: '#/components/schemas/PurposeVersion'
         suspendedByConsumer:
           type: boolean
@@ -11714,9 +11911,6 @@ components:
         suspendedAt:
           type: string
           format: date-time
-        expectedApprovalDate:
-          type: string
-          format: date-time
         updatedAt:
           type: string
           format: date-time
@@ -11729,6 +11923,8 @@ components:
           format: int32
         riskAnalysisDocument:
           $ref: '#/components/schemas/PurposeVersionDocument'
+        rejectionReason:
+          type: string
       required:
         - id
         - state
@@ -12188,6 +12384,17 @@ components:
       required:
         - origin
         - value
+    FileResource:
+      type: object
+      properties:
+        filename:
+          type: string
+        url:
+          type: string
+          format: uri
+      required:
+        - url
+        - filename
     MailKind:
       type: string
       enum:
