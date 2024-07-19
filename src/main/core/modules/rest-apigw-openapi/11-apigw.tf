@@ -14,11 +14,15 @@ data "external" "openapi_integration" {
   local.type_options, local.api_version_options, local.service_prefix_options, local.swagger_options, local.maintenance_options)
 }
 
+locals {
+  rest_apigw_name = (var.api_version != null ? format("interop-%s-%s-%s", var.api_name, var.api_version, var.env)
+  : format("interop-%s-%s", var.api_name, var.env))
+}
+
 resource "aws_api_gateway_rest_api" "this" {
   depends_on = [data.external.openapi_integration]
 
-  name = (var.api_version != null ? format("interop-%s-%s-%s", var.api_name, var.api_version, var.env)
-  : format("interop-%s-%s", var.api_name, var.env))
+  name = local.rest_apigw_name
 
   body               = data.external.openapi_integration.result.integrated_openapi_yaml
   put_rest_api_mode  = "overwrite"

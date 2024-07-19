@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "apigw_5xx" {
   metric_name = "5XXError"
   namespace   = "AWS/ApiGateway"
   dimensions = {
-    ApiName = var.api_name
+    ApiName = local.rest_apigw_name
   }
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -25,9 +25,9 @@ resource "aws_cloudwatch_metric_alarm" "apigw_5xx" {
 resource "aws_cloudwatch_dashboard" "this" {
   count = var.create_cloudwatch_dashboard ? 1 : 0
 
-  dashboard_name = replace(format("apigw-%s", var.api_name), ".", "-")
+  dashboard_name = replace(format("apigw-%s", local.rest_apigw_name), ".", "-")
   dashboard_body = templatefile("${path.module}/apigw-dashboard.tpl.json", {
     Region    = data.aws_region.current.name
-    ApiGwName = var.api_name
+    ApiGwName = local.rest_apigw_name
   })
 }
