@@ -220,6 +220,12 @@ variable "signalhub_domain_ns_records" {
   default     = []
 }
 
+variable "tracing_domain_ns_records" {
+  description = "NS records for the Tracing DNS domain"
+  type        = list(string)
+  default     = []
+}
+
 variable "interop_auth_openapi_path" {
   description = "Relative path of Interop auth OpenAPI definition file"
   type        = string

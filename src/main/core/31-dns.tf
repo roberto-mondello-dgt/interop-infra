@@ -71,3 +71,13 @@ resource "aws_route53_record" "signalhub_delegation" {
   records = toset(var.signalhub_domain_ns_records)
   ttl     = "300"
 }
+
+resource "aws_route53_record" "tracing_delegation" {
+  count = var.env == "prod" && length(var.tracing_domain_ns_records) > 0 ? 1 : 0
+
+  zone_id = aws_route53_zone.interop_public.zone_id
+  name    = format("tracing.%s", local.interop_env_dns_domain)
+  type    = "NS"
+  records = toset(var.tracing_domain_ns_records)
+  ttl     = "300"
+}

@@ -85,6 +85,13 @@ signalhub_domain_ns_records = [
   "ns-917.awsdns-50.net."
 ]
 
+tracing_domain_ns_records = [
+  "ns-1684.awsdns-18.co.uk.",
+  "ns-1285.awsdns-32.org.",
+  "ns-549.awsdns-04.net.",
+  "ns-405.awsdns-50.com."
+]
+
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
 
