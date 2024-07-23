@@ -1,0 +1,1035 @@
+# TODO: refactor all BE policies
+
+resource "aws_iam_policy" "be_agreement_management" {
+  name = "InteropBeAgreementManagementPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_authorization_management" {
+  name = "InteropBeAuthorizationManagementPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_agreement_process" {
+  name = "InteropBeAgreementProcessPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), ""),
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.certified_mail_queue.queue_arn,
+          try(module.be_refactor_certified_mail_queue[0].queue_arn, "")
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.archived_agreements_for_purposes_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_purposes_queue[0].queue_arn, "")
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.archived_agreements_for_eservices_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_eservices_queue[0].queue_arn, "")
+        ])
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_catalog_management" {
+  name = "InteropBeCatalogManagementPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.persistence_events_queue.queue_arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_authorization_server" {
+  name = "InteropBeAuthorizationServerPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = module.generated_jwt_queue.queue_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect = "Allow"
+        Action = "s3:PutObject"
+        Resource = compact([
+          format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_generated_jwt_details_fallback_bucket[0].s3_bucket_arn), "")
+        ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_catalog_process" {
+  name = "InteropBeCatalogProcessPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_purpose_management" {
+  name = "InteropBePurposeManagementPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = "sqs:SendMessage"
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_notifier" {
+  name = "InteropBeNotifierPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage"
+      ]
+      Resource = compact([
+        module.persistence_events_queue.queue_arn,
+        try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+      ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:BatchGet*",
+          "dynamodb:DescribeStream",
+          "dynamodb:DescribeTable",
+          "dynamodb:Get*",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:BatchWrite*",
+          "dynamodb:CreateTable",
+          "dynamodb:Delete*",
+          "dynamodb:Update*",
+          "dynamodb:PutItem"
+        ]
+        Resource = compact([
+          aws_dynamodb_table.notification_events.arn,
+          aws_dynamodb_table.notification_resources.arn,
+          try(aws_dynamodb_table.be_refactor_notification_events[0].arn, ""),
+          try(aws_dynamodb_table.be_refactor_notification_resources[0].arn, ""),
+        ])
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_purpose_process" {
+  name = "InteropBePurposeProcessPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = "sqs:SendMessage"
+        Resource = compact([
+          module.persistence_events_queue.queue_arn,
+          try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
+        ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_backend_for_frontend" {
+  name = "InteropBeBackendForFrontendPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = format("%s/*", module.allow_list_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query"
+        ]
+        Resource = compact([
+          aws_dynamodb_table.privacy_notices.arn,
+          try(aws_dynamodb_table.be_refactor_privacy_notices[0].arn, "")
+        ])
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+        ]
+        Resource = compact([
+          aws_dynamodb_table.privacy_notices_acceptances.arn,
+          try(aws_dynamodb_table.be_refactor_privacy_notices_acceptances[0].arn, "")
+        ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.application_import_export_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
+  name = "InteropBeSelfcareOnboardingConsumerPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = "kms:Sign",
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
+  name = "InteropBeAnacCertifiedAttributesImporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = "kms:Sign",
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_ivass_certified_attributes_importer" {
+  name = "InteropBeIvassCertifiedAttributesImporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "kms:Sign",
+        Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.ivass_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_attributes_loader" {
+  name = "InteropAttributesLoaderPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = "kms:Sign"
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_token_details_persister" {
+  name = "InteropBeTokenDetailsPersisterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = compact([
+          module.generated_jwt_queue.queue_arn,
+          try(module.be_refactor_generated_jwt_queue[0].queue_arn, "")
+        ])
+      },
+      {
+        Effect = "Allow",
+        Action = "s3:PutObject",
+        Resource = compact([
+          format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_generated_jwt_details_bucket[0].s3_bucket_arn), "")
+        ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_eservices_monitoring_exporter" {
+  name = "InteropBeEservicesMonitoringExporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject",
+        Resource = format("%s/*", module.probing_eservices_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
+  name = "InteropBeTenantsCertifiedAttributesUpdaterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow",
+      Action   = "kms:Sign",
+      Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_certified_mail_sender" {
+  name = "InteropBeCertifiedMailSenderPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage"
+      ]
+      Resource = module.certified_mail_queue.queue_arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_metrics_report_generator" {
+  name = "InteropBeMetricsReportGeneratorPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "athena:GetQueryExecution",
+          "athena:GetQueryResults",
+          "athena:StartQueryExecution",
+          "athena:StopQueryExecution"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+        ],
+        Resource = module.athena_query_results_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ],
+        Resource = format("%s/*", module.athena_query_results_bucket.s3_bucket_arn)
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetTable*"
+        ],
+        Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_pa_digitale_report_generator" {
+  name = "InteropBePaDigitaleReportGeneratorPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.application_documents_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.platform_metrics_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_dashboard_metrics_report_generator" {
+  name = "InteropBeDashboardMetricsReportGeneratorPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.generated_jwt_details_bucket.s3_bucket_arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_dtd_catalog_exporter" {
+  name = "InteropBeDtdCatalogExporterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.public_catalog_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_privacy_notices_updater" {
+  name = "InteropBePrivacyNoticesUpdaterPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.privacy_notices_history_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          format("%s/*", module.privacy_notices_history_bucket.s3_bucket_arn),
+          format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.privacy_notices.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_one_trust_notices" {
+  name = "InteropBeOneTrustNoticesPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.privacy_notices_history_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          format("%s/*", module.privacy_notices_history_bucket.s3_bucket_arn),
+          format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.privacy_notices.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_purposes_archiver" {
+  name = "InteropBePurposesArchiverPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = compact([
+          module.archived_agreements_for_purposes_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_purposes_queue[0].queue_arn, "")
+        ])
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
+  name = "InteropBeEserviceDescriptorsArchiverPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = compact([
+          module.archived_agreements_for_eservices_queue.queue_arn,
+          try(module.be_refactor_archived_agreements_for_eservices_queue[0].queue_arn, "")
+        ])
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_dtd_metrics" {
+  name = "InteropBeDtdMetricsPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket"
+        Resource = module.public_dashboards_bucket.s3_bucket_arn
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.public_dashboards_bucket.s3_bucket_arn)
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "athena:GetQueryExecution",
+          "athena:GetQueryResults",
+          "athena:StartQueryExecution",
+          "athena:StopQueryExecution"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [
+          module.athena_query_results_bucket.s3_bucket_arn,
+          format("%s/*", module.athena_query_results_bucket.s3_bucket_arn),
+          module.generated_jwt_details_bucket.s3_bucket_arn,
+          format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetTable*"
+        ]
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+data "aws_iam_policy" "cloudwatch_agent_server" {
+  name = "CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_policy" "aws_load_balancer_controller" {
+  name = "AWSLoadBalancerControllerIAMPolicy"
+
+  policy = <<-EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "iam:CreateServiceLinkedRole"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringEquals": {
+                        "iam:AWSServiceName": "elasticloadbalancing.amazonaws.com"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:DescribeAccountAttributes",
+                    "ec2:DescribeAddresses",
+                    "ec2:DescribeAvailabilityZones",
+                    "ec2:DescribeInternetGateways",
+                    "ec2:DescribeVpcs",
+                    "ec2:DescribeVpcPeeringConnections",
+                    "ec2:DescribeSubnets",
+                    "ec2:DescribeSecurityGroups",
+                    "ec2:DescribeInstances",
+                    "ec2:DescribeNetworkInterfaces",
+                    "ec2:DescribeTags",
+                    "ec2:GetCoipPoolUsage",
+                    "ec2:DescribeCoipPools",
+                    "elasticloadbalancing:DescribeLoadBalancers",
+                    "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                    "elasticloadbalancing:DescribeListeners",
+                    "elasticloadbalancing:DescribeListenerCertificates",
+                    "elasticloadbalancing:DescribeSSLPolicies",
+                    "elasticloadbalancing:DescribeRules",
+                    "elasticloadbalancing:DescribeTargetGroups",
+                    "elasticloadbalancing:DescribeTargetGroupAttributes",
+                    "elasticloadbalancing:DescribeTargetHealth",
+                    "elasticloadbalancing:DescribeTags"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "cognito-idp:DescribeUserPoolClient",
+                    "acm:ListCertificates",
+                    "acm:DescribeCertificate",
+                    "iam:ListServerCertificates",
+                    "iam:GetServerCertificate",
+                    "waf-regional:GetWebACL",
+                    "waf-regional:GetWebACLForResource",
+                    "waf-regional:AssociateWebACL",
+                    "waf-regional:DisassociateWebACL",
+                    "wafv2:GetWebACL",
+                    "wafv2:GetWebACLForResource",
+                    "wafv2:AssociateWebACL",
+                    "wafv2:DisassociateWebACL",
+                    "shield:GetSubscriptionState",
+                    "shield:DescribeProtection",
+                    "shield:CreateProtection",
+                    "shield:DeleteProtection"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:AuthorizeSecurityGroupIngress",
+                    "ec2:RevokeSecurityGroupIngress"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:CreateSecurityGroup"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:CreateTags"
+                ],
+                "Resource": "arn:aws:ec2:*:*:security-group/*",
+                "Condition": {
+                    "StringEquals": {
+                        "ec2:CreateAction": "CreateSecurityGroup"
+                    },
+                    "Null": {
+                        "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:CreateTags",
+                    "ec2:DeleteTags"
+                ],
+                "Resource": "arn:aws:ec2:*:*:security-group/*",
+                "Condition": {
+                    "Null": {
+                        "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
+                        "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:AuthorizeSecurityGroupIngress",
+                    "ec2:RevokeSecurityGroupIngress",
+                    "ec2:DeleteSecurityGroup"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "Null": {
+                        "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:CreateLoadBalancer",
+                    "elasticloadbalancing:CreateTargetGroup"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "Null": {
+                        "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:CreateListener",
+                    "elasticloadbalancing:DeleteListener",
+                    "elasticloadbalancing:CreateRule",
+                    "elasticloadbalancing:DeleteRule"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:AddTags",
+                    "elasticloadbalancing:RemoveTags"
+                ],
+                "Resource": [
+                    "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*"
+                ],
+                "Condition": {
+                    "Null": {
+                        "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
+                        "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:AddTags",
+                    "elasticloadbalancing:RemoveTags"
+                ],
+                "Resource": [
+                    "arn:aws:elasticloadbalancing:*:*:listener/net/*/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:listener/app/*/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:listener-rule/app/*/*/*"
+                ]
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:AddTags"
+                ],
+                "Resource": [
+                    "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+                    "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*"
+                ],
+                "Condition": {
+                    "StringEquals": {
+                        "elasticloadbalancing:CreateAction": [
+                            "CreateTargetGroup",
+                            "CreateLoadBalancer"
+                        ]
+                    },
+                    "Null": {
+                        "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                    "elasticloadbalancing:SetIpAddressType",
+                    "elasticloadbalancing:SetSecurityGroups",
+                    "elasticloadbalancing:SetSubnets",
+                    "elasticloadbalancing:DeleteLoadBalancer",
+                    "elasticloadbalancing:ModifyTargetGroup",
+                    "elasticloadbalancing:ModifyTargetGroupAttributes",
+                    "elasticloadbalancing:DeleteTargetGroup"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "Null": {
+                        "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
+                    }
+                }
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:RegisterTargets",
+                    "elasticloadbalancing:DeregisterTargets"
+                ],
+                "Resource": "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "elasticloadbalancing:SetWebAcl",
+                    "elasticloadbalancing:ModifyListener",
+                    "elasticloadbalancing:AddListenerCertificates",
+                    "elasticloadbalancing:RemoveListenerCertificates",
+                    "elasticloadbalancing:ModifyRule"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+  EOT
+}
+
+resource "aws_iam_policy" "be_datalake_data_export" {
+  name = "InteropBeDatalakeDataExportPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject"
+        ]
+        Resource = format("%s/*", module.data_lake_exports_bucket.s3_bucket_arn)
+    }]
+  })
+}
+
+resource "aws_iam_policy" "be_vpce_routing_testing" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "InteropBeVPCERoutingTesting"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = module.frontend_additional_assets_bucket[0].s3_bucket_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "secretsmanager:ListSecrets"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "dynamodb:ListTables"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "secretsmanager:ListSecrets"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:ListKeys"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "ecr:ListImages"
+        Resource = aws_ecr_repository.vpce_testing[0].arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:ListQueues"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sns:ListTopics"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "cloudwatch:ListMetrics"
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = "logs:DescribeLogGroups"
+        Resource = "*"
+      }
+    ]
+  })
+}

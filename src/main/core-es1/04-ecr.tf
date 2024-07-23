@@ -1,0 +1,222 @@
+locals {
+  repository_names = [
+    "interop-be-agreement-email-sender",
+    "interop-be-agreement-management",
+    "interop-be-agreement-process",
+    "interop-be-agreement-readmodel-writer",
+    "interop-be-anac-certified-attributes-importer",
+    "interop-be-api-gateway",
+    "interop-be-attribute-registry-management",
+    "interop-be-attribute-registry-process",
+    "interop-be-attribute-registry-readmodel-writer",
+    "interop-be-attributes-loader",
+    "interop-be-authorization-management",
+    "interop-be-authorization-process",
+    "interop-be-authorization-server",
+    "interop-be-authorization-updater",
+    "interop-be-backend-for-frontend",
+    "interop-be-catalog-management",
+    "interop-be-catalog-process",
+    "interop-be-catalog-readmodel-writer",
+    "interop-be-certified-mail-sender",
+    "interop-be-dashboard-metrics-report-generator",
+    "interop-be-datalake-data-export",
+    "interop-be-dtd-catalog-exporter",
+    "interop-be-dtd-catalog-total-load-exporter",
+    "interop-be-dtd-metrics",
+    "interop-be-eservice-descriptors-archiver",
+    "interop-be-eservices-monitoring-exporter",
+    "interop-be-ivass-certified-attributes-importer",
+    "interop-be-metrics-report-generator",
+    "interop-be-notifier",
+    "interop-be-notifier-seeder",
+    "interop-be-one-trust-notices",
+    "interop-be-padigitale-report-generator",
+    "interop-be-party-management",
+    "interop-be-party-mock-registry",
+    "interop-be-party-process",
+    "interop-be-party-registry-proxy",
+    "interop-be-pn-consumers",
+    "interop-be-privacy-notices-updater",
+    "interop-be-purpose-management",
+    "interop-be-purpose-process",
+    "interop-be-purpose-readmodel-writer",
+    "interop-be-purposes-archiver",
+    "interop-be-selfcare-onboarding-consumer",
+    "interop-be-tenant-management",
+    "interop-be-tenant-process",
+    "interop-be-tenant-readmodel-writer",
+    "interop-be-tenants-attributes-checker",
+    "interop-be-tenants-cert-attr-updater",
+    "interop-be-token-details-persister",
+    "interop-debezium-postgresql",
+    "interop-frontend"
+  ]
+}
+
+resource "aws_ecr_repository" "app" {
+  for_each = toset(local.repository_names)
+
+  image_tag_mutability = var.env == "test" || var.env == "prod" ? "IMMUTABLE" : "MUTABLE"
+  name                 = each.key
+}
+
+resource "aws_ecr_repository" "vpce_testing" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = "interop-vpce-routing-testing"
+}
+
+resource "aws_ecr_lifecycle_policy" "app" {
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" }
+
+  repository = each.value.name
+  policy     = <<EOF
+  {
+    "rules": [
+      {
+        "rulePriority": 1,
+        "description": "Delete untagged images",
+        "selection": {
+          "tagStatus": "untagged",
+          "countType": "sinceImagePushed",
+          "countUnit": "days",
+          "countNumber": 1
+        },
+        "action": {
+          "type": "expire"
+        }
+      }
+    ]
+  }
+  EOF
+}
+
+# TODO: restrict to only GH ECR role once new CI is ready
+resource "aws_ecr_repository_policy" "dev_cross_account" {
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" }
+
+  repository = each.value.name
+
+  policy = jsonencode({
+    Version = "2008-10-17",
+    Statement = [
+      {
+        Sid    = "QA Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::755649575658:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "Test Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::895646477129:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "Att Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::533267098416:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "Prod Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GitubEcrPullFromTest"
+        Effect = "Allow"
+        Principal = {
+          AWS = [
+            "arn:aws:iam::895646477129:role/interop-github-ecr-test",
+            "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+          ]
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GithubEcrRetagFromTest"
+        Effect = "Allow"
+        Principal = {
+          AWS = [
+            "arn:aws:iam::895646477129:role/interop-github-ecr-test",
+            "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+          ]
+        },
+        Action = [
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_ecr_repository_policy" "uat_cross_account" {
+  for_each = { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "test" }
+
+  repository = each.value.name
+
+  policy = jsonencode({
+    Version = "2008-10-17",
+    Statement = [
+      {
+        Sid    = "GitubEcrPullFromProd"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "GithubEcrRetagFromProd"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::697818730278:role/interop-github-ecr-prod"
+        },
+        Action = [
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart"
+        ]
+      }
+    ]
+  })
+}
