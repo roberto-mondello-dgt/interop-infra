@@ -190,6 +190,12 @@ variable "dns_interop_att_ns_records" {
   default     = []
 }
 
+variable "dns_interop_att_sandbox_ns_records" {
+  description = "NS records for the Interop 'att' SANDBOX hosted zone. Used to grant DNS delegation for the subdomain"
+  type        = list(string)
+  default     = []
+}
+
 variable "data_lake_account_id" {
   description = "AWS account ID of the DataLake team for token data ingestion"
   type        = string
