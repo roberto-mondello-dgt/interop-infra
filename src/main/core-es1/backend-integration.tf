@@ -15,45 +15,45 @@ module "nlb_v2" {
   vpc_id             = module.vpc.vpc_id
   subnets            = data.aws_subnets.int_lbs.ids
 
-  http_tcp_listeners = [
-    {
-      port               = 80
-      protocol           = "TCP"
-      target_group_index = 0
-    },
-    {
-      port               = 443
-      protocol           = "TCP"
-      target_group_index = 0
-    }
-  ]
-
-  target_groups = [
-    {
-      name             = format("be-integration2-alb-tg-%s", var.env)
-      backend_protocol = "TCP"
-      backend_port     = 80
-      target_type      = "alb"
-      targets = {
-        backend_alb = {
-          target_id = data.aws_lb.backend_alb_v2.arn
-          port      = 80
-        }
-      }
-      connection_termination = false
-      preserve_client_ip     = true
-      health_check = {
-        enabled             = true
-        interval            = 30
-        path                = "/"
-        port                = "traffic-port"
-        healthy_threshold   = 3
-        unhealthy_threshold = 3
-        timeout             = 6
-        matcher             = "200-499"
-      }
-    }
-  ]
+  # http_tcp_listeners = [
+  #   {
+  #     port               = 80
+  #     protocol           = "TCP"
+  #     target_group_index = 0
+  #   },
+  #   {
+  #     port               = 443
+  #     protocol           = "TCP"
+  #     target_group_index = 0
+  #   }
+  # ]
+  #
+  # target_groups = [
+  #   {
+  #     name             = format("be-integration2-alb-tg-%s", var.env)
+  #     backend_protocol = "TCP"
+  #     backend_port     = 80
+  #     target_type      = "alb"
+  #     targets = {
+  #       backend_alb = {
+  #         target_id = data.aws_lb.backend_alb_v2.arn
+  #         port      = 80
+  #       }
+  #     }
+  #     connection_termination = false
+  #     preserve_client_ip     = true
+  #     health_check = {
+  #       enabled             = true
+  #       interval            = 30
+  #       path                = "/"
+  #       port                = "traffic-port"
+  #       healthy_threshold   = 3
+  #       unhealthy_threshold = 3
+  #       timeout             = 6
+  #       matcher             = "200-499"
+  #     }
+  #   }
+  # ]
 }
 
 resource "aws_api_gateway_vpc_link" "integration" {

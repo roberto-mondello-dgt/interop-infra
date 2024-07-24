@@ -122,3 +122,18 @@ resource "aws_route53_record" "tracing_delegation" {
   records = toset(var.tracing_domain_ns_records)
   ttl     = "300"
 }
+
+# import {
+#     to = aws_route53_record.interop_att_sandbox_delegation
+#     id = "_eservices.att.interop.pagopa.it_NS"
+# }
+
+resource "aws_route53_record" "interop_att_sandbox_delegation" {
+  count = var.env == "att" && length(var.dns_interop_att_sandbox_ns_records) > 0 ? 1 : 0
+
+  zone_id = aws_route53_zone.interop_public.zone_id
+  name    = format("eservices.%s", local.interop_env_dns_domain)
+  type    = "NS"
+  records = toset(var.dns_interop_att_sandbox_ns_records)
+  ttl     = "300"
+}

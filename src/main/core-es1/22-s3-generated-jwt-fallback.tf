@@ -10,7 +10,7 @@ module "generated_jwt_details_fallback_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = format("%s-generated-jwt-details-fallback-%s", var.short_name, var.env)
+  bucket = format("%s-generated-jwt-details-fallback-%s-es1", var.short_name, var.env)
 
   block_public_acls       = true
   block_public_policy     = true
@@ -52,7 +52,7 @@ module "generated_jwt_details_fallback_bucket" {
 }
 
 resource "aws_iam_role" "generated_jwt_details_fallback_replication" {
-  name = format("%s-generated-jwt-details-fallback-replication-%s", var.short_name, var.env)
+  name = format("%s-generated-jwt-details-fallback-replication-%s-es1", var.short_name, var.env)
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

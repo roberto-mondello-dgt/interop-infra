@@ -10,7 +10,7 @@ module "be_agreement_management_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-agreement-management", local.role_prefix)
+  role_name = format("%s-interop-be-agreement-management-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -30,7 +30,7 @@ module "be_authorization_management_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-authorization-management", local.role_prefix)
+  role_name = format("%s-interop-be-authorization-management-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -50,7 +50,7 @@ module "be_agreement_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-agreement-process", local.role_prefix)
+  role_name = format("%s-interop-be-agreement-process-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -70,7 +70,7 @@ module "be_catalog_management_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-catalog-management", local.role_prefix)
+  role_name = format("%s-interop-be-catalog-management-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -90,7 +90,7 @@ module "be_authorization_server_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-authorization-server", local.role_prefix)
+  role_name = format("%s-interop-be-authorization-server-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -110,7 +110,7 @@ module "be_catalog_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-catalog-process", local.role_prefix)
+  role_name = format("%s-interop-be-catalog-process-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -130,7 +130,7 @@ module "be_purpose_management_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-purpose-management", local.role_prefix)
+  role_name = format("%s-interop-be-purpose-management-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -150,7 +150,7 @@ module "be_notifier_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-notifier", local.role_prefix)
+  role_name = format("%s-interop-be-notifier-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -170,7 +170,7 @@ module "be_purpose_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-purpose-process", local.role_prefix)
+  role_name = format("%s-interop-be-purpose-process-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -190,7 +190,7 @@ module "be_backend_for_frontend_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-backend-for-frontend", local.role_prefix)
+  role_name = format("%s-interop-be-backend-for-frontend-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -210,7 +210,7 @@ module "be_selfcare_onboarding_consumer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-selfcare-onboarding-consumer-%s", var.env)
+  role_name = format("interop-be-selfcare-onboarding-consumer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -230,7 +230,7 @@ module "be_anac_certified_attributes_importer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-anac-certified-attributes-importer-%s", var.env)
+  role_name = format("interop-be-anac-certified-attributes-importer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -250,7 +250,7 @@ module "be_ivass_certified_attributes_importer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-ivass-certified-attributes-importer-%s", var.env)
+  role_name = format("interop-be-ivass-certified-attributes-importer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -270,7 +270,7 @@ module "be_attributes_loader_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-attributes-loader", local.role_prefix)
+  role_name = format("%s-interop-be-attributes-loader-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -290,7 +290,7 @@ module "be_token_details_persister_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-token-details-persister", local.role_prefix)
+  role_name = format("%s-interop-be-token-details-persister-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -310,7 +310,7 @@ module "be_eservices_monitoring_exporter_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-eservices-monitoring-exporter-%s", var.env)
+  role_name = format("interop-be-eservices-monitoring-exporter-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -330,7 +330,7 @@ module "be_tenants_certified_attributes_updater_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-tenants-cert-attr-updater", local.role_prefix)
+  role_name = format("%s-interop-be-tenants-cert-attr-updater-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -350,7 +350,7 @@ module "be_certified_mail_sender_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-certified-mail-sender", local.role_prefix)
+  role_name = format("%s-interop-be-certified-mail-sender-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -370,7 +370,7 @@ module "be_party_registry_refresher_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-party-registry-refresher", local.role_prefix)
+  role_name = format("%s-interop-be-party-registry-refresher-es1", local.role_prefix)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -386,7 +386,7 @@ module "be_metrics_report_generator_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-metrics-report-generator-%s", var.env)
+  role_name = format("interop-be-metrics-report-generator-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -406,7 +406,7 @@ module "be_pa_digitale_report_generator_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-padigitale-report-generator-%s", var.env)
+  role_name = format("interop-be-padigitale-report-generator-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -426,7 +426,7 @@ module "be_dashboard_metrics_report_generator_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-dashboard-metrics-report-generator-%s", var.env)
+  role_name = format("interop-be-dashboard-metrics-report-generator-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -446,7 +446,7 @@ module "be_dtd_catalog_exporter_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-dtd-catalog-exporter-%s", var.env)
+  role_name = format("interop-be-dtd-catalog-exporter-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -466,7 +466,7 @@ module "be_privacy_notices_updater_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-privacy-notices-updater-%s", var.env)
+  role_name = format("interop-be-privacy-notices-updater-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -486,7 +486,7 @@ module "be_one_trust_notices_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-one-trust-notices-%s", var.env)
+  role_name = format("interop-be-one-trust-notices-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -506,7 +506,7 @@ module "be_purposes_archiver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-purposes-archiver-%s", var.env)
+  role_name = format("interop-be-purposes-archiver-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -526,7 +526,7 @@ module "be_eservice_descriptors_archiver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-eservice-descriptors-archiver-%s", var.env)
+  role_name = format("interop-be-eservice-descriptors-archiver-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -549,7 +549,7 @@ module "be_dtd_metrics_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-dtd-metrics-%s", var.env)
+  role_name = format("interop-be-dtd-metrics-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -569,7 +569,7 @@ module "be_datalake_data_export_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-datalake-data-export-%s", var.env)
+  role_name = format("interop-be-datalake-data-export-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -588,7 +588,7 @@ module "be_datalake_data_export_irsa" {
 module "aws_load_balancer_controller_irsa" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name = format("aws-load-balancer-controller-%s", var.env)
+  role_name = format("aws-load-balancer-controller-%s-es1", var.env)
 
   oidc_providers = {
     main = {
@@ -608,7 +608,7 @@ module "aws_load_balancer_controller_irsa_v2" {
   count  = var.env == "dev" ? 1 : 0
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name = format("aws-load-balancer-controller-v2-%s", var.env)
+  role_name = format("aws-load-balancer-controller-v2-%s-es1", var.env)
 
   oidc_providers = {
     main = {
@@ -626,7 +626,7 @@ module "adot_iam_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.11.1"
 
-  role_name = format("adot-collector-%s", var.env)
+  role_name = format("adot-collector-%s-es1", var.env)
 
   oidc_providers = {
     eks = {
@@ -646,7 +646,7 @@ module "be_vpce_routing_testing_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("interop-be-vpce-routing-testing-%s", var.env)
+  role_name = format("interop-be-vpce-routing-testing-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 

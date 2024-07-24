@@ -1,7 +1,7 @@
 # TODO: refactor all BE policies
 
 resource "aws_iam_policy" "be_agreement_management" {
-  name = "InteropBeAgreementManagementPolicy"
+  name = "InteropBeAgreementManagementPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -17,7 +17,7 @@ resource "aws_iam_policy" "be_agreement_management" {
 }
 
 resource "aws_iam_policy" "be_authorization_management" {
-  name = "InteropBeAuthorizationManagementPolicy"
+  name = "InteropBeAuthorizationManagementPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -33,7 +33,7 @@ resource "aws_iam_policy" "be_authorization_management" {
 }
 
 resource "aws_iam_policy" "be_agreement_process" {
-  name = "InteropBeAgreementProcessPolicy"
+  name = "InteropBeAgreementProcessPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -79,7 +79,7 @@ resource "aws_iam_policy" "be_agreement_process" {
 }
 
 resource "aws_iam_policy" "be_catalog_management" {
-  name = "InteropBeCatalogManagementPolicy"
+  name = "InteropBeCatalogManagementPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -102,7 +102,7 @@ resource "aws_iam_policy" "be_catalog_management" {
 }
 
 resource "aws_iam_policy" "be_authorization_server" {
-  name = "InteropBeAuthorizationServerPolicy"
+  name = "InteropBeAuthorizationServerPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -129,7 +129,7 @@ resource "aws_iam_policy" "be_authorization_server" {
 }
 
 resource "aws_iam_policy" "be_catalog_process" {
-  name = "InteropBeCatalogProcessPolicy"
+  name = "InteropBeCatalogProcessPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -143,7 +143,7 @@ resource "aws_iam_policy" "be_catalog_process" {
 }
 
 resource "aws_iam_policy" "be_purpose_management" {
-  name = "InteropBePurposeManagementPolicy"
+  name = "InteropBePurposeManagementPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -159,7 +159,7 @@ resource "aws_iam_policy" "be_purpose_management" {
 }
 
 resource "aws_iam_policy" "be_notifier" {
-  name = "InteropBeNotifierPolicy"
+  name = "InteropBeNotifierPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -205,7 +205,7 @@ resource "aws_iam_policy" "be_notifier" {
 }
 
 resource "aws_iam_policy" "be_purpose_process" {
-  name = "InteropBePurposeProcessPolicy"
+  name = "InteropBePurposeProcessPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -233,7 +233,7 @@ resource "aws_iam_policy" "be_purpose_process" {
 }
 
 resource "aws_iam_policy" "be_backend_for_frontend" {
-  name = "InteropBeBackendForFrontendPolicy"
+  name = "InteropBeBackendForFrontendPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -305,7 +305,7 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
 }
 
 resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
-  name = "InteropBeSelfcareOnboardingConsumerPolicy"
+  name = "InteropBeSelfcareOnboardingConsumerPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -318,7 +318,7 @@ resource "aws_iam_policy" "be_selfcare_onboarding_consumer" {
 }
 
 resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
-  name = "InteropBeAnacCertifiedAttributesImporterPolicy"
+  name = "InteropBeAnacCertifiedAttributesImporterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -331,7 +331,7 @@ resource "aws_iam_policy" "be_anac_certified_attributes_importer" {
 }
 
 resource "aws_iam_policy" "be_ivass_certified_attributes_importer" {
-  name = "InteropBeIvassCertifiedAttributesImporterPolicy"
+  name = "InteropBeIvassCertifiedAttributesImporterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -351,7 +351,7 @@ resource "aws_iam_policy" "be_ivass_certified_attributes_importer" {
 }
 
 resource "aws_iam_policy" "be_attributes_loader" {
-  name = "InteropAttributesLoaderPolicy"
+  name = "InteropAttributesLoaderPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -364,7 +364,7 @@ resource "aws_iam_policy" "be_attributes_loader" {
 }
 
 resource "aws_iam_policy" "be_token_details_persister" {
-  name = "InteropBeTokenDetailsPersisterPolicy"
+  name = "InteropBeTokenDetailsPersisterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -392,7 +392,7 @@ resource "aws_iam_policy" "be_token_details_persister" {
 }
 
 resource "aws_iam_policy" "be_eservices_monitoring_exporter" {
-  name = "InteropBeEservicesMonitoringExporterPolicy"
+  name = "InteropBeEservicesMonitoringExporterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -406,7 +406,7 @@ resource "aws_iam_policy" "be_eservices_monitoring_exporter" {
 }
 
 resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
-  name = "InteropBeTenantsCertifiedAttributesUpdaterPolicy"
+  name = "InteropBeTenantsCertifiedAttributesUpdaterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -419,7 +419,7 @@ resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
 }
 
 resource "aws_iam_policy" "be_certified_mail_sender" {
-  name = "InteropBeCertifiedMailSenderPolicy"
+  name = "InteropBeCertifiedMailSenderPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -435,7 +435,7 @@ resource "aws_iam_policy" "be_certified_mail_sender" {
 }
 
 resource "aws_iam_policy" "be_metrics_report_generator" {
-  name = "InteropBeMetricsReportGeneratorPolicy"
+  name = "InteropBeMetricsReportGeneratorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -478,7 +478,7 @@ resource "aws_iam_policy" "be_metrics_report_generator" {
 }
 
 resource "aws_iam_policy" "be_pa_digitale_report_generator" {
-  name = "InteropBePaDigitaleReportGeneratorPolicy"
+  name = "InteropBePaDigitaleReportGeneratorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -497,7 +497,7 @@ resource "aws_iam_policy" "be_pa_digitale_report_generator" {
 }
 
 resource "aws_iam_policy" "be_dashboard_metrics_report_generator" {
-  name = "InteropBeDashboardMetricsReportGeneratorPolicy"
+  name = "InteropBeDashboardMetricsReportGeneratorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -521,7 +521,7 @@ resource "aws_iam_policy" "be_dashboard_metrics_report_generator" {
 }
 
 resource "aws_iam_policy" "be_dtd_catalog_exporter" {
-  name = "InteropBeDtdCatalogExporterPolicy"
+  name = "InteropBeDtdCatalogExporterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -536,7 +536,7 @@ resource "aws_iam_policy" "be_dtd_catalog_exporter" {
 }
 
 resource "aws_iam_policy" "be_privacy_notices_updater" {
-  name = "InteropBePrivacyNoticesUpdaterPolicy"
+  name = "InteropBePrivacyNoticesUpdaterPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -570,7 +570,7 @@ resource "aws_iam_policy" "be_privacy_notices_updater" {
 }
 
 resource "aws_iam_policy" "be_one_trust_notices" {
-  name = "InteropBeOneTrustNoticesPolicy"
+  name = "InteropBeOneTrustNoticesPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -604,7 +604,7 @@ resource "aws_iam_policy" "be_one_trust_notices" {
 }
 
 resource "aws_iam_policy" "be_purposes_archiver" {
-  name = "InteropBePurposesArchiverPolicy"
+  name = "InteropBePurposesArchiverPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -624,7 +624,7 @@ resource "aws_iam_policy" "be_purposes_archiver" {
 }
 
 resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
-  name = "InteropBeEserviceDescriptorsArchiverPolicy"
+  name = "InteropBeEserviceDescriptorsArchiverPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -649,7 +649,7 @@ resource "aws_iam_policy" "be_eservice_descriptors_archiver" {
 }
 
 resource "aws_iam_policy" "be_dtd_metrics" {
-  name = "InteropBeDtdMetricsPolicy"
+  name = "InteropBeDtdMetricsPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -709,7 +709,7 @@ data "aws_iam_policy" "cloudwatch_agent_server" {
 }
 
 resource "aws_iam_policy" "aws_load_balancer_controller" {
-  name = "AWSLoadBalancerControllerIAMPolicy"
+  name = "AWSLoadBalancerControllerIAMPolicyEs1"
 
   policy = <<-EOT
     {
@@ -957,7 +957,7 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
 }
 
 resource "aws_iam_policy" "be_datalake_data_export" {
-  name = "InteropBeDatalakeDataExportPolicy"
+  name = "InteropBeDatalakeDataExportPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -975,7 +975,7 @@ resource "aws_iam_policy" "be_datalake_data_export" {
 resource "aws_iam_policy" "be_vpce_routing_testing" {
   count = var.env == "dev" ? 1 : 0
 
-  name = "InteropBeVPCERoutingTesting"
+  name = "InteropBeVPCERoutingTestingEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"

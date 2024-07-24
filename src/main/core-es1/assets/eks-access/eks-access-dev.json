@@ -23,7 +23,7 @@
       ]
     },
     {
-      "principal_arn": "arn:aws:iam::505630707203:role/interop-buildo-developers-dev",
+      "principal_arn": "arn:aws:iam::505630707203:role/interop-buildo-developers-dev-es1",
       "kubernetes_groups": [],
       "access_policies": [
         {
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "principal_arn": "arn:aws:iam::505630707203:role/interop-github-qa-runner-task-dev",
+      "principal_arn": "arn:aws:iam::505630707203:role/interop-github-qa-runner-task-dev-es1",
       "kubernetes_groups": [],
       "access_policies": [
         {

@@ -1,7 +1,7 @@
 resource "aws_iam_role" "buildo_developers" {
   count = var.env == "dev" || var.env == "test" ? 1 : 0
 
-  name = format("%s-buildo-developers-%s", var.short_name, var.env)
+  name = format("%s-buildo-developers-%s-es1", var.short_name, var.env)
 
   managed_policy_arns = var.env == "dev" ? [
     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
