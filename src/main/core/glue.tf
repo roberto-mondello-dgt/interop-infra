@@ -58,7 +58,8 @@ resource "aws_glue_crawler" "app_logs" {
   s3_target {
     path = "s3://${module.application_logs_bucket.s3_bucket_id}"
     exclusions = [
-      "**/aws-logs-write-test"
+      "**/aws-logs-write-test",
+      "**/aws-logs-write-test-multipartupload"
     ]
   }
   schema_change_policy {
