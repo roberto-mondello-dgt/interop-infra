@@ -105,3 +105,9 @@ resource "aws_secretsmanager_secret" "anac_sftp_host" {
 resource "aws_secretsmanager_secret" "external_integration_github_bot_pat" {
   name = "interop-external-integration-github-bot-pat"
 }
+
+resource "aws_secretsmanager_secret" "npm_key" {
+  count = var.env == "prod" ? 1 : 0
+
+  name = "interop-npm-key"
+}
