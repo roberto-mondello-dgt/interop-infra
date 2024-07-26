@@ -44,3 +44,16 @@ module "notifiche_ses_smtp_user" {
   # allowed_from_display_names     = ["Notifiche Interop"]
   # allowed_source_vpcs_id = [module.vpc_v2.vpc_id]
 }
+
+module "internal_ses_identity" {
+  count = var.env == "dev" ? 1 : 0
+
+  source = "./modules/ses-identity"
+
+  env                           = var.env
+  ses_identity_name             = format("internal.%s", aws_route53_zone.interop_public.name)
+  hosted_zone_id                = aws_route53_zone.interop_public.zone_id
+  create_alarms                 = true
+  sns_topics_arn                = [aws_sns_topic.platform_alarms.arn]
+  ses_reputation_sns_topics_arn = [aws_sns_topic.platform_alarms.arn, aws_sns_topic.ses_reputation.arn]
+}
