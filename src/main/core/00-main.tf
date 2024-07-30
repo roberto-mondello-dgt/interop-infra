@@ -45,4 +45,5 @@ data "aws_iam_role" "sso_admin" {
 
 locals {
   deploy_be_refactor_infra = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "prod"
+  region_migration         = var.env == "dev"
 }

@@ -185,3 +185,26 @@ resource "aws_iam_role" "data_lake_metrics" {
     })
   }
 }
+
+resource "aws_iam_role" "s3_region_migration" {
+  count = local.region_migration ? 1 : 0
+
+  name = format("%s-s3-region-migration-%s", var.short_name, var.env)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "batchoperations.s3.amazonaws.com",
+            "s3.amazonaws.com"
+          ]
+        }
+        Action = "sts:AssumeRole"
+    }]
+  })
+
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonS3FullAccess"]
+}

@@ -151,7 +151,7 @@ module "data_lake_exports_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -230,7 +230,7 @@ module "platform_metrics_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -348,7 +348,7 @@ module "metrics_reports_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -364,7 +364,7 @@ module "interop_landing_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 
   attach_policy = true
@@ -402,7 +402,7 @@ module "public_catalog_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 
   attach_policy = true
@@ -468,7 +468,7 @@ module "privacy_notices_content_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -485,7 +485,7 @@ module "public_bucket" {
   restrict_public_buckets = false
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 
   cors_rule = [
@@ -525,7 +525,7 @@ module "alb_logs_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 
   lifecycle_rule = [
@@ -571,7 +571,7 @@ module "anac_sftp_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -587,7 +587,7 @@ module "ivass_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -603,7 +603,7 @@ module "s3_batch_reports_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -673,7 +673,7 @@ module "application_import_export_bucket" {
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 
   cors_rule = [
