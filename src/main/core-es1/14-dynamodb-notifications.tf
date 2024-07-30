@@ -19,6 +19,16 @@ resource "aws_dynamodb_table" "notification_events" {
     attribute_name = "ttl"
     enabled        = var.notification_events_table_ttl_enabled
   }
+
+  import_table {
+    input_compression_type = "GZIP"
+    input_format           = "DYNAMODB_JSON"
+
+    s3_bucket_source {
+      bucket     = "interop-dynamodb-exports-dev"
+      key_prefix = "eu-central-1/interop-notification-events/AWSDynamoDB/01722262267831-c80be986/data"
+    }
+  }
 }
 
 resource "aws_dynamodb_table" "notification_resources" {
@@ -30,5 +40,15 @@ resource "aws_dynamodb_table" "notification_resources" {
   attribute {
     name = "resourceId"
     type = "S"
+  }
+
+  import_table {
+    input_compression_type = "GZIP"
+    input_format           = "DYNAMODB_JSON"
+
+    s3_bucket_source {
+      bucket     = "interop-dynamodb-exports-dev"
+      key_prefix = "eu-central-1/interop-notification-resources/AWSDynamoDB/01722262293086-6e9cf9d3/data"
+    }
   }
 }
