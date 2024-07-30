@@ -65,17 +65,6 @@
       ]
     },
     {
-      "principal_arn": "arn:aws:iam::505630707203:user/r.torsoli",
-      "kubernetes_groups": ["port-forwarders-group"],
-      "access_policies": [
-        {
-          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
-          "scope": "namespace",
-          "namespaces": ["dev", "dev-refactor"]
-        }
-      ]
-    },
-    {
       "principal_arn": "arn:aws:iam::505630707203:role/interop-github-qa-runner-task-dev",
       "kubernetes_groups": [],
       "access_policies": [
