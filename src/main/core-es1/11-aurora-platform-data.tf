@@ -33,6 +33,8 @@ module "platform_data" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "9.3.1"
 
+  snapshot_identifier = "arn:aws:rds:eu-south-1:505630707203:cluster-snapshot:es1-region-migration-20240729"
+
   name                = format("%s-platform-data-%s", var.short_name, var.env)
   deletion_protection = true
   apply_immediately   = true
@@ -107,10 +109,11 @@ module "platform_data" {
     # }
   }
 
-  storage_encrypted       = true
-  kms_key_id              = aws_kms_key.platform_data.arn
-  backup_retention_period = var.env == "prod" ? 30 : 7
-  skip_final_snapshot     = false
+  storage_encrypted         = true
+  kms_key_id                = aws_kms_key.platform_data.arn
+  backup_retention_period   = var.env == "prod" ? 30 : 7
+  skip_final_snapshot       = var.env == "dev" || var.env == "qa"
+  final_snapshot_identifier = format("%s-platform-data-%s-final", var.short_name, var.env)
 
   create_cloudwatch_log_group            = true
   enabled_cloudwatch_logs_exports        = ["postgresql"]
@@ -126,6 +129,8 @@ module "platform_data" {
 
 # Workaround
 resource "null_resource" "disable_secret_rotation" {
+  depends_on = [module.platform_data]
+
   triggers = {
     secret_arn = module.platform_data.cluster_master_user_secret[0].secret_arn
   }
