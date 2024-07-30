@@ -2,6 +2,10 @@ resource "aws_dynamodb_table" "privacy_notices" {
   name         = format("interop-privacy-notices-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"
 
+  point_in_time_recovery {
+    enabled = true
+  }
+
   hash_key = "privacyNoticeId"
 
   attribute {
@@ -13,6 +17,10 @@ resource "aws_dynamodb_table" "privacy_notices" {
 resource "aws_dynamodb_table" "privacy_notices_acceptances" {
   name         = format("interop-privacy-notices-acceptances-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"
+
+  point_in_time_recovery {
+    enabled = true
+  }
 
   hash_key  = "pnIdWithUserId"
   range_key = "versionNumber"

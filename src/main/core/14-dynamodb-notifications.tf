@@ -2,6 +2,10 @@ resource "aws_dynamodb_table" "notification_events" {
   name         = "interop-notification-events"
   billing_mode = "PAY_PER_REQUEST"
 
+  point_in_time_recovery {
+    enabled = true
+  }
+
   hash_key  = "organizationId"
   range_key = "eventId"
 
@@ -24,6 +28,10 @@ resource "aws_dynamodb_table" "notification_events" {
 resource "aws_dynamodb_table" "notification_resources" {
   name         = "interop-notification-resources"
   billing_mode = "PAY_PER_REQUEST"
+
+  point_in_time_recovery {
+    enabled = true
+  }
 
   hash_key = "resourceId"
 
