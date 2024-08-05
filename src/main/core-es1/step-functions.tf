@@ -1,5 +1,5 @@
 resource "aws_iam_role" "logs_automation" {
-  name = format("interop-logs-automation-%s", var.env)
+  name = format("interop-logs-automation-%s-es1", var.env)
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

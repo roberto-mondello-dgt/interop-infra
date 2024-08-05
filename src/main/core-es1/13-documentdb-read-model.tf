@@ -50,13 +50,13 @@ resource "aws_security_group" "read_model" {
   name   = format("documentdb/%s-read-model-%s", var.short_name, var.env)
   vpc_id = module.vpc.vpc_id
 
-  # ingress {
-  #   description     = "Access from EKS"
-  #   protocol        = "tcp"
-  #   from_port       = var.read_model_db_port
-  #   to_port         = var.read_model_db_port
-  #   security_groups = [module.eks.cluster_primary_security_group_id]
-  # }
+  ingress {
+    description     = "Access from EKS"
+    protocol        = "tcp"
+    from_port       = var.read_model_db_port
+    to_port         = var.read_model_db_port
+    security_groups = [module.eks.cluster_primary_security_group_id]
+  }
 
   # ingress {
   #   description     = "Access from Bastion Host"
@@ -66,13 +66,13 @@ resource "aws_security_group" "read_model" {
   #   security_groups = [aws_security_group.bastion_host_v2.id]
   # }
 
-  # ingress {
-  #   description     = "Access from Github Runners"
-  #   protocol        = "tcp"
-  #   from_port       = var.read_model_db_port
-  #   to_port         = var.read_model_db_port
-  #   security_groups = [aws_security_group.github_runners_v2.id]
-  # }
+  ingress {
+    description     = "Access from Github Runners"
+    protocol        = "tcp"
+    from_port       = var.read_model_db_port
+    to_port         = var.read_model_db_port
+    security_groups = [aws_security_group.github_runners.id]
+  }
 
   ingress {
     description     = "Access from VPN clients"

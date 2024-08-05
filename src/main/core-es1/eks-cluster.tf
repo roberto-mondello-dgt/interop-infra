@@ -66,13 +66,13 @@ module "eks" {
   node_security_group_enable_recommended_rules = false
 
   cluster_security_group_additional_rules = {
-    # from_github_runners = {
-    #   type                     = "ingress"
-    #   from_port                = 0
-    #   to_port                  = 65535
-    #   protocol                 = "tcp"
-    #   source_security_group_id = aws_security_group.github_runners_v2.id
-    # }
+    from_github_runners = {
+      type                     = "ingress"
+      from_port                = 0
+      to_port                  = 65535
+      protocol                 = "tcp"
+      source_security_group_id = aws_security_group.github_runners.id
+    }
 
     from_vpn_clients = {
       type                     = "ingress"

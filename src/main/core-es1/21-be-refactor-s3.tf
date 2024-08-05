@@ -4,7 +4,7 @@ module "be_refactor_application_documents_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = format("interop-application-documents-refactor-%s", var.env)
+  bucket = format("interop-application-documents-refactor-%s-es1", var.env)
 
   block_public_acls       = true
   block_public_policy     = true
@@ -22,7 +22,7 @@ module "be_refactor_generated_jwt_details_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = format("%s-generated-jwt-details-refactor-%s", var.short_name, var.env)
+  bucket = format("%s-generated-jwt-details-refactor-%s-es1", var.short_name, var.env)
 
   block_public_acls       = true
   block_public_policy     = true
@@ -50,7 +50,7 @@ module "be_refactor_generated_jwt_details_fallback_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = format("%s-generated-jwt-details-fallback-refactor-%s", var.short_name, var.env)
+  bucket = format("%s-generated-jwt-details-fallback-refactor-%s-es1", var.short_name, var.env)
 
   block_public_acls       = true
   block_public_policy     = true

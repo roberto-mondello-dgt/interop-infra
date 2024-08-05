@@ -212,5 +212,3 @@ resource "aws_iam_role" "buildo_developers" {
     }
   }
 }
-
-

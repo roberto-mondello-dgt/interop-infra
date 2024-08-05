@@ -1,6 +1,11 @@
 #!/bin/zsh
 
-set -o pipefail
+set -eo pipefail
+
+SRC_REGION="eu-central-1"
+ACCOUNT_ID="505630707203"
+ROLE_ARN="arn:aws:iam::505630707203:role/interop-s3-region-migration-dev"
+BATCH_OPERATIONS_BUCKET="interop-s3-batch-operations-dev"
 
 function main() {
   local buckets_all=()
@@ -11,16 +16,16 @@ function main() {
 
   # buckets_all=($(aws s3api list-buckets --query 'Buckets[].Name' --output text))
   #
-  # echo "Listing eu-central-1 buckets"
+  # echo "Listing $SRC_REGION buckets"
   # for bucket in "${buckets_all[@]}"; do
   #   bucket_region=$(aws s3api head-bucket --bucket "$bucket" --query 'BucketRegion' --output text)
   #
-  #   if [[ "$bucket_region" = "eu-central-1" ]]; then
+  #   if [[ "$bucket_region" = "$SRC_REGION" ]]; then
   #     ec1_buckets_all+=("$bucket")
   #   fi
   # done
   #
-  # echo "Filtering eu-central-1 source buckets to migrate"
+  # echo "Filtering $SRC_REGION source buckets to migrate"
   # for bucket in "${ec1_buckets_all[@]}"; do
   #   dest_bucket="${bucket}-es1"
   #   aws s3api head-bucket --bucket "$dest_bucket" > /dev/null 2>&1
@@ -31,7 +36,7 @@ function main() {
   # done
   
   ec1_source_buckets=("interop-application-documents-dev")
-  echo "Found ${#ec1_source_buckets[@]} eu-central-1 source buckets to migrate"
+  echo "Found ${#ec1_source_buckets[@]} $SRC_REGION source buckets to migrate"
 
   local operation
   local report
@@ -44,15 +49,22 @@ function main() {
 
     echo -n "Creating batch job: $source_bucket --> $dest_bucket..."
 
+    # operation=$(jq -n --arg dest_bucket "$dest_bucket" --arg op_bucket "$BATCH_OPERATIONS_BUCKET" '{
+    #   "S3PutObjectCopy": {
+    #     "TargetResource": "arn:aws:s3:::\($dest_bucket)"
+    #   }
+    # }')
+
     operation='{"S3ReplicateObject":{}}'
 
-    report=$(jq -n --arg src_bucket "$source_bucket" '{ 
-      "Bucket": "arn:aws:s3:::interop-s3-batch-operations-dev", 
-      "Prefix": "reports/\($src_bucket)/",
+    report=$(jq -n --arg src_bucket "$source_bucket" --arg op_bucket "$BATCH_OPERATIONS_BUCKET" '{ 
+      "Bucket": "arn:aws:s3:::\($op_bucket)", 
+      "Prefix": "reports/\($src_bucket)",
       "Format": "Report_CSV_20180820",
       "Enabled": true,
       "ReportScope": "FailedTasksOnly"
     }')
+
 
     manifest_generator=$(jq -n --arg src_bucket "$source_bucket" '{ 
       "S3JobManifestGenerator": { 
@@ -60,18 +72,40 @@ function main() {
         "EnableManifestOutput": false,
         "Filter": {
           "EligibleForReplication": true, 
-          "ObjectReplicationStatuses": ["NONE","FAILED"]
         } 
       } 
     }')
 
+    # manifest_generator=$(jq -n --arg src_bucket "$source_bucket" '{ 
+    #   "S3JobManifestGenerator": { 
+    #     "SourceBucket": "arn:aws:s3:::\($src_bucket)",
+    #     "EnableManifestOutput": false,
+    #     "Filter": {
+    #       "EligibleForReplication": true, 
+    #       "ObjectReplicationStatuses": ["NONE","FAILED"]
+    #     } 
+    #   } 
+    # }')
+
+    # manifest_generator=$(jq -n --arg src_bucket "$source_bucket" --arg op_bucket "$BATCH_OPERATIONS_BUCKET" '{ 
+    #   "S3JobManifestGenerator": { 
+    #     "SourceBucket": "arn:aws:s3:::\($src_bucket)",
+    #     "EnableManifestOutput": true,
+    #     "ManifestOutputLocation": {
+    #       "Bucket": "arn:aws:s3:::\($op_bucket)",
+    #       "ManifestPrefix": "manifests/\($src_bucket)",
+    #       "ManifestFormat": "S3InventoryReport_CSV_20211130"
+    #     }
+    #   }
+    # }')
+
     aws s3control create-job \
-      --region "eu-central-1" \
-      --account-id "505630707203" \
+      --region "$SRC_REGION" \
+      --account-id "$ACCOUNT_ID" \
       --operation "$operation" \
       --report "$report" \
       --manifest-generator "$manifest_generator" \
-      --role-arn "arn:aws:iam::505630707203:role/interop-s3-region-migration-dev" \
+      --role-arn "$ROLE_ARN" \
       --priority "$priority" \
       --description "$source_bucket --> $dest_bucket" \
       --no-confirmation-required > /dev/null

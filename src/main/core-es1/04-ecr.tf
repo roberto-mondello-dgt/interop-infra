@@ -2,6 +2,7 @@ locals {
   repository_names = [
     "interop-be-agreement-email-sender",
     "interop-be-agreement-management",
+    "interop-be-agreement-outbound-writer",
     "interop-be-agreement-process",
     "interop-be-agreement-readmodel-writer",
     "interop-be-anac-certified-attributes-importer",
@@ -16,9 +17,11 @@ locals {
     "interop-be-authorization-updater",
     "interop-be-backend-for-frontend",
     "interop-be-catalog-management",
+    "interop-be-catalog-outbound-writer",
     "interop-be-catalog-process",
     "interop-be-catalog-readmodel-writer",
     "interop-be-certified-mail-sender",
+    "interop-be-client-readmodel-writer",
     "interop-be-dashboard-metrics-report-generator",
     "interop-be-datalake-data-export",
     "interop-be-dtd-catalog-exporter",
@@ -27,6 +30,7 @@ locals {
     "interop-be-eservice-descriptors-archiver",
     "interop-be-eservices-monitoring-exporter",
     "interop-be-ivass-certified-attributes-importer",
+    "interop-be-key-readmodel-writer",
     "interop-be-metrics-report-generator",
     "interop-be-notifier",
     "interop-be-notifier-seeder",
@@ -39,11 +43,13 @@ locals {
     "interop-be-pn-consumers",
     "interop-be-privacy-notices-updater",
     "interop-be-purpose-management",
+    "interop-be-purpose-outbound-writer",
     "interop-be-purpose-process",
     "interop-be-purpose-readmodel-writer",
     "interop-be-purposes-archiver",
     "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
+    "interop-be-tenant-outbound-writer",
     "interop-be-tenant-process",
     "interop-be-tenant-readmodel-writer",
     "interop-be-tenants-attributes-checker",
@@ -59,12 +65,6 @@ resource "aws_ecr_repository" "app" {
 
   image_tag_mutability = var.env == "test" || var.env == "prod" ? "IMMUTABLE" : "MUTABLE"
   name                 = each.key
-}
-
-resource "aws_ecr_repository" "vpce_testing" {
-  count = var.env == "dev" ? 1 : 0
-
-  name = "interop-vpce-routing-testing"
 }
 
 resource "aws_ecr_lifecycle_policy" "app" {

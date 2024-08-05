@@ -19,7 +19,7 @@ locals {
 resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "DebeziumPostgresqlPolicy"
+  name = "DebeziumPostgresqlPolicyEs1"
 
   policy = jsonencode({
 
@@ -64,7 +64,7 @@ resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
 resource "aws_iam_policy" "be_refactor_catalog_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeCatalogProcessRefactorPolicy"
+  name = "InteropBeCatalogProcessRefactorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -89,7 +89,7 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
 resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeCatalogReadModelWriter"
+  name = "InteropBeCatalogReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -118,7 +118,7 @@ resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_attribute_registry_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeAttributeRegistryReadModelWriter"
+  name = "InteropBeAttributeRegistryReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -146,7 +146,7 @@ resource "aws_iam_policy" "be_refactor_attribute_registry_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_agreement_email_sender" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeAgreementEmailSender"
+  name = "InteropBeAgreementEmailSenderEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -174,7 +174,7 @@ resource "aws_iam_policy" "be_refactor_agreement_email_sender" {
 resource "aws_iam_policy" "be_refactor_agreement_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeAgreementProcessRefactorPolicy"
+  name = "InteropBeAgreementProcessRefactorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -214,7 +214,7 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
 resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeAgreementReadModelWriter"
+  name = "InteropBeAgreementReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -242,7 +242,7 @@ resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_eservice_descriptors_archiver" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeEserviceDescriptorsArchiver"
+  name = "InteropBeEserviceDescriptorsArchiverEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -275,7 +275,7 @@ resource "aws_iam_policy" "be_refactor_eservice_descriptors_archiver" {
 resource "aws_iam_policy" "be_refactor_purpose_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBePurposeProcessRefactorPolicy"
+  name = "InteropBePurposeProcessRefactorPolicyEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -306,7 +306,7 @@ resource "aws_iam_policy" "be_refactor_purpose_process" {
 resource "aws_iam_policy" "be_refactor_purpose_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBePurposeReadModelWriter"
+  name = "InteropBePurposeReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -334,7 +334,7 @@ resource "aws_iam_policy" "be_refactor_purpose_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_client_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeClientReadModelWriter"
+  name = "InteropBeClientReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -362,7 +362,7 @@ resource "aws_iam_policy" "be_refactor_client_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeKeyReadModelWriter"
+  name = "InteropBeKeyReadModelWriterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -390,7 +390,7 @@ resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_authorization_updater" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeAuthorizationUpdater"
+  name = "InteropBeAuthorizationUpdaterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -426,7 +426,7 @@ resource "aws_iam_policy" "be_refactor_authorization_updater" {
 resource "aws_iam_policy" "be_refactor_notifier_seeder" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeNotifierSeeder"
+  name = "InteropBeNotifierSeederEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"

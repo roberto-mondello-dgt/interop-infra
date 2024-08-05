@@ -1,7 +1,7 @@
 resource "aws_secretsmanager_secret" "debezium_credentials" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "persistence-management-debezium-credentials"
+  name = "platform-data-debezium-credentials"
 }
 
 resource "aws_secretsmanager_secret" "postgres_db_username_refactor" {

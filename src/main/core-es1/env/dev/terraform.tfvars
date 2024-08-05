@@ -16,7 +16,7 @@ bastion_host_ami_id        = "ami-094c442a8e9a67935"
 bastion_host_instance_type = "t2.micro"
 bastion_host_key_pair      = "interop-bh-key-dev"
 
-platform_data_database_name          = "event_store"
+platform_data_database_name          = "persistence_management"
 platform_data_engine_version         = "13.9"
 platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
 platform_data_instance_class         = "db.t4g.medium"
@@ -70,7 +70,7 @@ eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
 eks_coredns_version    = "v1.11.1-eksbuild.4"
 eks_kube_proxy_version = "v1.29.0-eksbuild.1"
 
-backend_integration_v2_alb_name = "k8s-interopbe-2e63f79573"
+backend_integration_alb_name = "k8s-interopbe-2e63f79573"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
 

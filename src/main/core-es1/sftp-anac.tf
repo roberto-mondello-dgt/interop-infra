@@ -21,7 +21,7 @@ data "archive_file" "sftp_anac_authorizer" {
 resource "aws_iam_role" "sftp_anac_authorizer" {
   count = local.deploy_anac_sftp ? 1 : 0
 
-  name = "interop-sftp-anac-authorizer-${var.env}"
+  name = "interop-sftp-anac-authorizer-${var.env}-es1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -92,7 +92,7 @@ resource "aws_lambda_permission" "allow_sftp_anac" {
 resource "aws_iam_role" "sftp_anac_logging" {
   count = local.deploy_anac_sftp ? 1 : 0
 
-  name = format("InteropSftpAnacLogging%s", title(var.env))
+  name = format("InteropSftpAnacLogging%sEs1", title(var.env))
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -123,7 +123,7 @@ resource "aws_security_group" "sftp_anac" {
     protocol    = "tcp"
     security_groups = [
       module.eks.cluster_primary_security_group_id,
-      aws_security_group.bastion_host_v2.id,
+      # aws_security_group.bastion_host_v2.id,
       aws_security_group.vpn_clients.id
     ]
   }
@@ -150,7 +150,7 @@ resource "aws_transfer_server" "sftp_anac" {
 resource "aws_iam_role" "sftp_anac_readonly" {
   count = local.deploy_anac_sftp ? 1 : 0
 
-  name = format("InteropSftpAnacS3%s", title(var.env))
+  name = format("InteropSftpAnacS3%sEs1", title(var.env))
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

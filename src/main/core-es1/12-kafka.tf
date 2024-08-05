@@ -26,10 +26,10 @@ resource "aws_security_group" "msk_platform_events" {
     to_port     = 9098
     protocol    = "tcp"
     security_groups = [
-      # module.eks.cluster_primary_security_group_id,
+      module.eks.cluster_primary_security_group_id,
       # aws_security_group.bastion_host_v2.id,
       aws_security_group.vpn_clients.id,
-      # aws_security_group.github_runners_v2.id
+      aws_security_group.github_runners.id
     ]
   }
 
@@ -159,7 +159,7 @@ data "aws_iam_policy_document" "msk_cross_account" {
       resources = [
         aws_msk_cluster.platform_events[0].arn,
         "${local.msk_topic_iam_prefix}/outbound.*.events",
-        "${local.msk_group_iam_prefix}/*signalhub*"
+        "${local.msk_group_iam_prefix}/signalhub-*"
       ]
     }
   }
@@ -185,7 +185,7 @@ data "aws_iam_policy_document" "msk_cross_account" {
       resources = [
         aws_msk_cluster.platform_events[0].arn,
         "${local.msk_topic_iam_prefix}/outbound.*.events",
-        "${local.msk_group_iam_prefix}/*tracing*"
+        "${local.msk_group_iam_prefix}/tracing-*"
       ]
     }
   }

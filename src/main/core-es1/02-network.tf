@@ -89,10 +89,10 @@ data "aws_subnets" "int_lbs" {
   }
 }
 
-# resource "aws_ec2_tag" "int_lbs" {
-#   for_each = toset(data.aws_subnets.int_lbs.ids)
-#
-#   resource_id = each.value
-#   key         = "kubernetes.io/role/internal-elb"
-#   value       = "1"
-# }
+resource "aws_ec2_tag" "int_lbs" {
+  for_each = toset(data.aws_subnets.int_lbs.ids)
+
+  resource_id = each.value
+  key         = "kubernetes.io/role/internal-elb"
+  value       = "1"
+}

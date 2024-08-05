@@ -4,7 +4,7 @@ module "be_refactor_debezium_postgresql_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-debezium-postgresql-%s", var.env)
+  role_name = format("interop-debezium-postgresql-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -28,7 +28,7 @@ module "be_refactor_catalog_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-catalog-process-%s", var.env)
+  role_name = format("interop-be-catalog-process-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -50,7 +50,7 @@ module "be_refactor_catalog_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-catalog-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-catalog-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -72,7 +72,7 @@ module "be_refactor_attribute_registry_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-attribute-registry-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-attribute-registry-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -94,7 +94,7 @@ module "be_refactor_agreement_email_sender_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-agreement-email-sender-%s", var.env)
+  role_name = format("interop-be-agreement-email-sender-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -116,7 +116,7 @@ module "be_refactor_agreement_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-agreement-process-%s", var.env)
+  role_name = format("interop-be-agreement-process-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -138,7 +138,7 @@ module "be_refactor_agreement_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-agreement-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-agreement-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -160,7 +160,7 @@ module "be_refactor_purpose_process_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-purpose-process-%s", var.env)
+  role_name = format("interop-be-purpose-process-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -182,7 +182,7 @@ module "be_refactor_purpose_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-purpose-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-purpose-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -204,7 +204,7 @@ module "be_refactor_client_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-client-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-client-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -226,7 +226,7 @@ module "be_refactor_key_readmodel_writer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-key-readmodel-writer-%s", var.env)
+  role_name = format("interop-be-key-readmodel-writer-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -248,7 +248,7 @@ module "be_refactor_authorization_updater_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-authorization-updater-%s", var.env)
+  role_name = format("interop-be-authorization-updater-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 
@@ -270,7 +270,7 @@ module "be_refactor_notifier_seeder_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-notifier-seeder-%s", var.env)
+  role_name = format("interop-be-notifier-seeder-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 

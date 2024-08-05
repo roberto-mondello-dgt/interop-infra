@@ -318,8 +318,7 @@ variable "eks_kube_proxy_version" {
   description = "EKS kube-proxy addon version"
 }
 
-# TODO: rename after migration
-variable "backend_integration_v2_alb_name" {
+variable "backend_integration_alb_name" {
   description = ""
   type        = string
 }

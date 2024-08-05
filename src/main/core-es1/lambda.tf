@@ -20,7 +20,8 @@ data "aws_iam_policy_document" "assume_role" {
 resource "aws_iam_role" "lambda_role" {
   assume_role_policy  = data.aws_iam_policy_document.assume_role.json
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
-  name                = "interop-logs-lambda-${var.env}"
+  name                = "interop-logs-lambda-${var.env}-es1"
+
   inline_policy {
     name = "InteropLogsLambdaExportPolicy"
     policy = jsonencode({

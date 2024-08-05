@@ -76,14 +76,14 @@ module "platform_data" {
   security_group_name            = format("rds/%s-platform-data-%s", var.short_name, var.env)
 
   security_group_rules = {
-    # from_eks_cluster = {
-    #   type                     = "ingress"
-    #   from_port                = 5432
-    #   to_port                  = 5432
-    #   protocol                 = "tcp"
-    #   source_security_group_id = module.eks.cluster_primary_security_group_id
-    # }
-    #
+    from_eks_cluster = {
+      type                     = "ingress"
+      from_port                = 5432
+      to_port                  = 5432
+      protocol                 = "tcp"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    }
+
     # from_bastion_host = {
     #   type                     = "ingress"
     #   from_port                = 5432
@@ -91,22 +91,22 @@ module "platform_data" {
     #   protocol                 = "tcp"
     #   source_security_group_id = aws_security_group.bastion_host.id
     # }
-    #
-    # from_github_runners = {
-    #   type                     = "ingress"
-    #   from_port                = 5432
-    #   to_port                  = 5432
-    #   protocol                 = "tcp"
-    #   source_security_group_id = aws_security_group.github_runners.id
-    # }
-    #
-    # from_vpn_clients = {
-    #   type                     = "ingress"
-    #   from_port                = 5432
-    #   to_port                  = 5432
-    #   protocol                 = "tcp"
-    #   source_security_group_id = aws_security_group.vpn_clients.id
-    # }
+
+    from_github_runners = {
+      type                     = "ingress"
+      from_port                = 5432
+      to_port                  = 5432
+      protocol                 = "tcp"
+      source_security_group_id = aws_security_group.github_runners.id
+    }
+
+    from_vpn_clients = {
+      type                     = "ingress"
+      from_port                = 5432
+      to_port                  = 5432
+      protocol                 = "tcp"
+      source_security_group_id = aws_security_group.vpn_clients.id
+    }
   }
 
   storage_encrypted         = true

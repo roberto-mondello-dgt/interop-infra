@@ -1,5 +1,6 @@
 resource "aws_iam_role" "app_logs_crawler" {
-  name = "interop-application-logs-crawler-${var.env}"
+  name = "interop-application-logs-crawler-${var.env}-es1"
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

@@ -5,7 +5,7 @@ resource "aws_athena_named_query" "alb_logs_5xx" {
 
   query = <<-EOT
     SELECT * FROM alb_logs
-    WHERE elb = '${data.aws_lb.backend_alb_v2.arn_suffix}'
+    WHERE elb = '${data.aws_lb.backend_alb.arn_suffix}'
     AND elb_status_code >= 500
     AND day = '' -- 'yyyy/mm/dd'
   EOT

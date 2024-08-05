@@ -65,6 +65,16 @@
       ]
     },
     {
+      "principal_arn": "arn:aws:iam::505630707203:role/interop-github-runner-task-dev-es1",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    },
+    {
       "principal_arn": "arn:aws:iam::505630707203:role/interop-github-qa-runner-task-dev-es1",
       "kubernetes_groups": [],
       "access_policies": [
