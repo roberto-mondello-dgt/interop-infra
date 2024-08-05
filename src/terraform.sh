@@ -39,6 +39,7 @@ function target_action() {
   local target_files="$@"
   local tf_targets=()
 
+
   if [[ -z $target_files ]]; then
     echo "Missing target files argument"
     exit 1
@@ -53,7 +54,9 @@ function target_action() {
 
   local temp_file=$(mktemp)
   for file in $target_files; do
+    set +e
     grep -E '^resource|^module|^data' $file >> $temp_file
+    set -e
   done
 
   local resource_type
