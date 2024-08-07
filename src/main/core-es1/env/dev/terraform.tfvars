@@ -74,7 +74,7 @@ backend_integration_alb_name = "k8s-interopbe-2e63f79573"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
 
-# deployments which can be monitored using response HTTP status codes through APIGW
+# (dev NS) deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [
   "interop-be-agreement-management",
   "interop-be-agreement-process",
@@ -93,18 +93,22 @@ k8s_monitoring_deployments_names = [
   "interop-be-purpose-process",
   "interop-be-tenant-management",
   "interop-be-tenant-process",
-  "interop-frontend",
+  "interop-frontend"
 ]
 
-# (dev-refactor NS deployments which require monitoring from application logs instead of HTTP requests
+# (dev NS) deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
+  "interop-be-agreement-outbound-writer",
   "interop-be-certified-mail-sender",
+  "interop-be-catalog-outbound-writer",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
+  "interop-be-purpose-outbound-writer",
   "interop-be-selfcare-onboarding-consumer",
   "redis"
 ]
 
+# (dev NS)
 k8s_monitoring_cronjobs_names = [
   "interop-be-anac-certified-attributes-importer",
   "interop-be-attributes-loader",

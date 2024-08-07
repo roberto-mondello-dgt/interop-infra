@@ -85,6 +85,50 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
   })
 }
 
+resource "aws_iam_policy" "be_refactor_catalog_outbound_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeCatalogOutboundWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
+          "${local.msk_group_iam_prefix}/*catalog-outbound-writer"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/outbound.*_catalog.events",
+          "${local.msk_group_iam_prefix}/*catalog-outbound-writer"
+        ]
+      }
+    ]
+  })
+}
+
 # TODO: refactor Kafka policies to be reusable
 resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
@@ -211,6 +255,50 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
   })
 }
 
+resource "aws_iam_policy" "be_refactor_agreement_outbound_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAgreementOutboundWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_group_iam_prefix}/*agreement-outbound-writer"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/outbound.*_agreement.events",
+          "${local.msk_group_iam_prefix}/*agreement-outbound-writer"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -298,6 +386,50 @@ resource "aws_iam_policy" "be_refactor_purpose_process" {
           module.persistence_events_queue.queue_arn,
           try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
         ])
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_purpose_outbound_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBePurposeOutboundWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_group_iam_prefix}/*purpose-outbound-writer"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/outbound.*_purpose.events",
+          "${local.msk_group_iam_prefix}/*purpose-outbound-writer"
+        ]
       }
     ]
   })

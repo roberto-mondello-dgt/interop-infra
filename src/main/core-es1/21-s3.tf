@@ -21,27 +21,27 @@ module "jwt_well_known_bucket" {
     enabled = true
   }
 
-  # attach_policy = true
-  # policy = jsonencode({
-  #   Version = "2012-10-17"
-  #   Statement = [
-  #     {
-  #       Effect = "Allow"
-  #       Principal = {
-  #         Service = "cloudfront.amazonaws.com"
-  #       }
-  #       Action = [
-  #         "s3:GetObject",
-  #       ]
-  #       Resource = "${module.jwt_well_known_bucket.s3_bucket_arn}/*"
-  #       Condition = {
-  #         StringEquals = {
-  #           "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
-  #         }
-  #       }
-  #     }
-  #   ]
-  # })
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.jwt_well_known_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 module "application_documents_bucket" {
@@ -240,27 +240,27 @@ module "public_dashboards_bucket" {
     }
   ]
 
-  # attach_policy = true
-  # policy = jsonencode({
-  #   Version = "2012-10-17"
-  #   Statement = [
-  #     {
-  #       Effect = "Allow"
-  #       Principal = {
-  #         Service = "cloudfront.amazonaws.com"
-  #       }
-  #       Action = [
-  #         "s3:GetObject",
-  #       ]
-  #       Resource = "${module.public_dashboards_bucket.s3_bucket_arn}/*"
-  #       Condition = {
-  #         StringEquals = {
-  #           "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
-  #         }
-  #       }
-  #     }
-  #   ]
-  # })
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.public_dashboards_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 module "probing_eservices_bucket" {
@@ -334,27 +334,27 @@ module "interop_landing_bucket" {
     enabled = true
   }
 
-  # attach_policy = true
-  # policy = jsonencode({
-  #   Version = "2012-10-17"
-  #   Statement = [
-  #     {
-  #       Effect = "Allow"
-  #       Principal = {
-  #         Service = "cloudfront.amazonaws.com"
-  #       }
-  #       Action = [
-  #         "s3:GetObject",
-  #       ]
-  #       Resource = "${module.interop_landing_bucket.s3_bucket_arn}/*"
-  #       Condition = {
-  #         StringEquals = {
-  #           "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
-  #         }
-  #       }
-  #     }
-  #   ]
-  # })
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.interop_landing_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 module "public_catalog_bucket" {
@@ -372,27 +372,27 @@ module "public_catalog_bucket" {
     enabled = true
   }
 
-  # attach_policy = true
-  # policy = jsonencode({
-  #   Version = "2012-10-17"
-  #   Statement = [
-  #     {
-  #       Effect = "Allow"
-  #       Principal = {
-  #         Service = "cloudfront.amazonaws.com"
-  #       }
-  #       Action = [
-  #         "s3:GetObject",
-  #       ]
-  #       Resource = "${module.public_catalog_bucket.s3_bucket_arn}/*"
-  #       Condition = {
-  #         StringEquals = {
-  #           "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
-  #         }
-  #       }
-  #     }
-  #   ]
-  # })
+  attach_policy = true
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = "${module.public_catalog_bucket.s3_bucket_arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.landing.arn
+          }
+        }
+      }
+    ]
+  })
 }
 
 module "privacy_notices_history_bucket" {
@@ -510,7 +510,7 @@ module "alb_logs_bucket" {
       {
         Effect = "Allow"
         Principal = {
-          "AWS" = "arn:aws:iam::635631232127:root" # ELB account id for eu-central-1. See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
+          "AWS" = "arn:aws:iam::635631232127:root" # ELB account id for eu-south-1. See https://docs.aws.amazon.com/elasticloadbalancing/latest/application/enable-access-logging.html
         }
         Action   = "s3:PutObject"
         Resource = "${module.alb_logs_bucket.s3_bucket_arn}/*"
@@ -620,16 +620,16 @@ module "application_import_export_bucket" {
     enabled = true
   }
 
-  # cors_rule = [
-  #   {
-  #     allowed_headers = ["*"]
-  #     allowed_methods = ["GET", "PUT"]
-  #     allowed_origins = compact([
-  #       format("https://%s", module.interop_selfcare_domain.apigw_custom_domain_name),
-  #       try("https://${module.be_refactor_interop_selfcare_domain[0].apigw_custom_domain_name}", "")
-  #     ])
-  #   }
-  # ]
+  cors_rule = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET", "PUT"]
+      allowed_origins = compact([
+        format("https://%s", module.interop_selfcare_domain.apigw_custom_domain_name),
+        #       try("https://${module.be_refactor_interop_selfcare_domain[0].apigw_custom_domain_name}", "")
+      ])
+    }
+  ]
 
   lifecycle_rule = [
     {

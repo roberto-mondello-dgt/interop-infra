@@ -44,6 +44,28 @@ module "be_refactor_catalog_process_irsa" {
   }
 }
 
+module "be_refactor_catalog_outbound_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-catalog-outbound-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-outbound-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_catalog_outbound_writer = aws_iam_policy.be_refactor_catalog_outbound_writer[0].arn
+  }
+}
+
 module "be_refactor_catalog_readmodel_writer_irsa" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -107,6 +129,28 @@ module "be_refactor_agreement_email_sender_irsa" {
 
   role_policy_arns = {
     be_refactor_agreement_email_sender = aws_iam_policy.be_refactor_agreement_email_sender[0].arn
+  }
+}
+
+module "be_refactor_agreement_outbound_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-agreement-outbound-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-outbound-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_agreement_outbound_writer = aws_iam_policy.be_refactor_agreement_outbound_writer[0].arn
   }
 }
 
@@ -175,6 +219,29 @@ module "be_refactor_purpose_process_irsa" {
     be_refactor_purpose_process = aws_iam_policy.be_refactor_purpose_process[0].arn
   }
 }
+
+module "be_refactor_purpose_outbound_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-purpose-outbound-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-outbound-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_purpose_outbound_writer = aws_iam_policy.be_refactor_purpose_outbound_writer[0].arn
+  }
+}
+
 
 module "be_refactor_purpose_readmodel_writer_irsa" {
   count = local.deploy_be_refactor_infra ? 1 : 0
