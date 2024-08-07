@@ -90,6 +90,7 @@ data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
 
 interop_frontend_assets_openapi_path = ""
+interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_bff_openapi_path             = ""
 interop_auth_openapi_path            = "./openapi/prod/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/prod/interop-api-v1.0.yaml"

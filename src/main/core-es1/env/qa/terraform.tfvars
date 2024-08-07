@@ -43,6 +43,7 @@ github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.15.0
 dns_interop_base_domain = "interop.pagopa.it"
 
 interop_frontend_assets_openapi_path = "./openapi/qa/interop-frontend-assets-integrated.yaml"
+interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_bff_openapi_path             = "./openapi/qa/interop-backend-for-frontend-v1.0.yaml"
 interop_auth_openapi_path            = "./openapi/qa/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/qa/interop-api-v1.0.yaml"

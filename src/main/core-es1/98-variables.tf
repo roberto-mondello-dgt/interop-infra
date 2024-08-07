@@ -288,6 +288,11 @@ variable "interop_bff_openapi_path" {
   type        = string
 }
 
+variable "interop_bff_proxy_openapi_path" {
+  description = "Relative path of Interop BFF proxy OpenAPI definition file"
+  type        = string
+}
+
 variable "interop_frontend_assets_openapi_path" {
   description = "Relative path of Interop Frontend Assets OpenAPI definition file"
   type        = string
