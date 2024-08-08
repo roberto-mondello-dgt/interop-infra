@@ -9,6 +9,19 @@ module "reports_ses_identity" {
   ses_reputation_sns_topics_arn = [aws_sns_topic.platform_alarms.arn, aws_sns_topic.ses_reputation.arn]
 }
 
+module "reports_ses_iam_policy" {
+  source = "./modules/ses-iam-policy"
+
+  env                            = var.env
+  ses_iam_policy_name            = format("interop-reports-ses-policy-%s", var.env)
+  ses_identity_arn               = module.reports_ses_identity.ses_identity_arn
+  ses_configuration_set_arn      = module.reports_ses_identity.ses_configuration_set_arn
+  allowed_recipients_regex       = ["*@pagopa.it"]
+  allowed_from_addresses_literal = [format("noreply@%s", module.reports_ses_identity.ses_identity_name)]
+  # allowed_from_display_names     = ["reports"]
+  # allowed_source_vpcs_id         = [module.vpc_v2.vpc_id]
+}
+
 module "notifiche_ses_identity" {
   source = "./modules/ses-identity"
 
