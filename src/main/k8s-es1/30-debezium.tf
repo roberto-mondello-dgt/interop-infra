@@ -111,6 +111,7 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__dev.debezium.postgresql.heartbeat",
            "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('${var.env}_debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
+            "signal.data.collection": "\"${local.debezium_include_schema_prefix}_debezium\".\"signals\"",
            "snapshot.select.statement.overrides": "${join(",", local.debezium_fq_table_names)}",
            %{~for i, fq_name in local.debezium_fq_table_names~}
            "snapshot.select.statement.overrides.${fq_name}": "SELECT * FROM ${local.debezium_escaped_fq_table_names[i]} ORDER BY sequence_num ASC"%{if i < length(local.debezium_fq_table_names) - 1},%{endif}
