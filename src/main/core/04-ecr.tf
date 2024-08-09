@@ -22,6 +22,7 @@ locals {
     "interop-be-catalog-readmodel-writer",
     "interop-be-certified-mail-sender",
     "interop-be-client-readmodel-writer",
+    "interop-be-compute-agreements-consumer",
     "interop-be-dashboard-metrics-report-generator",
     "interop-be-datalake-data-export",
     "interop-be-dtd-catalog-exporter",
