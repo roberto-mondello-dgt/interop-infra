@@ -72,6 +72,8 @@ module "interop_selfcare_1dot0_apigw" {
 
   source = "./modules/rest-apigw-openapi"
 
+  maintenance_mode = false
+
   env                   = var.env
   type                  = "bff"
   api_name              = "selfcare"
@@ -98,6 +100,8 @@ module "interop_selfcare_0dot0_apigw" {
 
   source = "./modules/rest-apigw-openapi"
 
+  maintenance_mode = false
+
   env                   = var.env
   type                  = "bff"
   api_name              = "selfcare"
@@ -123,6 +127,8 @@ module "interop_frontend_assets_apigw" {
   count = local.deploy_new_bff_apigw ? 1 : 0
 
   source = "./modules/apigw-frontend-assets"
+
+  maintenance_mode = false
 
   env                   = var.env
   api_name              = "frontend-assets"
@@ -156,6 +162,8 @@ module "interop_api_domain" {
 module "interop_api_1dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
 
+  maintenance_mode = false
+
   env                   = var.env
   type                  = "generic"
   api_name              = "api"
@@ -181,6 +189,8 @@ module "interop_api_0dot0_apigw" {
   count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
+
+  maintenance_mode = false
 
   env                   = var.env
   type                  = "generic"
