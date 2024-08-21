@@ -4,9 +4,11 @@ import copy
 import yaml
 import json
 
-http_methods = ["get", "head", "options", "trace", "post", "put", "patch", "delete"]
+http_methods = ["get", "head", "options", "trace", "post", "put", "patch", "delete", "x-amazon-apigateway-any-method"]
 
 def generate_apigw_integration(path_uri, path_parameters, api_version, use_service_prefix):
+    normalized_uri = path_uri.replace("proxy+", "proxy")
+
     base_integration_uri = "http://${stageVariables.CustomDomainName}"
 
     if use_service_prefix:
@@ -21,7 +23,7 @@ def generate_apigw_integration(path_uri, path_parameters, api_version, use_servi
         "passthroughBehavior": "when_no_match",
         "connectionId": "${stageVariables.VpcLinkId}",
         "connectionType": "VPC_LINK",
-        "uri": f"{base_integration_uri}{path_uri}"
+        "uri": f"{base_integration_uri}{normalized_uri}"
     }
 
     if len(path_parameters) > 0:

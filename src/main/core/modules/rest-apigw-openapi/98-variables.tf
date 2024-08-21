@@ -65,7 +65,7 @@ variable "maintenance_mode" {
 variable "maintenance_openapi_path" {
   description = "Path to the OpenAPI maintenance file, relative to TF root module (e.g. './openapi/foo/bar.yaml')"
   type        = string
-  default     = null
+  default     = "./openapi/maintenance/api-maintenance.yaml"
 }
 
 variable "create_cloudwatch_alarm" {
