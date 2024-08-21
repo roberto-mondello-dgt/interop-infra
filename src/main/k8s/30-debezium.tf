@@ -71,7 +71,7 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
 
 locals {
   debezium_include_schema_prefix = var.env
-  debezium_app_schemas           = ["agreement", "attribute_registry", "catalog", "purpose"]
+  debezium_app_schemas           = ["agreement", "authorization", "attribute_registry", "catalog", "purpose", "tenant"]
 
   debezium_fq_table_names         = [for schema in local.debezium_app_schemas : format("%s_%s.events", local.debezium_include_schema_prefix, schema)]
   debezium_escaped_fq_table_names = [for fq_name in local.debezium_fq_table_names : format("\\\"%s\\\".\\\"%s\\\"", split(".", fq_name)[0], split(".", fq_name)[1])]
