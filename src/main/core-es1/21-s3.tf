@@ -626,7 +626,7 @@ module "application_import_export_bucket" {
       allowed_methods = ["GET", "PUT"]
       allowed_origins = compact([
         format("https://%s", module.interop_selfcare_domain.apigw_custom_domain_name),
-        #       try("https://${module.be_refactor_interop_selfcare_domain[0].apigw_custom_domain_name}", "")
+        try("https://${module.be_refactor_interop_selfcare_domain[0].apigw_custom_domain_name}", "")
       ])
     }
   ]
