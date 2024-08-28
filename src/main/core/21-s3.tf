@@ -12,6 +12,8 @@ module "jwt_well_known_bucket" {
 
   bucket = format("%s-jwt-well-known-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -51,6 +53,8 @@ module "application_documents_bucket" {
 
   bucket = format("%s-application-documents-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -75,6 +79,8 @@ module "cfn_templates_bucket" {
 
   bucket = format("%s-cfn-templates-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -91,6 +97,8 @@ module "open_api_bucket" {
 
   bucket = format("%s-open-api-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -106,6 +114,8 @@ module "generated_jwt_details_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-generated-jwt-details-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -145,6 +155,8 @@ module "data_lake_exports_bucket" {
 
   bucket = format("%s-data-lake-exports-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -160,6 +172,8 @@ module "application_logs_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-application-logs-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -200,6 +214,8 @@ module "athena_query_results_bucket" {
 
   bucket = format("%s-athena-query-results-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -224,6 +240,8 @@ module "platform_metrics_bucket" {
 
   bucket = format("%s-platform-metrics-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -240,6 +258,8 @@ module "allow_list_bucket" {
 
   bucket = format("%s-allow-list-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -255,6 +275,8 @@ module "public_dashboards_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-public-dashboards-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -302,6 +324,8 @@ module "probing_eservices_bucket" {
 
   bucket = format("%s-probing-eservices-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -342,6 +366,8 @@ module "metrics_reports_bucket" {
 
   bucket = format("%s-metrics-reports-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -357,6 +383,8 @@ module "interop_landing_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-landing-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -396,6 +424,8 @@ module "public_catalog_bucket" {
 
   bucket = format("%s-public-catalog-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -434,6 +464,8 @@ module "privacy_notices_history_bucket" {
 
   bucket = format("%s-privacy-notices-history-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -462,6 +494,8 @@ module "privacy_notices_content_bucket" {
 
   bucket = format("%s-privacy-notices-content-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -478,6 +512,8 @@ module "public_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-%s-public", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = false
   block_public_policy     = false
@@ -518,6 +554,8 @@ module "alb_logs_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-alb-logs-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -565,6 +603,8 @@ module "anac_sftp_bucket" {
 
   bucket = format("%s-anac-sftp-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -581,6 +621,8 @@ module "ivass_bucket" {
 
   bucket = format("%s-ivass-%s", var.short_name, var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -596,6 +638,8 @@ module "s3_batch_reports_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-s3-batch-reports-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -615,6 +659,8 @@ module "msk_custom_plugins_bucket" {
 
   bucket = format("interop-msk-custom-plugins-%s", var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -632,6 +678,8 @@ module "data_preparation_bucket" {
   version = "~> 3.14.1"
 
   bucket = format("interop-data-preparation-%s", var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -651,13 +699,15 @@ module "frontend_additional_assets_bucket" {
 
   bucket = format("interop-frontend-additional-assets-%s", var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 
   versioning = {
-    enabled = false
+    enabled = true
   }
 }
 
@@ -666,6 +716,8 @@ module "application_import_export_bucket" {
   version = "~> 3.14.1"
 
   bucket = format("interop-application-import-export-%s", var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true

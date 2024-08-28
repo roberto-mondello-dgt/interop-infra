@@ -64,7 +64,7 @@ module "persistence_management_aurora_cluster_v2" {
 
   name                = format("%s-persistence-management-%s", var.short_name, var.env)
   database_name       = var.persistence_management_database_name
-  deletion_protection = true
+  deletion_protection = !local.dismissed_env_region
   apply_immediately   = true
 
   auto_minor_version_upgrade = false
@@ -137,7 +137,7 @@ module "persistence_management_aurora_cluster_v2" {
   storage_encrypted       = true
   kms_key_id              = aws_kms_key.persistence_management.arn
   backup_retention_period = var.env == "prod" ? 30 : 7
-  skip_final_snapshot     = false
+  skip_final_snapshot     = local.dismissed_env_region
 
   create_cloudwatch_log_group            = true
   enabled_cloudwatch_logs_exports        = ["postgresql"]

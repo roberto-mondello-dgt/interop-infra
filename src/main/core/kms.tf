@@ -1,4 +1,6 @@
 resource "aws_kms_key" "interop" {
+  is_enabled = !local.dismissed_env_region
+
   customer_master_key_spec = "RSA_2048"
   key_usage                = "SIGN_VERIFY"
   policy = jsonencode(

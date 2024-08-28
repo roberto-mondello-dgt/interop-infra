@@ -6,6 +6,8 @@ module "be_refactor_application_documents_bucket" {
 
   bucket = format("interop-application-documents-refactor-%s", var.env)
 
+  force_destroy = local.dismissed_env_region
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -23,6 +25,8 @@ module "be_refactor_generated_jwt_details_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-generated-jwt-details-refactor-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true
@@ -51,6 +55,8 @@ module "be_refactor_generated_jwt_details_fallback_bucket" {
   version = "3.15.1"
 
   bucket = format("%s-generated-jwt-details-fallback-refactor-%s", var.short_name, var.env)
+
+  force_destroy = local.dismissed_env_region
 
   block_public_acls       = true
   block_public_policy     = true

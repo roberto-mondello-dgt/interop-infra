@@ -133,9 +133,9 @@ resource "aws_docdb_cluster" "read_model_v2" {
 
   backup_retention_period   = var.env == "prod" ? 30 : 7
   preferred_backup_window   = "02:00-03:00"
-  skip_final_snapshot       = false
+  skip_final_snapshot       = local.dismissed_env_region
   final_snapshot_identifier = format("read-model-%s", random_id.read_model_final_snapshot_id.hex)
-  deletion_protection       = true
+  deletion_protection       = !local.dismissed_env_region
 
   enabled_cloudwatch_logs_exports = ["audit"]
 }
