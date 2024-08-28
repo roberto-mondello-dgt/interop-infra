@@ -16,6 +16,8 @@ module "interop_auth_domain" {
 module "interop_auth_apigw" {
   source = "./modules/rest-apigw-openapi"
 
+  maintenance_mode = false
+
   env                   = var.env
   type                  = "generic"
   api_name              = "auth-server"
@@ -44,10 +46,6 @@ module "interop_selfcare_domain" {
   hosted_zone_id = aws_route53_zone.interop_public.zone_id
 }
 
-locals {
-  deploy_new_bff_apigw = var.env == "dev" || var.env == "qa" ? true : false
-}
-
 module "interop_selfcare_apigw" {
   count = local.deploy_new_bff_apigw ? 0 : 1
 
@@ -71,6 +69,8 @@ module "interop_selfcare_1dot0_apigw" {
 
   source = "./modules/rest-apigw-openapi"
 
+  maintenance_mode = false
+
   env                   = var.env
   type                  = "bff"
   api_name              = "selfcare"
@@ -93,9 +93,11 @@ module "interop_selfcare_1dot0_apigw" {
 }
 
 module "interop_selfcare_0dot0_apigw" {
-  count = local.deploy_new_bff_apigw ? 1 : 0
+  count = local.deploy_new_bff_apigw && var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
+
+  maintenance_mode = false
 
   env                   = var.env
   type                  = "bff"
@@ -123,13 +125,15 @@ module "interop_frontend_assets_apigw" {
 
   source = "./modules/apigw-frontend-assets"
 
+  maintenance_mode = false
+
   env                   = var.env
   api_name              = "frontend-assets"
   openapi_relative_path = var.interop_frontend_assets_openapi_path
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
 
   privacy_notices_bucket_name            = module.privacy_notices_content_bucket.s3_bucket_id
-  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket[0].s3_bucket_id
+  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket.s3_bucket_id
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
@@ -154,6 +158,8 @@ module "interop_api_domain" {
 
 module "interop_api_1dot0_apigw" {
   source = "./modules/rest-apigw-openapi"
+
+  maintenance_mode = false
 
   env                   = var.env
   type                  = "generic"
@@ -180,6 +186,8 @@ module "interop_api_0dot0_apigw" {
   count = var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
+
+  maintenance_mode = false
 
   env                   = var.env
   type                  = "generic"
