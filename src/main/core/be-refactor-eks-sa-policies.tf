@@ -433,7 +433,7 @@ resource "aws_iam_policy" "be_refactor_compute_agreements_consumer" {
           "kafka-cluster:ReadData"
         ]
         Resource = [
-          aws_msk_cluster.platform_events[0].arn,
+          aws_msk_serverless_cluster.interop_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_tenant.events",
           "${local.msk_group_iam_prefix}/*compute-agreements-consumer"
         ]
