@@ -116,7 +116,7 @@ module "be_refactor_interop_frontend_assets_apigw" {
   domain_name           = module.be_refactor_interop_selfcare_domain[0].apigw_custom_domain_name
 
   privacy_notices_bucket_name            = module.privacy_notices_content_bucket.s3_bucket_id
-  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket[0].s3_bucket_id
+  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket.s3_bucket_id
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
   web_acl_arn          = aws_wafv2_web_acl.interop.arn

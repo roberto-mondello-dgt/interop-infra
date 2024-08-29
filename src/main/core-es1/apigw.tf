@@ -5,10 +5,6 @@ resource "aws_cloudwatch_log_group" "apigw_access_logs" {
   skip_destroy      = true
 }
 
-locals {
-  deploy_new_bff_apigw = var.env == "dev" || var.env == "qa" ? true : false
-}
-
 module "interop_auth_domain" {
   source = "./modules/apigw-dns-domain"
 
@@ -19,6 +15,8 @@ module "interop_auth_domain" {
 
 module "interop_auth_apigw" {
   source = "./modules/rest-apigw-openapi"
+
+  maintenance_mode = false
 
   env                   = var.env
   type                  = "generic"
@@ -136,7 +134,7 @@ module "interop_frontend_assets_apigw" {
   domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
 
   privacy_notices_bucket_name            = module.privacy_notices_content_bucket.s3_bucket_id
-  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket[0].s3_bucket_id
+  frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket.s3_bucket_id
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id
   web_acl_arn          = aws_wafv2_web_acl.interop.arn
