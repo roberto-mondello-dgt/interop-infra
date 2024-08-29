@@ -77,20 +77,16 @@ eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
 
 # (dev NS) deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [
-  "interop-be-agreement-management",
   "interop-be-agreement-process",
   "interop-be-api-gateway",
-  "interop-be-attribute-registry-management",
   "interop-be-attribute-registry-process",
   "interop-be-authorization-management",
   "interop-be-authorization-process",
   "interop-be-authorization-server",
   "interop-be-backend-for-frontend",
-  "interop-be-catalog-management",
   "interop-be-catalog-process",
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
-  "interop-be-purpose-management",
   "interop-be-purpose-process",
   "interop-be-tenant-management",
   "interop-be-tenant-process",
@@ -131,7 +127,6 @@ k8s_monitoring_cronjobs_names = [
 
 # (dev-refactor NS) deployments which can be monitored using response HTTP status codes through APIGW
 be_refactor_k8s_monitoring_deployments_names = [
-  "interop-be-agreement-management",
   "interop-be-agreement-process",
   "interop-be-api-gateway",
   "interop-be-attribute-registry-process-refactor",
@@ -142,7 +137,6 @@ be_refactor_k8s_monitoring_deployments_names = [
   "interop-be-catalog-process-refactor",
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
-  "interop-be-purpose-management",
   "interop-be-purpose-process",
   "interop-be-tenant-management",
   "interop-be-tenant-process",
@@ -158,11 +152,13 @@ be_refactor_k8s_monitoring_internal_deployments_names = [
   "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
+  "interop-be-compute-agreements-consumer",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",
   "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
+  "interop-be-tenant-readmodel-writer",
   "redis"
 ]
 
