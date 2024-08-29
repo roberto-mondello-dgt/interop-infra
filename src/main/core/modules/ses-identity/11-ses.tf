@@ -44,7 +44,7 @@ resource "aws_route53_record" "dkim" {
   name    = format("%s._domainkey.%s", aws_sesv2_email_identity.this.dkim_signing_attributes[0].tokens[count.index], aws_sesv2_email_identity.this.email_identity)
   type    = "CNAME"
   ttl     = "600"
-  records = ["${aws_sesv2_email_identity.this.dkim_signing_attributes[0].tokens[count.index]}.dkim.eu-south-1.amazonses.com"]
+  records = ["${aws_sesv2_email_identity.this.dkim_signing_attributes[0].tokens[count.index]}.dkim.amazonses.com"]
 }
 
 resource "aws_sesv2_email_identity_mail_from_attributes" "this" {
