@@ -8,13 +8,13 @@ variable "project_name" {
   type        = string
 }
 
-variable "clients_diff_image_uri" {
-  description = "Image URI for vpn-clients-diff repository"
+variable "clients_diff_image_tag" {
+  description = "Image tag for vpn-clients-diff repository"
   type        = string
 }
 
-variable "clients_updater_image_uri" {
-  description = "Image URI for vpn-clients-updater repository"
+variable "clients_updater_image_tag" {
+  description = "Image tag for vpn-clients-updater repository"
   type        = string
 }
 

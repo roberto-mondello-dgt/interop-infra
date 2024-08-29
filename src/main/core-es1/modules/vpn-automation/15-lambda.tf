@@ -105,8 +105,10 @@ resource "aws_security_group" "this_lambda" {
 }
 
 resource "aws_lambda_function" "vpn_clients_diff_lambda" {
+  depends_on = [aws_efs_mount_target.vpn_automation]
+
   function_name = format("%s-vpn-clients-diff", var.project_name)
-  image_uri     = var.clients_diff_image_uri
+  image_uri     = format("%s:%s", aws_ecr_repository.this[format("%s-vpn-clients-updater", var.project_name)].repository_url, var.clients_updater_image_tag)
   memory_size   = 128
   package_type  = "Image"
   timeout       = 60
@@ -142,8 +144,10 @@ resource "aws_lambda_function" "vpn_clients_diff_lambda" {
 }
 
 resource "aws_lambda_function" "vpn_clients_updater_lambda" {
+  depends_on = [aws_efs_mount_target.vpn_automation]
+
   function_name = format("%s-vpn-clients-updater", var.project_name)
-  image_uri     = var.clients_updater_image_uri
+  image_uri     = format("%s:%s", aws_ecr_repository.this[format("%s-vpn-clients-updater", var.project_name)].repository_url, var.clients_updater_image_tag)
   memory_size   = 128
   package_type  = "Image"
   timeout       = 60

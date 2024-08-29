@@ -31,8 +31,8 @@ module "vpn_automation" {
   ses_mail_subject           = format("Interop VPN %s access", var.env)
   ses_configuration_set_name = module.internal_ses_identity[0].ses_configuration_set_name
 
-  clients_diff_image_uri    = "${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-central-1.amazonaws.com/vpn-clients-diff:latest-es1"
-  clients_updater_image_uri = "${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-central-1.amazonaws.com/vpn-clients-updater:latest-es1"
+  clients_diff_image_tag    = "latest"
+  clients_updater_image_tag = "latest"
 
   efs_pki_directory = format("pki-%s", var.env)
 }
