@@ -1,6 +1,6 @@
-
 locals {
-  easyrsa_pki_dir = format("/mnt/%s-vpn-automation-%s/%s", var.project_name, var.env, var.efs_pki_directory)
+  efs_mount_path            = format("/mnt/%s-vpn-automation-%s", var.project_name, var.env)
+  easyrsa_pki_dir_full_path = format("%s/%s", local.efs_mount_path, var.efs_pki_directory)
 }
 
 data "aws_iam_policy_document" "vpn_clients_assume_role" {
@@ -125,7 +125,7 @@ resource "aws_lambda_function" "vpn_clients_diff_lambda" {
   ]
   environment {
     variables = {
-      EASYRSA_PKI_DIR           = local.easyrsa_pki_dir
+      EASYRSA_PKI_DIR           = local.easyrsa_pki_dir_full_path
       VPN_CLIENTS_BUCKET_NAME   = module.vpn_automation_bucket.s3_bucket_id
       VPN_CLIENTS_BUCKET_REGION = data.aws_region.current.name
       VPN_CLIENTS_KEY_NAME      = "vpn/clients.json"
@@ -139,7 +139,7 @@ resource "aws_lambda_function" "vpn_clients_diff_lambda" {
 
   file_system_config {
     arn              = aws_efs_file_system.vpn_automation.arn
-    local_mount_path = local.easyrsa_pki_dir
+    local_mount_path = local.efs_mount_path
   }
 }
 
@@ -164,7 +164,7 @@ resource "aws_lambda_function" "vpn_clients_updater_lambda" {
   ]
   environment {
     variables = {
-      EASYRSA_PKI_DIR                      = local.easyrsa_pki_dir
+      EASYRSA_PKI_DIR                      = local.easyrsa_pki_dir_full_path
       VPN_ENDPOINT_ID                      = var.vpn_endpoint_id
       VPN_ENDPOINT_REGION                  = data.aws_region.current.name
       VPN_SEND_MAIL_TEMPLATE_BUCKET_NAME   = module.vpn_automation_bucket.s3_bucket_id
@@ -184,7 +184,7 @@ resource "aws_lambda_function" "vpn_clients_updater_lambda" {
 
   file_system_config {
     arn              = aws_efs_file_system.vpn_automation.arn
-    local_mount_path = local.easyrsa_pki_dir
+    local_mount_path = local.efs_mount_path
   }
 }
 
