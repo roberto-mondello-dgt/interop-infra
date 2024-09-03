@@ -20,22 +20,10 @@ locals {
     "interop-anac-sftp-${var.env}",
     "interop-ivass-${var.env}",
     "interop-s3-batch-reports-${var.env}",
-    "interop-data-preparation-${var.env}",
+    # "interop-data-preparation-${var.env}",
     "interop-frontend-additional-assets-${var.env}",
     "interop-application-import-export-${var.env}"
   ]
-}
-
-resource "aws_secretsmanager_secret" "s3_region_migration_generated_jwt_details_replication_token" {
-  count = local.region_migration ? 1 : 0
-
-  name = "s3-region-migration-generated-jwt-details-replication-token"
-}
-
-data "aws_secretsmanager_secret_version" "s3_region_migration_generated_jwt_details_replication_token" {
-  count = local.region_migration ? 1 : 0
-
-  secret_id = aws_secretsmanager_secret.s3_region_migration_generated_jwt_details_replication_token[0].id
 }
 
 resource "aws_s3_bucket_replication_configuration" "s3_region_migration" {
@@ -43,10 +31,6 @@ resource "aws_s3_bucket_replication_configuration" "s3_region_migration" {
 
   bucket = each.value
   role   = aws_iam_role.s3_region_migration[0].arn
-
-  token = (each.value == "interop-generated-jwt-details-${var.env}" ?
-    data.aws_secretsmanager_secret_version.s3_region_migration_generated_jwt_details_replication_token[0].secret_string
-  : null)
 
   rule {
     id = "RegionMigration"

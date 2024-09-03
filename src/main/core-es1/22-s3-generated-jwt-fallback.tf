@@ -1,11 +1,3 @@
-resource "aws_secretsmanager_secret" "generated_jwt_fallback_replication_token" {
-  name = "generated-jwt-fallback-replication-token"
-}
-
-data "aws_secretsmanager_secret_version" "generated_jwt_fallback_replication_token" {
-  secret_id = aws_secretsmanager_secret.generated_jwt_fallback_replication_token.id
-}
-
 module "generated_jwt_details_fallback_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
@@ -137,8 +129,6 @@ resource "aws_iam_role" "generated_jwt_details_fallback_replication" {
 resource "aws_s3_bucket_replication_configuration" "generated_jwt_details_fallback" {
   bucket = module.generated_jwt_details_fallback_bucket.s3_bucket_id
   role   = aws_iam_role.generated_jwt_details_fallback_replication.arn
-
-  token = data.aws_secretsmanager_secret_version.generated_jwt_fallback_replication_token.secret_string
 
   rule {
     id = "ReplicateToMainBucket"
