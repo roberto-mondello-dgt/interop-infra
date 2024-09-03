@@ -117,3 +117,24 @@ module "vpce_gateway" {
     }
   }
 }
+
+module "safe_storage_vpce" {
+  count = var.safe_storage_vpce_service_name != null ? 1 : 0
+
+  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+  version = "5.1.2"
+
+  vpc_id = module.vpc.vpc_id
+  # Create one VPCE per AZ only in prod
+  subnet_ids         = var.env == "prod" ? data.aws_subnets.vpce.ids : [data.aws_subnets.vpce.ids[0]]
+  security_group_ids = [aws_security_group.vpce_common.id]
+
+  endpoints = {
+    safe_storage = {
+      service_name = var.safe_storage_vpce_service_name
+      service_type = "Interface"
+
+      tags = { Name = "safe_storage" }
+    }
+  }
+}

@@ -85,7 +85,7 @@ backend_integration_v2_alb_name = "k8s-interopbe-d20020e3b0"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-test/application"
 
-dtd_share_sftp_hostname = "dtd-share.uat.interop.pagopa.it"
+safe_storage_vpce_service_name = "com.amazonaws.vpce.eu-south-1.vpce-svc-075ebde4859d4c631"
 
 # deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [
