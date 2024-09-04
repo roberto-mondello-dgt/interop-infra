@@ -35,7 +35,7 @@ module "be_refactor_interop_auth_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
@@ -71,7 +71,7 @@ module "be_refactor_interop_selfcare_1dot0_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
@@ -98,7 +98,7 @@ module "be_refactor_interop_selfcare_0dot0_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
@@ -124,7 +124,7 @@ module "be_refactor_interop_frontend_assets_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
@@ -160,7 +160,7 @@ module "be_refactor_interop_api_1dot0_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
@@ -186,7 +186,7 @@ module "be_refactor_interop_api_0dot0_apigw" {
 
   create_cloudwatch_alarm     = true
   create_cloudwatch_dashboard = true
-  sns_topic_arn               = aws_sns_topic.platform_alarms.arn
+  sns_topic_arn               = aws_sns_topic.be_refactor_platform_alarms[0].arn
   alarm_5xx_threshold         = 1
   alarm_5xx_period            = 60
   alarm_5xx_eval_periods      = 1
