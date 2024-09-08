@@ -270,7 +270,7 @@ module "be_refactor_compute_agreements_consumer_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.18.0"
 
-  role_name = format("interop-be-compute-agreements-consumer-%s-es1", var.env)
+  role_name = format("interop-be-compute-agreements-consumer-%s", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 

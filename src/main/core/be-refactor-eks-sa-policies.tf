@@ -418,7 +418,7 @@ resource "aws_iam_policy" "be_refactor_tenant_readmodel_writer" {
 resource "aws_iam_policy" "be_refactor_compute_agreements_consumer" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeComputeAgreementsConsumerEs1"
+  name = "InteropBeComputeAgreementsConsumer"
 
   policy = jsonencode({
     Version = "2012-10-17"
