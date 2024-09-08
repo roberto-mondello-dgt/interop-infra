@@ -20,13 +20,17 @@ resource "aws_dynamodb_table" "notification_events" {
     enabled        = var.notification_events_table_ttl_enabled
   }
 
-  import_table {
-    input_compression_type = "GZIP"
-    input_format           = "DYNAMODB_JSON"
+  dynamic "import_table" {
+    for_each = var.env == "test" ? [true] : []
 
-    s3_bucket_source {
-      bucket     = "interop-dynamodb-exports-dev"
-      key_prefix = "eu-central-1/interop-notification-events/AWSDynamoDB/01722262267831-c80be986/data"
+    content {
+      input_compression_type = "GZIP"
+      input_format           = "DYNAMODB_JSON"
+
+      s3_bucket_source {
+        bucket     = "interop-dynamodb-exports-${var.env}"
+        key_prefix = "eu-central-1/interop-notification-events/AWSDynamoDB/01725525672417-e9b12c93/data"
+      }
     }
   }
 }
@@ -42,13 +46,18 @@ resource "aws_dynamodb_table" "notification_resources" {
     type = "S"
   }
 
-  import_table {
-    input_compression_type = "GZIP"
-    input_format           = "DYNAMODB_JSON"
 
-    s3_bucket_source {
-      bucket     = "interop-dynamodb-exports-dev"
-      key_prefix = "eu-central-1/interop-notification-resources/AWSDynamoDB/01722262293086-6e9cf9d3/data"
+  dynamic "import_table" {
+    for_each = var.env == "test" ? [true] : []
+
+    content {
+      input_compression_type = "GZIP"
+      input_format           = "DYNAMODB_JSON"
+
+      s3_bucket_source {
+        bucket     = "interop-dynamodb-exports-${var.env}"
+        key_prefix = "eu-central-1/interop-notification-resources/AWSDynamoDB/01725525735056-961744fd/data"
+      }
     }
   }
 }

@@ -39,7 +39,6 @@ resource "aws_cloudwatch_query_definition" "waf_blocked_requests" {
   EOT
 }
 
-# TODO: iterate over apigws to create queries
 resource "aws_cloudwatch_query_definition" "apigw_auth_server_5xx" {
   name = "APIGW-Auth-Server-5xx"
 
@@ -90,7 +89,7 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_5xx" {
 
   query_string = <<-EOT
     fields @timestamp, @message
-    | filter (apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}" or apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}")
+    | filter (apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}"%{if var.env == "dev"} or apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}"%{endif})
     | filter status like /5./
     | sort @timestamp desc
   EOT
@@ -120,7 +119,7 @@ resource "aws_cloudwatch_query_definition" "apigw_bff_versioned_waf_block" {
 
   query_string = <<-EOT
     fields @timestamp, @message
-    | filter (apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}" or apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}")
+    | filter (apigwId = "${module.interop_selfcare_1dot0_apigw[0].apigw_id}"%{if var.env == "dev"} or apigwId = "${module.interop_selfcare_0dot0_apigw[0].apigw_id}"%{endif})
     | filter wafStatus != "200"
     | sort @timestamp desc
   EOT

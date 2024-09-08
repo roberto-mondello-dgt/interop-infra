@@ -330,7 +330,7 @@ module "be_tenants_certified_attributes_updater_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
-  role_name = format("%s-interop-be-tenants-cert-attr-updater-es1", local.role_prefix)
+  role_name = format("interop-be-tenants-cert-attr-updater-%s-es1", var.env)
 
   assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
 

@@ -33,7 +33,7 @@ module "platform_data" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "9.3.1"
 
-  snapshot_identifier = "arn:aws:rds:eu-south-1:505630707203:cluster-snapshot:es1-region-migration-20240729"
+  # snapshot_identifier = "arn:aws:rds:eu-south-1:895646477129:cluster-snapshot:es1-region-migration-20240905"
 
   name                = format("%s-platform-data-%s", var.short_name, var.env)
   deletion_protection = true

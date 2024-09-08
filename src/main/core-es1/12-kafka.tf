@@ -27,19 +27,9 @@ resource "aws_security_group" "msk_platform_events" {
     protocol    = "tcp"
     security_groups = [
       module.eks.cluster_primary_security_group_id,
-      # aws_security_group.bastion_host_v2.id,
       aws_security_group.vpn_clients.id,
       aws_security_group.github_runners.id
     ]
-  }
-
-  # TODO: restrict to VPC endpoint?
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
 

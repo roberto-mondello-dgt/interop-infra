@@ -3,9 +3,9 @@
 set -eo pipefail
 
 SRC_REGION="eu-central-1"
-ACCOUNT_ID="505630707203"
-ROLE_ARN="arn:aws:iam::505630707203:role/interop-s3-region-migration-dev"
-BATCH_OPERATIONS_BUCKET="interop-s3-batch-operations-dev"
+ACCOUNT_ID="895646477129"
+ROLE_ARN="arn:aws:iam::895646477129:role/interop-s3-region-migration-test"
+BATCH_OPERATIONS_BUCKET="interop-s3-batch-reports-test"
 
 function main() {
   local buckets_all=()
@@ -14,28 +14,30 @@ function main() {
   local ec1_source_buckets=()
   local dest_bucket
 
-  # buckets_all=($(aws s3api list-buckets --query 'Buckets[].Name' --output text))
-  #
-  # echo "Listing $SRC_REGION buckets"
-  # for bucket in "${buckets_all[@]}"; do
-  #   bucket_region=$(aws s3api head-bucket --bucket "$bucket" --query 'BucketRegion' --output text)
-  #
-  #   if [[ "$bucket_region" = "$SRC_REGION" ]]; then
-  #     ec1_buckets_all+=("$bucket")
-  #   fi
-  # done
-  #
-  # echo "Filtering $SRC_REGION source buckets to migrate"
-  # for bucket in "${ec1_buckets_all[@]}"; do
-  #   dest_bucket="${bucket}-es1"
-  #   aws s3api head-bucket --bucket "$dest_bucket" > /dev/null 2>&1
-  #
-  #   if [[ $? -ne 0 ]]; then; continue; fi
-  #   
-  #   ec1_source_buckets+=("$bucket")
-  # done
+  buckets_all=($(aws s3api list-buckets --query 'Buckets[].Name' --output text))
+
+  echo "Listing $SRC_REGION buckets"
+  for bucket in "${buckets_all[@]}"; do
+    bucket_region=$(aws s3api head-bucket --bucket "$bucket" --query 'BucketRegion' --output text)
+
+    if [[ "$bucket_region" = "$SRC_REGION" ]]; then
+      ec1_buckets_all+=("$bucket")
+    fi
+  done
+
+  echo "Filtering $SRC_REGION source buckets to migrate"
+  set +e
+  for bucket in "${ec1_buckets_all[@]}"; do
+    dest_bucket="${bucket}-es1"
+
+    aws s3api head-bucket --bucket "$dest_bucket" > /dev/null 2>&1
+
+    if [[ $? -ne 0 ]]; then; continue; fi
+    
+    ec1_source_buckets+=("$bucket")
+  done
+  set -e
   
-  ec1_source_buckets=("interop-application-documents-dev")
   echo "Found ${#ec1_source_buckets[@]} $SRC_REGION source buckets to migrate"
 
   local operation
@@ -71,7 +73,8 @@ function main() {
         "SourceBucket": "arn:aws:s3:::\($src_bucket)",
         "EnableManifestOutput": false,
         "Filter": {
-          "EligibleForReplication": true, 
+          "EligibleForReplication": true,
+          "ObjectReplicationStatuses": ["NONE","FAILED"]
         } 
       } 
     }')

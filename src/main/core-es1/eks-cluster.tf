@@ -166,33 +166,18 @@ module "eks" {
         }
       }
     }
-
-    # gh_runner = {
-    #   kubernetes_groups = []
-    #   principal_arn     = aws_iam_role.github_runner_task.arn
-    #
-    #   policy_associations = {
-    #     admin_policy = {
-    #       policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-    #       access_scope = {
-    #         namespaces = []
-    #         type       = "cluster"
-    #       }
-    #     }
-    #   }
-    # }
   }
 }
 
 
 # applied to nodes
-# resource "aws_vpc_security_group_ingress_rule" "from_vpn_clients" {
-#   count = var.env == "dev" ? 1 : 0
-#
-#   security_group_id = module.eks.cluster_primary_security_group_id
-#
-#   from_port                    = 0
-#   to_port                      = 65535
-#   ip_protocol                  = "tcp"
-#   referenced_security_group_id = aws_security_group.vpn_clients.id
-# }
+resource "aws_vpc_security_group_ingress_rule" "from_vpn_clients" {
+  count = var.env == "dev" ? 1 : 0
+
+  security_group_id = module.eks.cluster_primary_security_group_id
+
+  from_port                    = 0
+  to_port                      = 65535
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.vpn_clients.id
+}

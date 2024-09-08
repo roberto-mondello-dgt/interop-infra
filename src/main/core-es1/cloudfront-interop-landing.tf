@@ -11,8 +11,10 @@ data "aws_cloudfront_origin_request_policy" "cors_s3_origin" {
 }
 
 import {
+  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+
   to = aws_cloudfront_origin_access_control.landing_s3
-  id = "E22IC02UAS323B"
+  id = "EGBK0PYT9DI7M" # UAT
 }
 
 resource "aws_cloudfront_origin_access_control" "landing_s3" {
@@ -23,8 +25,10 @@ resource "aws_cloudfront_origin_access_control" "landing_s3" {
 }
 
 import {
+  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+
   to = aws_cloudfront_cache_policy.public_catalog
-  id = "754fa4c8-d358-4688-87b9-3659742b063a"
+  id = "197a8987-be90-40d0-b0e7-adcb6400f2d7" # UAT
 }
 
 resource "aws_cloudfront_cache_policy" "public_catalog" {
@@ -53,8 +57,10 @@ resource "aws_cloudfront_cache_policy" "public_catalog" {
 }
 
 import {
+  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+
   to = aws_cloudfront_distribution.landing
-  id = "E3T0MRKRSRG5YZ"
+  id = "E3Q1NPBSS1BXRJ"
 }
 
 resource "aws_cloudfront_distribution" "landing" {

@@ -86,6 +86,9 @@ resource "kubernetes_config_map_v1" "dev_refactor_debezium_postgresql" {
            "table.include.list": "${local.dev_ref_debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
            "topic.heartbeat.prefix": "__dev-refactor.debezium.postgresql.heartbeat",
+           "signal.enabled.channels": "source",
+           "signal.kafka.topic": "__${local.dev_ref_debezium_include_schema_prefix}.debezium.postgresql.signals",
+           "signal.data.collection": "\"${local.dev_ref_debezium_include_schema_prefix}_debezium\".\"signals\"",
            "heartbeat.action.query": "INSERT INTO \"${local.dev_ref_debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
            "snapshot.select.statement.overrides": "${join(",", local.dev_ref_debezium_fq_table_names)}",
            %{~for i, fq_name in local.dev_ref_debezium_fq_table_names~}

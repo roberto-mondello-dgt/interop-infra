@@ -12,37 +12,31 @@ tags = {
 
 sso_admin_role_name = "AWSReservedSSO_FullAdmin_48811da36f58fc1e"
 
-bastion_host_ami_id              = "ami-05f5f4f906feab6a7"
-bastion_host_instance_type       = "t2.micro"
-bastion_host_private_ip          = "172.32.0.102"
-bastion_host_security_group_name = "interop-bastion-host-test-BastionSecurityGroup-1KAJGE4ZLTG1X"
-bastion_host_ssh_cidr            = "0.0.0.0/0"
-bastion_host_key_pair            = "interop-bh-key"
+bastion_host_ami_id        = "ami-05f5f4f906feab6a7"
+bastion_host_instance_type = "t2.micro"
+bastion_host_key_pair      = "interop-bh-key"
 
-eks_cluster_name = "interop-eks-test"
+platform_data_database_name          = "persistence_management"
+platform_data_engine_version         = "13.9"
+platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
+platform_data_instance_class         = "db.t4g.medium"
+platform_data_number_instances       = 3
+platform_data_parameter_group_family = "aurora-postgresql13"
+platform_data_master_username        = "root"
 
-persistence_management_cluster_id             = "interop-rds-test-auroradbcluster-u2a45bkp2iqr"
-persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.9"
-persistence_management_ca_cert_id             = "rds-ca-rsa2048-g1"
-persistence_management_instance_class         = "db.t4g.large"
-persistence_management_number_instances       = 3
-persistence_management_subnet_group_name      = "interop-rds-test-dbsubnetgroup-ex5iby3uhnbt"
-persistence_management_parameter_group_name   = "interop-rds-test-rdsdbclusterparametergroup-y0wcfjbgv5fy"
-persistence_management_parameter_group_family = "aurora-postgresql13"
-persistence_management_master_username        = "root"
-persistence_management_primary_instance_id    = "iamjt69lstx8vp"
-persistence_management_replica1_instance_id   = "ia2kfif199v3bk"
-persistence_management_replica2_instance_id   = "ia5op8xj5o25hp"
+read_model_cluster_id       = "read-model"
+read_model_master_username  = "root"
+read_model_engine_version   = "4.0.0"
+read_model_instance_class   = "db.r6g.large"
+read_model_ca_cert_id       = "rds-ca-rsa2048-g1"
+read_model_number_instances = 3
 
-read_model_cluster_id           = "read-model"
-read_model_master_username      = "root"
-read_model_engine_version       = "4.0.0"
-read_model_instance_class       = "db.t4g.medium"
-read_model_ca_cert_id           = "rds-ca-rsa2048-g1"
-read_model_number_instances     = 3
-read_model_subnet_group_name    = "docdbsubnetgroup-obcnimrvqtxx"
-read_model_parameter_group_name = "read-model-parameter-group"
+msk_version                = "3.6.0"
+msk_number_azs             = 3
+msk_number_brokers         = 3
+msk_brokers_instance_class = "kafka.m5.large"
+msk_brokers_storage_gib    = 100
+msk_signalhub_account_id   = "891377202032"
 
 notification_events_table_ttl_enabled = true
 
@@ -68,7 +62,7 @@ probing_domain_ns_records = [
 
 interop_frontend_assets_openapi_path = "./openapi/test/interop-frontend-assets-integrated.yaml"
 interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
-interop_bff_openapi_path             = "./openapi/test/interop-backend-for-frontend-v1.0.yaml"
+interop_bff_openapi_path             = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_auth_openapi_path            = "./openapi/test/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/test/interop-api-v1.0.yaml"
 
@@ -76,15 +70,16 @@ interop_landing_domain_name = "uat.interop.pagopa.it"
 
 lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:895646477129:log-group:/aws/eks/interop-eks-test/application:*"
 
-eks_k8s_version        = "1.26"
-eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
-eks_coredns_version    = "v1.9.3-eksbuild.3"
-eks_kube_proxy_version = "v1.26.2-eksbuild.1"
+eks_k8s_version        = "1.29"
+eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
+eks_coredns_version    = "v1.11.1-eksbuild.4"
+eks_kube_proxy_version = "v1.29.0-eksbuild.1"
 
 backend_integration_v2_alb_name = "k8s-interopbe-d20020e3b0"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-test/application"
 
+safe_storage_account_id        = "891377202032"
 safe_storage_vpce_service_name = "com.amazonaws.vpce.eu-south-1.vpce-svc-075ebde4859d4c631"
 
 # deployments which can be monitored using response HTTP status codes through APIGW

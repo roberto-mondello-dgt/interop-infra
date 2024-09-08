@@ -9,18 +9,22 @@ locals {
 }
 
 import {
+  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+
   to = aws_route53_zone.interop_public
-  id = "Z04170962VFG8V4TNAMPJ"
+  id = "Z047452525YHHCDUAYVCQ"
 }
 
 resource "aws_route53_zone" "interop_public" {
   name = local.interop_env_dns_domain
 }
 
-# import {
-#   to = aws_route53_record.myrecord
-#   id = "_dev.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.interop_dev_delegation[0]
+  id = "_dev.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "interop_dev_delegation" {
   count = local.delegate_interop_dev_subdomain ? 1 : 0
@@ -33,10 +37,12 @@ resource "aws_route53_record" "interop_dev_delegation" {
 }
 
 
-# import {
-#   to = aws_route53_record.myrecord
-#   id = "_uat.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.interop_uat_delegation[0]
+  id = "_uat.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "interop_uat_delegation" {
   count = local.delegate_interop_uat_subdomain ? 1 : 0
@@ -48,10 +54,12 @@ resource "aws_route53_record" "interop_uat_delegation" {
   ttl     = "300"
 }
 
-# import {
-#     to = aws_route53_record.myrecord
-#     id = "_qa.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.interop_qa_delegation[0]
+  id = "_qa.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "interop_qa_delegation" {
   count = local.delegate_interop_qa_subdomain ? 1 : 0
@@ -63,10 +71,12 @@ resource "aws_route53_record" "interop_qa_delegation" {
   ttl     = "300"
 }
 
-# import {
-#     to = aws_route53_record.myrecord
-#     id = "_att.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.interop_att_delegation[0]
+  id = "_att.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "interop_att_delegation" {
   count = local.delegate_interop_att_subdomain ? 1 : 0
@@ -80,7 +90,7 @@ resource "aws_route53_record" "interop_att_delegation" {
 
 import {
   to = aws_route53_record.probing_delegation[0]
-  id = "Z04170962VFG8V4TNAMPJ_stato-eservice.dev.interop.pagopa.it_NS"
+  id = "Z047452525YHHCDUAYVCQ_stato-eservice.uat.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "probing_delegation" {
@@ -93,10 +103,12 @@ resource "aws_route53_record" "probing_delegation" {
   ttl     = "300"
 }
 
-# import {
-#     to = aws_route53_record.myrecord
-#     id = "_signalhub.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.signalhub_delegation[0]
+  id = "_signalhub.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "signalhub_delegation" {
   count = var.env == "prod" && length(var.signalhub_domain_ns_records) > 0 ? 1 : 0
@@ -108,10 +120,12 @@ resource "aws_route53_record" "signalhub_delegation" {
   ttl     = "300"
 }
 
-# import {
-#     to = aws_route53_record.myrecord
-#     id = "_tracing.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.tracing_delegation[0]
+  id = "_tracing.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "tracing_delegation" {
   count = var.env == "prod" && length(var.tracing_domain_ns_records) > 0 ? 1 : 0
@@ -123,10 +137,12 @@ resource "aws_route53_record" "tracing_delegation" {
   ttl     = "300"
 }
 
-# import {
-#     to = aws_route53_record.interop_att_sandbox_delegation
-#     id = "_eservices.att.interop.pagopa.it_NS"
-# }
+import {
+  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+
+  to = aws_route53_record.interop_att_sandbox_delegation[0]
+  id = "_eservices.att.interop.pagopa.it_NS"
+}
 
 resource "aws_route53_record" "interop_att_sandbox_delegation" {
   count = var.env == "att" && length(var.dns_interop_att_sandbox_ns_records) > 0 ? 1 : 0

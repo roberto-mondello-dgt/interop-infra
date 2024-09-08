@@ -33,9 +33,9 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
   data = {
     BOOTSTRAP_SERVERS    = data.aws_msk_bootstrap_brokers.platform_events[0].bootstrap_brokers_sasl_iam
     GROUP_ID             = "debezium.postgresql"
-    CONFIG_STORAGE_TOPIC = "__dev_debezium.postgresql.config"
-    STATUS_STORAGE_TOPIC = "__dev_debezium.postgresql.status"
-    OFFSET_STORAGE_TOPIC = "__dev_debezium.postgresql.offset"
+    CONFIG_STORAGE_TOPIC = "__${local.debezium_include_schema_prefix}_debezium.postgresql.config"
+    STATUS_STORAGE_TOPIC = "__${local.debezium_include_schema_prefix}_debezium.postgresql.status"
+    OFFSET_STORAGE_TOPIC = "__${local.debezium_include_schema_prefix}_debezium.postgresql.offset"
 
     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR = "3"
     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR = "3"
@@ -68,7 +68,7 @@ resource "kubernetes_config_map_v1" "kafka_connect_distributed" {
 }
 
 locals {
-  debezium_include_schema_prefix = var.env
+  debezium_include_schema_prefix = kubernetes_namespace_v1.env.metadata[0].name
   debezium_app_schemas           = ["agreement", "attribute_registry", "authorization", "catalog", "purpose", "tenant"]
 
   debezium_fq_table_names         = [for schema in local.debezium_app_schemas : format("%s_%s.events", local.debezium_include_schema_prefix, schema)]
@@ -109,9 +109,9 @@ resource "kubernetes_config_map_v1" "debezium_postgresql" {
            "message.key.columns": "${local.debezium_include_schema_prefix}_(.*).events:stream_id",
            "table.include.list": "${local.debezium_include_schema_prefix}_.*\\.events",
            "heartbeat.interval.ms": 30000,
-           "topic.heartbeat.prefix": "__dev.debezium.postgresql.heartbeat",
+           "topic.heartbeat.prefix": "__${local.debezium_include_schema_prefix}.debezium.postgresql.heartbeat",
            "heartbeat.action.query": "INSERT INTO \"${local.debezium_include_schema_prefix}_debezium\".\"heartbeat\" VALUES ('${var.env}_debezium_postgresql', now()) ON CONFLICT (slot_name) DO UPDATE SET latest_heartbeat = now();",
-           "signal.enabled.channels": "source,kafka",
+           "signal.enabled.channels": "source",
            "signal.kafka.topic": "__${local.debezium_include_schema_prefix}.debezium.postgresql.signals",
            "signal.data.collection": "\"${local.debezium_include_schema_prefix}_debezium\".\"signals\"",
            "snapshot.select.statement.overrides": "${join(",", local.debezium_fq_table_names)}",

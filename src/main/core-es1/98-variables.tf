@@ -334,11 +334,18 @@ variable "eks_application_log_group_name" {
   default     = null
 }
 
+variable "safe_storage_account_id" {
+  description = "SafeStorage account ID"
+  type        = string
+  default     = null
+}
+
 variable "safe_storage_vpce_service_name" {
   description = "VPC endpoint service name for SafeStorage API"
   type        = string
   default     = null
 }
+
 
 variable "vpn_saml_metadata_path" {
   description = "Path to the SAML metadata XML file. Used when federated authentication for VPN is enabled"

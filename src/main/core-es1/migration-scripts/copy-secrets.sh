@@ -48,7 +48,7 @@ function main() {
 
     echo "Copying $secret to eu-south-1"
     secret_value=$(aws secretsmanager get-secret-value --secret-id "$secret" --region 'eu-central-1' --query 'SecretString' --output text)
-    # aws secretsmanager put-secret-value --secret-id "$secret" --region 'eu-south-1' --secret-string "$secret_value" > /dev/null
+    aws secretsmanager put-secret-value --secret-id "$secret" --region 'eu-south-1' --secret-string "$secret_value" > /dev/null
   done
 }
 

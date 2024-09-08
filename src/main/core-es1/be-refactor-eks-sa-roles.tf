@@ -129,6 +129,7 @@ module "be_refactor_agreement_email_sender_irsa" {
 
   role_policy_arns = {
     be_refactor_agreement_email_sender = aws_iam_policy.be_refactor_agreement_email_sender[0].arn
+    notifiche_ses_iam_policy           = module.notifiche_ses_iam_policy.iam_policy_arn
   }
 }
 

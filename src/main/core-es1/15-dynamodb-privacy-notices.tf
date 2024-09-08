@@ -2,13 +2,19 @@ resource "aws_dynamodb_table" "privacy_notices" {
   name         = format("interop-privacy-notices-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"
 
-  import_table {
-    input_compression_type = "GZIP"
-    input_format           = "DYNAMODB_JSON"
 
-    s3_bucket_source {
-      bucket     = "interop-dynamodb-exports-dev"
-      key_prefix = "eu-central-1/interop-privacy-notices-dev/AWSDynamoDB/01722262445541-7f074a67/data"
+  dynamic "import_table" {
+    for_each = var.env == "test" ? [true] : []
+
+    content {
+
+      input_compression_type = "GZIP"
+      input_format           = "DYNAMODB_JSON"
+
+      s3_bucket_source {
+        bucket     = "interop-dynamodb-exports-${var.env}"
+        key_prefix = "eu-central-1/interop-privacy-notices-${var.env}/AWSDynamoDB/01725525917499-755e048e/data"
+      }
     }
   }
 
@@ -24,13 +30,17 @@ resource "aws_dynamodb_table" "privacy_notices_acceptances" {
   name         = format("interop-privacy-notices-acceptances-%s", var.env)
   billing_mode = "PAY_PER_REQUEST"
 
-  import_table {
-    input_compression_type = "GZIP"
-    input_format           = "DYNAMODB_JSON"
+  dynamic "import_table" {
+    for_each = var.env == "test" ? [true] : []
 
-    s3_bucket_source {
-      bucket     = "interop-dynamodb-exports-dev"
-      key_prefix = "eu-central-1/interop-privacy-notices-acceptances-dev/AWSDynamoDB/01722262424385-def70228/data"
+    content {
+      input_compression_type = "GZIP"
+      input_format           = "DYNAMODB_JSON"
+
+      s3_bucket_source {
+        bucket     = "interop-dynamodb-exports-${var.env}"
+        key_prefix = "eu-central-1/interop-privacy-notices-acceptances-${var.env}/AWSDynamoDB/01725525823916-d8be6291/data"
+      }
     }
   }
 
