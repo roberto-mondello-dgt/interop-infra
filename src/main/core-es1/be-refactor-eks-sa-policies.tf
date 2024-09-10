@@ -653,3 +653,57 @@ resource "aws_iam_policy" "be_refactor_notifier_seeder" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_refactor_producer_key_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeProducerKeyReadModelWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
+          "${local.msk_group_iam_prefix}/*producer-key-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_producer_keychain_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeProducerKeychainReadModelWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
+          "${local.msk_group_iam_prefix}/*producer-keychain-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}

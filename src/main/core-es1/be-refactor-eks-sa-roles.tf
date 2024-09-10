@@ -397,3 +397,47 @@ module "be_refactor_notifier_seeder_irsa" {
     be_refactor_notifier_seeder = aws_iam_policy.be_refactor_notifier_seeder[0].arn
   }
 }
+
+module "be_refactor_producer_key_readmodel_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-producer-key-readmodel-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-producer-key-readmodel-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_producer_key_readmodel_writer = aws_iam_policy.be_refactor_producer_key_readmodel_writer[0].arn
+  }
+}
+
+module "be_refactor_producer_keychain_readmodel_writer_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-producer-keychain-readmodel-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-producer-keychain-readmodel-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_producer_keychain_readmodel_writer = aws_iam_policy.be_refactor_producer_keychain_readmodel_writer[0].arn
+  }
+}
