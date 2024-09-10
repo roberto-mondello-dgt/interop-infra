@@ -1,5 +1,5 @@
 locals {
-  waf_bff_prefix_regex = (var.env == "dev" || var.env == "qa"
+  waf_bff_prefix_regex = (local.deploy_new_bff_apigw
     ? "^/\\d\\.\\d/backend-for-frontend"
     : "^/backend-for-frontend/.*"
   )
