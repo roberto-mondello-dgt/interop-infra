@@ -17,7 +17,7 @@ moved {
 resource "aws_sns_topic_policy" "on_call_cw_alarms" {
   count = local.on_call_env ? 1 : 0
 
-  arn = aws_sns_topic.on_call_opsgenie.arn
+  arn = aws_sns_topic.on_call_opsgenie[0].arn
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -28,7 +28,7 @@ resource "aws_sns_topic_policy" "on_call_cw_alarms" {
           Service = "cloudwatch.amazonaws.com"
         }
         Action   = "sns:Publish"
-        Resource = aws_sns_topic.on_call_opsgenie.arn
+        Resource = aws_sns_topic.on_call_opsgenie[0].arn
         Condition = {
           ArnLike = {
             "aws:SourceArn" = "arn:aws:cloudwatch:${var.aws_region}:${data.aws_caller_identity.current.account_id}:alarm:*"

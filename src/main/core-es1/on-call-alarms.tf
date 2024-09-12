@@ -8,7 +8,7 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_5xx" {
 
   alarm_name = format("on-call-apigw-token-5xx-%s", var.env)
 
-  alarm_actions = [aws_sns_topic.on_call_opsgenie.arn]
+  alarm_actions = [aws_sns_topic.on_call_opsgenie[0].arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = 60 # 60%
@@ -65,10 +65,10 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_5xx" {
 }
 
 locals {
-  on_call_deployments = {
+  on_call_deployments = local.on_call_env ? {
     auth_server     = "interop-be-authorization-server"
     auth_management = "interop-be-authorization-management"
-  }
+  } : {}
 }
 
 moved {
@@ -77,14 +77,12 @@ moved {
 }
 
 resource "aws_cloudwatch_metric_alarm" "on_call_unavailable_pods" {
-  count = local.on_call_env ? 1 : 0
-
   for_each = local.on_call_deployments
 
   alarm_name        = format("on-call-k8s-%s-unavailable-pods-%s", replace(each.key, "_", "-"), var.env)
   alarm_description = format("No available pods for %s K8s deployment", each.value)
 
-  alarm_actions = [aws_sns_topic.on_call_opsgenie.arn]
+  alarm_actions = [aws_sns_topic.on_call_opsgenie[0].arn]
 
   comparison_operator = "LessThanThreshold"
   statistic           = "Minimum"
