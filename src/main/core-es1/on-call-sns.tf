@@ -1,8 +1,22 @@
+moved {
+  from = aws_sns_topic.on_call_opsgenie
+  to   = aws_sns_topic.on_call_opsgenie[0]
+}
+
 resource "aws_sns_topic" "on_call_opsgenie" {
+  count = local.on_call_env ? 1 : 0
+
   name = "Opsgenie"
 }
 
+moved {
+  from = aws_sns_topic.on_call_cw_alarms
+  to   = aws_sns_topic.on_call_cw_alarms[0]
+}
+
 resource "aws_sns_topic_policy" "on_call_cw_alarms" {
+  count = local.on_call_env ? 1 : 0
+
   arn = aws_sns_topic.on_call_opsgenie.arn
 
   policy = jsonencode({
