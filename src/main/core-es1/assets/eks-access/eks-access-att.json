@@ -1,3 +1,14 @@
 {
-  "iam_principals": []
+  "iam_principals": [
+    {
+      "principal_arn": "arn:aws:iam::533267098416:role/interop-github-runner-task-att-es1",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    }
+  ]
 }

@@ -98,7 +98,6 @@ module "eks" {
   cluster_enabled_log_types              = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cloudwatch_log_group_retention_in_days = var.env == "prod" ? 365 : 90
 
-  kms_key_aliases               = [format("eks/%s-eks-cluster-%s-es1", local.project, var.env)]
   kms_key_enable_default_policy = true
   kms_key_administrators = [
     data.aws_iam_role.github_iac.arn,

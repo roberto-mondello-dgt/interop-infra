@@ -18,13 +18,13 @@ bastion_host_instance_type = "t2.micro"
 bastion_host_ssh_cidr      = "0.0.0.0/0"
 bastion_host_key_pair      = "interop-bh-key-att"
 
-persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.9"
-persistence_management_ca_cert_id             = "rds-ca-rsa2048-g1"
-persistence_management_instance_class         = "db.t4g.medium"
-persistence_management_number_instances       = 3
-persistence_management_parameter_group_family = "aurora-postgresql13"
-persistence_management_master_username        = "root"
+platform_data_database_name          = "persistence_management"
+platform_data_engine_version         = "13.9"
+platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
+platform_data_instance_class         = "db.t4g.medium"
+platform_data_number_instances       = 3
+platform_data_parameter_group_family = "aurora-postgresql13"
+platform_data_master_username        = "root"
 
 read_model_cluster_id       = "read-model"
 read_model_master_username  = "root"
@@ -32,6 +32,12 @@ read_model_engine_version   = "4.0.0"
 read_model_instance_class   = "db.t4g.medium"
 read_model_ca_cert_id       = "rds-ca-rsa2048-g1"
 read_model_number_instances = 3
+
+msk_version                = "3.6.0"
+msk_number_azs             = 3
+msk_number_brokers         = 3
+msk_brokers_instance_class = "kafka.m5.large"
+msk_brokers_storage_gib    = 100
 
 notification_events_table_ttl_enabled = true
 
@@ -50,7 +56,7 @@ dns_interop_att_sandbox_ns_records = [
 
 interop_frontend_assets_openapi_path = "./openapi/att/interop-frontend-assets-integrated.yaml"
 interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
-interop_bff_openapi_path             = "./openapi/att/interop-backend-for-frontend-v1.0.yaml"
+interop_bff_openapi_path             = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_auth_openapi_path            = "./openapi/att/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/att/interop-api-v1.0.yaml"
 
@@ -61,7 +67,7 @@ eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
 eks_coredns_version    = "v1.11.1-eksbuild.4"
 eks_kube_proxy_version = "v1.29.0-eksbuild.1"
 
-backend_integration_v2_alb_name = "k8s-interopbe-e364330a81"
+backend_integration_alb_name = "k8s-interopbe-e364330a81"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-att/application"
 
@@ -89,8 +95,20 @@ k8s_monitoring_deployments_names = [
 
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
+  "debezium-postgresql",
+  "interop-be-agreement-email-sender",
+  "interop-be-agreement-readmodel-writer",
+  "interop-be-attribute-registry-readmodel-writer",
+  "interop-be-authorization-updater",
+  "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
+  "interop-be-compute-agreements-consumer",
+  "interop-be-eservice-descriptors-archiver",
+  "interop-be-notifier",
+  "interop-be-notifier-seeder",
+  "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
+  "interop-be-tenant-readmodel-writer",
   "redis"
 ]
 
