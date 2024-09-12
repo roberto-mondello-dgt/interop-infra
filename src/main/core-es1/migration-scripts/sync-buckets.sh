@@ -2,10 +2,11 @@
 
 set -eo pipefail
 
+ENV="att"
 SRC_REGION="eu-central-1"
-ACCOUNT_ID="895646477129"
-ROLE_ARN="arn:aws:iam::895646477129:role/interop-s3-region-migration-test"
-BATCH_OPERATIONS_BUCKET="interop-s3-batch-reports-test"
+ACCOUNT_ID="533267098416"
+ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/interop-s3-region-migration-${ENV}"
+BATCH_OPERATIONS_BUCKET="interop-s3-batch-reports-${ENV}"
 
 function main() {
   local buckets_all=()

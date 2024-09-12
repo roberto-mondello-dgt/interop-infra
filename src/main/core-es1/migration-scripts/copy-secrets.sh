@@ -39,10 +39,18 @@ function main() {
   done
 
   local secret_value
+  local secret_versions
 
   for secret in "${ec1_secrets[@]}"; do
     if [[ -z "${es1_secrets_map["$secret"]}" ]]; then
       echo "$secret missing in eu-south-1"
+      continue
+    fi
+    
+    secret_versions=$(aws secretsmanager list-secret-version-ids --secret-id "$secret" --region "eu-central-1" --output json | jq -r '.Versions | length')
+
+    if [[ $secret_versions -eq 0 ]]; then
+      echo "$secret has no versions in eu-central-1"
       continue
     fi
 
