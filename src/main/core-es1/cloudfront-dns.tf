@@ -27,10 +27,10 @@ resource "aws_route53_record" "landing_base" {
 }
 
 import {
-  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
 
   to = aws_acm_certificate.landing
-  id = "arn:aws:acm:us-east-1:895646477129:certificate/a7c32174-9bc0-431e-b89b-e498971fb813"
+  id = "arn:aws:acm:us-east-1:533267098416:certificate/f01890aa-47f9-4fbc-a462-c68f36b16b95"
 }
 
 resource "aws_acm_certificate" "landing" {
@@ -47,17 +47,17 @@ resource "aws_acm_certificate" "landing" {
 }
 
 import {
-  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
 
-  to = aws_route53_record.landing_cert_validation["www.uat.interop.pagopa.it"]
-  id = "Z047452525YHHCDUAYVCQ__1752f4c3b5a808346f395e04c835604b.www.uat.interop.pagopa.it._CNAME"
+  to = aws_route53_record.landing_cert_validation["www.att.interop.pagopa.it"]
+  id = "Z04685647FUY2PYWS8O0__6cd252f59a8dd9dfc85303dc28a28638.www.att.interop.pagopa.it._CNAME"
 }
 
 import {
-  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
 
-  to = aws_route53_record.landing_cert_validation["uat.interop.pagopa.it"]
-  id = "Z047452525YHHCDUAYVCQ__309c5feba14e2bffe9cc6018895e0d52.uat.interop.pagopa.it._CNAME"
+  to = aws_route53_record.landing_cert_validation["att.interop.pagopa.it"]
+  id = "Z04685647FUY2PYWS8O0__fdb5efe4d411876276786e3415e5eb75.att.interop.pagopa.it._CNAME"
 }
 
 resource "aws_route53_record" "landing_cert_validation" {

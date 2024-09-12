@@ -9,10 +9,10 @@ locals {
 }
 
 import {
-  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_zone.interop_public
-  id = "Z047452525YHHCDUAYVCQ"
+  id = "Z04685647FUY2PYWS8O0"
 }
 
 resource "aws_route53_zone" "interop_public" {
@@ -89,6 +89,8 @@ resource "aws_route53_record" "interop_att_delegation" {
 }
 
 import {
+  for_each = var.env == "test" ? [true] : [] # workaround to control import ENV
+
   to = aws_route53_record.probing_delegation[0]
   id = "Z047452525YHHCDUAYVCQ_stato-eservice.uat.interop.pagopa.it_NS"
 }
@@ -141,7 +143,7 @@ import {
   for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.interop_att_sandbox_delegation[0]
-  id = "_eservices.att.interop.pagopa.it_NS"
+  id = "Z04685647FUY2PYWS8O0_eservices.att.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "interop_att_sandbox_delegation" {
