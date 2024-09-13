@@ -45,7 +45,7 @@ data "aws_iam_role" "sso_admin" {
 
 locals {
   deploy_be_refactor_infra = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "prod"
-  region_migration         = var.env == "dev" || var.env == "test"
-  deploy_new_bff_apigw     = var.env == "dev" || var.env == "qa" || var.env == "test"
-  dismissed_env_region     = var.env == "dev" || var.env == "test"
+  region_migration         = var.env == "dev" || var.env == "test" || var.env == "att"
+  deploy_new_bff_apigw     = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att"
+  dismissed_env_region     = var.env == "dev" || var.env == "test" || var.env == "att"
 }
