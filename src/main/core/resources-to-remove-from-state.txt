@@ -1,7 +1,7 @@
 aws_route53_record.be_refactor_interop_dev_delegation[0]
 aws_route53_record.landing_base
-aws_route53_record.landing_cert_validation["uat.interop.pagopa.it"]
-aws_route53_record.landing_cert_validation["www.uat.interop.pagopa.it"]
+aws_route53_record.landing_cert_validation["att.interop.pagopa.it"]
+aws_route53_record.landing_cert_validation["www.att.interop.pagopa.it"]
 aws_route53_record.landing_www
 aws_route53_record.probing_delegation[0]
 aws_route53_zone.be_refactor_interop_public[0]

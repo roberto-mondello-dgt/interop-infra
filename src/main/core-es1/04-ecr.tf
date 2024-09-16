@@ -43,6 +43,9 @@ locals {
     "interop-be-party-registry-proxy",
     "interop-be-pn-consumers",
     "interop-be-privacy-notices-updater",
+    "interop-be-producer-key-events-writer",
+    "interop-be-producer-key-readmodel-writer",
+    "interop-be-producer-keychain-readmodel-writer",
     "interop-be-purpose-management",
     "interop-be-purpose-outbound-writer",
     "interop-be-purpose-process",
@@ -57,7 +60,7 @@ locals {
     "interop-be-tenants-cert-attr-updater",
     "interop-be-token-details-persister",
     "interop-debezium-postgresql",
-    "interop-frontend"
+    "interop-frontend",
   ]
 }
 

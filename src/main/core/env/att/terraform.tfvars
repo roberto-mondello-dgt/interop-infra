@@ -48,7 +48,7 @@ dns_interop_att_sandbox_ns_records = [
 ]
 
 interop_frontend_assets_openapi_path = "./openapi/att/interop-frontend-assets-integrated.yaml"
-interop_bff_openapi_path             = "./openapi/att/interop-backend-for-frontend-v1.0.yaml"
+interop_bff_openapi_path             = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_auth_openapi_path            = "./openapi/att/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/att/interop-api-v1.0.yaml"
 
