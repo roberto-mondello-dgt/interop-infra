@@ -33,7 +33,6 @@ resource "aws_security_group" "msk_platform_events" {
   }
 }
 
-
 resource "aws_kms_key" "msk_platform_events" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -50,6 +49,19 @@ resource "aws_cloudwatch_log_group" "msk_platform_events" {
   retention_in_days = var.env == "prod" ? 90 : 30
   skip_destroy      = true
 }
+
+resource "aws_msk_configuration" "custom" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  kafka_versions = [var.msk_version]
+  name           = format("%s-platform-events-custom-config-%s", local.project, var.env)
+
+  server_properties = <<-EOT
+    # 10y offsets retention
+    offsets.retention.minutes=5256000
+  EOT
+}
+
 
 resource "aws_msk_cluster" "platform_events" {
   count = local.deploy_be_refactor_infra ? 1 : 0
@@ -98,6 +110,11 @@ resource "aws_msk_cluster" "platform_events" {
         log_group = aws_cloudwatch_log_group.msk_platform_events[0].name
       }
     }
+  }
+
+  configuration_info {
+    arn      = aws_msk_configuration.custom[0].arn
+    revision = aws_msk_configuration.custom[0].latest_revision
   }
 }
 
