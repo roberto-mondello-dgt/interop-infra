@@ -598,7 +598,10 @@ resource "aws_iam_policy" "be_one_trust_notices" {
           "dynamodb:PutItem",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.privacy_notices.arn
+        Resource = compact([
+          aws_dynamodb_table.privacy_notices.arn,
+          try(aws_dynamodb_table.be_refactor_privacy_notices[0].arn, "")
+        ])
     }]
   })
 }
