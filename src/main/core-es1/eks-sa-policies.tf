@@ -243,6 +243,7 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Action = [
           "s3:GetObject",
           "s3:PutObject",
+          "s3:DeleteObject"
         ]
         Resource = compact([
           format("%s/*", module.application_documents_bucket.s3_bucket_arn),
