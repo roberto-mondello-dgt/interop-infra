@@ -9,6 +9,7 @@ locals {
   egress_cidrs               = ["10.0.42.0/24", "10.0.43.0/24", "10.0.44.0/24"]
   bastion_host_cidrs         = ["10.0.45.0/24"]
   int_lbs_cidrs              = ["10.0.46.0/24", "10.0.47.0/24", "10.0.48.0/24"]
+  analytics_cidrs            = ["10.0.49.0/24", "10.0.50.0/24", "10.0.51.0/24"]
 
   eks_workload_subnets_names = [for idx, subn in local.eks_workload_cidrs :
   format("%s-eks-workload-%d-%s", var.short_name, idx + 1, var.env)]
@@ -39,6 +40,9 @@ locals {
 
   int_lbs_subnets_names = [for idx, subn in local.int_lbs_cidrs :
   format("%s-int-lbs-%d-%s", var.short_name, idx + 1, var.env)]
+
+  analytics_subnets_names = [for idx, subn in local.analytics_cidrs :
+  format("%s-analytics-%d-%s", var.short_name, idx + 1, var.env)]
 }
 
 module "vpc" {
@@ -67,8 +71,8 @@ module "vpc" {
   private_subnet_names = concat(local.eks_workload_subnets_names)
 
   # TODO: MSK subnets should be in the 'intra' class, but we need to move the TF address without destroying the subnets
-  database_subnets                   = concat(local.aurora_platform_data_cidrs, local.docdb_read_model_cidrs)
-  database_subnet_names              = concat(local.aurora_platform_data_subnets_names, local.docdb_read_model_subnets_names)
+  database_subnets                   = concat(local.aurora_platform_data_cidrs, local.docdb_read_model_cidrs, local.analytics_cidrs)
+  database_subnet_names              = concat(local.aurora_platform_data_subnets_names, local.docdb_read_model_subnets_names, local.analytics_subnets_names)
   create_database_subnet_group       = false
   create_database_subnet_route_table = true
   create_database_nat_gateway_route  = false
