@@ -103,6 +103,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-notifier",
   "interop-be-purpose-outbound-writer",
   "interop-be-selfcare-onboarding-consumer",
+  "interop-be-tenant-outbound-writer",
   "redis"
 ]
 
