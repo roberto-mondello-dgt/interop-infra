@@ -21,7 +21,7 @@ resource "aws_dynamodb_table" "notification_events" {
   }
 
   dynamic "import_table" {
-    for_each = var.env == "att" ? [true] : []
+    for_each = var.env == "prod" ? [true] : []
 
     content {
       input_compression_type = "GZIP"
@@ -29,7 +29,7 @@ resource "aws_dynamodb_table" "notification_events" {
 
       s3_bucket_source {
         bucket     = "interop-dynamodb-exports-${var.env}"
-        key_prefix = "eu-central-1/interop-notification-events/AWSDynamoDB/01726128070603-1f1ff5b7/data"
+        key_prefix = "eu-central-1/interop-notification-events/AWSDynamoDB/01728134127920-239b5e77/data"
       }
     }
   }
@@ -48,7 +48,7 @@ resource "aws_dynamodb_table" "notification_resources" {
 
 
   dynamic "import_table" {
-    for_each = var.env == "att" ? [true] : []
+    for_each = var.env == "prod" ? [true] : []
 
     content {
       input_compression_type = "GZIP"
@@ -56,7 +56,7 @@ resource "aws_dynamodb_table" "notification_resources" {
 
       s3_bucket_source {
         bucket     = "interop-dynamodb-exports-${var.env}"
-        key_prefix = "eu-central-1/interop-notification-resources/AWSDynamoDB/01726128099241-a67cfce7/data"
+        key_prefix = "eu-central-1/interop-notification-resources/AWSDynamoDB/01728134221453-600b6631/data"
       }
     }
   }

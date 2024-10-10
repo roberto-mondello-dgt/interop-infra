@@ -1,30 +1,30 @@
-resource "aws_route53_record" "landing_www" {
-  provider = aws.us_east_1
-
-  name    = format("www.%s", var.interop_landing_domain_name)
-  type    = "A"
-  zone_id = aws_route53_zone.interop_public.zone_id
-
-  alias {
-    evaluate_target_health = true
-    name                   = aws_cloudfront_distribution.landing.domain_name
-    zone_id                = "Z2FDTNDATAQYW2" # fixed value for CloudFront distributions
-  }
-}
-
-resource "aws_route53_record" "landing_base" {
-  provider = aws.us_east_1
-
-  name    = var.interop_landing_domain_name
-  type    = "A"
-  zone_id = aws_route53_zone.interop_public.zone_id
-
-  alias {
-    evaluate_target_health = true
-    name                   = aws_cloudfront_distribution.landing.domain_name
-    zone_id                = "Z2FDTNDATAQYW2" # fixed value for CloudFront distributions
-  }
-}
+# resource "aws_route53_record" "landing_www" {
+#   provider = aws.us_east_1
+#
+#   name    = format("www.%s", var.interop_landing_domain_name)
+#   type    = "A"
+#   zone_id = aws_route53_zone.interop_public.zone_id
+#
+#   alias {
+#     evaluate_target_health = true
+#     name                   = aws_cloudfront_distribution.landing.domain_name
+#     zone_id                = "Z2FDTNDATAQYW2" # fixed value for CloudFront distributions
+#   }
+# }
+#
+# resource "aws_route53_record" "landing_base" {
+#   provider = aws.us_east_1
+#
+#   name    = var.interop_landing_domain_name
+#   type    = "A"
+#   zone_id = aws_route53_zone.interop_public.zone_id
+#
+#   alias {
+#     evaluate_target_health = true
+#     name                   = aws_cloudfront_distribution.landing.domain_name
+#     zone_id                = "Z2FDTNDATAQYW2" # fixed value for CloudFront distributions
+#   }
+# }
 
 resource "aws_acm_certificate" "landing" {
   provider = aws.us_east_1

@@ -18,8 +18,6 @@ module "reports_ses_iam_policy" {
   ses_configuration_set_arn      = module.reports_ses_identity.ses_configuration_set_arn
   allowed_recipients_regex       = ["*@pagopa.it"]
   allowed_from_addresses_literal = [format("noreply@%s", module.reports_ses_identity.ses_identity_name)]
-  # allowed_from_display_names     = ["reports"]
-  # allowed_source_vpcs_id         = [module.vpc_v2.vpc_id]
 }
 
 module "notifiche_ses_identity" {

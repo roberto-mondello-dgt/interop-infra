@@ -1,8 +1,8 @@
 import {
-  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_cloudfront_function.www_react_app
-  id = "www-react-app-att"
+  id = "www-react-app-prod"
 }
 
 resource "aws_cloudfront_function" "www_react_app" {

@@ -11,10 +11,10 @@ data "aws_cloudfront_origin_request_policy" "cors_s3_origin" {
 }
 
 import {
-  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_cloudfront_origin_access_control.landing_s3
-  id = "E155IC424VSKOY"
+  id = "E2Z8XDEZLKTYEU"
 }
 
 resource "aws_cloudfront_origin_access_control" "landing_s3" {
@@ -25,10 +25,10 @@ resource "aws_cloudfront_origin_access_control" "landing_s3" {
 }
 
 import {
-  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_cloudfront_cache_policy.public_catalog
-  id = "bfa3838c-a989-4bfb-8e4e-7148a333b95a"
+  id = "f42aab3d-e0bd-4d02-9b53-10e5dc025f37"
 }
 
 resource "aws_cloudfront_cache_policy" "public_catalog" {
@@ -57,10 +57,10 @@ resource "aws_cloudfront_cache_policy" "public_catalog" {
 }
 
 import {
-  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_cloudfront_distribution.landing
-  id = "E2TSKRV3BZHE9D"
+  id = "EF3S3CSIG6JZP"
 }
 
 resource "aws_cloudfront_distribution" "landing" {

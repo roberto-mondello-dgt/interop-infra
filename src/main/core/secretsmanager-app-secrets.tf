@@ -111,3 +111,9 @@ resource "aws_secretsmanager_secret" "npm_key" {
 
   name = "interop-npm-key"
 }
+
+resource "aws_secretsmanager_secret" "opsgenie_endpoint" {
+  count = var.env == "prod" ? 1 : 0
+
+  name = "opsgenie-integration-endpoint-${var.env}"
+}

@@ -17,7 +17,7 @@ locals {
     "interop-privacy-notices-content-${var.env}",
     "interop-${var.env}-public",
     "interop-alb-logs-${var.env}",
-    "interop-anac-sftp-${var.env}",
+    # "interop-anac-sftp-${var.env}",
     "interop-ivass-${var.env}",
     "interop-s3-batch-reports-${var.env}",
     # "interop-data-preparation-${var.env}",

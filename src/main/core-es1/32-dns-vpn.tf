@@ -9,7 +9,7 @@ data "aws_acm_certificate" "vpn" {
 resource "aws_acm_certificate" "vpn" {
   count = var.env == "prod" ? 1 : 0
 
-  domain_name       = "vpn.interop.pagopa.it"
+  domain_name       = "es1.vpn.interop.pagopa.it"
   validation_method = "DNS"
 
   lifecycle {

@@ -9,10 +9,10 @@ locals {
 }
 
 import {
-  for_each = var.env == "att" ? [true] : [] # workaround to control import ENV
+  for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_zone.interop_public
-  id = "Z04685647FUY2PYWS8O0"
+  id = "Z100714238OQISA97RBZW"
 }
 
 resource "aws_route53_zone" "interop_public" {
@@ -23,7 +23,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.interop_dev_delegation[0]
-  id = "_dev.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_dev.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "interop_dev_delegation" {
@@ -41,7 +41,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.interop_uat_delegation[0]
-  id = "_uat.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_uat.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "interop_uat_delegation" {
@@ -58,7 +58,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.interop_qa_delegation[0]
-  id = "_qa.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_qa.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "interop_qa_delegation" {
@@ -75,7 +75,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.interop_att_delegation[0]
-  id = "_att.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_att.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "interop_att_delegation" {
@@ -109,7 +109,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.signalhub_delegation[0]
-  id = "_signalhub.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_signalhub.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "signalhub_delegation" {
@@ -126,7 +126,7 @@ import {
   for_each = var.env == "prod" ? [true] : [] # workaround to control import ENV
 
   to = aws_route53_record.tracing_delegation[0]
-  id = "_tracing.interop.pagopa.it_NS"
+  id = "Z100714238OQISA97RBZW_tracing.interop.pagopa.it_NS"
 }
 
 resource "aws_route53_record" "tracing_delegation" {

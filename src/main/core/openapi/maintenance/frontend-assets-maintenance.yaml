@@ -15,7 +15,7 @@ paths:
             Location:
               schema:
                 type: string
-                example: '/maintenance-standard.html'
+                example: '/maintenance-token-down.html'
       x-amazon-apigateway-integration:
         type: mock
         httpMethod: GET
@@ -24,7 +24,7 @@ paths:
           '302':
             statusCode: '302'
             responseParameters:
-              method.response.header.Location: "'/maintenance-standard.html'"
+              method.response.header.Location: "'/maintenance-token-down.html'"
         requestTemplates:
           application/json: '{"statusCode": 302}'
   /{proxy+}:
@@ -38,7 +38,7 @@ paths:
             Location:
               schema:
                 type: string
-                example: '/maintenance-standard.html'
+                example: '/maintenance-token-down.html'
       x-amazon-apigateway-integration:
         type: mock
         httpMethod: GET
@@ -47,10 +47,10 @@ paths:
           '302':
             statusCode: '302'
             responseParameters:
-              method.response.header.Location: "'/maintenance-standard.html'"
+              method.response.header.Location: "'/maintenance-token-down.html'"
         requestTemplates:
           application/json: '{"statusCode": 302}'
-  /maintenance-standard.html:
+  /maintenance-token-down.html:
     get:
       tags:
         - page

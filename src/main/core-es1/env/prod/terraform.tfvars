@@ -19,30 +19,27 @@ bastion_host_security_group_name = "interop-bastion-host-prod-BastionSecurityGro
 bastion_host_ssh_cidr            = "0.0.0.0/0"
 bastion_host_key_pair            = "interop-bh-key-prod"
 
-eks_cluster_name = "interop-eks-prod"
+platform_data_database_name          = "persistence_management"
+platform_data_engine_version         = "13.9"
+platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
+platform_data_instance_class         = "db.t4g.medium"
+platform_data_number_instances       = 3
+platform_data_parameter_group_family = "aurora-postgresql13"
+platform_data_master_username        = "root"
 
-persistence_management_cluster_id             = "interop-rds-prod-auroradbcluster-n6mrmtikvktv"
-persistence_management_database_name          = "persistence_management"
-persistence_management_engine_version         = "13.9"
-persistence_management_ca_cert_id             = "rds-ca-rsa2048-g1"
-persistence_management_instance_class         = "db.t4g.medium"
-persistence_management_number_instances       = 3
-persistence_management_subnet_group_name      = "interop-rds-prod-dbsubnetgroup-wtgcr8luwouy"
-persistence_management_parameter_group_name   = "interop-rds-prod-rdsdbclusterparametergroup-jccxnxbx76wj"
-persistence_management_parameter_group_family = "aurora-postgresql13"
-persistence_management_master_username        = "root"
-persistence_management_primary_instance_id    = "iacssmqzaqjtke"
-persistence_management_replica1_instance_id   = "iag1ir56gge28j"
-persistence_management_replica2_instance_id   = "iai6ggc9mqc8df"
+read_model_cluster_id       = "read-model"
+read_model_master_username  = "root"
+read_model_engine_version   = "4.0.0"
+read_model_instance_class   = "db.r6g.large"
+read_model_ca_cert_id       = "rds-ca-rsa2048-g1"
+read_model_number_instances = 3
 
-read_model_cluster_id           = "read-model"
-read_model_master_username      = "root"
-read_model_engine_version       = "4.0.0"
-read_model_instance_class       = "db.r6g.large"
-read_model_ca_cert_id           = "rds-ca-rsa2048-g1"
-read_model_number_instances     = 3
-read_model_subnet_group_name    = "docdbsubnetgroup-o9tsiei6mmwh"
-read_model_parameter_group_name = "read-model-parameter-group"
+msk_version                = "3.6.0"
+msk_number_azs             = 3
+msk_number_brokers         = 3
+msk_brokers_instance_class = "kafka.m5.large"
+msk_brokers_storage_gib    = 100
+msk_signalhub_account_id   = "058264142001"
 
 notification_events_table_ttl_enabled = true
 
@@ -86,12 +83,19 @@ signalhub_domain_ns_records = [
   "ns-917.awsdns-50.net."
 ]
 
+tracing_domain_ns_records = [
+  "ns-1684.awsdns-18.co.uk.",
+  "ns-1285.awsdns-32.org.",
+  "ns-549.awsdns-04.net.",
+  "ns-405.awsdns-50.com."
+]
+
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
 
-interop_frontend_assets_openapi_path = ""
+interop_frontend_assets_openapi_path = "./openapi/prod/interop-frontend-assets-integrated.yaml"
 interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
-interop_bff_openapi_path             = ""
+interop_bff_openapi_path             = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_auth_openapi_path            = "./openapi/prod/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/prod/interop-api-v1.0.yaml"
 
@@ -99,10 +103,10 @@ interop_landing_domain_name = "interop.pagopa.it"
 
 lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:697818730278:log-group:/aws/eks/interop-eks-prod/application:*"
 
-eks_k8s_version        = "1.26"
-eks_vpc_cni_version    = "v1.12.6-eksbuild.1"
-eks_coredns_version    = "v1.9.3-eksbuild.3"
-eks_kube_proxy_version = "v1.26.2-eksbuild.1"
+eks_k8s_version        = "1.29"
+eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
+eks_coredns_version    = "v1.11.1-eksbuild.4"
+eks_kube_proxy_version = "v1.29.0-eksbuild.1"
 
 backend_integration_v2_alb_name = "k8s-interopbe-f2dce477db"
 

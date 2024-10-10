@@ -2,9 +2,9 @@
 
 set -eo pipefail
 
-ENV="att"
+ENV="prod"
 SRC_REGION="eu-central-1"
-ACCOUNT_ID="533267098416"
+ACCOUNT_ID="697818730278"
 ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/interop-s3-region-migration-${ENV}"
 BATCH_OPERATIONS_BUCKET="interop-s3-batch-reports-${ENV}"
 

@@ -1,7 +1,9 @@
+aws_acm_certificate.vpn[0]
+aws_route53_record.vpn["vpn.interop.pagopa.it"]
 aws_route53_record.be_refactor_interop_dev_delegation[0]
 aws_route53_record.landing_base
-aws_route53_record.landing_cert_validation["att.interop.pagopa.it"]
-aws_route53_record.landing_cert_validation["www.att.interop.pagopa.it"]
+aws_route53_record.landing_cert_validation["interop.pagopa.it"]
+aws_route53_record.landing_cert_validation["www.interop.pagopa.it"]
 aws_route53_record.landing_www
 aws_route53_record.probing_delegation[0]
 aws_route53_zone.be_refactor_interop_public[0]
@@ -20,8 +22,8 @@ module.application_documents_bucket
 module.application_logs_bucket
 module.athena_query_results_bucket
 module.alb_logs_bucket
-aws_kms_key.interop
-aws_kms_alias.interop
+#aws_kms_key.interop
+#aws_kms_alias.interop
 aws_cloudwatch_log_group.apigw_access_logs
 aws_cloudwatch_log_group.waf
 aws_cloudwatch_query_definition.apigw_auth_server_5xx
