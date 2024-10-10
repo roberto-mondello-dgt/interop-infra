@@ -18,6 +18,7 @@ locals {
     "interop-be-backend-for-frontend",
     "interop-be-catalog-management",
     "interop-be-catalog-outbound-writer",
+    "interop-be-catalog-platformstate-writer",
     "interop-be-catalog-process",
     "interop-be-catalog-readmodel-writer",
     "interop-be-certified-mail-sender",
