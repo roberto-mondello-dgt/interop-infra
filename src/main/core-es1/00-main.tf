@@ -45,7 +45,7 @@ data "aws_iam_role" "sso_admin" {
 
 locals {
   project                   = "interop"
-  deploy_be_refactor_infra  = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "prod"
+  deploy_be_refactor_infra  = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
   deploy_new_bff_apigw      = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
   deploy_safe_storage_infra = var.safe_storage_account_id != null && var.safe_storage_vpce_service_name != null
   on_call_env               = var.env == "dev" || var.env == "prod" # DEV is used for testing
