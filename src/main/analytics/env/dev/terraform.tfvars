@@ -16,3 +16,6 @@ analytics_subnet_ids = ["subnet-0f7445d4c56f10f3b", "subnet-0946493be6a7d2fbd", 
 
 vpn_clients_security_group_id      = "sg-0f9493c196a3efc3d"
 eks_cluster_node_security_group_id = "sg-0724f622cc3083979"
+
+redshift_cluster_nodes_number = 2
+redshift_cluster_nodes_type   = "ra3.xlplus"

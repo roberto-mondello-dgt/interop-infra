@@ -44,3 +44,25 @@ variable "eks_cluster_node_security_group_id" {
   type        = string
   description = "ID of EKS cluster node SG"
 }
+
+variable "redshift_master_username" {
+  type        = string
+  description = "Master username of the Redshift database"
+  default     = "root"
+}
+
+variable "redshift_cluster_nodes_number" {
+  type        = number
+  description = "Number of nodes for the Redshift cluster"
+}
+
+variable "redshift_cluster_nodes_type" {
+  type        = string
+  description = "Type of the nodes for the Redshift cluster"
+}
+
+variable "redshift_cluster_port" {
+  type        = string
+  description = "Port on which the Redshift cluster listens for incoming traffic"
+  default     = "5439"
+}
