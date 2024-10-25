@@ -266,8 +266,12 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
+          "s3:ListBucket"
         ]
-        Resource = format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn)
+        Resource = [
+          format("%s/*", module.privacy_notices_content_bucket.s3_bucket_arn),
+          module.privacy_notices_content_bucket.s3_bucket_arn
+        ]
       },
       {
         Effect = "Allow",
