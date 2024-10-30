@@ -40,6 +40,11 @@ variable "vpn_clients_security_group_id" {
   description = "ID of the VPN clients SG"
 }
 
+variable "eks_cluster_name" {
+  type = string
+  description = "Name of the EKS cluster accessing the analytics cluster"
+}
+
 variable "eks_cluster_node_security_group_id" {
   type        = string
   description = "ID of EKS cluster node SG"

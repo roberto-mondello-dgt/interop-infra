@@ -1,9 +1,9 @@
-data "aws_eks_cluster" "interop" {
-  name = "interop-eks-cluster-dev"
+data "aws_eks_cluster" "core" {
+  name = var.eks_cluster_name
 }
 
-data "aws_iam_openid_connect_provider" "interop_eks" {
-  url = data.aws_eks_cluster.interop.identity[0].oidc[0].issuer
+data "aws_iam_openid_connect_provider" "core_eks" {
+  url = data.aws_eks_cluster.core.identity[0].oidc[0].issuer
 }
 
 locals {
@@ -21,7 +21,7 @@ module "be_analytics_domain_consumer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = data.aws_iam_openid_connect_provider.interop_eks.arn
+      provider_arn               = data.aws_iam_openid_connect_provider.core_eks.arn
       namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-analytics-domain-consumer"]
     }
   }
@@ -37,7 +37,7 @@ module "be_analytics_jwt_consumer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = data.aws_iam_openid_connect_provider.interop_eks.arn
+      provider_arn               = data.aws_iam_openid_connect_provider.core_eks.arn
       namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-analytics-jwt-consumer"]
     }
   }
