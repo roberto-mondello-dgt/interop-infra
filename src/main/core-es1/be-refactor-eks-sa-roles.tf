@@ -483,3 +483,113 @@ module "be_refactor_backend_for_frontend_irsa" {
     be_backend_for_frontend = aws_iam_policy.be_backend_for_frontend.arn
   }
 }
+
+module "be_refactor_authorization_server_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-authorization-server-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-server"]
+    }
+  }
+
+  role_policy_arns = {
+    be_authorization_server = aws_iam_policy.be_refactor_authorization_server[0].arn
+  }
+}
+
+module "be_refactor_agreement_platformstate_writer_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-agreement-platformstate-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-platformstate-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_agreement_platformstate_writer = aws_iam_policy.be_refactor_agreement_platformstate_writer[0].arn
+  }
+}
+
+module "be_refactor_authorization_platformstate_writer_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-authorization-platformstate-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-platformstate-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_authorization_platformstate_writer = aws_iam_policy.be_refactor_authorization_platformstate_writer[0].arn
+  }
+}
+
+module "be_refactor_catalog_platformstate_writer_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-catalog-platformstate-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-platformstate-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_catalog_platformstate_writer = aws_iam_policy.be_refactor_catalog_platformstate_writer[0].arn
+  }
+}
+
+module "be_refactor_purpose_platformstate_writer_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-purpose-platformstate-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-platformstate-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_purpose_platformstate_writer = aws_iam_policy.be_refactor_purpose_platformstate_writer[0].arn
+  }
+}

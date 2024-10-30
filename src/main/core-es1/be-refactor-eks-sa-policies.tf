@@ -751,3 +751,259 @@ resource "aws_iam_policy" "be_refactor_producer_keychain_readmodel_writer" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_refactor_authorization_server" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeRefactorAuthorizationServerPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "DynamoDBTokenGenerationStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query"
+        ]
+        Resource = aws_dynamodb_table.token_generation_states[0].arn
+      },
+      {
+        Sid      = "KMSGenerateToken"
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      },
+      {
+        Sid    = "S3WriteJWTAuditFallback"
+        Effect = "Allow"
+        Action = "s3:PutObject"
+        Resource = compact([
+          format("%s/*", module.generated_jwt_details_fallback_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_generated_jwt_details_fallback_bucket[0].s3_bucket_arn), "")
+        ])
+      },
+      {
+        Sid    = "MSKWriteJWTAudit"
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*-authorization-server.generated-jwt",
+          "${local.msk_group_iam_prefix}/*-authorization-server"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeAgreementPlatformStateWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "MSKAgreementEvents"
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_group_iam_prefix}/*-agreement-platformstate-writer"
+        ]
+      },
+      {
+        Sid = "DynamoDBPlatformStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.platform_states[0].arn
+      },
+      {
+        Sid = "DynamoDBTokenGenStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.token_generation_states[0].arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeAuthorizationPlatformStateWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "MSKAgreementEvents"
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
+          "${local.msk_group_iam_prefix}/*-authorization-platformstate-writer"
+        ]
+      },
+      {
+        Sid = "DynamoDBPlatformStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.platform_states[0].arn
+      },
+      {
+        Sid = "DynamoDBTokenGenStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.token_generation_states[0].arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeCatalogPlatformStateWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "MSKAgreementEvents"
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
+          "${local.msk_group_iam_prefix}/*-catalog-platformstate-writer"
+        ]
+      },
+      {
+        Sid = "DynamoDBPlatformStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.platform_states[0].arn
+      },
+      {
+        Sid = "DynamoDBTokenGenStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.token_generation_states[0].arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBePurposePlatformStateWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "MSKAgreementEvents"
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_group_iam_prefix}/*-purpose-platformstate-writer"
+        ]
+      },
+      {
+        Sid = "DynamoDBPlatformStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.platform_states[0].arn
+      },
+      {
+        Sid = "DynamoDBTokenGenStates"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.token_generation_states[0].arn
+      }
+    ]
+  })
+}
