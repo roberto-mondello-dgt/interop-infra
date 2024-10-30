@@ -19,3 +19,5 @@ eks_cluster_node_security_group_id = "sg-0724f622cc3083979"
 
 redshift_cluster_nodes_number = 2
 redshift_cluster_nodes_type   = "ra3.xlplus"
+
+jwt_details_bucket_name = "interop-generated-jwt-details-dev-es1"

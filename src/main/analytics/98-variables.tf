@@ -66,3 +66,8 @@ variable "redshift_cluster_port" {
   description = "Port on which the Redshift cluster listens for incoming traffic"
   default     = "5439"
 }
+
+variable "jwt_details_bucket_name" {
+  type        = string
+  description = "Name of the S3 Bucket containing the generated jwt to be ingested in Redshift"
+}

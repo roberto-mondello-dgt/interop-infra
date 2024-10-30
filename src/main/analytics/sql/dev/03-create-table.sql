@@ -1,0 +1,27 @@
+DROP TABLE if exists interop_dev.jwt.generated;
+CREATE TABLE interop_dev.jwt.generated (
+  jwt_id CHAR(36) PRIMARY KEY,
+  issued_at BIGINT NOT NULL,
+  client_id CHAR(36) NOT NULL,
+  organization_id CHAR(36) NOT NULL,
+  agreement_id CHAR(36) NOT NULL,
+  eservice_id CHAR(36) NOT NULL,
+  descriptor_id CHAR(36) NOT NULL,
+  purpose_id CHAR(36) NOT NULL,
+  purpose_version_id CHAR(36) NOT NULL,
+  algorithm VARCHAR(10) NOT NULL,
+  key_id VARCHAR(50) NOT NULL,
+  audience VARCHAR(1024) NOT NULL,
+  subject VARCHAR(1024) NOT NULL,
+  not_before BIGINT NOT NULL,
+  expiration_time BIGINT NOT NULL,
+  issuer VARCHAR(1024) NOT NULL,
+  client_assertion_jwt_id VARCHAR(1024) NOT NULL,
+  client_assertion_issued_at BIGINT NOT NULL,
+  client_assertion_algorithm VARCHAR(10) NOT NULL,
+  client_assertion_key_id VARCHAR(50) NOT NULL,
+  client_assertion_issuer VARCHAR(1024) NOT NULL,
+  client_assertion_subject VARCHAR(1024) NOT NULL,
+  client_assertion_audience VARCHAR(1024) NOT NULL,
+  client_assertion_expiration_time BIGINT NOT NULL
+);

@@ -1,3 +1,12 @@
+data "aws_vpc_endpoint" "s3" {
+  vpc_id       = var.vpc_id
+  service_name = "com.amazonaws.eu-south-1.s3"
+}
+
+data "aws_prefix_list" "s3" {
+  prefix_list_id = data.aws_vpc_endpoint.s3.prefix_list_id
+}
+
 resource "aws_security_group" "analytics" {
   name        = format("%s-redshift-cluster-%s", local.project, var.env)
   description = "SG for the Redshift cluster"
@@ -15,6 +24,20 @@ resource "aws_security_group" "analytics" {
     to_port         = 5439
     protocol        = "tcp"
     security_groups = [var.eks_cluster_node_security_group_id]
+  }
+
+  ingress {
+    from_port       = 443
+    to_port         = 5439
+    protocol        = "tcp"
+    prefix_list_ids = [data.aws_prefix_list.s3.id]
+  }
+
+  egress {
+    from_port       = 443
+    to_port         = 5439
+    protocol        = "tcp"
+    prefix_list_ids = [data.aws_prefix_list.s3.id]
   }
 }
 

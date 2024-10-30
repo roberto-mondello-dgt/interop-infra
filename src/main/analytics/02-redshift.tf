@@ -100,3 +100,8 @@ resource "aws_redshift_cluster" "analytics" {
 
   allow_version_upgrade = false
 }
+
+resource "aws_redshift_cluster_iam_roles" "analytics" {
+  cluster_identifier = aws_redshift_cluster.analytics.cluster_identifier
+  iam_role_arns      = [aws_iam_role.generated_jwt_loader.arn]
+}
