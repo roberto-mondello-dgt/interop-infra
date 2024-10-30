@@ -10,7 +10,7 @@ resource "aws_secretsmanager_secret" "redshift_master" {
 
 data "aws_secretsmanager_random_password" "redshift_master" {
   password_length            = 30
-  exclude_characters         = "\"@/\\"
+  exclude_characters         = "\"@/'\\ "
   require_each_included_type = true
 }
 
