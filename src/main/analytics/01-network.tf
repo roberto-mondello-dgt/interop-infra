@@ -1,6 +1,6 @@
 data "aws_vpc_endpoint" "s3" {
   vpc_id       = var.vpc_id
-  service_name = "com.amazonaws.eu-south-1.s3"
+  service_name = "com.amazonaws.${var.aws_region}.s3"
 }
 
 data "aws_prefix_list" "s3" {
@@ -8,8 +8,8 @@ data "aws_prefix_list" "s3" {
 }
 
 resource "aws_security_group" "analytics" {
-  name        = format("%s-redshift-cluster-%s", local.project, var.env)
-  description = "SG for the Redshift cluster"
+  name        = format("redshift/%s-analytics-%s", local.project, var.env)
+  description = "SG for interop-analytics-${var.env} Redshift cluster"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -27,17 +27,21 @@ resource "aws_security_group" "analytics" {
   }
 
   ingress {
-    from_port       = 443
-    to_port         = 5439
-    protocol        = "tcp"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
     prefix_list_ids = [data.aws_prefix_list.s3.id]
   }
 
   egress {
-    from_port       = 443
-    to_port         = 5439
-    protocol        = "tcp"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
     prefix_list_ids = [data.aws_prefix_list.s3.id]
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

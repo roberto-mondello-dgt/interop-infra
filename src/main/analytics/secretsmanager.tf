@@ -7,7 +7,6 @@ locals {
 
 resource "aws_secretsmanager_secret" "readonly" {
   name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.readonly_username)
-  description = "Credentials for the interop-analytics-readonly user"
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -17,7 +16,6 @@ resource "aws_secretsmanager_secret" "readonly" {
 
 resource "aws_secretsmanager_secret" "be_analytics_domain_consumer" {
   name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_domain_consumer_username)
-  description = "Credentials for the interop-be-analytics-domain-consumer-dev-es1 user"
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -27,7 +25,6 @@ resource "aws_secretsmanager_secret" "be_analytics_domain_consumer" {
 
 resource "aws_secretsmanager_secret" "be_analytics_jwt_consumer" {
   name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_jwt_consumer_username)
-  description = "Credentials for the interop-be-analytics-jwt-consumer-dev-es1 user"
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -37,7 +34,6 @@ resource "aws_secretsmanager_secret" "be_analytics_jwt_consumer" {
 
 resource "aws_secretsmanager_secret" "tracing_be_enriched_data_handler" {
   name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.tracing_be_enriched_data_handler_username)
-  description = "Credentials for the tracing-be-enriched-data-handler-dev-es1 user"
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -47,25 +43,25 @@ resource "aws_secretsmanager_secret" "tracing_be_enriched_data_handler" {
 
 data "aws_secretsmanager_random_password" "readonly" {
   password_length            = 30
-  exclude_characters         = "\"@/\\"
+  exclude_characters         = "\"@/'\\ "
   require_each_included_type = true
 }
 
 data "aws_secretsmanager_random_password" "be_analytics_domain_consumer" {
   password_length            = 30
-  exclude_characters         = "\"@/\\"
+  exclude_characters         = "\"@/'\\ "
   require_each_included_type = true
 }
 
 data "aws_secretsmanager_random_password" "be_analytics_jwt_consumer" {
   password_length            = 30
-  exclude_characters         = "\"@/\\"
+  exclude_characters         = "\"@/'\\ "
   require_each_included_type = true
 }
 
 data "aws_secretsmanager_random_password" "tracing_be_enriched_data_handler" {
   password_length            = 30
-  exclude_characters         = "\"@/\\"
+  exclude_characters         = "\"@/'\\ "
   require_each_included_type = true
 }
 

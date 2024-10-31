@@ -1,6 +1,5 @@
 resource "aws_secretsmanager_secret" "redshift_master" {
   name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, var.redshift_master_username)
-  description = "Credentials for the Redshift cluster's master user"
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -27,7 +26,6 @@ resource "aws_secretsmanager_secret_version" "redshift_master" {
 }
 
 resource "aws_kms_key" "analytics" {
-  description              = "KMS key for the Redshift cluster at-rest encryption"
   key_usage                = "ENCRYPT_DECRYPT"
   customer_master_key_spec = "SYMMETRIC_DEFAULT"
 }
@@ -99,6 +97,8 @@ resource "aws_redshift_cluster" "analytics" {
   enhanced_vpc_routing = true
 
   allow_version_upgrade = false
+
+  skip_final_snapshot = true
 }
 
 resource "aws_redshift_cluster_iam_roles" "analytics" {
