@@ -28,6 +28,7 @@ locals {
     "interop-be-compute-agreements-consumer",
     "interop-be-dashboard-metrics-report-generator",
     "interop-be-datalake-data-export",
+    "interop-be-datalake-interface-exporter",
     "interop-be-dtd-catalog-exporter",
     "interop-be-dtd-catalog-total-load-exporter",
     "interop-be-dtd-metrics",

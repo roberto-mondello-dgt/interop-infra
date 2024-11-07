@@ -51,24 +51,28 @@ github_runners_memory        = 4096
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.15.0"
 
 dns_interop_base_domain = "interop.pagopa.it"
+
 dns_interop_dev_ns_records = [
   "ns-1337.awsdns-39.org.",
   "ns-70.awsdns-08.com.",
   "ns-1728.awsdns-24.co.uk.",
   "ns-876.awsdns-45.net.",
 ]
+
 dns_interop_uat_ns_records = [
   "ns-1942.awsdns-50.co.uk.",
   "ns-783.awsdns-33.net.",
   "ns-317.awsdns-39.com.",
   "ns-1395.awsdns-46.org.",
 ]
+
 dns_interop_qa_ns_records = [
-  "ns-975.awsdns-57.net.",
-  "ns-1569.awsdns-04.co.uk.",
-  "ns-41.awsdns-05.com.",
-  "ns-1108.awsdns-10.org."
+  "ns-1566.awsdns-03.co.uk.",
+  "ns-719.awsdns-25.net.",
+  "ns-473.awsdns-59.com.",
+  "ns-1437.awsdns-51.org."
 ]
+
 dns_interop_att_ns_records = [
   "ns-1788.awsdns-31.co.uk.",
   "ns-633.awsdns-15.net.",

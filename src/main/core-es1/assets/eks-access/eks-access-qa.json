@@ -1,3 +1,45 @@
 {
-  "iam_principals": []
+  "iam_principals": [
+    {
+      "principal_arn": "arn:aws:iam::755649575658:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_ReadOnlyAccess_c77cc406e546953c",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "namespace",
+          "namespaces": ["default", "qa"]
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::755649575658:role/GitHubActionIACRole",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::755649575658:role/interop-github-runner-task-qa-es1",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::755649575658:role/interop-github-qa-runner-task-qa-es1",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+          "scope": "cluster"
+        }
+      ]
+    }
+  ]
 }
