@@ -6,7 +6,7 @@ locals {
 }
 
 resource "aws_secretsmanager_secret" "readonly" {
-  name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.readonly_username)
+  name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.readonly_username)
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -15,7 +15,7 @@ resource "aws_secretsmanager_secret" "readonly" {
 }
 
 resource "aws_secretsmanager_secret" "be_analytics_domain_consumer" {
-  name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_domain_consumer_username)
+  name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_domain_consumer_username)
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret" "be_analytics_domain_consumer" {
 }
 
 resource "aws_secretsmanager_secret" "be_analytics_jwt_consumer" {
-  name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_jwt_consumer_username)
+  name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.be_analytics_jwt_consumer_username)
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {
@@ -33,7 +33,7 @@ resource "aws_secretsmanager_secret" "be_analytics_jwt_consumer" {
 }
 
 resource "aws_secretsmanager_secret" "tracing_be_enriched_data_handler" {
-  name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.tracing_be_enriched_data_handler_username)
+  name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, local.tracing_be_enriched_data_handler_username)
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {

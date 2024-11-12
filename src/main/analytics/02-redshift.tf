@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "redshift_master" {
-  name        = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, var.redshift_master_username)
+  name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, var.redshift_master_username)
 
   # Necessary for Redshift log in integration
   tags = merge(var.tags, {

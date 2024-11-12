@@ -1,0 +1,93 @@
+data "aws_sns_topic" "platform_alarms" {
+  name = var.sns_topic_name
+}
+
+resource "aws_cloudwatch_metric_alarm" "redshift_cpu_utilization" {
+  alarm_name        = format("redshift-%s-cpu-utilization", aws_redshift_cluster.analytics.cluster_identifier)
+  alarm_description = "Max CPU utilization among the nodes of the ${aws_redshift_cluster.analytics.cluster_identifier} Redshift cluster"
+
+  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+
+  metric_query {
+    id          = "e1"
+    label       = "Max CPU utilization"
+    return_data = "true"
+
+    expression = "SELECT MAX(CPUUtilization) FROM SCHEMA(\"AWS/Redshift\", \"ClusterIdentifier\", \"NodeID\")"
+    period     = 60 # 1 minute
+  }
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "missing"
+
+  threshold           = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 2
+}
+
+resource "aws_cloudwatch_metric_alarm" "redshift_health_status" {
+  alarm_name        = format("redshift-%s-health-status", aws_redshift_cluster.analytics.cluster_identifier)
+  alarm_description = "Health status of the ${aws_redshift_cluster.analytics.cluster_identifier} Redshift cluster"
+
+  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+
+  metric_name = "HealthStatus"
+  namespace   = "AWS/Redshift"
+  dimensions = {
+    ClusterIdentifier = aws_redshift_cluster.analytics.cluster_identifier
+  }
+
+  comparison_operator = "LessThanThreshold"
+  statistic           = "Minimum"
+  treat_missing_data  = "missing"
+
+  threshold           = 1
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 2
+}
+
+resource "aws_cloudwatch_metric_alarm" "redshift_maintenance_mode" {
+  alarm_name        = format("redshift-%s-maintenance-mode", aws_redshift_cluster.analytics.cluster_identifier)
+  alarm_description = "Maintenance mode of the ${aws_redshift_cluster.analytics.cluster_identifier} Redshift cluster"
+
+  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+
+  metric_name = "MaintenanceMode"
+  namespace   = "AWS/Redshift"
+  dimensions = {
+    ClusterIdentifier = aws_redshift_cluster.analytics.cluster_identifier
+  }
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  statistic           = "Maximum"
+  treat_missing_data  = "missing"
+
+  threshold           = 1
+  period              = 60
+  evaluation_periods  = 5
+  datapoints_to_alarm = 2
+}
+
+resource "aws_cloudwatch_metric_alarm" "redshift_disk_space_used" {
+  alarm_name        = format("redshift-%s-disk-space-used", aws_redshift_cluster.analytics.cluster_identifier)
+  alarm_description = "Max percentage of disk space used among the nodes of the ${aws_redshift_cluster.analytics.cluster_identifier} Redshift cluster"
+
+  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+
+  metric_query {
+    id          = "e1"
+    label       = "Max disk space used"
+    return_data = "true"
+
+    expression = "SELECT MAX(PercentageDiskSpaceUsed) FROM SCHEMA(\"AWS/Redshift\", \"ClusterIdentifier\", \"NodeID\")"
+    period     = 60 # 1 minute
+  }
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "missing"
+
+  threshold           = 40
+  evaluation_periods  = 5
+  datapoints_to_alarm = 2
+}

@@ -41,7 +41,7 @@ variable "vpn_clients_security_group_id" {
 }
 
 variable "eks_cluster_name" {
-  type = string
+  type        = string
   description = "Name of the EKS cluster accessing the analytics cluster"
 }
 
@@ -75,4 +75,9 @@ variable "redshift_cluster_port" {
 variable "jwt_details_bucket_name" {
   type        = string
   description = "Name of the S3 Bucket containing the generated jwt to be ingested in Redshift"
+}
+
+variable "sns_topic_name" {
+  description = "Name of the SNS topic for alarms notifications"
+  type        = string
 }
