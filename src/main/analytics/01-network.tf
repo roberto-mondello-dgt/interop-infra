@@ -49,3 +49,9 @@ resource "aws_redshift_subnet_group" "analytics" {
   name       = format("%s-analytics-%s", local.project, var.env)
   subnet_ids = var.analytics_subnet_ids
 }
+
+resource "aws_redshift_endpoint_authorization" "analytics_tracing" {
+  account            = var.tracing_aws_account_id
+  cluster_identifier = aws_redshift_cluster.analytics.cluster_identifier
+  vpc_ids            = [var.tracing_vpc_id]
+}

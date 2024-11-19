@@ -77,6 +77,16 @@ variable "jwt_details_bucket_name" {
   description = "Name of the S3 Bucket containing the generated jwt to be ingested in Redshift"
 }
 
+variable "tracing_aws_account_id" {
+  type        = string
+  description = "ID of the Tracing AWS account"
+}
+
+variable "tracing_vpc_id" {
+  type        = string
+  description = "ID of the VPC in the Tracing AWS account"
+}
+
 variable "sns_topic_name" {
   description = "Name of the SNS topic for alarms notifications"
   type        = string

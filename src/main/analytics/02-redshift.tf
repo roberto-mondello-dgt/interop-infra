@@ -83,8 +83,10 @@ resource "aws_redshift_cluster" "analytics" {
   node_type       = var.redshift_cluster_nodes_type
 
   cluster_subnet_group_name = aws_redshift_subnet_group.analytics.name
-  multi_az                  = true
+  multi_az                  = false
   vpc_security_group_ids    = [aws_security_group.analytics.id]
+
+  availability_zone_relocation_enabled = true
 
   publicly_accessible = false
   port                = var.redshift_cluster_port
