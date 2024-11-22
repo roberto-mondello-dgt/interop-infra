@@ -64,6 +64,67 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_5xx" {
   }
 }
 
+resource "aws_cloudwatch_metric_alarm" "on_call_token_4xx" {
+  count = local.on_call_env ? 1 : 0
+
+  alarm_name = format("on-call-apigw-token-4xx-%s", var.env)
+
+  alarm_actions = [aws_sns_topic.on_call_opsgenie[0].arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  threshold           = 60 # 60%
+  evaluation_periods  = 60 # 60 periods, 1 minute each
+  datapoints_to_alarm = 30 # 30 periods breaching the threshold in the last N evaluation_periods
+  treat_missing_data  = "notBreaching"
+
+  metric_query {
+    id          = "e1"
+    label       = "4xxPercentage"
+    expression  = "(m1/m2)*100"
+    return_data = true
+  }
+
+  metric_query {
+    id          = "m1"
+    label       = "PostToken4xx"
+    return_data = false
+
+    metric {
+      stat        = "Sum"
+      period      = 60 # 1 minute
+      metric_name = "4XXError"
+      namespace   = "AWS/ApiGateway"
+
+      dimensions = {
+        ApiName  = module.interop_auth_apigw.apigw_name
+        Stage    = var.env
+        Method   = "POST"
+        Resource = "/token.oauth2"
+      }
+    }
+  }
+
+  metric_query {
+    id          = "m2"
+    label       = "PostTokenCount"
+    return_data = false
+
+    metric {
+      stat        = "Sum"
+      period      = 60 # 1 minute
+      metric_name = "Count"
+      namespace   = "AWS/ApiGateway"
+
+      dimensions = {
+        ApiName  = module.interop_auth_apigw.apigw_name
+        Stage    = var.env
+        Method   = "POST"
+        Resource = "/token.oauth2"
+      }
+    }
+  }
+}
+
 locals {
   on_call_deployments = local.on_call_env ? {
     auth_server     = "interop-be-authorization-server"
