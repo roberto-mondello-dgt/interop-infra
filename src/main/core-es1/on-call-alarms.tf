@@ -12,8 +12,8 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_5xx" {
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = 60 # 60%
-  evaluation_periods  = 60 # 60 periods, 1 minute each
-  datapoints_to_alarm = 30 # 30 periods breaching the threshold in the last N evaluation_periods
+  evaluation_periods  = 15 # 60 periods, 1 minute each
+  datapoints_to_alarm = 3 # 3 periods breaching the threshold in the last N evaluation_periods
   treat_missing_data  = "notBreaching"
 
   metric_query {
@@ -73,8 +73,8 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_4xx" {
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = 60 # 60%
-  evaluation_periods  = 60 # 60 periods, 1 minute each
-  datapoints_to_alarm = 30 # 30 periods breaching the threshold in the last N evaluation_periods
+  evaluation_periods  = 15 # 60 periods, 1 minute each
+  datapoints_to_alarm = 3 # 3 periods breaching the threshold in the last N evaluation_periods
   treat_missing_data  = "notBreaching"
 
   metric_query {
