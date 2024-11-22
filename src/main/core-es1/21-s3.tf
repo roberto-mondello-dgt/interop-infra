@@ -642,3 +642,19 @@ module "application_import_export_bucket" {
     }
   ]
 }
+
+module "datalake_interfaces_export_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "~> 3.14.1"
+
+  bucket = format("interop-datalake-interfaces-export-%s-es1", var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+}

@@ -249,6 +249,12 @@ variable "data_lake_external_id" {
   default     = null
 }
 
+variable "data_lake_interfaces_bucket_arn" {
+  description = "ARN of the DataLake interfaces bucket"
+  type = string
+  default = null
+}
+
 variable "probing_registry_reader_role_arn" {
   description = "ARN of the role used by the probing registry reader to access the bucket containing eservices list"
   type        = string
