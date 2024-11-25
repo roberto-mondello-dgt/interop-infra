@@ -1007,3 +1007,38 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_datalake_interface_exporter" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeDataLakeInterfaceExporterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
+          "${local.msk_group_iam_prefix}/*datalake-interface-exporter"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+        ]
+        Resource = format("%s/*", module.datalake_interface_export_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}

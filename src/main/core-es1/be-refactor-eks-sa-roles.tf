@@ -593,3 +593,25 @@ module "be_refactor_purpose_platformstate_writer_irsa" {
     be_purpose_platformstate_writer = aws_iam_policy.be_refactor_purpose_platformstate_writer[0].arn
   }
 }
+
+module "be_datalake_interface_exporter_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-datalake-interface-exporter-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-datalake-interface-export-consumer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_datalake_interface_exporter = aws_iam_policy.be_datalake_interface_exporter[0].arn
+  }
+}

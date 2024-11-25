@@ -126,3 +126,37 @@ module "archived_agreements_for_eservices_queue_monitoring" {
   alarm_threshold_seconds = "4500" # 1 hour 30 minutes
   alarm_sns_topic_arn     = aws_sns_topic.platform_alarms.arn
 }
+
+module "s3_replication_failed_queue" {
+  source  = "terraform-aws-modules/sqs/aws"
+  version = "4.2.1"
+
+  name = "s3-replication-failed-events"
+
+  sqs_managed_sse_enabled = false
+
+  visibility_timeout_seconds = 30
+  max_message_size           = 262144
+  message_retention_seconds  = 1209600
+
+  create_queue_policy = true
+  queue_policy_statements = {
+    sns = {
+      sid     = "S3EventsPublish"
+      actions = ["sqs:SendMessage"]
+
+      principals = [
+        {
+          type        = "Service"
+          identifiers = ["s3.amazonaws.com"]
+        }
+      ]
+
+      conditions = [{
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = [data.aws_caller_identity.current.account_id]
+      }]
+    }
+  }
+}

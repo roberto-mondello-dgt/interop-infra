@@ -50,7 +50,7 @@ dns_interop_base_domain = "interop.pagopa.it"
 
 data_lake_account_id  = "688071769384"
 data_lake_external_id = "ac94a267-b8fc-4ecc-8294-8302795e8ba3"
-#data_lake_interfaces_bucket_arn = "arn:aws:s3:::pdnd-prod-dl-1"
+data_lake_interfaces_bucket_arn = "arn:aws:s3:::pdnd-prod-dl-1"
 
 probing_registry_reader_role_arn = "arn:aws:iam::774300547186:role/application/eks/pods/interop-be-probing-registry-reader-dev"
 probing_domain_ns_records = [
@@ -156,6 +156,7 @@ be_refactor_k8s_monitoring_internal_deployments_names = [
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-compute-agreements-consumer",
+  "interop-be-datalake-interface-export",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",

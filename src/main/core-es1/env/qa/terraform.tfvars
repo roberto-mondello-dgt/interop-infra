@@ -89,6 +89,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-agreement-outbound-writer",
   "interop-be-certified-mail-sender",
   "interop-be-catalog-outbound-writer",
+  "interop-be-datalake-interface-export",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-purpose-outbound-writer",
