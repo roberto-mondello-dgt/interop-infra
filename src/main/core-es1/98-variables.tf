@@ -251,8 +251,8 @@ variable "data_lake_external_id" {
 
 variable "data_lake_interfaces_bucket_arn" {
   description = "ARN of the DataLake interfaces bucket"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 
 variable "probing_registry_reader_role_arn" {

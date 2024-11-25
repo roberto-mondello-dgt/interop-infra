@@ -83,7 +83,7 @@ resource "aws_s3_bucket_replication_configuration" "datalake_interface_export" {
     }
 
     destination {
-      account = var.data_lake_account_id
+      account       = var.data_lake_account_id
       bucket        = var.data_lake_interfaces_bucket_arn
       storage_class = "STANDARD"
 

@@ -815,7 +815,7 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "MSKAgreementEvents"
+        Sid    = "MSKAgreementEvents"
         Effect = "Allow"
         Action = [
           "kafka-cluster:AlterGroup",
@@ -831,7 +831,7 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
         ]
       },
       {
-        Sid = "DynamoDBPlatformStates"
+        Sid    = "DynamoDBPlatformStates"
         Effect = "Allow"
         Action = [
           "dynamodb:DeleteItem",
@@ -843,7 +843,7 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
         Resource = aws_dynamodb_table.platform_states[0].arn
       },
       {
-        Sid = "DynamoDBTokenGenStates"
+        Sid    = "DynamoDBTokenGenStates"
         Effect = "Allow"
         Action = [
           "dynamodb:GetItem",
@@ -865,7 +865,7 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "MSKAgreementEvents"
+        Sid    = "MSKAgreementEvents"
         Effect = "Allow"
         Action = [
           "kafka-cluster:AlterGroup",
@@ -881,7 +881,7 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
         ]
       },
       {
-        Sid = "DynamoDBPlatformStates"
+        Sid    = "DynamoDBPlatformStates"
         Effect = "Allow"
         Action = [
           "dynamodb:DeleteItem",
@@ -893,7 +893,7 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
         Resource = aws_dynamodb_table.platform_states[0].arn
       },
       {
-        Sid = "DynamoDBTokenGenStates"
+        Sid    = "DynamoDBTokenGenStates"
         Effect = "Allow"
         Action = [
           "dynamodb:DeleteItem",
@@ -917,7 +917,7 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "MSKAgreementEvents"
+        Sid    = "MSKAgreementEvents"
         Effect = "Allow"
         Action = [
           "kafka-cluster:AlterGroup",
@@ -933,7 +933,7 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
         ]
       },
       {
-        Sid = "DynamoDBPlatformStates"
+        Sid    = "DynamoDBPlatformStates"
         Effect = "Allow"
         Action = [
           "dynamodb:DeleteItem",
@@ -945,7 +945,7 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
         Resource = aws_dynamodb_table.platform_states[0].arn
       },
       {
-        Sid = "DynamoDBTokenGenStates"
+        Sid    = "DynamoDBTokenGenStates"
         Effect = "Allow"
         Action = [
           "dynamodb:GetItem",
@@ -967,7 +967,7 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "MSKAgreementEvents"
+        Sid    = "MSKAgreementEvents"
         Effect = "Allow"
         Action = [
           "kafka-cluster:AlterGroup",
@@ -983,7 +983,7 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
         ]
       },
       {
-        Sid = "DynamoDBPlatformStates"
+        Sid    = "DynamoDBPlatformStates"
         Effect = "Allow"
         Action = [
           "dynamodb:DeleteItem",
@@ -995,7 +995,7 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
         Resource = aws_dynamodb_table.platform_states[0].arn
       },
       {
-        Sid = "DynamoDBTokenGenStates"
+        Sid    = "DynamoDBTokenGenStates"
         Effect = "Allow"
         Action = [
           "dynamodb:GetItem",
