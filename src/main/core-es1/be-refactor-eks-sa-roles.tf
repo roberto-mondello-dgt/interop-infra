@@ -607,7 +607,7 @@ module "be_datalake_interface_exporter_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-datalake-interface-export-consumer"]
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-datalake-interface-exporter"]
     }
   }
 

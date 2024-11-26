@@ -79,7 +79,7 @@ resource "aws_s3_bucket_replication_configuration" "datalake_interface_export" {
     }
 
     delete_marker_replication {
-      status = "Disabled"
+      status = "Enabled"
     }
 
     destination {
