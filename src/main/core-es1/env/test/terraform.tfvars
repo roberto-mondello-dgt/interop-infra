@@ -49,8 +49,9 @@ github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.15.0
 
 dns_interop_base_domain = "interop.pagopa.it"
 
-data_lake_account_id  = "688071769384"
-data_lake_external_id = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
+data_lake_account_id            = "688071769384"
+data_lake_external_id           = "e6383ad7-ca3e-441e-9220-ecc45869b58a"
+data_lake_interfaces_bucket_arn = "arn:aws:s3:::pdnd-prod-dl-1"
 
 probing_registry_reader_role_arn = "arn:aws:iam::010158505074:role/application/eks/pods/interop-be-probing-registry-reader-uat"
 probing_domain_ns_records = [
@@ -112,7 +113,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-compute-agreements-consumer",
-  "interop-be-datalake-interface-export",
+  "interop-be-datalake-interface-exporter",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",

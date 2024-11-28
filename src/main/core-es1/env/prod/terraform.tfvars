@@ -94,8 +94,9 @@ tracing_domain_ns_records = [
   "ns-405.awsdns-50.com."
 ]
 
-data_lake_account_id  = "688071769384"
-data_lake_external_id = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
+data_lake_account_id            = "688071769384"
+data_lake_external_id           = "2d1cd942-284f-4448-a8f0-2aa403b064b1"
+data_lake_interfaces_bucket_arn = "arn:aws:s3:::pdnd-prod-dl-1"
 
 interop_frontend_assets_openapi_path = "./openapi/prod/interop-frontend-assets-integrated.yaml"
 interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-proxy.yaml"
@@ -150,7 +151,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-compute-agreements-consumer",
-  "interop-be-datalake-interface-export",
+  "interop-be-datalake-interface-exporter",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",

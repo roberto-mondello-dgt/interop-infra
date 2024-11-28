@@ -595,8 +595,6 @@ module "be_refactor_purpose_platformstate_writer_irsa" {
 }
 
 module "be_datalake_interface_exporter_irsa" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
-
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
