@@ -87,6 +87,7 @@ k8s_monitoring_deployments_names = [
   "interop-be-authorization-server",
   "interop-be-backend-for-frontend",
   "interop-be-catalog-process",
+  "interop-be-delegation-process",
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
   "interop-be-purpose-process",
@@ -97,14 +98,26 @@ k8s_monitoring_deployments_names = [
 
 # (dev NS) deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
+  "debezium-postgresql",
+  "interop-be-agreement-email-sender",
   "interop-be-agreement-outbound-writer",
-  "interop-be-certified-mail-sender",
+  "interop-be-agreement-readmodel-writer",
+  "interop-be-attribute-registry-readmodel-writer",
+  "interop-be-authorization-updater",
   "interop-be-catalog-outbound-writer",
+  "interop-be-catalog-readmodel-writer",
+  "interop-be-certified-mail-sender",
+  "interop-be-compute-agreements-consumer",
+  "interop-be-datalake-interface-exporter",
+  "interop-be-delegation-readmodel-writer",
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
+  "interop-be-notifier-seeder",
   "interop-be-purpose-outbound-writer",
+  "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
   "interop-be-tenant-outbound-writer",
+  "interop-be-tenant-readmodel-writer",
   "redis"
 ]
 

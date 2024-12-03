@@ -767,7 +767,10 @@ resource "aws_iam_policy" "be_refactor_authorization_server" {
           "dynamodb:GetItem",
           "dynamodb:Query"
         ]
-        Resource = aws_dynamodb_table.token_generation_states[0].arn
+        Resource = [
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
+        ]
       },
       {
         Sid      = "KMSGenerateToken"
@@ -840,7 +843,10 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.platform_states[0].arn
+        Resource = [
+          aws_dynamodb_table.platform_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
+        ]
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -850,7 +856,10 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.token_generation_states[0].arn
+        Resource = [
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
+        ]
       }
     ]
   })
@@ -890,7 +899,10 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.platform_states[0].arn
+        Resource = [
+          aws_dynamodb_table.platform_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
+        ]
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -902,7 +914,10 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.token_generation_states[0].arn
+        Resource = [
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
+        ]
       }
     ]
   })
@@ -942,7 +957,10 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.platform_states[0].arn
+        Resource = [
+          aws_dynamodb_table.platform_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
+        ]
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -952,7 +970,10 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.token_generation_states[0].arn
+        Resource = [
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
+        ]
       }
     ]
   })
@@ -992,7 +1013,10 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.platform_states[0].arn
+        Resource = [
+          aws_dynamodb_table.platform_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
+        ]
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -1002,7 +1026,10 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = aws_dynamodb_table.token_generation_states[0].arn
+        Resource = [
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
+        ]
       }
     ]
   })
@@ -1045,6 +1072,33 @@ resource "aws_iam_policy" "be_datalake_interface_exporter" {
           "s3:PutObject",
         ]
         Resource = format("%s/*", module.datalake_interface_export_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_delegation_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeDelegationReadModelWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_delegation.events",
+          "${local.msk_group_iam_prefix}/*delegation-readmodel-writer"
+        ]
       }
     ]
   })
