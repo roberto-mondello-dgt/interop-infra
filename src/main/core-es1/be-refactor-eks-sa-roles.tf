@@ -497,7 +497,7 @@ module "be_refactor_authorization_server_irsa" {
   oidc_providers = {
     cluster = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-authorization-server"]
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-authorization-server*"] : ["${local.k8s_namespace_irsa}:interop-be-authorization-server"]
     }
   }
 
