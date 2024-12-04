@@ -801,7 +801,7 @@ resource "aws_iam_policy" "be_refactor_authorization_server" {
 
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
-          "${local.msk_topic_iam_prefix}/*-authorization-server.generated-jwt",
+          "${local.msk_topic_iam_prefix}/*_authorization-server.generated-jwt",
           "${local.msk_group_iam_prefix}/*-authorization-server"
         ]
       }
@@ -1099,6 +1099,26 @@ resource "aws_iam_policy" "be_delegation_readmodel_writer" {
           "${local.msk_topic_iam_prefix}/event-store.*_delegation.events",
           "${local.msk_group_iam_prefix}/*delegation-readmodel-writer"
         ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_delegation_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeDelegationProcessPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = [format("%s/*", module.application_documents_bucket.s3_bucket_arn)]
       }
     ]
   })
