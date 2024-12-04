@@ -45,7 +45,7 @@ resource "kubernetes_config_map_v1" "dev_refactor_kafka_connect_distributed" {
 
 locals {
   dev_ref_debezium_include_schema_prefix = "dev-refactor"
-  dev_ref_debezium_app_schemas           = ["agreement", "attribute_registry", "authorization", "catalog", "purpose", "tenant"]
+  dev_ref_debezium_app_schemas           = ["agreement", "attribute_registry", "authorization", "catalog", "delegation", "purpose", "tenant"]
 
   dev_ref_debezium_fq_table_names         = [for schema in local.dev_ref_debezium_app_schemas : format("%s_%s.events", local.dev_ref_debezium_include_schema_prefix, schema)]
   dev_ref_debezium_escaped_fq_table_names = [for fq_name in local.dev_ref_debezium_fq_table_names : format("\\\"%s\\\".\\\"%s\\\"", split(".", fq_name)[0], split(".", fq_name)[1])]
