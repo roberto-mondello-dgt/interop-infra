@@ -62,9 +62,14 @@ resource "aws_dynamodb_table" "token_generation_states" {
   global_secondary_index {
     name = "Agreement"
 
-    hash_key           = "GSIPK_consumerId_eserviceId"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["agreementState"] # implicit include: table and GSI HK, SK
+    hash_key        = "GSIPK_consumerId_eserviceId"
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "agreementState",
+      "descriptorState",
+      "descriptorAudience",
+      "descriptorVoucherLifespan"
+    ] # implicit include: table and GSI HK, SK
   }
 
   global_secondary_index {
@@ -78,14 +83,30 @@ resource "aws_dynamodb_table" "token_generation_states" {
     name = "Purpose"
 
     hash_key        = "GSIPK_purposeId"
-    projection_type = "KEYS_ONLY" # implicit include: table and GSI HK, SK
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "agreementId",
+      "agreementState",
+      "GSIPK_eserviceId_descriptorId",
+      "descriptorAudience",
+      "descriptorState",
+      "descriptorVoucherLifespan",
+      "purposeState",
+      "purposeVersionId"
+    ] # implicit include: table and GSI HK, SK
   }
 
   global_secondary_index {
     name = "Client"
 
     hash_key        = "GSIPK_clientId"
-    projection_type = "KEYS_ONLY" # implicit include: table and GSI HK, SK
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "consumerId",
+      "clientKind",
+      "GSIPK_kid",
+      "publicKey"
+    ] # implicit include: table and GSI HK, SK
   }
 
   global_secondary_index {
@@ -99,6 +120,14 @@ resource "aws_dynamodb_table" "token_generation_states" {
     name = "ClientPurpose"
 
     hash_key        = "GSIPK_clientId_purposeId"
-    projection_type = "KEYS_ONLY" # implicit include: table and GSI HK, SK
+    projection_type = "INCLUDE"
+    non_key_attributes = [
+      "GSIPK_clientId",
+      "GSIPK_kid",
+      "GSIPK_purposeId",
+      "consumerId",
+      "clientKind",
+      "publicKey"
+    ] # implicit include: table and GSI HK, SK
   }
 }
