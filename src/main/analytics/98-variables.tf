@@ -80,11 +80,13 @@ variable "jwt_details_bucket_name" {
 variable "tracing_aws_account_id" {
   type        = string
   description = "ID of the Tracing AWS account"
+  default     = null
 }
 
 variable "tracing_vpc_id" {
   type        = string
   description = "ID of the VPC in the Tracing AWS account"
+  default     = null
 }
 
 variable "sns_topic_name" {

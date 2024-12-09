@@ -51,6 +51,8 @@ resource "aws_redshift_subnet_group" "analytics" {
 }
 
 resource "aws_redshift_endpoint_authorization" "analytics_tracing" {
+  count = var.tracing_aws_account_id != null && var.tracing_vpc_id != null ? 1 : 0
+
   account            = var.tracing_aws_account_id
   cluster_identifier = aws_redshift_cluster.analytics.cluster_identifier
   vpc_ids            = [var.tracing_vpc_id]
