@@ -162,3 +162,29 @@ resource "aws_cloudwatch_metric_alarm" "on_call_unavailable_pods" {
     Namespace   = var.env
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "on_call_readiness_pods" {
+  for_each = local.on_call_deployments
+
+  alarm_name        = format("on-call-k8s-%s-readiness-pods-%s", replace(each.key, "_", "-"), var.env)
+  alarm_description = format("No ready pods for %s K8s deployment", each.value)
+
+  alarm_actions = [aws_sns_topic.on_call_opsgenie[0].arn]
+
+  comparison_operator = "LessThanThreshold"
+  statistic           = "Minimum"
+  threshold           = 1
+  period              = 60 # 1 minute
+  evaluation_periods  = 10 # 10 periods, 1 minute each
+  datapoints_to_alarm = 5  # 5 periods breaching the threshold in the last N evaluation_periods
+  treat_missing_data  = "missing"
+
+  metric_name = "kube_deployment_status_replicas_ready"
+  namespace   = "ContainerInsights"
+
+  dimensions = {
+    ClusterName = module.eks.cluster_name
+    Service     = each.value
+    Namespace   = var.env
+  }
+}

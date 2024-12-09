@@ -419,6 +419,7 @@ resource "kubernetes_config_map_v1" "adot_collector" {
               metric_names:
                 - kube_deployment_status_replicas.*
                 - kube_statefulset_status_replicas.*
+                - kube_deployment_spec_replicas.*
 
         # convert cumulative sum datapoints to delta
         cumulativetodelta:
@@ -627,6 +628,8 @@ resource "kubernetes_config_map_v1" "adot_collector" {
                 - kube_deployment_status_replicas_available
                 - kube_statefulset_status_replicas
                 - kube_statefulset_status_replicas_available
+                - kube_deployment_spec_replicas
+                - kube_deployment_status_replicas_ready
 
       extensions:
         health_check:
