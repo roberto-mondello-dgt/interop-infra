@@ -37,7 +37,12 @@ Once access is established, you can reference a specific module by defining the 
 
 ```
 module "example" {
-  source = "git::https://github.com/[USERNAME]/[REPOSITORY_NAME]//[PATH_TO_MODULE]?ref=[BRANCH_NAME/TAG]"
+  source = "git@github.com:[USERNAME]/[REPOSITORY_NAME]//[PATH_TO_MODULE]?ref=[BRANCH_NAME/TAG]"
+  ...
+}
+
+module "example_2" {
+  source = "git@github.com:pagopa/interop-infra-commons//terraform/modules/k8s-deployment-monitoring?ref=v1.3.5"
   ...
 }
 ```
