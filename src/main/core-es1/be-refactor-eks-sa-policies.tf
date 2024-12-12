@@ -1155,3 +1155,36 @@ resource "aws_iam_policy" "be_refactor_token_details_persister" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_client_purpose_updater" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeClientPurposeUpdaterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_group_iam_prefix}/*client-purpose-updater"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      }
+    ]
+  })
+}
