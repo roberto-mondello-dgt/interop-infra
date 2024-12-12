@@ -1123,3 +1123,35 @@ resource "aws_iam_policy" "be_delegation_process" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_refactor_token_details_persister" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeTokenDetailsPersisterRefactorEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_authorization-server.generated-jwt",
+          "${local.msk_group_iam_prefix}/*token-details-persister"
+        ]
+      },
+      {
+        Effect   = "Allow",
+        Action   = "s3:PutObject",
+        Resource = format("%s/*", module.generated_jwt_details_bucket.s3_bucket_arn)
+      }
+    ]
+  })
+}
