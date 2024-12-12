@@ -40,6 +40,17 @@
           "scope": "cluster"
         }
       ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::755649575658:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_InteropKMSUser_8830957e1555d39b",
+      "kubernetes_groups": ["port-forwarders-group"],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "namespace",
+          "namespaces": ["default", "qa"]
+        }
+      ]
     }
   ]
 }
