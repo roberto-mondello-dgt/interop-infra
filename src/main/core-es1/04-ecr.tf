@@ -24,6 +24,7 @@ locals {
     "interop-be-catalog-process",
     "interop-be-catalog-readmodel-writer",
     "interop-be-certified-mail-sender",
+    "interop-be-client-purpose-updater",
     "interop-be-client-readmodel-writer",
     "interop-be-compute-agreements-consumer",
     "interop-be-dashboard-metrics-report-generator",
