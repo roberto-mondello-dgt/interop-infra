@@ -94,6 +94,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-authorization-updater",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
+  "interop-be-client-purpose-updater",
   "interop-be-compute-agreements-consumer",
   "interop-be-datalake-interface-exporter",
   "interop-be-delegation-readmodel-writer",

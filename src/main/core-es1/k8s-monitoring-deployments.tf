@@ -10,7 +10,7 @@ module "k8s_deployment_monitoring" {
   k8s_deployment_name = each.key
   sns_topics_arns     = [aws_sns_topic.platform_alarms.arn]
 
-  create_pod_availability_alarm = true
+  create_pod_availability_alarm = var.env == "prod"
   create_pod_readiness_alarm    = true
   create_performance_alarm      = true
   create_app_logs_errors_alarm  = true
@@ -37,7 +37,7 @@ module "be_refactor_k8s_deployment_monitoring" {
   k8s_deployment_name = each.key
   sns_topics_arns     = [aws_sns_topic.be_refactor_platform_alarms[0].arn]
 
-  create_pod_availability_alarm = true
+  create_pod_availability_alarm = var.env == "prod"
   create_pod_readiness_alarm    = true
   create_performance_alarm      = true
   create_app_logs_errors_alarm  = true
@@ -64,7 +64,7 @@ module "k8s_adot_monitoring" {
   k8s_deployment_name = "adot-collector"
   sns_topics_arns     = [aws_sns_topic.platform_alarms.arn]
 
-  create_pod_availability_alarm = true
+  create_pod_availability_alarm = var.env == "prod"
   create_pod_readiness_alarm    = true
   create_performance_alarm      = true
   create_app_logs_errors_alarm  = true
