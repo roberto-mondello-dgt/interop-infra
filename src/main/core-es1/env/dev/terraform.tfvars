@@ -91,7 +91,6 @@ k8s_monitoring_deployments_names = [
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
   "interop-be-purpose-process",
-  "interop-be-tenant-management",
   "interop-be-tenant-process",
   "interop-frontend"
 ]
@@ -155,7 +154,6 @@ be_refactor_k8s_monitoring_deployments_names = [
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
   "interop-be-purpose-process",
-  "interop-be-tenant-management",
   "interop-be-tenant-process",
   "interop-frontend",
 ]
