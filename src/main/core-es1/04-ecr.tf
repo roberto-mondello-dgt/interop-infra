@@ -30,6 +30,7 @@ locals {
     "interop-be-dashboard-metrics-report-generator",
     "interop-be-datalake-data-export",
     "interop-be-datalake-interface-exporter",
+    "interop-be-delegation-outbound-writer",
     "interop-be-delegation-process",
     "interop-be-delegation-readmodel-writer",
     "interop-be-dtd-catalog-exporter",
