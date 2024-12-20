@@ -136,6 +136,7 @@ resource "aws_iam_role" "github_runner_task" {
               aws_msk_cluster.platform_events[0].arn,
               "${local.msk_topic_iam_prefix}/event-store.*",
               "${local.msk_topic_iam_prefix}/outbound.*",
+              "${local.msk_topic_iam_prefix}/*_authorization-server.generated-jwt",
             ]
           }
         ]
