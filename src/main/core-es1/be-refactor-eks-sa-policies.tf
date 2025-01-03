@@ -843,10 +843,12 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.platform_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_platform_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_platform_states[0].arn), "")
+        ])
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -856,10 +858,12 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.token_generation_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_token_generation_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_token_generation_states[0].arn), "")
+        ])
       }
     ]
   })
@@ -899,10 +903,12 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.platform_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_platform_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_platform_states[0].arn), "")
+        ])
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -914,10 +920,12 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.token_generation_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_token_generation_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_token_generation_states[0].arn), "")
+        ])
       }
     ]
   })
@@ -957,10 +965,12 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.platform_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_platform_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_platform_states[0].arn), "")
+        ])
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -970,10 +980,12 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.token_generation_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_token_generation_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_token_generation_states[0].arn), "")
+        ])
       }
     ]
   })
@@ -1013,10 +1025,12 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.platform_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_platform_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_platform_states[0].arn), "")
+        ])
       },
       {
         Sid    = "DynamoDBTokenGenStates"
@@ -1026,10 +1040,12 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
           "dynamodb:Query",
           "dynamodb:UpdateItem"
         ]
-        Resource = [
+        Resource = compact([
           aws_dynamodb_table.token_generation_states[0].arn,
-          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn)
-        ]
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_token_generation_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_token_generation_states[0].arn), "")
+        ])
       }
     ]
   })
