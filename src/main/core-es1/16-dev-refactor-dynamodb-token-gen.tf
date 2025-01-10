@@ -91,15 +91,15 @@ resource "aws_dynamodb_table" "dev_refactor_token_generation_states" {
     non_key_attributes = [
       "consumerId",
       "clientKind",
-      "GSIPK_kid",
+      "GSIPK_clientId_kid",
       "publicKey"
     ] # implicit include: table and GSI HK, SK
   }
 
   global_secondary_index {
-    name = "Kid"
+    name = "ClientKid"
 
-    hash_key        = "GSIPK_kid"
+    hash_key        = "GSIPK_clientId_kid"
     projection_type = "KEYS_ONLY" # implicit include: table and GSI HK, SK
   }
 
@@ -110,7 +110,7 @@ resource "aws_dynamodb_table" "dev_refactor_token_generation_states" {
     projection_type = "INCLUDE"
     non_key_attributes = [
       "GSIPK_clientId",
-      "GSIPK_kid",
+      "GSIPK_clientId_kid",
       "GSIPK_purposeId",
       "consumerId",
       "clientKind",
