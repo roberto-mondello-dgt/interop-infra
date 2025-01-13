@@ -21,38 +21,12 @@ locals {
     {
       name  = "rds.force_ssl"
       value = 1
-    },
-    { name = "rds.logical_replication", value = 1, apply_method = "pending-reboot" }    
-  ]
-
-  platform_data_pgaudit_parameters = [
-    {
-      name         = "shared_preload_libraries" # Writer replica needs reboot; then log on the replica and execute "CREATE EXTENSION pgaudit;" command
-      value        = "pg_stat_statements,pgaudit"
-      apply_method = "pending-reboot"
-    },
-    {
-      name  = "log_connections"
-      value = 1
-    },
-    {
-      name  = "log_disconnections"
-      value = 1
-    },
-    {
-      name  = "pgaudit.log"
-      value = "all"
-    },
-    {
-      name  = "pgaudit.log_level" # Allowed values: debug5, debug4, debug3, debug2, debug1, info, notice, warning, log
-      value = "info"
     }
   ]
-
-  platform_data_parameters = (local.deploy_pgaudit
-    ? concat(local.platform_data_common_parameters, local.platform_data_pgaudit_parameters )
+  # TODO: temporary, refactor/remove
+  platform_data_parameters = (local.deploy_be_refactor_infra
+    ? concat(local.platform_data_common_parameters, [{ name = "rds.logical_replication", value = 1, apply_method = "pending-reboot" }])
   : local.platform_data_common_parameters)
-
 }
 
 module "platform_data" {
@@ -140,7 +114,7 @@ module "platform_data" {
   final_snapshot_identifier = format("%s-platform-data-%s-final", var.short_name, var.env)
 
   create_cloudwatch_log_group            = true
-  enabled_cloudwatch_logs_exports        = ["postgresql", "audit"]
+  enabled_cloudwatch_logs_exports        = ["postgresql"]
   cloudwatch_log_group_retention_in_days = var.env == "prod" ? 180 : 30
 
   create_monitoring_role                = true
