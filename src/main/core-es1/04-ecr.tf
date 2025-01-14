@@ -68,6 +68,7 @@ locals {
     "interop-be-tenants-attributes-checker",
     "interop-be-tenants-cert-attr-updater",
     "interop-be-token-details-persister",
+    "interop-be-token-generation-readmodel-checker",
     "interop-debezium-postgresql",
     "interop-frontend",
   ]
