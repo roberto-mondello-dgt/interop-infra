@@ -723,3 +723,25 @@ module "be_delegation_outbound_writer_irsa" {
     be_delegation_outbound_writer = aws_iam_policy.be_delegation_outbound_writer[0].arn
   }
 }
+
+module "be_refactor_token_generation_readmodel_checker_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-token-generation-readmodel-checker-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-token-generation-readmodel-checker"]
+    }
+  }
+
+  role_policy_arns = {
+    be_refactor_token_generation_readmodel_checker = aws_iam_policy.be_refactor_token_generation_readmodel_checker[0].arn
+  }
+}

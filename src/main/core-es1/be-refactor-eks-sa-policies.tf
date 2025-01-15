@@ -1252,3 +1252,34 @@ resource "aws_iam_policy" "be_delegation_outbound_writer" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_refactor_token_generation_readmodel_checker" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = "InteropBeRefactorTokenGenerationReadmodelCheckerEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "DynamoDBAuthServerTables"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ]
+        Resource = compact([
+          aws_dynamodb_table.platform_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.platform_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_platform_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_platform_states[0].arn), ""),
+          aws_dynamodb_table.token_generation_states[0].arn,
+          format("%s/index/*", aws_dynamodb_table.token_generation_states[0].arn),
+          try(aws_dynamodb_table.dev_refactor_token_generation_states[0].arn, ""),
+          try(format("%s/index/*", aws_dynamodb_table.dev_refactor_token_generation_states[0].arn), "")
+        ])
+      }
+    ]
+  })
+}

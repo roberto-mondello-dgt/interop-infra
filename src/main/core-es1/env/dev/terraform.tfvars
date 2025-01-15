@@ -138,7 +138,8 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-party-registry-proxy-refresher",
   "interop-be-pn-consumers",
   "interop-be-tenants-cert-attr-updater",
-  "interop-be-token-details-persister"
+  "interop-be-token-details-persister",
+  "interop-be-token-generation-readmodel-checker"
 ]
 
 # (dev-refactor NS) deployments which can be monitored using response HTTP status codes through APIGW
@@ -195,5 +196,6 @@ be_refactor_k8s_monitoring_cronjobs_names = [
   "interop-be-party-registry-proxy-refresher",
   "interop-be-pn-consumers",
   "interop-be-tenants-cert-attr-updater",
-  "interop-be-token-details-persister"
+  "interop-be-token-details-persister",
+  "interop-be-token-generation-readmodel-checker"
 ]
