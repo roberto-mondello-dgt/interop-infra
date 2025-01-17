@@ -117,3 +117,11 @@ resource "aws_secretsmanager_secret" "opsgenie_endpoint" {
 
   name = "opsgenie-integration-endpoint-${var.env}"
 }
+
+resource "aws_secretsmanager_secret" "support_saml_cert" {
+  name = "interop-support-saml-x509-cert"
+}
+
+resource "aws_secretsmanager_secret" "support_saml_public_key" {
+  name = "interop-support-saml-x509-public-key"
+}
