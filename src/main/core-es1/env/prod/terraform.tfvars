@@ -123,6 +123,7 @@ vpn_saml_metadata_path = "./assets/saml-metadata/interop-vpn-saml-prod.xml"
 
 # deployments which can be monitored using response HTTP status codes through APIGW
 k8s_monitoring_deployments_names = [
+  "interop-be-agreement-outbound-writer",
   "interop-be-agreement-process",
   "interop-be-api-gateway",
   "interop-be-attribute-registry-process",
@@ -130,11 +131,14 @@ k8s_monitoring_deployments_names = [
   "interop-be-authorization-process",
   "interop-be-authorization-server",
   "interop-be-backend-for-frontend",
+  "interop-be-catalog-outbound-writer",
   "interop-be-catalog-process",
   "interop-be-delegation-process",
   "interop-be-notifier",
   "interop-be-party-registry-proxy",
+  "interop-be-purpose-outbound-writer",
   "interop-be-purpose-process",
+  "interop-be-tenant-outbound-writer",
   "interop-be-tenant-process",
   "interop-frontend",
 ]
