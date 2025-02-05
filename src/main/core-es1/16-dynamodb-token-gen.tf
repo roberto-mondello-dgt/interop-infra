@@ -1,5 +1,5 @@
 locals {
-  platform_states_string_attributes = ["PK", "GSIPK_consumerId_eserviceId", "GSISK_agreementTimestamp"]
+  platform_states_string_attributes = ["PK"]
   token_generation_states_string_attributes = [
     "PK",
     "GSIPK_consumerId_eserviceId",
@@ -28,15 +28,6 @@ resource "aws_dynamodb_table" "platform_states" {
       name = attribute.key
       type = "S"
     }
-  }
-
-  global_secondary_index {
-    name = "Agreement"
-
-    hash_key           = "GSIPK_consumerId_eserviceId"
-    range_key          = "GSISK_agreementTimestamp"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["state", "agreementDescriptorId"] # implicit include: table and GSI HK, SK
   }
 }
 

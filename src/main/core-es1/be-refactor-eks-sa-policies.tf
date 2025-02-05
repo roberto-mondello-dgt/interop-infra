@@ -841,6 +841,7 @@ resource "aws_iam_policy" "be_refactor_agreement_platformstate_writer" {
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:Query",
+          "dynamodb:Scan",
           "dynamodb:UpdateItem"
         ]
         Resource = compact([
@@ -902,6 +903,7 @@ resource "aws_iam_policy" "be_refactor_authorization_platformstate_writer" {
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:Query",
+          "dynamodb:Scan",
           "dynamodb:UpdateItem"
         ]
         Resource = compact([
@@ -965,6 +967,7 @@ resource "aws_iam_policy" "be_refactor_catalog_platformstate_writer" {
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:Query",
+          "dynamodb:Scan",
           "dynamodb:UpdateItem"
         ]
         Resource = compact([
@@ -1026,6 +1029,7 @@ resource "aws_iam_policy" "be_refactor_purpose_platformstate_writer" {
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:Query",
+          "dynamodb:Scan",
           "dynamodb:UpdateItem"
         ]
         Resource = compact([

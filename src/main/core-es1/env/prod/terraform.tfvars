@@ -130,6 +130,7 @@ k8s_monitoring_deployments_names = [
   "interop-be-authorization-management",
   "interop-be-authorization-process",
   "interop-be-authorization-server",
+  "interop-be-authorization-server-node",
   "interop-be-backend-for-frontend",
   "interop-be-catalog-outbound-writer",
   "interop-be-catalog-process",
@@ -147,9 +148,12 @@ k8s_monitoring_deployments_names = [
 k8s_monitoring_internal_deployments_names = [
   "debezium-postgresql",
   "interop-be-agreement-email-sender",
+  "interop-be-agreement-platformstate-writer",
   "interop-be-agreement-readmodel-writer",
   "interop-be-attribute-registry-readmodel-writer",
+  "interop-be-authorization-platformstate-writer",
   "interop-be-authorization-updater",
+  "interop-be-catalog-platformstate-writer",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
   "interop-be-client-purpose-updater",
@@ -159,6 +163,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",
+  "interop-be-purpose-platformstate-writer",
   "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
   "interop-be-tenant-readmodel-writer",
@@ -181,5 +186,6 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-party-registry-proxy-refresher",
   "interop-be-pn-consumers",
   "interop-be-tenants-cert-attr-updater",
-  "interop-be-token-details-persister"
+  "interop-be-token-details-persister",
+  "interop-be-token-generation-readmodel-checker"
 ]

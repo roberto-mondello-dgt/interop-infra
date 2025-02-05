@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "dev_refactor_platform_states" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
+  count = local.deploy_auth_server_refactor && var.env == "dev" ? 1 : 0
 
   name = format("%s-platform-states-%s-refactor", local.project, var.env)
 
@@ -16,19 +16,10 @@ resource "aws_dynamodb_table" "dev_refactor_platform_states" {
       type = "S"
     }
   }
-
-  global_secondary_index {
-    name = "Agreement"
-
-    hash_key           = "GSIPK_consumerId_eserviceId"
-    range_key          = "GSISK_agreementTimestamp"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["state", "agreementDescriptorId"] # implicit include: table and GSI HK, SK
-  }
 }
 
 resource "aws_dynamodb_table" "dev_refactor_token_generation_states" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
+  count = local.deploy_auth_server_refactor && var.env == "dev" ? 1 : 0
 
   name = format("%s-token-generation-states-%s-refactor", local.project, var.env)
 
