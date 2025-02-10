@@ -1,8 +1,6 @@
 locals {
   redshift_users = {
     readonly                         = format("%s-analytics-readonly", local.project)
-    be_analytics_domain_consumer     = module.be_analytics_domain_consumer_irsa.iam_role_name
-    be_analytics_jwt_consumer        = module.be_analytics_jwt_consumer_irsa.iam_role_name
     tracing_be_enriched_data_handler = "tracing-be-enriched-data-handler-dev-es1"
     lorenzo_giorgi                   = "lorenzo_giorgi"
     eduardo_mihalache                = "eduardo_mihalache"

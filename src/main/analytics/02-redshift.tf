@@ -102,8 +102,3 @@ resource "aws_redshift_cluster" "analytics" {
 
   skip_final_snapshot = true
 }
-
-resource "aws_redshift_cluster_iam_roles" "analytics" {
-  cluster_identifier = aws_redshift_cluster.analytics.cluster_identifier
-  iam_role_arns      = [aws_iam_role.generated_jwt_loader.arn]
-}
