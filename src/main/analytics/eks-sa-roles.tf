@@ -1,11 +1,3 @@
-data "aws_eks_cluster" "core" {
-  name = var.eks_cluster_name
-}
-
-data "aws_iam_openid_connect_provider" "core_eks" {
-  url = data.aws_eks_cluster.core.identity[0].oidc[0].issuer
-}
-
 locals {
   # workaround to allow both 'dev' and 'dev-refactor'
   k8s_namespace_irsa = var.env == "dev" ? "dev*" : var.env

@@ -1,5 +1,5 @@
 data "aws_vpc_endpoint" "s3" {
-  vpc_id       = var.vpc_id
+  vpc_id       = data.aws_vpc.core.id
   service_name = "com.amazonaws.${var.aws_region}.s3"
 }
 
@@ -10,20 +10,20 @@ data "aws_prefix_list" "s3" {
 resource "aws_security_group" "analytics" {
   name        = format("redshift/%s-analytics-%s", local.project, var.env)
   description = "SG for interop-analytics-${var.env} Redshift cluster"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.core.id
 
   ingress {
     from_port       = 5432
     to_port         = 5439
     protocol        = "tcp"
-    security_groups = [var.vpn_clients_security_group_id]
+    security_groups = [data.aws_security_group.vpn_clients.id]
   }
 
   ingress {
     from_port       = 5432
     to_port         = 5439
     protocol        = "tcp"
-    security_groups = [var.eks_cluster_node_security_group_id]
+    security_groups = [data.aws_security_group.core_eks_cluster_node.id]
   }
 
   ingress {
@@ -47,7 +47,7 @@ resource "aws_security_group" "analytics" {
 
 resource "aws_redshift_subnet_group" "analytics" {
   name       = format("%s-analytics-%s", local.project, var.env)
-  subnet_ids = var.analytics_subnet_ids
+  subnet_ids = data.aws_subnets.analytics.ids
 }
 
 resource "aws_redshift_endpoint_authorization" "analytics_tracing" {

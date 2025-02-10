@@ -1,7 +1,3 @@
-data "aws_s3_bucket" "jwt_details_bucket" {
-  bucket = var.jwt_details_bucket_name
-}
-
 resource "aws_iam_role" "generated_jwt_loader" {
   name = format("%s-analytics-generated-jwt-loader-%s-es1", local.project, var.env)
 
@@ -28,7 +24,7 @@ resource "aws_iam_role" "generated_jwt_loader" {
           Effect = "Allow"
           Action = "s3:GetObject"
           Resource = [
-            "${data.aws_s3_bucket.jwt_details_bucket.arn}/*",
+            "${data.aws_s3_bucket.jwt_details.arn}/*",
             "${module.analytics_jsonpaths.s3_bucket_arn}/*"
           ]
         },
@@ -36,7 +32,7 @@ resource "aws_iam_role" "generated_jwt_loader" {
           Effect = "Allow"
           Action = "s3:ListBucket"
           Resource = [
-            data.aws_s3_bucket.jwt_details_bucket.arn,
+            data.aws_s3_bucket.jwt_details.arn,
             module.analytics_jsonpaths.s3_bucket_arn
           ]
         }

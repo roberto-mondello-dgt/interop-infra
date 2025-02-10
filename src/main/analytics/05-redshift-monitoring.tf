@@ -1,7 +1,3 @@
-data "aws_sns_topic" "platform_alarms" {
-  name = var.sns_topic_name
-}
-
 resource "aws_cloudwatch_metric_alarm" "redshift_cpu_utilization" {
   alarm_name        = format("redshift-%s-cpu-utilization", aws_redshift_cluster.analytics.cluster_identifier)
   alarm_description = "Max CPU utilization among the nodes of the ${aws_redshift_cluster.analytics.cluster_identifier} Redshift cluster"
