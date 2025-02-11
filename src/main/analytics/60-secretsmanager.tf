@@ -10,7 +10,7 @@ locals {
 }
 
 resource "aws_secretsmanager_secret" "redshift_users" {
-  for_each = (local.redshift_users)
+  for_each = local.deploy_redshift_cluster ? local.redshift_users : {}
 
   name = format("redshift/%s-analytics-%s/users/%s", local.project, var.env, each.value)
 
@@ -21,7 +21,7 @@ resource "aws_secretsmanager_secret" "redshift_users" {
 }
 
 data "aws_secretsmanager_random_password" "redshift_users" {
-  for_each = (local.redshift_users)
+  for_each = local.deploy_redshift_cluster ? local.redshift_users : {}
 
   password_length            = 30
   exclude_characters         = "\"@/'\\ "
@@ -29,7 +29,7 @@ data "aws_secretsmanager_random_password" "redshift_users" {
 }
 
 resource "aws_secretsmanager_secret_version" "redshift_users" {
-  for_each = (local.redshift_users)
+  for_each = local.deploy_redshift_cluster ? local.redshift_users : {}
 
   secret_id = aws_secretsmanager_secret.redshift_users[each.key].id
   secret_string = jsonencode({

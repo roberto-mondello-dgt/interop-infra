@@ -1,4 +1,6 @@
 resource "aws_iam_role" "analytics_scheduled_actions" {
+  count = local.deploy_redshift_cluster ? 1 : 0
+
   name = format("%s-analytics-scheduled-actions-%s-es1", local.project, var.env)
 
   assume_role_policy = jsonencode({
@@ -26,7 +28,7 @@ resource "aws_iam_role" "analytics_scheduled_actions" {
             "redshift:PauseCluster",
             "redshift:ResumeCluster"
           ]
-          Resource = aws_redshift_cluster.analytics.arn
+          Resource = aws_redshift_cluster.analytics[0].arn
         }
       ]
     })

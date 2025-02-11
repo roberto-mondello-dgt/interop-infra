@@ -25,7 +25,7 @@ data "aws_security_group" "core_eks_cluster_node" {
   id = var.eks_cluster_node_security_group_id
 }
 
-data "aws_s3_bucket" "jwt_details" {
+data "aws_s3_bucket" "jwt_audit_source" {
   bucket = var.jwt_details_bucket_name
 }
 
