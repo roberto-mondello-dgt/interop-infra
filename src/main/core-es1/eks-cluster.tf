@@ -150,22 +150,38 @@ module "eks" {
     }
   }
 
-  access_entries = {
-    sso_full_admin = {
-      kubernetes_groups = []
-      principal_arn     = data.aws_iam_role.sso_admin.arn
-
-      policy_associations = {
-        admin_policy = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-          access_scope = {
-            namespaces = []
-            type       = "cluster"
+  access_entries = merge(
+    {
+      sso_full_admin = {
+        kubernetes_groups = []
+        principal_arn     = data.aws_iam_role.sso_admin.arn
+        policy_associations = {
+          admin_policy = {
+            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+            access_scope = {
+              namespaces = []
+              type       = "cluster"
+            }
           }
         }
       }
-    }
-  }
+    },
+    var.analytics_k8s_namespace != null ? {
+      analytics_deployment_role = {
+        principal_arn     = local.analytics_deployment_github_repo_iam_role_arn
+        kubernetes_groups = []
+        policy_associations = {
+          namespace_edit = {
+            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+            access_scope = {
+              type       = "namespace"
+              namespaces = [var.analytics_k8s_namespace]
+            }
+          }
+        }
+      }
+    } : {}
+  )
 }
 
 

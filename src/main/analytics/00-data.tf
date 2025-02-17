@@ -25,10 +25,28 @@ data "aws_security_group" "core_eks_cluster_node" {
   id = var.eks_cluster_node_security_group_id
 }
 
+data "aws_dynamodb_table" "terraform_lock" {
+  name     = "terraform-lock"
+  provider = aws.ec1
+}
+
+data "aws_s3_bucket" "terraform_states" {
+  bucket   = format("terraform-backend-%s", data.aws_caller_identity.current.account_id)
+  provider = aws.ec1
+}
+
 data "aws_s3_bucket" "jwt_audit_source" {
   bucket = var.jwt_details_bucket_name
 }
 
 data "aws_sns_topic" "platform_alarms" {
   name = var.sns_topic_name
+}
+
+data "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
+data "aws_iam_role" "github_runner_task" {
+  name = var.github_runner_task_role_name
 }

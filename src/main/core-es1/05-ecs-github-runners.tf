@@ -60,6 +60,11 @@ resource "aws_iam_role" "github_runner_task_exec" {
   }
 }
 
+locals {
+  analytics_deployment_github_repo_iam_role_name = format("%s-analytics-deployment-github-repo-%s", local.project, var.env)
+  analytics_deployment_github_repo_iam_role_arn  = format("arn:aws:iam::%s:role/%s", data.aws_caller_identity.current.account_id, local.analytics_deployment_github_repo_iam_role_name)
+}
+
 resource "aws_iam_role" "github_runner_task" {
   name = format("%s-github-runner-task-%s-es1", var.short_name, var.env)
 
@@ -142,6 +147,25 @@ resource "aws_iam_role" "github_runner_task" {
         ]
       })
     }
+  }
+
+  inline_policy {
+    name = "AssumeRolePolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "sts:AssumeRole",
+            "sts:TagSession"
+          ]
+          # This local is necessary otherwise referencing the deployment role resource would cause a dependency cicle 
+          Resource = local.analytics_deployment_github_repo_iam_role_arn
+        }
+      ]
+    })
   }
 }
 

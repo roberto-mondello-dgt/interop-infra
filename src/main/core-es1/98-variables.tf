@@ -391,3 +391,9 @@ variable "be_refactor_k8s_monitoring_cronjobs_names" {
   type        = list(string)
   default     = []
 }
+
+variable "analytics_k8s_namespace" {
+  description = "Kubernetes namespace for the Analytics project"
+  type        = string
+  default     = null
+}

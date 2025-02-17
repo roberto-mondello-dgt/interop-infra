@@ -30,3 +30,7 @@ tracing_vpc_id         = "vpc-0a08140b4517ce27d"
 sns_topic_name = "interop-platform-alarms-dev"
 
 analytics_k8s_namespace = "dev-analytics"
+
+deployment_repo_name = "pagopa/interop-analytics-deployment"
+
+github_runner_task_role_name = "interop-github-runner-task-dev-es1"

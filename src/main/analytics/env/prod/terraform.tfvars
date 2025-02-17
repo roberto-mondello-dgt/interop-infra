@@ -27,3 +27,7 @@ jwt_details_bucket_name = "interop-generated-jwt-details-prod-es1"
 sns_topic_name = "interop-platform-alarms-prod"
 
 analytics_k8s_namespace = "prod-analytics"
+
+deployment_repo_name = "pagopa/interop-analytics-deployment"
+
+github_runner_task_role_name = "interop-github-runner-task-prod-es1"

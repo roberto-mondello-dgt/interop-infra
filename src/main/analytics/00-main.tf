@@ -19,6 +19,15 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  region = "eu-central-1"
+  alias  = "ec1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "github_iac" {
@@ -33,4 +42,5 @@ locals {
   project                    = "interop"
   deploy_redshift_cluster    = var.env == "dev" || var.env == "prod"
   deploy_jwt_audit_resources = var.env == "dev" || var.env == "test" || var.env == "prod"
+  terraform_state            = "analytics"
 }

@@ -189,3 +189,5 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-token-details-persister",
   "interop-be-token-generation-readmodel-checker"
 ]
+
+analytics_k8s_namespace = "prod-analytics"

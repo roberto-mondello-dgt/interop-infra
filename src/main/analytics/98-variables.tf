@@ -98,3 +98,13 @@ variable "analytics_k8s_namespace" {
   description = "Kubernetes namespace for the Analytics project"
   type        = string
 }
+
+variable "deployment_repo_name" {
+  description = "Github repository name containing deployment automation"
+  type        = string
+}
+
+variable "github_runner_task_role_name" {
+  description = "Name of the IAM role which is assumed by ECS tasks and allows to perform actions on the EKS cluster"
+  type        = string
+}
