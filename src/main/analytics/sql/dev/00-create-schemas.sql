@@ -1,4 +1,4 @@
-CREATE SCHEMA interop_dev.domain;
+CREATE SCHEMA interop_dev.domains;
 CREATE SCHEMA interop_dev.jwt;
 
 CREATE DATABASE tracing_dev;

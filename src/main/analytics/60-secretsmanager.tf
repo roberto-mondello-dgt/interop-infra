@@ -1,7 +1,7 @@
 locals {
   redshift_users = {
-    readonly                         = format("%s-analytics-readonly", local.project)
-    tracing_be_enriched_data_handler = "tracing-be-enriched-data-handler-dev-es1"
+    readonly                         = format("%s_analytics_readonly", local.project)
+    tracing_be_enriched_data_handler = "tracing_be_enriched_data_handler_dev"
     lorenzo_giorgi                   = "lorenzo_giorgi"
     eduardo_mihalache                = "eduardo_mihalache"
     diego_longo                      = "diego_longo"

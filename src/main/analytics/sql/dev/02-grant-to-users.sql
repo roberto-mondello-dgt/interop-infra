@@ -1,21 +1,21 @@
-GRANT usage ON SCHEMA interop_dev.domain TO "interop-be-analytics-domain-consumer-dev-es1";
+GRANT usage ON SCHEMA interop_dev.domains TO "interop_be_domains_analytics_writer_dev";
 
-GRANT usage ON SCHEMA interop_dev.jwt TO "interop-be-analytics-jwt-consumer-dev-es1";
+GRANT usage ON SCHEMA interop_dev.jwt TO "interop_be_jwt_audit_analytics_writer_dev";
 
-GRANT usage ON SCHEMA tracing_dev.traces TO "tracing-be-enriched-data-handler-dev-es1";
+GRANT usage ON SCHEMA tracing_dev.traces TO "tracing_be_enriched_data_handler_dev";
 
-GRANT usage ON SCHEMA interop_dev.domain TO "interop-analytics-readonly";
-GRANT SELECT ON ALL TABLES IN SCHEMA interop_dev.domain TO "interop-analytics-readonly";
-ALTER DEFAULT PRIVILEGES IN SCHEMA interop_dev.domain GRANT SELECT ON TABLES TO "interop-analytics-readonly";
+GRANT usage ON SCHEMA interop_dev.domains TO "interop_analytics_readonly";
+GRANT SELECT ON ALL TABLES IN SCHEMA interop_dev.domains TO "interop_analytics_readonly";
+ALTER DEFAULT PRIVILEGES IN SCHEMA domains GRANT SELECT ON TABLES TO "interop_analytics_readonly";
 
-GRANT usage ON SCHEMA interop_dev.jwt TO "interop-analytics-readonly";
-GRANT SELECT ON ALL TABLES IN SCHEMA interop_dev.jwt TO "interop-analytics-readonly";
-ALTER DEFAULT PRIVILEGES IN SCHEMA interop_dev.jwt GRANT SELECT ON TABLES TO "interop-analytics-readonly";
+GRANT usage ON SCHEMA interop_dev.jwt TO "interop_analytics_readonly";
+GRANT SELECT ON ALL TABLES IN SCHEMA interop_dev.jwt TO "interop_analytics_readonly";
+ALTER DEFAULT PRIVILEGES IN SCHEMA jwt GRANT SELECT ON TABLES TO "interop_analytics_readonly";
 
-GRANT usage ON SCHEMA tracing_dev.traces TO "interop-analytics-readonly";
-GRANT SELECT ON ALL TABLES IN SCHEMA tracing_dev.traces TO "interop-analytics-readonly";
-ALTER DEFAULT PRIVILEGES IN SCHEMA tracing_dev.traces GRANT SELECT ON TABLES TO "interop-analytics-readonly";
+GRANT usage ON SCHEMA tracing_dev.traces TO "interop_analytics_readonly";
+GRANT SELECT ON ALL TABLES IN SCHEMA tracing_dev.traces TO "interop_analytics_readonly";
+ALTER DEFAULT PRIVILEGES IN SCHEMA traces GRANT SELECT ON TABLES TO "interop_analytics_readonly";
 
 GRANT create ON DATABASE interop_dev TO "lorenzo_giorgi", "eduardo_mihalache", "diego_longo", "roberto_taglioni";
 
-GRANT create, usage ON SCHEMA interop_dev.domain, interop_dev.jwt TO "lorenzo_giorgi", "eduardo_mihalache", "diego_longo", "roberto_taglioni";
+GRANT create, usage ON SCHEMA interop_dev.domains, interop_dev.jwt TO "lorenzo_giorgi", "eduardo_mihalache", "diego_longo", "roberto_taglioni";
