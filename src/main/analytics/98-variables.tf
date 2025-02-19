@@ -108,3 +108,8 @@ variable "github_runner_task_role_name" {
   description = "Name of the IAM role which is assumed by ECS tasks and allows to perform actions on the EKS cluster"
   type        = string
 }
+
+variable "msk_cluster_name" {
+  description = "Name of the MSK cluster"
+  type        = string
+}

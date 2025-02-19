@@ -50,3 +50,7 @@ data "aws_iam_openid_connect_provider" "github" {
 data "aws_iam_role" "github_runner_task" {
   name = var.github_runner_task_role_name
 }
+
+data "aws_msk_cluster" "platform_events" {
+  cluster_name = var.msk_cluster_name
+}

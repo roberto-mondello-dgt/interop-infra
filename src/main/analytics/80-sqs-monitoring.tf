@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "sqs_jwt_audit" {
-  count = local.deploy_jwt_audit_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue.jwt_audit[0]]
 

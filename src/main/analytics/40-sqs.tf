@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "jwt_audit" {
-  count = local.deploy_jwt_audit_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources ? 1 : 0
 
   name = format("%s-jwt-audit-analytics-%s", local.project, var.env)
 
@@ -8,7 +8,7 @@ resource "aws_sqs_queue" "jwt_audit" {
 }
 
 resource "aws_sqs_queue_policy" "jwt_audit" {
-  count = local.deploy_jwt_audit_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources ? 1 : 0
 
   queue_url = aws_sqs_queue.jwt_audit[0].url
   policy = jsonencode({
