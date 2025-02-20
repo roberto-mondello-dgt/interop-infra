@@ -8,6 +8,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.69.0"
     }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.30.0"
+    }
   }
 }
 
@@ -26,6 +31,12 @@ provider "aws" {
   default_tags {
     tags = var.tags
   }
+}
+
+provider "kubernetes" {
+  host                   = data.aws_eks_cluster.core.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.core.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.core.token
 }
 
 data "aws_caller_identity" "current" {}
