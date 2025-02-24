@@ -113,3 +113,9 @@ variable "msk_cluster_name" {
   description = "Name of the MSK cluster"
   type        = string
 }
+
+variable "application_audit_producers_irsa_list" {
+  description = "Names of the IRSA producers for application audit"
+  type        = list(string)
+  default     = []
+}

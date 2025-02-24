@@ -36,3 +36,13 @@ deployment_repo_name = "pagopa/interop-analytics-deployment"
 github_runner_task_role_name = "interop-github-runner-task-dev-es1"
 
 msk_cluster_name = "interop-platform-events-dev"
+
+application_audit_producers_irsa_list = [
+  "interop-be-authorization-server-dev-es1",
+  "interop-be-backend-for-frontend-dev-es1",
+  "interop-be-api-gateway-dev-es1",
+  "interop-be-agreement-process-dev-es1",
+  "interop-be-catalog-process-dev-es1",
+  "interop-be-delegation-process-dev-es1",
+  "interop-be-purpose-process-dev-es1"
+]

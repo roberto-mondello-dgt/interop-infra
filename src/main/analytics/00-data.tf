@@ -58,3 +58,9 @@ data "aws_iam_role" "github_runner_task" {
 data "aws_msk_cluster" "platform_events" {
   cluster_name = var.msk_cluster_name
 }
+
+data "aws_iam_role" "application_audit_producers" {
+  for_each = toset(var.application_audit_producers_irsa_list)
+
+  name = each.value
+}

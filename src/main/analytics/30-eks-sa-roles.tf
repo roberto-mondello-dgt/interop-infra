@@ -37,3 +37,10 @@ module "be_domains_analytics_writer_irsa" {
     be_domains_analytics_writer = aws_iam_policy.be_domains_analytics_writer[0].arn
   }
 }
+
+resource "aws_iam_role_policy_attachment" "application_audit_producers" {
+  for_each = local.deploy_data_ingestion_resources ? toset(var.application_audit_producers_irsa_list) : []
+
+  role       = data.aws_iam_role.application_audit_producers[each.key].name
+  policy_arn = aws_iam_policy.application_audit[0].arn
+}

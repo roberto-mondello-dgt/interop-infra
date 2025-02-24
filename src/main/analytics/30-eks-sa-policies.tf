@@ -64,3 +64,28 @@ resource "aws_iam_policy" "be_domains_analytics_writer" {
     ]
   })
 }
+
+resource "aws_iam_policy" "application_audit" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  name = "InteropBeApplicationAuditProducerEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+        Resource = [
+          data.aws_msk_cluster.platform_events.arn,
+          "${local.msk_topic_iam_prefix}/${var.env}_application.audit",
+        ]
+      }
+    ]
+  })
+}
