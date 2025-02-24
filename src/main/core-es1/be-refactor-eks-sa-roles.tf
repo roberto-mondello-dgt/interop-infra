@@ -614,6 +614,28 @@ module "be_datalake_interface_exporter_irsa" {
   }
 }
 
+module "be_delegation_items_archiver_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-delegation-items-archiver-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-delegation-items-archiver"]
+    }
+  }
+
+  role_policy_arns = {
+    be_delegation_items_archiver = aws_iam_policy.be_delegation_items_archiver[0].arn
+  }
+}
+
 module "be_delegation_readmodel_writer_irsa" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
