@@ -65,6 +65,7 @@ resource "aws_iam_role" "buildo_developers" {
             "logs:FilterLogEvents",
             "logs:GetLogEvents",
             "logs:GetLogGroupFields",
+            "logs:GetLogRecord",
             "logs:StartQuery"
           ]
           Resource = [

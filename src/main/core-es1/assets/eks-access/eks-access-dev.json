@@ -28,7 +28,11 @@
         {
           "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
           "scope": "namespace",
-          "namespaces": ["dev-refactor"]
+          "namespaces": ["dev", "dev-refactor"]
+        },
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "cluster"
         }
       ]
     },
