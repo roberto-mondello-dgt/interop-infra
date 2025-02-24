@@ -1319,3 +1319,20 @@ resource "aws_iam_policy" "be_refactor_token_generation_readmodel_checker" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_ipa_certified_attributes_importer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeIPACertifiedAttributesImporterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      }
+    ]
+  })
+}
