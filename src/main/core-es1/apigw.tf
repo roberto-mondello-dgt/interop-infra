@@ -38,7 +38,7 @@ module "interop_auth_apigw" {
   alarm_5xx_datapoints        = 1
 
   create_cloudwatch_alarm_4xx    = true
-  alarm_4xx_threshold_percentage = 3
+  alarm_4xx_threshold_percentage = 10
   alarm_4xx_period               = 60
   alarm_4xx_eval_periods         = 1
   alarm_4xx_datapoints           = 1
