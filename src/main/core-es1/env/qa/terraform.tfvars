@@ -88,13 +88,11 @@ k8s_monitoring_deployments_names = [
 k8s_monitoring_internal_deployments_names = [
   "debezium-postgresql",
   "interop-be-agreement-email-sender",
-  "interop-be-agreement-outbound-writer",
   "interop-be-agreement-platformstate-writer",
   "interop-be-agreement-readmodel-writer",
   "interop-be-attribute-registry-readmodel-writer",
   "interop-be-authorization-platformstate-writer",
   "interop-be-authorization-updater",
-  "interop-be-catalog-outbound-writer",
   "interop-be-catalog-platformstate-writer",
   "interop-be-catalog-readmodel-writer",
   "interop-be-certified-mail-sender",
@@ -105,11 +103,9 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-eservice-descriptors-archiver",
   "interop-be-notifier",
   "interop-be-notifier-seeder",
-  "interop-be-purpose-outbound-writer",
   "interop-be-purpose-platformstate-writer",
   "interop-be-purpose-readmodel-writer",
   "interop-be-selfcare-onboarding-consumer",
-  "interop-be-tenant-outbound-writer",
   "interop-be-tenant-readmodel-writer",
   "redis"
 
