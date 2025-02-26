@@ -497,9 +497,9 @@ module "alb_logs_bucket" {
 
   lifecycle_rule = [
     {
-      id         = "Expiration"
+      id         = "TransitionToStandardIA"
       enabled    = true
-      expiration = { days : var.env == "prod" ? 93 : 32 }
+      transition = { days = 30, storage_class = "STANDARD_IA" }
     }
   ]
 

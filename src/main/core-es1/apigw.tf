@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_log_group" "apigw_access_logs" {
   name = format("amazon-apigateway-interop-access-logs-%s", var.env)
 
-  retention_in_days = var.env == "prod" ? 90 : 30
+  retention_in_days = var.env == "prod" ? 365 : 90
   skip_destroy      = true
 }
 
