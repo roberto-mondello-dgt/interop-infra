@@ -1,6 +1,7 @@
 locals {
   repository_names = [
-    "interop-be-jwt-audit-analytics-writer"
+    "interop-be-jwt-audit-analytics-writer",
+    "interop-be-domains-analytics-writer"
   ]
 }
 
