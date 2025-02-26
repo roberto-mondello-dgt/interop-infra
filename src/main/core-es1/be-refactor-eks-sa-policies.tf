@@ -1336,3 +1336,88 @@ resource "aws_iam_policy" "be_ipa_certified_attributes_importer" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_eservice_template_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeEserviceTemplateProcessEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_eservice_template_readmodel_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeEserviceTemplateReadModelWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_eservice_template.events",
+          "${local.msk_group_iam_prefix}/*eservice-template-readmodel-writer"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_eservice_template_updater" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeEserviceTemplateUpdaterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_eservice_template.events",
+          "${local.msk_group_iam_prefix}/*eservice-template-updater"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      }
+    ]
+  })
+}

@@ -809,3 +809,69 @@ module "be_refactor_api_gateway_irsa" {
 
   role_policy_arns = {}
 }
+
+module "be_eservice_template_process_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-eservice-template-process-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-template-process"]
+    }
+  }
+
+  role_policy_arns = {
+    be_eservice_template_process = aws_iam_policy.be_eservice_template_process[0].arn
+  }
+}
+
+module "be_eservice_template_readmodel_writer_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-eservice-template-readmodel-writer-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-template-readmodel-writer"]
+    }
+  }
+
+  role_policy_arns = {
+    be_eservice_template_process = aws_iam_policy.be_eservice_template_process[0].arn
+  }
+}
+
+module "be_eservice_template_updater_irsa" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-eservice-template-updater-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-template-updater"]
+    }
+  }
+
+  role_policy_arns = {
+    be_eservice_template_updater = aws_iam_policy.be_eservice_template_updater[0].arn
+  }
+}
