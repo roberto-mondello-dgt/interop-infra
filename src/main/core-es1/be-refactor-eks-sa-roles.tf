@@ -875,3 +875,48 @@ module "be_eservice_template_updater_irsa" {
     be_eservice_template_updater = aws_iam_policy.be_eservice_template_updater[0].arn
   }
 }
+
+module "be_notification_email_sender_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-notification-email-sender-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-notification-email-sender"]
+    }
+  }
+
+  role_policy_arns = {
+    be_notification_email_sender = aws_iam_policy.be_notification_email_sender[0].arn
+    notifiche_ses_iam_policy     = module.notifiche_ses_iam_policy.iam_policy_arn
+  }
+}
+
+module "be_certified_email_sender_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.20.0"
+
+  role_name = format("interop-be-certified-email-sender-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-certified-email-sender"]
+    }
+  }
+
+  role_policy_arns = {
+    be_certified_email_sender = aws_iam_policy.be_certified_email_sender[0].arn
+  }
+}

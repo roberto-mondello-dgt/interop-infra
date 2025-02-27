@@ -95,7 +95,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-authorization-updater",
   "interop-be-catalog-platformstate-writer",
   "interop-be-catalog-readmodel-writer",
-  "interop-be-certified-mail-sender",
+  "interop-be-certified-email-sender",
   "interop-be-client-purpose-updater",
   "interop-be-compute-agreements-consumer",
   "interop-be-datalake-interface-exporter",
@@ -104,6 +104,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-eservice-template-process",
   "interop-be-eservice-template-readmodel-writer",
   "interop-be-eservice-template-updater",
+  "interop-be-notification-email-sender",
   "interop-be-notifier",
   "interop-be-notifier-seeder",
   "interop-be-purpose-platformstate-writer",
@@ -111,7 +112,6 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-selfcare-onboarding-consumer",
   "interop-be-tenant-readmodel-writer",
   "redis"
-
 ]
 
 k8s_monitoring_cronjobs_names = [

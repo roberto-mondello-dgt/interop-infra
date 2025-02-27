@@ -346,26 +346,6 @@ module "be_tenants_certified_attributes_updater_irsa" {
   }
 }
 
-module "be_certified_mail_sender_irsa" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.20.0"
-
-  role_name = format("%s-interop-be-certified-mail-sender-es1", local.role_prefix)
-
-  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
-
-  oidc_providers = {
-    cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-certified-mail-sender"]
-    }
-  }
-
-  role_policy_arns = {
-    be_certified_mail_sender = aws_iam_policy.be_certified_mail_sender.arn
-  }
-}
-
 module "be_party_registry_refresher_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"

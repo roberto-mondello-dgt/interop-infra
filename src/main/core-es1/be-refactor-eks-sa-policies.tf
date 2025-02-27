@@ -1421,3 +1421,61 @@ resource "aws_iam_policy" "be_eservice_template_updater" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_notification_email_sender" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeNotificationEmailSenderEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
+          "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
+          "${local.msk_group_iam_prefix}/*notification-email-sender"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_certified_email_sender" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeCertifiedEmailSenderEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
+          "${local.msk_group_iam_prefix}/*certified-email-sender"
+        ]
+      }
+    ]
+  })
+}
