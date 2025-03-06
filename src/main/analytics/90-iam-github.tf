@@ -51,8 +51,8 @@ resource "aws_iam_policy" "deployment_github_repo" {
           "s3:PutObject"
         ]
         Resource = [
-          format("%s/%s/interop-analytics-deployment/monitoring.tfstate", data.aws_s3_bucket.terraform_states.arn, var.env),
-          format("%s/%s/interop-analytics-deployment/secrets.tfstate", data.aws_s3_bucket.terraform_states.arn, var.env)
+          format("%s/*/interop-analytics-deployment/monitoring.tfstate", data.aws_s3_bucket.terraform_states.arn),
+          format("%s/*/interop-analytics-deployment/secrets.tfstate", data.aws_s3_bucket.terraform_states.arn)
         ]
       },
       {
