@@ -317,16 +317,19 @@ variable "eks_k8s_version" {
 variable "eks_vpc_cni_version" {
   type        = string
   description = "EKS vpc-cni addon version"
+  default     = null
 }
 
 variable "eks_coredns_version" {
   type        = string
   description = "EKS coredns addon version"
+  default     = null
 }
 
 variable "eks_kube_proxy_version" {
   type        = string
   description = "EKS kube-proxy addon version"
+  default     = null
 }
 
 variable "backend_integration_alb_name" {

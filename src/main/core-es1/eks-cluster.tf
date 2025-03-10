@@ -107,18 +107,21 @@ module "eks" {
   cluster_addons = {
     vpc-cni = {
       addon_version               = var.eks_vpc_cni_version
+      most_recent                 = false # use 'default' version for the K8s version
       resolve_conflicts_on_create = "NONE"
       resolve_conflicts_on_update = "NONE"
     }
 
     coredns = {
       addon_version               = var.eks_coredns_version
+      most_recent                 = false # use 'default' version for the K8s version
       resolve_conflicts_on_create = "NONE"
       resolve_conflicts_on_update = "NONE"
     }
 
     kube-proxy = {
       addon_version               = var.eks_kube_proxy_version
+      most_recent                 = false # use 'default' version for the K8s version
       resolve_conflicts_on_create = "NONE"
       resolve_conflicts_on_update = "NONE"
     }

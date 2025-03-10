@@ -64,10 +64,7 @@ interop_api_openapi_path             = "./openapi/att/interop-api-v1.0.yaml"
 
 interop_landing_domain_name = "att.interop.pagopa.it"
 
-eks_k8s_version        = "1.29"
-eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
-eks_coredns_version    = "v1.11.1-eksbuild.4"
-eks_kube_proxy_version = "v1.29.0-eksbuild.1"
+eks_k8s_version = "1.32"
 
 backend_integration_alb_name = "k8s-interopbe-e364330a81"
 
