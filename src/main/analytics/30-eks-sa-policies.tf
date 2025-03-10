@@ -89,3 +89,33 @@ resource "aws_iam_policy" "application_audit" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_alb_logs_analytics_writer" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  name = "InteropBeAlbLogsAnalyticsWriter"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = data.aws_s3_bucket.alb_logs_source.arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = "s3:GetObject"
+        Resource = format("%s/*", data.aws_s3_bucket.alb_logs_source.arn)
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = aws_sqs_queue.alb_logs[0].arn
+      },
+    ]
+  })
+}
