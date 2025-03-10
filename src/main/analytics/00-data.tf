@@ -43,6 +43,10 @@ data "aws_s3_bucket" "jwt_audit_source" {
   bucket = var.jwt_details_bucket_name
 }
 
+data "aws_s3_bucket" "alb_logs_source" {
+  bucket = var.alb_logs_bucket_name
+}
+
 data "aws_sns_topic" "platform_alarms" {
   name = var.sns_topic_name
 }

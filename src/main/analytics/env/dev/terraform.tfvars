@@ -23,6 +23,7 @@ redshift_cluster_nodes_number = 2
 redshift_cluster_nodes_type   = "ra3.xlplus"
 
 jwt_details_bucket_name = "interop-generated-jwt-details-dev-es1"
+alb_logs_bucket_name    = "interop-alb-logs-dev-es1"
 
 tracing_aws_account_id = "590183909663"
 tracing_vpc_id         = "vpc-0a08140b4517ce27d"

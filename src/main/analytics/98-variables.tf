@@ -77,6 +77,11 @@ variable "jwt_details_bucket_name" {
   description = "Name of the S3 Bucket containing the generated jwt to be ingested in Redshift"
 }
 
+variable "alb_logs_bucket_name" {
+  type        = string
+  description = "Name of the S3 Bucket containing ALB logs"
+}
+
 variable "tracing_aws_account_id" {
   type        = string
   description = "ID of the Tracing AWS account"
