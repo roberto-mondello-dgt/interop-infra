@@ -423,22 +423,6 @@ resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
   })
 }
 
-resource "aws_iam_policy" "be_certified_mail_sender" {
-  name = "InteropBeCertifiedMailSenderPolicyEs1"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow",
-      Action = [
-        "sqs:ReceiveMessage",
-        "sqs:DeleteMessage"
-      ]
-      Resource = module.certified_mail_queue.queue_arn
-    }]
-  })
-}
-
 resource "aws_iam_policy" "be_metrics_report_generator" {
   name = "InteropBeMetricsReportGeneratorPolicyEs1"
 
