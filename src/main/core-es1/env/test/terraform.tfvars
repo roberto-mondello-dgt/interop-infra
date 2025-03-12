@@ -71,10 +71,7 @@ interop_landing_domain_name = "uat.interop.pagopa.it"
 
 lambda_eks_application_log_group_arn = "arn:aws:logs:eu-central-1:895646477129:log-group:/aws/eks/interop-eks-test/application:*"
 
-eks_k8s_version        = "1.29"
-eks_vpc_cni_version    = "v1.16.0-eksbuild.1"
-eks_coredns_version    = "v1.11.1-eksbuild.4"
-eks_kube_proxy_version = "v1.29.0-eksbuild.1"
+eks_k8s_version = "1.32"
 
 backend_integration_v2_alb_name = "k8s-interopbe-d20020e3b0"
 
