@@ -811,8 +811,6 @@ module "be_refactor_api_gateway_irsa" {
 }
 
 module "be_eservice_template_process_irsa" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
-
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
@@ -833,8 +831,6 @@ module "be_eservice_template_process_irsa" {
 }
 
 module "be_eservice_template_readmodel_writer_irsa" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
-
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
@@ -850,13 +846,11 @@ module "be_eservice_template_readmodel_writer_irsa" {
   }
 
   role_policy_arns = {
-    be_eservice_template_process = aws_iam_policy.be_eservice_template_process[0].arn
+    be_eservice_template_readmodel_writer = aws_iam_policy.be_eservice_template_readmodel_writer[0].arn
   }
 }
 
 module "be_eservice_template_updater_irsa" {
-  count = local.deploy_auth_server_refactor ? 1 : 0
-
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 

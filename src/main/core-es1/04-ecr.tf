@@ -42,7 +42,7 @@ locals {
     "interop-be-eservices-monitoring-exporter",
     "interop-be-eservice-template-process",
     "interop-be-eservice-template-readmodel-writer",
-    "interop-be-eservice-template-updater",
+    "interop-be-eservice-template-instances-updater",
     "interop-be-ivass-certified-attributes-importer",
     "interop-be-ipa-certified-attributes-importer",
     "interop-be-key-readmodel-writer",
