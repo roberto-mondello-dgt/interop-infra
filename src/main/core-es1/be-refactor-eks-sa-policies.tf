@@ -1389,10 +1389,10 @@ resource "aws_iam_policy" "be_eservice_template_readmodel_writer" {
   })
 }
 
-resource "aws_iam_policy" "be_eservice_template_updater" {
+resource "aws_iam_policy" "be_eservice_template_instances_updater" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
-  name = "InteropBeEserviceTemplateUpdaterEs1"
+  name = "InteropBeEserviceTemplateInstancesUpdaterEs1"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -1410,7 +1410,7 @@ resource "aws_iam_policy" "be_eservice_template_updater" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_eservice_template.events",
-          "${local.msk_group_iam_prefix}/*eservice-template-updater"
+          "${local.msk_group_iam_prefix}/*eservice-template-instances-updater"
         ]
       },
       {
