@@ -80,14 +80,14 @@ resource "aws_iam_policy" "deployment_github_repo" {
         Effect = "Allow"
         Action = [
           "secretsmanager:ListSecrets",
-          "secretsmanager:DescribeSecret"
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy"
         ]
         Resource = "*"
       },
       {
         Effect = "Allow"
         Action = [
-          "secretsmanager:GetResourcePolicy",
           "secretsmanager:GetSecretValue"
         ]
         Resource = "*"
