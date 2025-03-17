@@ -4,12 +4,13 @@ locals {
     EKSClusterNamespacesSpaceSeparated = join(" ", [var.analytics_k8s_namespace])
     TerraformState                     = local.terraform_state
   }
+  redshift_host = element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0)
 }
 
 module "redshift_flyway_pgsql_user" {
   count = local.deploy_data_ingestion_resources ? 1 : 0
 
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.6.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.9.0"
 
   username = "interop_analytics_flyway_user"
 
@@ -22,14 +23,17 @@ module "redshift_flyway_pgsql_user" {
     }
   )
 
-  db_host = aws_redshift_cluster.analytics[0].endpoint
+  redshift_cluster = true
+
+  db_host = local.redshift_host
   db_port = aws_redshift_cluster.analytics[0].port
   db_name = aws_redshift_cluster.analytics[0].database_name
 
   db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
 
   additional_sql_statements = <<-EOT
-    GRANT CREATE ON DATABASE "${aws_redshift_cluster.analytics[0].database_name}" TO interop_analytics_flyway_user
+    GRANT CREATE ON DATABASE ${aws_redshift_cluster.analytics[0].database_name} TO "interop_analytics_flyway_user";
+    ALTER USER interop_analytics_flyway_user SET search_path TO '\$user';
   EOT
 }
 
@@ -52,7 +56,7 @@ locals {
 
 # PostgreSQL users with no initial grants. The grants will be applied by Flyway
 module "redshift_be_app_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.6.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.9.0"
 
   for_each = local.be_app_psql_usernames
 
@@ -67,7 +71,9 @@ module "redshift_be_app_pgsql_user" {
     }
   )
 
-  db_host = aws_redshift_cluster.analytics[0].endpoint
+  redshift_cluster = true
+
+  db_host = local.redshift_host
   db_port = aws_redshift_cluster.analytics[0].port
   db_name = aws_redshift_cluster.analytics[0].database_name
 
