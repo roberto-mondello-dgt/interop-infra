@@ -256,7 +256,7 @@ resource "aws_iam_role" "deployment_github_repo" {
 }
 
 resource "aws_iam_policy" "deployment_github_repo" {
-  name = "DeploymentGithubRepo"
+  name = "CoreDeploymentGithubRepo"
 
   policy = jsonencode({
     Version = "2012-10-17"
