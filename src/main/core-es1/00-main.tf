@@ -25,6 +25,15 @@ provider "aws" {
 }
 
 provider "aws" {
+  region = "eu-central-1"
+  alias  = "ec1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+provider "aws" {
   region = "us-east-1"
   alias  = "us_east_1"
 
@@ -50,4 +59,5 @@ locals {
   deploy_safe_storage_infra   = var.safe_storage_account_id != null && var.safe_storage_vpce_service_name != null
   deploy_auth_server_refactor = local.deploy_be_refactor_infra && (var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "prod")
   on_call_env                 = var.env == "dev" || var.env == "prod" # DEV is used for testing
+  terraform_state             = "core"
 }

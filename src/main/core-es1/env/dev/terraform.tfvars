@@ -220,4 +220,6 @@ be_refactor_k8s_monitoring_cronjobs_names = [
   "interop-be-token-generation-readmodel-checker"
 ]
 
+deployment_repo_name = "pagopa/interop-core-deployment"
+
 analytics_k8s_namespace = "dev-analytics"

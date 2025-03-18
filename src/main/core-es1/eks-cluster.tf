@@ -169,6 +169,21 @@ module "eks" {
         }
       }
     },
+    {
+      deployment_role = {
+        principal_arn     = local.deployment_github_repo_iam_role_arn
+        kubernetes_groups = []
+        policy_associations = {
+          namespace_edit = {
+            policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+            access_scope = {
+              type       = "namespace"
+              namespaces = ["${var.env}"]
+            }
+          }
+        }
+      }
+    },
     var.analytics_k8s_namespace != null ? {
       analytics_deployment_role = {
         principal_arn     = local.analytics_deployment_github_repo_iam_role_arn

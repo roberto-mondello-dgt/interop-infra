@@ -395,6 +395,11 @@ variable "be_refactor_k8s_monitoring_cronjobs_names" {
   default     = []
 }
 
+variable "deployment_repo_name" {
+  description = "Github repository name containing deployment automation"
+  type        = string
+}
+
 variable "analytics_k8s_namespace" {
   description = "Kubernetes namespace for the Analytics project"
   type        = string
