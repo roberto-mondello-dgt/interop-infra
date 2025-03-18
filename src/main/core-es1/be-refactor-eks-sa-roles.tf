@@ -78,8 +78,11 @@ module "be_refactor_catalog_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-catalog-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-catalog-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-catalog-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -100,8 +103,11 @@ module "be_refactor_attribute_registry_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-attribute-registry-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-attribute-registry-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-attribute-registry-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -189,8 +195,11 @@ module "be_refactor_agreement_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-agreement-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-agreement-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-agreement-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -256,8 +265,11 @@ module "be_refactor_purpose_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-purpose-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-purpose-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-purpose-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -278,8 +290,11 @@ module "be_refactor_client_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-client-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-client-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-client-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -300,8 +315,11 @@ module "be_refactor_key_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-key-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-key-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-key-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -322,8 +340,11 @@ module "be_refactor_tenant_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-tenant-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-tenant-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-tenant-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -432,8 +453,11 @@ module "be_refactor_producer_key_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-producer-key-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-producer-key-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-producer-key-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -454,8 +478,11 @@ module "be_refactor_producer_keychain_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-producer-keychain-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-producer-keychain-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-producer-keychain-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -648,8 +675,11 @@ module "be_delegation_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-delegation-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-delegation-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-delegation-readmodel-writer-sql"
+      ]
     }
   }
 
@@ -840,8 +870,11 @@ module "be_eservice_template_readmodel_writer_irsa" {
 
   oidc_providers = {
     cluster = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-eservice-template-readmodel-writer"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${local.k8s_namespace_irsa}:interop-be-eservice-template-readmodel-writer",
+        "${local.k8s_namespace_irsa}:interop-be-eservice-template-readmodel-writer-sql"
+      ]
     }
   }
 
