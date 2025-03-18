@@ -244,7 +244,7 @@ data "aws_iam_policy_document" "deployment_github_repo_assume" {
 }
 
 locals {
-  deployment_github_repo_iam_role_name = format("%s-deployment-github-repo-%s", local.project, var.env)
+  deployment_github_repo_iam_role_name = format("%s-core-deployment-github-repo-%s", local.project, var.env)
   deployment_github_repo_iam_role_arn  = format("arn:aws:iam::%s:role/%s", data.aws_caller_identity.current.account_id, local.deployment_github_repo_iam_role_name)
 }
 
