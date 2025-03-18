@@ -50,6 +50,10 @@ locals {
     alb_logs_analytics_writer_user = {
       sql_name        = "interop_be_alb_logs_analytics_writer_${var.env}",
       k8s_secret_name = "redshift-alb-logs-analytics-writer-user"
+    },
+    application_audit_analytics_writer_user = {
+      sql_name        = "interop_be_application_audit_analytics_writer_${var.env}",
+      k8s_secret_name = "redshift-application-audit-analytics-writer-user"
     }
   } : {}
 }
