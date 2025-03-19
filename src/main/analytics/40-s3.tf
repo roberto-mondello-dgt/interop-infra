@@ -23,3 +23,42 @@ resource "aws_s3_bucket_notification" "alb_logs_source" {
     events    = ["s3:ObjectCreated:Put"]
   }
 }
+
+module "application_audit_archive" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "3.15.1"
+
+  bucket = format("%s-application-audit-archive-%s-es1", local.project, var.env)
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  versioning = {
+    enabled = true
+  }
+
+  object_lock_enabled = true
+  object_lock_configuration = {
+    rule = {
+      default_retention = {
+        mode  = var.env == "prod" ? "COMPLIANCE" : "GOVERNANCE"
+        years = 10
+      }
+    }
+  }
+
+  lifecycle_rule = [
+    {
+      id      = "StandardIARule"
+      enabled = true
+      transition = {
+        days : 30
+        storage_class : "STANDARD_IA"
+      }
+    }
+  ]
+}
