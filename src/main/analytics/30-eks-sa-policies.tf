@@ -131,12 +131,12 @@ resource "aws_iam_policy" "be_application_audit_archiver" {
       {
         Effect   = "Allow"
         Action   = "s3:ListBucket"
-        Resource = module.application_audit_archive[0].s3_bucket_id
+        Resource = module.application_audit_archive[0].s3_bucket_arn
       },
       {
         Effect   = "Allow"
         Action   = "s3:PutObject"
-        Resource = format("%s/*", module.application_audit_archive[0].s3_bucket_id)
+        Resource = format("%s/*", module.application_audit_archive[0].s3_bucket_arn)
       },
       {
         Effect = "Allow"
