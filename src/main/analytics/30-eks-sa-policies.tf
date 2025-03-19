@@ -115,7 +115,7 @@ resource "aws_iam_policy" "be_alb_logs_analytics_writer" {
           "sqs:DeleteMessage"
         ]
         Resource = aws_sqs_queue.alb_logs[0].arn
-      },
+      }
     ]
   })
 }
@@ -151,6 +151,33 @@ resource "aws_iam_policy" "be_application_audit_archiver" {
           data.aws_msk_cluster.platform_events.arn,
           "${local.msk_topic_iam_prefix}/${var.env}_application.audit",
           "${local.msk_group_iam_prefix}/${var.analytics_k8s_namespace}-application-audit-archiver"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_application_audit_analytics_writer" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  name = "InteropBeApplicationAuditAnalyticsWriter"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          data.aws_msk_cluster.platform_events.arn,
+          "${local.msk_topic_iam_prefix}/${var.env}_application.audit",
+          "${local.msk_group_iam_prefix}/${var.analytics_k8s_namespace}-application-audit-analytics-writer"
         ]
       }
     ]
