@@ -80,6 +80,23 @@ resource "aws_wafv2_web_acl" "interop" {
                 }
               }
             }
+
+            statement {
+              not_statement {
+                statement {
+                  regex_match_statement {
+                    field_to_match {
+                      uri_path {}
+                    }
+                    regex_string = "${local.waf_bff_prefix_regex}/eservices/templates/.*/documents$"
+                    text_transformation {
+                      priority = 0
+                      type     = "NONE"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -147,6 +164,19 @@ resource "aws_wafv2_web_acl" "interop" {
                   uri_path {}
                 }
                 regex_string = "${local.waf_bff_prefix_regex}/agreements/.*/consumer-documents$"
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+
+            statement {
+              regex_match_statement {
+                field_to_match {
+                  uri_path {}
+                }
+                regex_string = "${local.waf_bff_prefix_regex}/eservices/templates/.*/documents$"
                 text_transformation {
                   priority = 0
                   type     = "NONE"
