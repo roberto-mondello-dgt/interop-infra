@@ -62,3 +62,21 @@ module "be_alb_logs_analytics_writer_irsa" {
     be_alb_logs_analytics_writer = aws_iam_policy.be_alb_logs_analytics_writer[0].arn
   }
 }
+
+module "be_application_audit_archiver_irsa" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version   = "5.20.0"
+  role_name = format("%s-application-audit-archiver-%s", local.be_iam_prefix, var.env)
+  oidc_providers = {
+    cluster = {
+      provider_arn               = data.aws_iam_openid_connect_provider.core_eks.arn
+      namespace_service_accounts = ["${var.analytics_k8s_namespace}:interop-be-application-audit-archiver"]
+    }
+  }
+
+  role_policy_arns = {
+    be_application_audit_archiver = aws_iam_policy.be_application_audit_archiver[0].arn
+  }
+}

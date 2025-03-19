@@ -83,7 +83,7 @@ resource "aws_iam_policy" "application_audit" {
         ]
         Resource = [
           data.aws_msk_cluster.platform_events.arn,
-          "${local.msk_topic_iam_prefix}/${var.env}_application.audit",
+          "${local.msk_topic_iam_prefix}/${var.env}_application.audit"
         ]
       }
     ]
@@ -116,6 +116,43 @@ resource "aws_iam_policy" "be_alb_logs_analytics_writer" {
         ]
         Resource = aws_sqs_queue.alb_logs[0].arn
       },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_application_audit_archiver" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  name = "InteropBeApplicationAuditArchiver"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "s3:ListBucket"
+        Resource = module.application_audit_archive[0].s3_bucket_id
+      },
+      {
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = format("%s/*", module.application_audit_archive[0].s3_bucket_id)
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+        Resource = [
+          data.aws_msk_cluster.platform_events.arn,
+          "${local.msk_topic_iam_prefix}/${var.env}_application.audit",
+          "${local.msk_group_iam_prefix}/${var.analytics_k8s_namespace}-application-audit-archiver"
+        ]
+      }
     ]
   })
 }
