@@ -34,6 +34,8 @@ analytics_k8s_namespace = "dev-analytics"
 
 deployment_repo_name = "pagopa/interop-analytics-deployment"
 
+s3_reprocess_repo_name = "pagopa/interop-s3-reprocess"
+
 github_runner_task_role_name = "interop-github-runner-task-dev-es1"
 
 msk_cluster_name = "interop-platform-events-dev"

@@ -192,3 +192,57 @@ resource "aws_iam_policy" "deployment_github_repo" {
     ]
   })
 }
+
+data "aws_iam_policy_document" "s3_reprocess_github_repo_assume" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [data.aws_iam_openid_connect_provider.github.arn]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+
+      values = [format("repo:%s:*", var.s3_reprocess_repo_name)]
+    }
+  }
+}
+
+resource "aws_iam_role" "s3_reprocess_github_repo" {
+  name = format("%s-analytics-s3-reprocess-%s-es1", local.project, var.env)
+
+  assume_role_policy  = data.aws_iam_policy_document.s3_reprocess_github_repo_assume.json
+  managed_policy_arns = [aws_iam_policy.s3_reprocess_github_repo.arn]
+}
+
+resource "aws_iam_policy" "s3_reprocess_github_repo" {
+  name = "AnalyticsS3ReprocessGithubRepoPolicy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = "s3:ListBucket"
+        Resource = [
+          data.aws_s3_bucket.jwt_audit_source.arn,
+          data.aws_s3_bucket.alb_logs_source.arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:SendMessage"
+        ]
+        Resource = [
+          aws_sqs_queue.jwt_audit[0].arn,
+          aws_sqs_queue.alb_logs[0].arn
+        ]
+      }
+    ]
+  })
+}
