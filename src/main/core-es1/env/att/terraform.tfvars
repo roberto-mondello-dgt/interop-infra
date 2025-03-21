@@ -102,6 +102,7 @@ k8s_monitoring_internal_deployments_names = [
   "interop-be-datalake-interface-exporter",
   "interop-be-delegation-readmodel-writer",
   "interop-be-eservice-descriptors-archiver",
+  "interop-be-eservice-template-outbound-writer",
   "interop-be-eservice-template-process",
   "interop-be-eservice-template-readmodel-writer",
   "interop-be-eservice-template-updater",
@@ -133,3 +134,5 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-tenants-cert-attr-updater",
   "interop-be-token-details-persister"
 ]
+
+deployment_repo_name = "pagopa/interop-core-deployment"

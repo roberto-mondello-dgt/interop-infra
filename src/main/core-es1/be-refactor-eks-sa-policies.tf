@@ -1422,6 +1422,50 @@ resource "aws_iam_policy" "be_eservice_template_instances_updater" {
   })
 }
 
+resource "aws_iam_policy" "be_refactor_eservice_template_outbound_writer" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeEserviceTemplateOutboundWriterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/event-store.*_eservice_template.events",
+          "${local.msk_group_iam_prefix}/*eservice-template-outbound-writer"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:AlterGroup",
+          "kafka-cluster:DescribeGroup",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:ReadData",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/outbound.*_eservice_template.events",
+          "${local.msk_group_iam_prefix}/*eservice-template-outbound-writer"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_notification_email_sender" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 

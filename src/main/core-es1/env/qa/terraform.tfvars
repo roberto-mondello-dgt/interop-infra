@@ -132,3 +132,5 @@ k8s_monitoring_cronjobs_names = [
   "interop-be-tenants-cert-attr-updater",
   "interop-be-token-details-persister"
 ]
+
+deployment_repo_name = "pagopa/interop-core-deployment"

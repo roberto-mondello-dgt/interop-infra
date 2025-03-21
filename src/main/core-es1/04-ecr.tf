@@ -45,6 +45,7 @@ locals {
     "interop-be-dtd-metrics",
     "interop-be-eservice-descriptors-archiver",
     "interop-be-eservices-monitoring-exporter",
+    "interop-be-eservice-template-outbound-writer",
     "interop-be-eservice-template-process",
     "interop-be-eservice-template-readmodel-writer",
     "interop-be-eservice-template-readmodel-writer-sql",
