@@ -151,7 +151,8 @@ resource "aws_iam_policy" "be_refactor_catalog_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_catalog.events",
-          "${local.msk_group_iam_prefix}/*catalog-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*catalog-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*catalog-readmodel-writer-sql"
         ]
       }
     ]
@@ -180,7 +181,8 @@ resource "aws_iam_policy" "be_refactor_attribute_registry_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_attribute_registry.events",
-          "${local.msk_group_iam_prefix}/*attribute-registry-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*attribute-registry-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*attribute-registry-readmodel-writer-sql"
         ]
       }
     ]
@@ -320,7 +322,8 @@ resource "aws_iam_policy" "be_refactor_agreement_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_agreement.events",
-          "${local.msk_group_iam_prefix}/*agreement-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*agreement-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*agreement-readmodel-writer-sql"
         ]
       }
     ]
@@ -456,7 +459,8 @@ resource "aws_iam_policy" "be_refactor_purpose_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_purpose.events",
-          "${local.msk_group_iam_prefix}/*purpose-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*purpose-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*purpose-readmodel-writer-sql"
         ]
       }
     ]
@@ -484,7 +488,8 @@ resource "aws_iam_policy" "be_refactor_client_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
-          "${local.msk_group_iam_prefix}/*client-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*client-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*client-readmodel-writer-sql"
         ]
       }
     ]
@@ -512,7 +517,8 @@ resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
-          "${local.msk_group_iam_prefix}/*key-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*key-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*key-readmodel-writer-sql"
         ]
       }
     ]
@@ -540,7 +546,8 @@ resource "aws_iam_policy" "be_refactor_tenant_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_tenant.events",
-          "${local.msk_group_iam_prefix}/*tenant-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*tenant-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*tenant-readmodel-writer-sql"
         ]
       }
     ]
@@ -718,7 +725,8 @@ resource "aws_iam_policy" "be_refactor_producer_key_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
-          "${local.msk_group_iam_prefix}/*producer-key-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*producer-key-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*producer-key-readmodel-writer-sql"
         ]
       }
     ]
@@ -745,7 +753,8 @@ resource "aws_iam_policy" "be_refactor_producer_keychain_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
-          "${local.msk_group_iam_prefix}/*producer-keychain-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*producer-keychain-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*producer-keychain-readmodel-writer-sql"
         ]
       }
     ]
@@ -1153,7 +1162,8 @@ resource "aws_iam_policy" "be_delegation_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_delegation.events",
-          "${local.msk_group_iam_prefix}/*delegation-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*delegation-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*delegation-readmodel-writer-sql"
         ]
       }
     ]
@@ -1382,7 +1392,8 @@ resource "aws_iam_policy" "be_eservice_template_readmodel_writer" {
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/event-store.*_eservice_template.events",
-          "${local.msk_group_iam_prefix}/*eservice-template-readmodel-writer"
+          "${local.msk_group_iam_prefix}/*eservice-template-readmodel-writer",
+          "${local.msk_group_iam_prefix}/*eservice-template-readmodel-writer-sql"
         ]
       }
     ]
