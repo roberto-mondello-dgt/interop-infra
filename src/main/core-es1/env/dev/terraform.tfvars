@@ -46,7 +46,8 @@ github_runners_allowed_repos = [
   "pagopa/interop-platform-deployment-refactor",
   "pagopa/interop-github-runner-aws",
   "pagopa/interop-qa-tests",
-  "pagopa/interop-analytics-deployment"
+  "pagopa/interop-analytics-deployment",
+  "pagopa/interop-core-deployment"
 ]
 github_runners_cpu       = 2048
 github_runners_memory    = 4096
