@@ -40,6 +40,10 @@ github_runner_task_role_name = "interop-github-runner-task-dev-es1"
 
 msk_cluster_name = "interop-platform-events-dev"
 
+msk_monitoring_app_audit_max_offset_lag_threshold = 500
+msk_monitoring_app_audit_evaluation_periods       = 5
+msk_monitoring_app_audit_period_seconds           = 60
+
 application_audit_producers_irsa_list = [
   "interop-be-authorization-server-dev-es1",
   "interop-be-backend-for-frontend-dev-es1",

@@ -124,6 +124,21 @@ variable "msk_cluster_name" {
   type        = string
 }
 
+variable "msk_monitoring_app_audit_max_offset_lag_threshold" {
+  description = "Threshold of the MaxOffsetLag alarm for the application audit MSK topic"
+  type        = number
+}
+
+variable "msk_monitoring_app_audit_evaluation_periods" {
+  description = "Evaluation periods of the MaxOffsetLag alarm for the application audit MSK topic"
+  type        = number
+}
+
+variable "msk_monitoring_app_audit_period_seconds" {
+  description = "Period in seconds of the MaxOffsetLag alarm for the application audit MSK topic"
+  type        = number
+}
+
 variable "application_audit_producers_irsa_list" {
   description = "Names of the IRSA producers for application audit"
   type        = list(string)
