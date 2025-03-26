@@ -56,6 +56,24 @@ locals {
       k8s_secret_name = "redshift-application-audit-analytics-writer-user"
     }
   } : {}
+
+  devs_psql_usernames = local.deploy_data_ingestion_resources ? {
+    readonly = {
+      sql_name = "interop_analytics_readonly"
+    },
+    lorenzo_giorgi = {
+      sql_name = "lorenzo_giorgi"
+    },
+    eduardo_mihalache = {
+      sql_name = "eduardo_mihalache"
+    },
+    diego_longo = {
+      sql_name = "diego_longo"
+    },
+    roberto_taglioni = {
+      sql_name = "roberto_taglioni"
+    }
+  } : {}
 }
 
 # PostgreSQL users with no initial grants. The grants will be applied by Flyway
@@ -82,4 +100,34 @@ module "redshift_be_app_pgsql_user" {
   db_name = aws_redshift_cluster.analytics[0].database_name
 
   db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+}
+
+# PostgreSQL users for developers with default privileges.
+module "redshift_devs_pgsql_user" {
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.10.0"
+
+  for_each = local.devs_psql_usernames
+
+  username = each.value.sql_name
+
+  generated_password_length = 30
+  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+
+  secret_tags = merge(var.tags, {
+    Redshift = "" # Necessary for Redshift log-in integration when using Quey editor v2
+  })
+
+  redshift_cluster = true
+
+  db_host = local.redshift_host
+  db_port = aws_redshift_cluster.analytics[0].port
+  db_name = aws_redshift_cluster.analytics[0].database_name
+
+  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+
+  grant_redshift_groups = ["readonly_group"]
+
+  additional_sql_statements = <<-EOT
+    ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO "${each.value.sql_name}";
+  EOT
 }
