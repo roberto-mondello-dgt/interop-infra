@@ -41,3 +41,61 @@ resource "aws_cloudwatch_metric_alarm" "sqs_alb_logs" {
   }
   datapoints_to_alarm = "1"
 }
+
+resource "aws_cloudwatch_metric_alarm" "sqs_application_audit_fallback" {
+  count = local.deploy_data_ingestion_resources ? 1 : 0
+
+  depends_on = [aws_sqs_queue.application_audit_fallback[0]]
+
+  alarm_name          = "sqs-${aws_sqs_queue.application_audit_fallback[0].name}-approximate-number-messages"
+  alarm_description   = "Approximate number of messages on ${aws_sqs_queue.application_audit_fallback[0].name} queue"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  threshold           = "1"
+  alarm_actions       = [data.aws_sns_topic.platform_alarms.arn]
+  treat_missing_data  = "missing"
+  datapoints_to_alarm = "1"
+
+  metric_query {
+    id          = "e1"
+    label       = "Approximate number of messages"
+    expression  = "m1+m2"
+    return_data = true
+  }
+
+  metric_query {
+    id          = "m1"
+    label       = "Approximate number of messages visible"
+    return_data = false
+
+    metric {
+      stat   = "Maximum"
+      period = 60 # 1 minute
+
+      metric_name = "ApproximateNumberOfMessagesVisible"
+      namespace   = "AWS/SQS"
+
+      dimensions = {
+        QueueName = aws_sqs_queue.application_audit_fallback[0].name
+      }
+    }
+  }
+
+  metric_query {
+    id          = "m2"
+    label       = "Approximate number of messages not visible"
+    return_data = false
+
+    metric {
+      stat   = "Maximum"
+      period = 60 # 1 minute
+
+      metric_name = "ApproximateNumberOfMessagesNotVisible"
+      namespace   = "AWS/SQS"
+
+      dimensions = {
+        QueueName = aws_sqs_queue.application_audit_fallback[0].name
+      }
+    }
+  }
+}

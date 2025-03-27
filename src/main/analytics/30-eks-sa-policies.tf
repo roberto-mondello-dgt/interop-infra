@@ -85,6 +85,11 @@ resource "aws_iam_policy" "application_audit" {
           data.aws_msk_cluster.platform_events.arn,
           "${local.msk_topic_iam_prefix}/${var.env}_application.audit"
         ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = "sqs:SendMessage"
+        Resource = aws_sqs_queue.application_audit_fallback[0].arn
       }
     ]
   })
