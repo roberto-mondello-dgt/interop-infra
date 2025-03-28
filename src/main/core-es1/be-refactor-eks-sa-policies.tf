@@ -1428,6 +1428,18 @@ resource "aws_iam_policy" "be_eservice_template_instances_updater" {
         Effect   = "Allow"
         Action   = "kms:Sign"
         Resource = aws_kms_key.interop.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
       }
     ]
   })
