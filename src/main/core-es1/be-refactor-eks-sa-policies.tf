@@ -61,6 +61,56 @@ resource "aws_iam_policy" "be_refactor_debezium_postgresql" {
   })
 }
 
+resource "aws_iam_policy" "be_attribute_registry_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAttributeRegistryProcessPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_authorization_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeAuthorizationProcessPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_refactor_catalog_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -80,6 +130,19 @@ resource "aws_iam_policy" "be_refactor_catalog_process" {
           format("%s/*", module.application_documents_bucket.s3_bucket_arn),
           try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
         ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
       }
     ]
   })
@@ -253,6 +316,19 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
           try(module.be_refactor_certified_mail_queue[0].queue_arn, "")
         ])
       },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
+      }
     ]
   })
 }
@@ -389,6 +465,19 @@ resource "aws_iam_policy" "be_refactor_purpose_process" {
           module.persistence_events_queue.queue_arn,
           try(module.be_refactor_persistence_events_queue[0].queue_arn, "")
         ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
       }
     ]
   })
@@ -519,6 +608,31 @@ resource "aws_iam_policy" "be_refactor_key_readmodel_writer" {
           "${local.msk_topic_iam_prefix}/event-store.*_authorization.events",
           "${local.msk_group_iam_prefix}/*key-readmodel-writer",
           "${local.msk_group_iam_prefix}/*key-readmodel-writer-sql"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "be_tenant_process" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeTenantProcessPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
         ]
       }
     ]
@@ -1185,6 +1299,19 @@ resource "aws_iam_policy" "be_delegation_process" {
           "s3:PutObject"
         ]
         Resource = [format("%s/*", module.application_documents_bucket.s3_bucket_arn)]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
       }
     ]
   })
@@ -1366,6 +1493,19 @@ resource "aws_iam_policy" "be_eservice_template_process" {
           format("%s/*", module.application_documents_bucket.s3_bucket_arn),
           try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
         ])
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
       }
     ]
   })

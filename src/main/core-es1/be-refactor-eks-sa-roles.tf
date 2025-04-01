@@ -22,6 +22,50 @@ module "be_refactor_debezium_postgresql_irsa" {
   }
 }
 
+module "attribute_registry_process_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-attribute-registry-process-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-attribute-registry-process*"] : ["${local.k8s_namespace_irsa}:interop-be-attribute-registry-process"]
+    }
+  }
+
+  role_policy_arns = {
+    be_attribute_registry_process = aws_iam_policy.be_attribute_registry_process[0].arn
+  }
+}
+
+module "be_authorization_process_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-authorization-process-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-authorization-process*"] : ["${local.k8s_namespace_irsa}:interop-be-authorization-process"]
+    }
+  }
+
+  role_policy_arns = {
+    be_authorization_process = aws_iam_policy.be_authorization_process[0].arn
+  }
+}
+
 module "be_refactor_catalog_process_irsa" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -325,6 +369,28 @@ module "be_refactor_key_readmodel_writer_irsa" {
 
   role_policy_arns = {
     be_refactor_key_readmodel_writer = aws_iam_policy.be_refactor_key_readmodel_writer[0].arn
+  }
+}
+
+module "be_tenant_process_irsa" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.18.0"
+
+  role_name = format("interop-be-tenant-process-%s-es1", var.env)
+
+  assume_role_condition_test = var.env == "dev" ? "StringLike" : "StringEquals"
+
+  oidc_providers = {
+    cluster = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = var.env == "dev" ? ["${local.k8s_namespace_irsa}:interop-be-tenant-process*"] : ["${local.k8s_namespace_irsa}:interop-be-tenant-process"]
+    }
+  }
+
+  role_policy_arns = {
+    be_tenant_process = aws_iam_policy.be_tenant_process[0].arn
   }
 }
 
