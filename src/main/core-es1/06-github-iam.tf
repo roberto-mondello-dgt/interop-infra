@@ -84,7 +84,7 @@ data "aws_iam_policy_document" "github_monorepo_assume" {
 }
 
 resource "aws_iam_role" "github_monorepo" {
-  count = local.deploy_be_refactor_infra ? 1 : 0
+  count = local.deploy_be_refactor_infra && var.env == "dev" ? 1 : 0
 
   name = format("%s-github-monorepo-%s-es1", var.short_name, var.env)
 
@@ -117,17 +117,41 @@ resource "aws_iam_role" "github_monorepo" {
       ]
     })
   }
+}
+
+resource "aws_iam_role" "github_monorepo_ecr_ro" {
+  count = var.env == "dev" ? 1 : 0
+
+  name = format("%s-github-monorepo-ecr-ro-%s-es1", var.short_name, var.env)
+
+  assume_role_policy = data.aws_iam_policy_document.github_monorepo_assume[0].json
 
   inline_policy {
-    name = "KubeConfigPolicy"
+    name = "GithubEcrPolicy"
 
     policy = jsonencode({
       Version = "2012-10-17"
       Statement = [
         {
-          Effect   = "Allow"
-          Action   = "eks:DescribeCluster"
-          Resource = module.eks.cluster_arn
+          Effect = "Allow"
+          Action = [
+            "ecr:GetAuthorizationToken",
+            "ecr:BatchImportUpstreamImage"
+          ]
+          Resource = "*"
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "ecr:BatchGetImage",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+          ]
+          Resource = format("arn:aws:ecr:%s:%s:repository/%s/*",
+            var.aws_region,
+            data.aws_caller_identity.current.account_id,
+            aws_ecr_pull_through_cache_rule.ecr_public[0].ecr_repository_prefix
+          )
         }
       ]
     })
@@ -206,12 +230,12 @@ resource "aws_iam_role" "github_ecs" {
 
 data "aws_s3_bucket" "terraform_states" {
   bucket   = format("terraform-backend-%s", data.aws_caller_identity.current.account_id)
-  provider = aws.ec1
+  provider = aws.tf_backend
 }
 
 data "aws_dynamodb_table" "terraform_lock" {
   name     = "terraform-lock"
-  provider = aws.ec1
+  provider = aws.tf_backend
 }
 
 data "aws_iam_policy_document" "deployment_github_repo_assume" {

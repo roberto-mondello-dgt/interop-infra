@@ -93,6 +93,13 @@ locals {
   ]
 }
 
+resource "aws_ecr_pull_through_cache_rule" "ecr_public" {
+  count = var.env == "dev" ? 1 : 0
+
+  upstream_registry_url = "public.ecr.aws"
+  ecr_repository_prefix = "ecr-public"
+}
+
 resource "aws_ecr_repository" "app" {
   for_each = toset(local.repository_names)
 
@@ -139,6 +146,18 @@ resource "aws_ecr_repository_policy" "dev_cross_account" {
         Effect = "Allow",
         Principal = {
           AWS = "arn:aws:iam::755649575658:root"
+        },
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:BatchGetImage",
+          "ecr:GetDownloadUrlForLayer"
+        ]
+      },
+      {
+        Sid    = "VAPT Pull",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::565393043798:root"
         },
         Action = [
           "ecr:BatchCheckLayerAvailability",
