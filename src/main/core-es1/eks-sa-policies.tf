@@ -304,6 +304,18 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
           "s3:PutObject"
         ]
         Resource = format("%s/*", module.application_import_export_bucket.s3_bucket_arn)
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
       }
     ]
   })

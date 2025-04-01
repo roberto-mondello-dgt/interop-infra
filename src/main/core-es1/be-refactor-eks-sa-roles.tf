@@ -903,7 +903,9 @@ module "be_refactor_api_gateway_irsa" {
     }
   }
 
-  role_policy_arns = {}
+  role_policy_arns = {
+    be_api_gatewaay = aws_iam_policy.be_api_gateway[0].arn
+  }
 }
 
 module "be_eservice_template_process_irsa" {

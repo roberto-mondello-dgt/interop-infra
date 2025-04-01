@@ -86,6 +86,31 @@ resource "aws_iam_policy" "be_attribute_registry_process" {
   })
 }
 
+resource "aws_iam_policy" "be_api_gateway" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeApiGatewayPolicyEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "kafka-cluster:Connect",
+          "kafka-cluster:DescribeTopic",
+          "kafka-cluster:WriteData"
+        ]
+
+        Resource = [
+          aws_msk_cluster.platform_events[0].arn,
+          "${local.msk_topic_iam_prefix}/*_application.audit",
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_authorization_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 
@@ -323,7 +348,6 @@ resource "aws_iam_policy" "be_refactor_agreement_process" {
           "kafka-cluster:DescribeTopic",
           "kafka-cluster:WriteData"
         ]
-
         Resource = [
           aws_msk_cluster.platform_events[0].arn,
           "${local.msk_topic_iam_prefix}/*_application.audit",
