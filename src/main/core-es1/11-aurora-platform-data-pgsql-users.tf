@@ -72,6 +72,14 @@ locals {
     attribute_registry_process_user = {
       sql_name        = "${var.env}_attribute_registry_process_user",
       k8s_secret_name = "platform-data-attribute-registry-process-user"
+    },
+    agreement_rmw_user = {
+      sql_name        = "${var.env}_agreement_rmw_user",
+      k8s_secret_name = "platform-data-agreement-rmw-user"
+    },
+    agreement_process_user = {
+      sql_name        = "${var.env}_agreement_process_user",
+      k8s_secret_name = "platform-data-agreement-process-user"
     }
   } : {}
 }
