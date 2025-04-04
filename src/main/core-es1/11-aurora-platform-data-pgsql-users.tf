@@ -80,6 +80,14 @@ locals {
     agreement_process_user = {
       sql_name        = "${var.env}_agreement_process_user",
       k8s_secret_name = "platform-data-agreement-process-user"
+    },
+    api_gateway_user = {
+      sql_name        = "${var.env}_api_gateway_user",
+      k8s_secret_name = "platform-data-api-gateway-user"
+    },
+    key_rmw_user = {
+      sql_name        = "${var.env}_key_rmw_user",
+      k8s_secret_name = "platform-data-key-rmw-user"
     }
   } : {}
 }
