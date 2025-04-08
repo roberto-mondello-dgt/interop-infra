@@ -237,7 +237,7 @@ resource "aws_security_group" "github_runners" {
 }
 
 resource "aws_iam_role" "github_qa_runner_task" {
-  count = var.env == "dev" || var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" || var.env == "vapt" ? 1 : 0
 
   name = format("%s-github-qa-runner-task-%s-es1", var.short_name, var.env)
 
@@ -351,7 +351,7 @@ resource "aws_iam_role" "github_qa_runner_task" {
 }
 
 resource "aws_ecs_task_definition" "github_qa_runner" {
-  count = var.env == "dev" || var.env == "qa" ? 1 : 0
+  count = var.env == "dev" || var.env == "qa" || var.env == "vapt" ? 1 : 0
 
   family = format("%s-github-qa-runner-%s", var.short_name, var.env)
 

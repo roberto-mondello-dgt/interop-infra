@@ -42,6 +42,16 @@ provider "aws" {
   }
 }
 
+# TODO: remove when TF backend resources have been migrated
+provider "aws" {
+  region = var.env == "vapt" ? "eu-south-1" : "eu-central-1"
+  alias  = "tf_backend"
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "github_iac" {
@@ -54,11 +64,12 @@ data "aws_iam_role" "sso_admin" {
 
 locals {
   project                     = "interop"
-  deploy_be_refactor_infra    = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
-  deploy_new_bff_apigw        = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
+  deploy_be_refactor_infra    = true # TODO: refactor 'count' that uses this local
+  deploy_new_bff_apigw        = true # TODO: refactor 'count' that uses this local
   deploy_safe_storage_infra   = var.safe_storage_account_id != null && var.safe_storage_vpce_service_name != null
-  deploy_auth_server_refactor = local.deploy_be_refactor_infra && (var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "prod")
+  deploy_auth_server_refactor = local.deploy_be_refactor_infra
   on_call_env                 = var.env == "dev" || var.env == "prod" # DEV is used for testing
   terraform_state             = "core"
   deploy_read_model_refactor  = var.env == "dev"
+  deployment_repo_v2_active   = var.env == "vapt"
 }

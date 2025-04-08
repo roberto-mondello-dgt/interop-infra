@@ -73,6 +73,13 @@ dns_interop_qa_ns_records = [
   "ns-1437.awsdns-51.org."
 ]
 
+dns_interop_vapt_ns_records = [
+  "ns-627.awsdns-14.net.",
+  "ns-1655.awsdns-14.co.uk.",
+  "ns-1256.awsdns-29.org.",
+  "ns-327.awsdns-40.com."
+]
+
 dns_interop_att_ns_records = [
   "ns-1788.awsdns-31.co.uk.",
   "ns-633.awsdns-15.net.",

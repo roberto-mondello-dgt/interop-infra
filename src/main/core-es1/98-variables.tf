@@ -225,6 +225,12 @@ variable "dns_interop_qa_ns_records" {
   default     = []
 }
 
+variable "dns_interop_vapt_ns_records" {
+  description = "NS records for the Interop 'vapt' hosted zone. Used to grant DNS delegation for the subdomain"
+  type        = list(string)
+  default     = []
+}
+
 variable "dns_interop_att_ns_records" {
   description = "NS records for the Interop 'att' hosted zone. Used to grant DNS delegation for the subdomain"
   type        = list(string)
@@ -365,16 +371,19 @@ variable "vpn_saml_metadata_path" {
 variable "k8s_monitoring_deployments_names" {
   description = "Names of K8s deployments to monitor using HTTP status codes through APIGW"
   type        = list(string)
+  default     = []
 }
 
 variable "k8s_monitoring_internal_deployments_names" {
   description = "Names of K8s deployments to monitor using application logs instead of HTTP requests"
   type        = list(string)
+  default     = []
 }
 
 variable "k8s_monitoring_cronjobs_names" {
   description = "Names of K8s cronjobs to monitor"
   type        = list(string)
+  default     = []
 }
 
 variable "be_refactor_k8s_monitoring_deployments_names" {

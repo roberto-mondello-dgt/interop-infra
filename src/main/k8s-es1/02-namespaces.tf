@@ -1,6 +1,10 @@
 resource "kubernetes_namespace_v1" "env" {
   metadata {
     name = var.env
+
+    labels = {
+      "elbv2.k8s.aws/pod-readiness-gate-inject" : "enabled"
+    }
   }
 }
 
@@ -19,5 +23,9 @@ resource "kubernetes_namespace_v1" "dev_refactor" {
 
   metadata {
     name = "dev-refactor"
+
+    labels = {
+      "elbv2.k8s.aws/pod-readiness-gate-inject" : "enabled"
+    }
   }
 }
