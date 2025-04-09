@@ -30,5 +30,5 @@ resource "aws_cloudwatch_metric_alarm" "max_offsetlag" {
     "Consumer Group" = each.value.consumer_group
     "Topic"          = each.value.topic
   }
-  datapoints_to_alarm = "1"
+  datapoints_to_alarm = "3"
 }
