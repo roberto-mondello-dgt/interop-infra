@@ -4,7 +4,7 @@ resource "aws_cloudwatch_metric_alarm" "redshift_cpu_utilization" {
   alarm_name        = format("redshift-%s-cpu-utilization", aws_redshift_cluster.analytics[0].cluster_identifier)
   alarm_description = "Max CPU utilization among the nodes of the ${aws_redshift_cluster.analytics[0].cluster_identifier} Redshift cluster"
 
-  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions = [aws_sns_topic.analytics_alarms.arn]
 
   metric_query {
     id          = "e1"
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "redshift_health_status" {
   alarm_name        = format("redshift-%s-health-status", aws_redshift_cluster.analytics[0].cluster_identifier)
   alarm_description = "Health status of the ${aws_redshift_cluster.analytics[0].cluster_identifier} Redshift cluster"
 
-  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions = [aws_sns_topic.analytics_alarms.arn]
 
   metric_name = "HealthStatus"
   namespace   = "AWS/Redshift"
@@ -53,7 +53,7 @@ resource "aws_cloudwatch_metric_alarm" "redshift_maintenance_mode" {
   alarm_name        = format("redshift-%s-maintenance-mode", aws_redshift_cluster.analytics[0].cluster_identifier)
   alarm_description = "Maintenance mode of the ${aws_redshift_cluster.analytics[0].cluster_identifier} Redshift cluster"
 
-  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions = [aws_sns_topic.analytics_alarms.arn]
 
   metric_name = "MaintenanceMode"
   namespace   = "AWS/Redshift"
@@ -77,7 +77,7 @@ resource "aws_cloudwatch_metric_alarm" "redshift_disk_space_used" {
   alarm_name        = format("redshift-%s-disk-space-used", aws_redshift_cluster.analytics[0].cluster_identifier)
   alarm_description = "Max percentage of disk space used among the nodes of the ${aws_redshift_cluster.analytics[0].cluster_identifier} Redshift cluster"
 
-  alarm_actions = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions = [aws_sns_topic.analytics_alarms.arn]
 
   metric_query {
     id          = "e1"

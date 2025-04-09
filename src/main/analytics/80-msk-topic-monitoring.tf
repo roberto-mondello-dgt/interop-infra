@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "max_offsetlag" {
   period              = var.msk_monitoring_app_audit_period_seconds
   statistic           = "Maximum"
   threshold           = var.msk_monitoring_app_audit_max_offset_lag_threshold
-  alarm_actions       = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions       = [aws_sns_topic.analytics_alarms.arn]
   treat_missing_data  = "notBreaching"
   dimensions = {
     "Cluster Name"   = data.aws_msk_cluster.platform_events.cluster_name

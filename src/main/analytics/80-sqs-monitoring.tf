@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_jwt_audit" {
   period              = "60"
   statistic           = "Maximum"
   threshold           = "120" # 2 minutes
-  alarm_actions       = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions       = [aws_sns_topic.analytics_alarms.arn]
   treat_missing_data  = "notBreaching"
   dimensions = {
     QueueName = aws_sqs_queue.jwt_audit[0].name
@@ -34,7 +34,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_alb_logs" {
   period              = "60"
   statistic           = "Maximum"
   threshold           = "120" # 2 minutes
-  alarm_actions       = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions       = [aws_sns_topic.analytics_alarms.arn]
   treat_missing_data  = "notBreaching"
   dimensions = {
     QueueName = aws_sqs_queue.alb_logs[0].name
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_application_audit_fallback" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   threshold           = "1"
-  alarm_actions       = [data.aws_sns_topic.platform_alarms.arn]
+  alarm_actions       = [aws_sns_topic.analytics_alarms.arn]
   treat_missing_data  = "missing"
   datapoints_to_alarm = "1"
 

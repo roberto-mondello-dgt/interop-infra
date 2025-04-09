@@ -47,10 +47,6 @@ data "aws_s3_bucket" "alb_logs_source" {
   bucket = var.alb_logs_bucket_name
 }
 
-data "aws_sns_topic" "platform_alarms" {
-  name = var.sns_topic_name
-}
-
 data "aws_iam_openid_connect_provider" "github" {
   url = "https://token.actions.githubusercontent.com"
 }

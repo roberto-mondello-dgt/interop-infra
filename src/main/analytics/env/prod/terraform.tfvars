@@ -24,8 +24,6 @@ redshift_cluster_nodes_type   = "ra3.xlplus"
 
 jwt_details_bucket_name = "interop-generated-jwt-details-prod-es1"
 
-sns_topic_name = "interop-platform-alarms-prod"
-
 analytics_k8s_namespace = "prod-analytics"
 
 deployment_repo_name = "pagopa/interop-analytics-deployment"

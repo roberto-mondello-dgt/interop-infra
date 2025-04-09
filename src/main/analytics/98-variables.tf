@@ -94,11 +94,6 @@ variable "tracing_vpc_id" {
   default     = null
 }
 
-variable "sns_topic_name" {
-  description = "Name of the SNS topic for alarms notifications"
-  type        = string
-}
-
 variable "analytics_k8s_namespace" {
   description = "Kubernetes namespace for the Analytics project"
   type        = string

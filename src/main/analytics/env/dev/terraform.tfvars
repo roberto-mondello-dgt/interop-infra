@@ -28,8 +28,6 @@ alb_logs_bucket_name    = "interop-alb-logs-dev-es1"
 tracing_aws_account_id = "590183909663"
 tracing_vpc_id         = "vpc-0a08140b4517ce27d"
 
-sns_topic_name = "interop-platform-alarms-dev"
-
 analytics_k8s_namespace = "dev-analytics"
 
 deployment_repo_name = "pagopa/interop-analytics-deployment"
