@@ -88,7 +88,31 @@ locals {
     key_rmw_user = {
       sql_name        = "${var.env}_key_rmw_user",
       k8s_secret_name = "platform-data-key-rmw-user"
-    }
+    },
+    producer_key_rmw_user = {
+      sql_name        = "${var.env}_producer_key_rmw_user",
+      k8s_secret_name = "platform-data-producer-key-rmw-user"
+    },
+    purpose_rmw_user = {
+      sql_name        = "${var.env}_purpose_rmw_user",
+      k8s_secret_name = "platform-data-purpose-rmw-user"
+    },
+    purpose_process_user = {
+      sql_name        = "${var.env}_purpose_process_user",
+      k8s_secret_name = "platform-data-purpose-process-user"
+    },
+    client_rmw_user = {
+      sql_name        = "${var.env}_client_rmw_user",
+      k8s_secret_name = "platform-data-client-rmw-user"
+    },
+    authorization_process_user = {
+      sql_name        = "${var.env}_authorization_process_user",
+      k8s_secret_name = "platform-data-authorization-process-user"
+    },
+    producer_keychain_rmw_user = {
+      sql_name        = "${var.env}_producer_keychain_rmw_user",
+      k8s_secret_name = "platform-data-producer-keychain-rmw-user"
+    },
   } : {}
 }
 
