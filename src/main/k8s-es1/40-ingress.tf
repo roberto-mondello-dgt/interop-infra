@@ -6,26 +6,26 @@ locals {
       qa   = 0
       vapt = 0
       test = 0
-      att  = 100
-      prod = 99
+      att  = 0
+      prod = 50
     }
     new = {
       dev  = 100
       qa   = 100
       vapt = 100
       test = 100
-      att  = 0
-      prod = 1
+      att  = 100
+      prod = 50
     }
   }
 }
 
-import {
-  for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
-
-  id = format("%s/interop-be-authorization-server-canary", kubernetes_namespace_v1.env.metadata[0].name)
-  to = kubernetes_ingress_v1.auth_server_canary[0]
-}
+# import {
+#   for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
+#
+#   id = format("%s/interop-be-authorization-server-canary", kubernetes_namespace_v1.env.metadata[0].name)
+#   to = kubernetes_ingress_v1.auth_server_canary[0]
+# }
 
 resource "kubernetes_ingress_v1" "auth_server_canary" {
   count = local.deployment_repo_v2_active ? 1 : 0
@@ -95,12 +95,12 @@ resource "kubernetes_ingress_v1" "auth_server_canary" {
   }
 }
 
-import {
-  for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
-
-  id = format("%s/interop-services", kubernetes_namespace_v1.env.metadata[0].name)
-  to = kubernetes_ingress_v1.interop_services[0]
-}
+# import {
+#   for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
+#
+#   id = format("%s/interop-services", kubernetes_namespace_v1.env.metadata[0].name)
+#   to = kubernetes_ingress_v1.interop_services[0]
+# }
 
 resource "kubernetes_ingress_v1" "interop_services" {
   count = local.deployment_repo_v2_active ? 1 : 0
