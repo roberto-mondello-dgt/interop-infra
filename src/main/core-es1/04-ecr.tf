@@ -54,6 +54,7 @@ locals {
     "interop-be-ipa-certified-attributes-importer",
     "interop-be-key-readmodel-writer",
     "interop-be-key-readmodel-writer-sql",
+    "interop-be-m2m-gateway",
     "interop-be-metrics-report-generator",
     "interop-be-notification-email-sender",
     "interop-be-notifier",
