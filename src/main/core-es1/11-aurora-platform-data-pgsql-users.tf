@@ -113,6 +113,38 @@ locals {
       sql_name        = "${var.env}_producer_keychain_rmw_user",
       k8s_secret_name = "platform-data-producer-keychain-rmw-user"
     },
+    tenant_rmw_user = {
+      sql_name        = "${var.env}_tenant_rmw_user",
+      k8s_secret_name = "platform-data-tenant-rmw-user"
+    },
+    tenant_process_user = {
+      sql_name        = "${var.env}_tenant_process_user",
+      k8s_secret_name = "platform-data-tenant-process-user"
+    },
+    tenant_rmw_user = {
+      sql_name        = "${var.env}_tenant_rmw_user",
+      k8s_secret_name = "platform-data-tenant-rmw-user"
+    },
+    tenant_process_user = {
+      sql_name        = "${var.env}_tenant_process_user",
+      k8s_secret_name = "platform-data-tenant-process-user"
+    },
+    delegation_rmw_user = {
+      sql_name        = "${var.env}_delegation_rmw_user",
+      k8s_secret_name = "platform-data-delegation-rmw-user"
+    },
+    delegation_process_user = {
+      sql_name        = "${var.env}_delegation_process_user",
+      k8s_secret_name = "platform-data-delegation-process-user"
+    },
+    catalog_rmw_user = {
+      sql_name        = "${var.env}_catalog_rmw_user",
+      k8s_secret_name = "platform-data-catalog-rmw-user"
+    },
+    catalog_process_user = {
+      sql_name        = "${var.env}_catalog_process_user",
+      k8s_secret_name = "platform-data-catalog-process-user"
+    },
   } : {}
 }
 
