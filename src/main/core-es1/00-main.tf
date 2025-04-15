@@ -72,4 +72,5 @@ locals {
   terraform_state             = "core"
   deploy_read_model_refactor  = var.env == "dev"
   deployment_repo_v2_active   = var.env == "vapt"
+  deploy_keda                 = var.env == "dev"
 }

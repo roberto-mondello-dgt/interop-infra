@@ -26,6 +26,7 @@ locals {
   system_namespaces        = ["kube-system"]
   application_namespaces   = [format("%s*", var.env)]
   observability_namespaces = ["aws-observability"]
+  tools_namespaces         = local.deploy_keda ? ["keda"] : []
 }
 
 resource "aws_iam_policy" "fargate_profile_logging" {
@@ -136,7 +137,7 @@ module "eks" {
     }
   }
 
-  fargate_profiles = {
+  fargate_profiles = merge({
     system = {
       name      = "Interop-EKS-SystemProfile-Es1"
       selectors = [for ns in local.system_namespaces : { namespace = ns }]
@@ -150,8 +151,14 @@ module "eks" {
     observability = {
       name      = "Interop-EKS-ObservabilityProfile-Es1"
       selectors = [for ns in local.observability_namespaces : { namespace = ns }]
-    }
-  }
+    } },
+    length(local.tools_namespaces) > 0 ? ({
+      tools = {
+        name      = "Interop-EKS-ToolsProfile-Es1"
+        selectors = [for ns in local.tools_namespaces : { namespace = ns }]
+      }
+    }) : {}
+  )
 
   access_entries = merge(
     {
