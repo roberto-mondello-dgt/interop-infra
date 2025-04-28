@@ -145,6 +145,14 @@ locals {
       sql_name        = "${var.env}_catalog_process_user",
       k8s_secret_name = "platform-data-catalog-process-user"
     },
+    eservice_template_rmw_user = {
+      sql_name        = "${var.env}_eservice_template_rmw_user",
+      k8s_secret_name = "platform-data-eservice-template-rmw-user"
+    },
+    eservice_template_process_user = {
+      sql_name        = "${var.env}_eservice_template_process_user",
+      k8s_secret_name = "platform-data-eservice-template-process-user"
+    },
   } : {}
 }
 
