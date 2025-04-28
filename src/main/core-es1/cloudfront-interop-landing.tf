@@ -161,7 +161,7 @@ resource "aws_cloudfront_distribution" "landing" {
   }
 
   ordered_cache_behavior {
-    path_pattern           = "/catalog.json"
+    path_pattern           = "/eservice_a_catalogo.json"
     target_origin_id       = "PublicCatalog"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     viewer_protocol_policy = "redirect-to-https"
