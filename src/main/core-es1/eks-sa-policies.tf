@@ -243,9 +243,12 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Action = [
           "s3:GetObject",
           "s3:PutObject",
-          "s3:DeleteObject"
+          "s3:DeleteObject",
+          "s3:ListBucket"
         ]
         Resource = compact([
+          module.application_documents_bucket.s3_bucket_arn,
+          try(module.be_refactor_application_documents_bucket[0].s3_bucket_arn, ""),
           format("%s/*", module.application_documents_bucket.s3_bucket_arn),
           try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
         ])
