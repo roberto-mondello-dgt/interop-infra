@@ -355,8 +355,8 @@ resource "aws_ecs_task_definition" "github_qa_runner" {
 
   family = format("%s-github-qa-runner-%s", var.short_name, var.env)
 
-  cpu                = 2048
-  memory             = 4096
+  cpu                = 4096
+  memory             = 8192
   network_mode       = "awsvpc"
   execution_role_arn = aws_iam_role.github_runner_task_exec.arn
   task_role_arn      = aws_iam_role.github_qa_runner_task[0].arn
@@ -364,8 +364,8 @@ resource "aws_ecs_task_definition" "github_qa_runner" {
   container_definitions = jsonencode([
     {
       name      = "github-qa-runner"
-      cpu       = 2048
-      memory    = 4096
+      cpu       = 4096
+      memory    = 8192
       essential = true
       image     = "ghcr.io/pagopa/interop-qa-runner:v1.12.0"
 
