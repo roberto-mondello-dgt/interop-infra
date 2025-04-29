@@ -304,9 +304,13 @@ resource "aws_iam_policy" "be_backend_for_frontend" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject"
+          "s3:PutObject",
+          "s3:ListBucket"
         ]
-        Resource = format("%s/*", module.application_import_export_bucket.s3_bucket_arn)
+        Resource = [
+          module.application_import_export_bucket.s3_bucket_arn,
+          format("%s/*", module.application_import_export_bucket.s3_bucket_arn)
+        ]
       },
       {
         Effect = "Allow"
