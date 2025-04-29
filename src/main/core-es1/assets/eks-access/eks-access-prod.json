@@ -30,6 +30,16 @@
           "scope": "cluster"
         }
       ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::697818730278:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_InteropGOUser_f57a73df28f04014",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "cluster"
+        }
+      ]
     }
   ]
 }
