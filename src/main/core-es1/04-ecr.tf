@@ -79,6 +79,7 @@ locals {
     "interop-be-purpose-readmodel-writer",
     "interop-be-purpose-readmodel-writer-sql",
     "interop-be-purposes-archiver",
+    "interop-be-readmodel-checker",
     "interop-be-selfcare-onboarding-consumer",
     "interop-be-tenant-management",
     "interop-be-tenant-outbound-writer",
