@@ -24,7 +24,7 @@ resource "aws_api_gateway_rest_api" "this" {
 
   name = local.rest_apigw_name
 
-  body               = data.external.openapi_integration.result.integrated_openapi_yaml
+  body               = var.openapi_s3_bucket_name != null && var.openapi_s3_object_key != null ? aws_s3_object.openapi[0].content : data.external.openapi_integration.result.integrated_openapi_yaml
   put_rest_api_mode  = "overwrite"
   binary_media_types = ["multipart/form-data"]
 

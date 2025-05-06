@@ -137,3 +137,15 @@ variable "alarm_4xx_datapoints" {
   type        = number
   default     = 0
 }
+
+variable "openapi_s3_bucket_name" {
+  description = "Name of the S3 bucket to store the OpenAPI definition"
+  type        = string
+  default     = null
+}
+
+variable "openapi_s3_object_key" {
+  description = "Key of the S3 object used to store the OpenAPI definition"
+  type        = string
+  default     = null
+}
