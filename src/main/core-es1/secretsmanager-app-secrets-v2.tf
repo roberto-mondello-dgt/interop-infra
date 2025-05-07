@@ -153,3 +153,15 @@ resource "aws_secretsmanager_secret" "read_model" {
     }
   )
 }
+
+resource "aws_secretsmanager_secret" "smtp_notifications" {
+  count = local.deployment_repo_v2_active ? 1 : 0
+
+  name = "app/backend/smtp-notifications"
+
+  tags = merge(local.eks_secret_default_tags,
+    {
+      EKSReplicaSecretName = "smtp-notifications"
+    }
+  )
+}
