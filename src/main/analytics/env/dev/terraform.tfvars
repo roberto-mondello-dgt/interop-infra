@@ -50,5 +50,6 @@ application_audit_producers_irsa_list = [
   "interop-be-catalog-process-dev-es1",
   "interop-be-delegation-process-dev-es1",
   "interop-be-m2m-gateway-dev-es1",
-  "interop-be-purpose-process-dev-es1"
+  "interop-be-purpose-process-dev-es1",
+  "interop-be-tenant-process-dev-es1"
 ]
