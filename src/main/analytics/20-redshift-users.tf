@@ -128,6 +128,6 @@ module "redshift_devs_pgsql_user" {
   grant_redshift_groups = ["readonly_group"]
 
   additional_sql_statements = <<-EOT
-    ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO "${each.value.sql_name}";
+    ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO GROUP readonly_group;
   EOT
 }
