@@ -72,6 +72,7 @@ interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-p
 interop_bff_openapi_path             = "./openapi/dev/interop-backend-for-frontend-v1.0.yaml"
 interop_auth_openapi_path            = "./openapi/dev/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/dev/interop-api-v1.0.yaml"
+interop_api_v2_openapi_path          = "./openapi/dev/interop-api-v2.yaml"
 
 interop_landing_domain_name = "dev.interop.pagopa.it"
 
