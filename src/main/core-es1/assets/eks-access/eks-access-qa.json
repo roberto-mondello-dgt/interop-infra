@@ -46,7 +46,7 @@
       "kubernetes_groups": ["port-forwarders-group"],
       "access_policies": [
         {
-          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy",
           "scope": "namespace",
           "namespaces": ["default", "qa"]
         }
