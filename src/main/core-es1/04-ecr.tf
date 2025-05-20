@@ -9,6 +9,7 @@ locals {
     "interop-be-agreement-readmodel-writer-sql",
     "interop-be-anac-certified-attributes-importer",
     "interop-be-api-gateway",
+    "interop-be-application-audit-fallback",
     "interop-be-attribute-registry-management",
     "interop-be-attribute-registry-process",
     "interop-be-attribute-registry-readmodel-writer",
