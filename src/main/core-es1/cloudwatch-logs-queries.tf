@@ -166,3 +166,18 @@ resource "aws_cloudwatch_query_definition" "generated_tokens" {
     | display @timestamp, @message
   EOT
 }
+
+resource "aws_cloudwatch_query_definition" "auth_server_warnings" {
+  name = "Auth-Server-Logs-Warnings"
+
+  log_group_names = [var.eks_application_log_group_name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter pod_app like /interop-be-authorization-server/
+    | filter @message like /WARN/
+    | parse @message /\[CID=(?<cidValue>[^\]]*)\](?<errorMessage>.*?)","pod_app":/
+    | stats count(*) as count by errorMessage
+    | sort count desc
+  EOT
+}
