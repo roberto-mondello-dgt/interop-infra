@@ -65,7 +65,7 @@ resource "aws_sqs_queue_policy" "alb_logs" {
 }
 
 resource "aws_sqs_queue" "application_audit_fallback" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
 
   name = format("%s-analytics-application-audit-fallback-%s", local.project, var.env)
 

@@ -1,5 +1,5 @@
 locals {
-  app_audit_consumer_groups = local.deploy_data_ingestion_resources ? {
+  app_audit_consumer_groups = local.deploy_application_audit_resources ? {
     application-audit-analytics-writer = {
       consumer_group = format("%s-application-audit-analytics-writer", var.analytics_k8s_namespace),
       topic          = format("%s_application.audit", var.env)

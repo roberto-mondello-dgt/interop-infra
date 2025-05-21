@@ -64,7 +64,7 @@ module "be_alb_logs_analytics_writer_irsa" {
 }
 
 module "be_application_audit_archiver_irsa" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
 
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version   = "5.20.0"
@@ -82,7 +82,7 @@ module "be_application_audit_archiver_irsa" {
 }
 
 module "be_application_audit_analytics_writer_irsa" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
 
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version   = "5.20.0"
