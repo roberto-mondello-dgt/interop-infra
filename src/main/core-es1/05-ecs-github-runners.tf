@@ -348,6 +348,32 @@ resource "aws_iam_role" "github_qa_runner_task" {
       })
     }
   }
+
+  dynamic "inline_policy" {
+    for_each = local.deploy_be_refactor_infra ? [1] : []
+
+    content {
+      name = "PurgeAuthServerDynamoDB"
+
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = [
+              "dynamodb:BatchWriteItem",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+            ]
+            Resource = [
+              aws_dynamodb_table.platform_states[0].arn,
+              aws_dynamodb_table.token_generation_states[0].arn
+            ]
+          }
+        ]
+      })
+    }
+  }
 }
 
 resource "aws_ecs_task_definition" "github_qa_runner" {
