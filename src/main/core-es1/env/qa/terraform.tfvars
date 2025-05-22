@@ -42,10 +42,10 @@ msk_signalhub_account_id   = "058264553932"
 
 notification_events_table_ttl_enabled = true
 
-github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-qa-development", "pagopa/interop-qa-tests"]
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-qa-development", "pagopa/interop-qa-tests", "pagopa/interop-core-deployment"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
-github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.15.0"
+github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.18.1"
 
 dns_interop_base_domain = "interop.pagopa.it"
 
