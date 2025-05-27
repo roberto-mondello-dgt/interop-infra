@@ -125,3 +125,7 @@ resource "aws_secretsmanager_secret" "support_saml_cert" {
 resource "aws_secretsmanager_secret" "support_saml_public_key" {
   name = "interop-support-saml-x509-public-key"
 }
+
+resource "aws_secretsmanager_secret" "selfcare_users_broker_connection_string" {
+  name = "selfcare-users-broker-connection-string" 
+}
