@@ -70,7 +70,7 @@ locals {
   deploy_auth_server_refactor          = local.deploy_be_refactor_infra
   on_call_env                          = var.env == "dev" || var.env == "prod" # DEV is used for testing
   terraform_state                      = "core"
-  deploy_read_model_refactor           = var.env == "dev" || var.env == "qa"
-  deployment_repo_v2_active            = var.env == "dev" || var.env == "qa" || var.env == "vapt"
+  deploy_read_model_refactor           = var.env == "dev" || var.env == "qa" || var.env == "test"
+  deployment_repo_v2_active            = var.env == "dev" || var.env == "qa" || var.env == "vapt" || var.env == "test"
   deploy_interop_api_v2                = var.env == "dev"
 }
