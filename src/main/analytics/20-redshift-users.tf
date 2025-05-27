@@ -54,6 +54,10 @@ locals {
     application_audit_analytics_writer_user = {
       sql_name        = "interop_be_application_audit_analytics_writer_${var.env}",
       k8s_secret_name = "redshift-application-audit-analytics-writer-user"
+    },
+    tracing_enriched_data_handler_user = {
+      sql_name        = "tracing_be_enriched_data_handler_${var.env}",
+      k8s_secret_name = "redshift-tracing-enriched-data-handler-user"
     }
   } : {}
 
