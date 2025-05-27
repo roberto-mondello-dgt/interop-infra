@@ -1710,3 +1710,20 @@ resource "aws_iam_policy" "be_certified_email_sender" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_selfcare_client_users_updater" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeSelfcareClientUsersUpdaterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "kms:Sign"
+        Resource = aws_kms_key.interop.arn
+      }
+    ]
+  })
+}

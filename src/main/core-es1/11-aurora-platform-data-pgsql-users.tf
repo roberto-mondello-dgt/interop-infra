@@ -35,7 +35,8 @@ module "platform_data_flyway_pgsql_user" {
 }
 
 module "platform_data_readonly_pgsql_user" {
-  count = local.deploy_read_model_refactor ? 1 : 0
+  count      = local.deploy_read_model_refactor ? 1 : 0
+  depends_on = [module.platform_data_flyway_pgsql_user]
 
   source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.7.1"
 
@@ -153,12 +154,17 @@ locals {
       sql_name        = "${var.env}_eservice_template_process_user",
       k8s_secret_name = "platform-data-eservice-template-process-user"
     },
+    selfcare_client_users_updater_user = {
+      sql_name        = "${var.env}_selfcare_client_users_updater_user",
+      k8s_secret_name = "platform-data-selfcare-client-users-updater-user"
+    }
   } : {}
 }
 
 # PostgreSQL users with no initial grants. The grants will be applied by Flyway
 module "platform_data_be_app_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.7.1"
+  source     = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.7.1"
+  depends_on = [module.platform_data_flyway_pgsql_user]
 
   for_each = local.be_app_psql_usernames
 
