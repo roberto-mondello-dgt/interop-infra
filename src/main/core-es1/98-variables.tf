@@ -177,6 +177,12 @@ variable "msk_tracing_account_id" {
   default     = null
 }
 
+variable "msk_probing_account_id" {
+  description = "Probing account ID for MSK cluster access"
+  type        = string
+  default     = null
+}
+
 variable "notification_events_table_ttl_enabled" {
   description = "Enable or disable TTL in 'interop-notification-events' table"
   type        = bool

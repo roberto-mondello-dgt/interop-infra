@@ -133,7 +133,7 @@ data "aws_iam_policy_document" "msk_cross_account" {
 
     principals {
       type        = "AWS"
-      identifiers = compact([var.msk_signalhub_account_id, var.msk_tracing_account_id])
+      identifiers = compact([var.msk_signalhub_account_id, var.msk_tracing_account_id, var.msk_probing_account_id])
     }
 
     actions = [
@@ -193,6 +193,32 @@ data "aws_iam_policy_document" "msk_cross_account" {
         aws_msk_cluster.platform_events[0].arn,
         "${local.msk_topic_iam_prefix}/outbound.*.events",
         "${local.msk_group_iam_prefix}/tracing-*"
+      ]
+    }
+  }
+
+  dynamic "statement" {
+    for_each = compact([var.msk_probing_account_id])
+
+    content {
+      sid = "ProbingOutboundTopicsAccess"
+
+      principals {
+        type        = "AWS"
+        identifiers = [var.msk_probing_account_id]
+      }
+
+      actions = [
+        "kafka-cluster:AlterGroup",
+        "kafka-cluster:Connect",
+        "kafka-cluster:DescribeGroup",
+        "kafka-cluster:DescribeTopic",
+        "kafka-cluster:ReadData"
+      ]
+      resources = [
+        aws_msk_cluster.platform_events[0].arn,
+        "${local.msk_topic_iam_prefix}/outbound.*.events",
+        "${local.msk_group_iam_prefix}/probing-*"
       ]
     }
   }
