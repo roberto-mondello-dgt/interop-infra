@@ -3,6 +3,7 @@ locals {
     dev  = ["*@pagopa.it", "*@grupposcai.it"]
     qa   = ["*@pagopa.it", "*@grupposcai.it"]
     vapt = ["*@pagopa.it", "*@aizoongroup.com"]
+    test = ["*@pagopa.it"]
   }
 }
 
