@@ -138,6 +138,10 @@ locals {
       sql_name        = "${var.env}_delegation_process_user",
       k8s_secret_name = "platform-data-delegation-process-user"
     },
+    delegation_items_archiver_user = {
+      sql_name        = "${var.env}_delegation_items_archiver_user",
+      k8s_secret_name = "platform-data-delegation-items-archiver-user"
+    },
     catalog_rmw_user = {
       sql_name        = "${var.env}_catalog_rmw_user",
       k8s_secret_name = "platform-data-catalog-rmw-user"
