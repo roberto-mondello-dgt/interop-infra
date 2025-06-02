@@ -54,4 +54,5 @@ data "aws_caller_identity" "current" {}
 locals {
   deploy_be_refactor_infra  = true
   deployment_repo_v2_active = var.env == "vapt"
+  deploy_interop_api_v2     = var.env == "dev" || var.env == "test"
 }

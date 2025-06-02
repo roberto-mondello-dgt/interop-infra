@@ -1,4 +1,5 @@
 locals {
+  env_host_mapping                  = var.env == "test" ? "uat" : var.env
   deploy_auth_server_canary_ingress = var.env != "qa" && var.env != "att"
   auth_server_canary_weights = {
     old = {
@@ -7,7 +8,7 @@ locals {
       vapt = 0
       test = 0
       att  = 0
-      prod = 50
+      prod = 0
     }
     new = {
       dev  = 100
@@ -15,17 +16,17 @@ locals {
       vapt = 100
       test = 100
       att  = 100
-      prod = 50
+      prod = 100
     }
   }
 }
 
-# import {
-#   for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
-#
-#   id = format("%s/interop-be-authorization-server-canary", kubernetes_namespace_v1.env.metadata[0].name)
-#   to = kubernetes_ingress_v1.auth_server_canary[0]
-# }
+import {
+  for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
+
+  id = format("%s/interop-be-authorization-server-canary", kubernetes_namespace_v1.env.metadata[0].name)
+  to = kubernetes_ingress_v1.auth_server_canary[0]
+}
 
 resource "kubernetes_ingress_v1" "auth_server_canary" {
   count = local.deployment_repo_v2_active ? 1 : 0
@@ -89,18 +90,14 @@ resource "kubernetes_ingress_v1" "auth_server_canary" {
       }
     }
   }
-
-  lifecycle {
-    ignore_changes = [metadata[0].annotations["alb.ingress.kubernetes.io/actions.auth-server-canary"]]
-  }
 }
 
-# import {
-#   for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
-#
-#   id = format("%s/interop-services", kubernetes_namespace_v1.env.metadata[0].name)
-#   to = kubernetes_ingress_v1.interop_services[0]
-# }
+import {
+  for_each = var.env != "vapt" ? [1] : [] # this configurations creates the ingress for the first time only in VAPT env
+
+  id = format("%s/interop-services", kubernetes_namespace_v1.env.metadata[0].name)
+  to = kubernetes_ingress_v1.interop_services[0]
+}
 
 resource "kubernetes_ingress_v1" "interop_services" {
   count = local.deployment_repo_v2_active ? 1 : 0
@@ -125,7 +122,7 @@ resource "kubernetes_ingress_v1" "interop_services" {
     ingress_class_name = "alb"
 
     rule {
-      host = var.env == "prod" ? "*.interop.pagopa.it" : "*.${var.env}.interop.pagopa.it"
+      host = var.env == "prod" ? "auth.interop.pagopa.it" : "auth.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -147,7 +144,7 @@ resource "kubernetes_ingress_v1" "interop_services" {
     }
 
     rule {
-      host = var.env == "prod" ? "*.interop.pagopa.it" : "*.${var.env}.interop.pagopa.it"
+      host = var.env == "prod" ? "auth.interop.pagopa.it" : "auth.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -169,7 +166,7 @@ resource "kubernetes_ingress_v1" "interop_services" {
     }
 
     rule {
-      host = var.env == "prod" ? "*.interop.pagopa.it" : "*.${var.env}.interop.pagopa.it"
+      host = var.env == "prod" ? "selfcare.interop.pagopa.it" : "selfcare.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -190,8 +187,34 @@ resource "kubernetes_ingress_v1" "interop_services" {
       }
     }
 
+    dynamic "rule" {
+      for_each = local.deploy_interop_api_v2 ? [1] : []
+
+      content {
+        host = var.env == "prod" ? "api.interop.pagopa.it" : "api.${local.env_host_mapping}.interop.pagopa.it"
+
+        http {
+          path {
+            path      = "/m2m-gateway"
+            path_type = "Prefix"
+
+            backend {
+
+              service {
+                name = "interop-be-m2m-gateway"
+
+                port {
+                  number = 8088
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     rule {
-      host = var.env == "prod" ? "*.interop.pagopa.it" : "*.${var.env}.interop.pagopa.it"
+      host = var.env == "prod" ? "selfcare.interop.pagopa.it" : "selfcare.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -212,15 +235,4 @@ resource "kubernetes_ingress_v1" "interop_services" {
       }
     }
   }
-}
-
-data "kubernetes_ingress_v1" "existing" {
-  metadata {
-    name      = "interop-be-authorization-server-canary"
-    namespace = "dev"
-  }
-}
-
-output "existing" {
-  value = data.kubernetes_ingress_v1.existing.metadata
 }
