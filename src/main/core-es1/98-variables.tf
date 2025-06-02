@@ -304,7 +304,7 @@ variable "interop_api_openapi_path" {
 variable "interop_api_v2_openapi_path" {
   description = "Relative path of Interop API v2 OpenAPI definition file"
   type        = string
-  default = null
+  default     = null
 }
 
 variable "interop_bff_openapi_path" {
