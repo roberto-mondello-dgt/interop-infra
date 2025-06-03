@@ -224,25 +224,29 @@ resource "aws_iam_policy" "s3_reprocess_github_repo" {
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = "s3:ListBucket"
-        Resource = [
-          data.aws_s3_bucket.jwt_audit_source.arn,
-          data.aws_s3_bucket.alb_logs_source.arn
-        ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "sqs:SendMessage"
-        ]
-        Resource = [
-          aws_sqs_queue.jwt_audit[0].arn,
-          aws_sqs_queue.alb_logs[0].arn
-        ]
-      }
-    ]
+    Statement = concat(
+      [
+        {
+          Effect = "Allow"
+          Action = "s3:ListBucket"
+          Resource = [
+            data.aws_s3_bucket.jwt_audit_source.arn,
+            data.aws_s3_bucket.alb_logs_source.arn
+          ]
+        }
+      ],
+      local.deploy_data_ingestion_resources ? [
+        {
+          Effect = "Allow"
+          Action = [
+            "sqs:SendMessage"
+          ]
+          Resource = [
+            aws_sqs_queue.jwt_audit[0].arn,
+            aws_sqs_queue.alb_logs[0].arn
+          ]
+        }
+      ] : []
+    )
   })
 }
