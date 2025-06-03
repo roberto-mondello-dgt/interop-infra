@@ -53,6 +53,6 @@ locals {
   project                            = "interop"
   deploy_redshift_cluster            = var.env == "dev" || var.env == "prod"
   deploy_data_ingestion_resources    = var.env == "dev" || var.env == "prod"
-  deploy_application_audit_resources = var.env == "qa" || var.env == "test"
+  deploy_application_audit_resources = var.env == "qa" || var.env == "test" || var.env == "att"
   terraform_state                    = "analytics"
 }
