@@ -52,7 +52,7 @@ data "aws_iam_role" "sso_admin" {
 locals {
   project                            = "interop"
   deploy_redshift_cluster            = var.env == "dev" || var.env == "prod"
-  deploy_data_ingestion_resources    = var.env == "dev" || var.env == "test" || var.env == "prod"
-  deploy_application_audit_resources = var.env == "qa"
+  deploy_data_ingestion_resources    = var.env == "dev" || var.env == "prod"
+  deploy_application_audit_resources = var.env == "qa" || var.env == "test"
   terraform_state                    = "analytics"
 }

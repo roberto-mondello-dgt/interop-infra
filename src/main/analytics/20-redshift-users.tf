@@ -4,7 +4,7 @@ locals {
     EKSClusterNamespacesSpaceSeparated = join(" ", [var.analytics_k8s_namespace])
     TerraformState                     = local.terraform_state
   }
-  redshift_host = element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0)
+  redshift_host = local.deploy_data_ingestion_resources ? element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0) : null
 }
 
 module "redshift_flyway_pgsql_user" {
