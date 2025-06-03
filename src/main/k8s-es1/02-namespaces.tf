@@ -18,6 +18,12 @@ resource "kubernetes_namespace_v1" "aws_observability" {
   }
 }
 
+resource "kubernetes_namespace_v1" "keda" {
+  metadata {
+    name = "keda"
+  }
+}
+
 resource "kubernetes_namespace_v1" "dev_refactor" {
   count = var.env == "dev" ? 1 : 0
 

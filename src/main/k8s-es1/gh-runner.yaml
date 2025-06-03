@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: interop-testing-gh-runners
+  name: interop-testing-gh-runners
+  namespace: gh-runners
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      runner-app: interop-testing-gh-runners
+  template:
+    metadata:
+      labels:
+        runner-app: interop-testing-gh-runners
+    spec:
+      nodeSelector:
+        scope: "gh-runners"
+      tolerations:
+      - key: "scope"
+        operator: "Equal"
+        value: "gh-runners"
+        effect: "NoSchedule"
+      initContainers:
+        - name: init-dind-externals
+          image: ghcr.io/pagopa/interop-github-runner-aws:v2.2.0-minimal
+          command:
+            ["cp", "-r", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+          volumeMounts:
+            - name: dind-externals
+              mountPath: /home/runner/tmpDir
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+      containers:
+        - name: runner
+          image: ghcr.io/pagopa/interop-github-runner-aws:v2.2.0-minimal
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                - /home/runner/removeRunner.sh
+          env:
+            - name: DOCKER_HOST
+              value: unix:///var/run/docker.sock
+            - name: RUNNER_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: GITHUB_REPOSITORY_URL
+              value: "https://github.com/micdes-pagopa/interop-testing-gh-runners"
+            - name: GITHUB_REPOSITORY_NAME
+              value: "micdes-pagopa/interop-testing-gh-runners"
+            - name: GITHUB_PAT
+              valueFrom:
+                secretKeyRef:
+                  name: gh-pat
+                  key: GITHUB_PAT
+            - name: RUNNER_LABELS
+              value: "self-hosted,micdes-pagopa/interop-testing-gh-runners"
+          volumeMounts:
+            - name: work
+              mountPath: /home/runner/_work
+            - name: dind-sock
+              mountPath: /var/run
+        - name: dind
+          image: docker:dind
+          args:
+            - dockerd
+            - --host=unix:///var/run/docker.sock
+            - --group=$(DOCKER_GROUP_GID)
+          env:
+            - name: DOCKER_GROUP_GID
+              value: "123"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: work
+              mountPath: /home/runner/_work
+            - name: dind-sock
+              mountPath: /var/run
+            - name: dind-externals
+              mountPath: /home/runner/externals
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+      volumes:
+        - name: work
+          emptyDir: {}
+        - name: dind-sock
+          emptyDir: {}
+        - name: dind-externals
+          emptyDir: {}

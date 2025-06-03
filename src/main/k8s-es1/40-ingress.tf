@@ -70,7 +70,7 @@ resource "kubernetes_ingress_v1" "auth_server_canary" {
     ingress_class_name = "alb"
 
     rule {
-      host = var.env == "prod" ? "*.interop.pagopa.it" : "*.${var.env}.interop.pagopa.it"
+      host = var.env == "prod" ? "auth.interop.pagopa.it" : "auth.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -122,7 +122,7 @@ resource "kubernetes_ingress_v1" "interop_services" {
     ingress_class_name = "alb"
 
     rule {
-      host = var.env == "prod" ? "auth.interop.pagopa.it" : "auth.${local.env_host_mapping}.interop.pagopa.it"
+      host = var.env == "prod" ? "api.interop.pagopa.it" : "api.${local.env_host_mapping}.interop.pagopa.it"
 
       http {
         path {
@@ -133,28 +133,6 @@ resource "kubernetes_ingress_v1" "interop_services" {
 
             service {
               name = "interop-be-api-gateway"
-
-              port {
-                number = 8088
-              }
-            }
-          }
-        }
-      }
-    }
-
-    rule {
-      host = var.env == "prod" ? "auth.interop.pagopa.it" : "auth.${local.env_host_mapping}.interop.pagopa.it"
-
-      http {
-        path {
-          path      = "/authorization-server"
-          path_type = "Prefix"
-
-          backend {
-
-            service {
-              name = "interop-be-authorization-server"
 
               port {
                 number = 8088

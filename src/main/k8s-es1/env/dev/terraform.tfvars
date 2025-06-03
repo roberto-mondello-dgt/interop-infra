@@ -38,3 +38,8 @@ debezium_postgresql_aurora_cluster_id       = "interop-platform-data-dev"
 debezium_postgresql_database_name           = "persistence_management"
 debezium_postgresql_credentials_secret_name = "platform-data-debezium-credentials"
 debezium_routing_partitions                 = 3
+
+keda_chart_version = "2.17.0"
+
+cluster_autoscaler_chart_version = "9.46.6"
+cluster_autoscaler_irsa_name     = "eks-cluster-autoscaler-dev-es1"

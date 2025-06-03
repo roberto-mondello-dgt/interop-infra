@@ -140,3 +140,57 @@ variable "debezium_routing_partitions" {
   type        = number
   description = "Number of topic partitions for transforms.PartitionRouting"
 }
+
+variable "keda_chart_version" {
+  type        = string
+  description = "KEDA Helm Chart version"
+  default     = null
+}
+
+variable "keda_operator_resources_limits_cpu" {
+  type        = string
+  description = "KEDA Operator CPU resources limits"
+  default     = "250m"
+}
+
+variable "keda_operator_resources_limits_memory" {
+  type        = string
+  description = "KEDA Operator RAM resources limits"
+  default     = "250Mi"
+}
+
+variable "keda_webhooks_resources_limits_cpu" {
+  type        = string
+  description = "KEDA Admission Webhooks CPU resources limits"
+  default     = "250m"
+}
+
+variable "keda_webhooks_resources_limits_memory" {
+  type        = string
+  description = "KEDA Admission Webhooks RAM resources limits"
+  default     = "250Mi"
+}
+
+variable "keda_metrics_server_resources_limits_cpu" {
+  type        = string
+  description = "KEDA Metrics Server CPU resources limits"
+  default     = "250m"
+}
+
+variable "keda_metrics_server_resources_limits_memory" {
+  type        = string
+  description = "KEDA Metrics Server RAM resources limits"
+  default     = "250Mi"
+}
+
+variable "cluster_autoscaler_chart_version" {
+  type        = string
+  description = "Cluster Autoscaler Helm chart version"
+  default     = null
+}
+
+variable "cluster_autoscaler_irsa_name" {
+  type        = string
+  description = "IRSA name for Cluster Autoscaler"
+  default     = null
+}
