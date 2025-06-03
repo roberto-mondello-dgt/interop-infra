@@ -66,7 +66,7 @@ resource "aws_iam_policy" "be_domains_analytics_writer" {
 }
 
 resource "aws_iam_policy" "application_audit" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
 
   name = "InteropBeApplicationAuditProducerEs1"
 
