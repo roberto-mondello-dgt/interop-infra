@@ -89,7 +89,6 @@ k8s_monitoring_deployments_names = [
   "interop-be-authorization-management",
   "interop-be-authorization-process",
   "interop-be-authorization-server",
-  "interop-be-authorization-server-node",
   "interop-be-backend-for-frontend",
   "interop-be-catalog-process",
   "interop-be-delegation-process",
