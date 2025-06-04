@@ -147,14 +147,59 @@ paths:
               application/xml: "#set($inputRoot = $input.path('$'))"
           '5\\d{2}':
             statusCode: 500
-  /m2m/interface-specification.yaml:
+  /m2m/v1-interface-specification.yaml:
     get:
       tags:
         - m2m
         - api
         - s3
       summary: Get interface-specification.yaml
-      description: Returns a YAML containing m2m interface specification.
+      description: Returns a YAML containing V1 M2M interface specification.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Length:
+              schema:
+                type: string
+            Content-Type:
+              schema:
+                type: string
+            Timestamp:
+              schema:
+                type: string
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: $FrontendAdditionalAssetsS3BucketARN
+        credentials: $FrontendAdditionalAssetsRoleARN
+        responses:
+          '':
+            statusCode: 200
+            responseParameters:
+              method.response.header.Content-Length: "integration.response.header.Content-Length"
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Timestamp: "integration.response.header.Date"
+          '403':
+            statusCode: 404
+            responseTemplates:
+              application/xml: "#set($inputRoot = $input.path('$'))"
+          '5\\d{2}':
+            statusCode: 500
+  /m2m/v2-interface-specification.yaml:
+    get:
+      tags:
+        - m2m
+        - api
+        - s3
+      summary: Get interface-specification.yaml
+      description: Returns a YAML containing V2 M2M interface specification.
       responses:
         '200':
           description: OK
