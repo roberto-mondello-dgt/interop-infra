@@ -43,7 +43,7 @@ msk_tracing_account_id     = "225989375416"
 
 notification_events_table_ttl_enabled = true
 
-github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment"]
+github_runners_allowed_repos = ["pagopa/pdnd-interop-platform-deployment", "pagopa/interop-core-deployment"]
 github_runners_cpu           = 2048
 github_runners_memory        = 4096
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.18.1"
@@ -61,6 +61,7 @@ interop_bff_proxy_openapi_path       = "./openapi/interop-backend-for-frontend-p
 interop_bff_openapi_path             = "./openapi/interop-backend-for-frontend-proxy.yaml"
 interop_auth_openapi_path            = "./openapi/att/interop-auth-server.yaml"
 interop_api_openapi_path             = "./openapi/att/interop-api-v1.0.yaml"
+interop_api_v2_openapi_path          = "./openapi/att/interop-api-v2.yaml"
 
 interop_landing_domain_name = "att.interop.pagopa.it"
 

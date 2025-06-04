@@ -72,6 +72,6 @@ locals {
   terraform_state             = "core"
   deploy_read_model_refactor  = var.env == "dev" || var.env == "qa" || var.env == "test"
   deployment_repo_v2_active   = var.env == "dev" || var.env == "qa" || var.env == "vapt" || var.env == "test" || var.env == "att"
-  deploy_interop_api_v2       = var.env == "dev" || var.env == "test"
+  deploy_interop_api_v2       = var.env == "dev" || var.env == "test" || var.env == "att"
   deploy_keda                 = var.env == "dev"
 }
