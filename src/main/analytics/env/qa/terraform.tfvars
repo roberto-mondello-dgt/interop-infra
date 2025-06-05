@@ -12,7 +12,7 @@ tags = {
 sso_admin_role_name = "AWSReservedSSO_FullAdmin_5dbb9b56c9f20407"
 
 vpc_id               = "vpc-0b2becb736d65a01d"
-analytics_subnet_ids = []
+analytics_subnet_ids = ["subnet-0f2e42cd71fa9031a", "subnet-0a39a44b12543b66a", "subnet-09a572c96a40f723f"]
 
 vpn_clients_security_group_id = "sg-052f19b77ef0a37f3"
 
@@ -50,3 +50,6 @@ application_audit_producers_irsa_list = [
   "interop-be-purpose-process-qa-es1",
   "interop-be-tenant-process-qa-es1"
 ]
+
+analytics_dev_account_id                  = "505630707203"
+analytics_redshift_dev_cluster_identifier = "interop-analytics-dev"

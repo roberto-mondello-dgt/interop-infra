@@ -28,6 +28,9 @@ alb_logs_bucket_name    = "interop-alb-logs-dev-es1"
 tracing_aws_account_id = "590183909663"
 tracing_vpc_id         = "vpc-0a08140b4517ce27d"
 
+analytics_qa_account_id = "755649575658"
+analytics_qa_vpc_id     = "vpc-0b2becb736d65a01d"
+
 analytics_k8s_namespace = "dev-analytics"
 
 deployment_repo_name = "pagopa/interop-analytics-deployment"

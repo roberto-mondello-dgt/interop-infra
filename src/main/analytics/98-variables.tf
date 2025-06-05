@@ -94,6 +94,18 @@ variable "tracing_vpc_id" {
   default     = null
 }
 
+variable "analytics_qa_account_id" {
+  type        = string
+  description = "ID of Interop qa AWS account"
+  default     = null
+}
+
+variable "analytics_qa_vpc_id" {
+  type        = string
+  description = "ID of the VPC in the Interop qa AWS account"
+  default     = null
+}
+
 variable "analytics_k8s_namespace" {
   description = "Kubernetes namespace for the Analytics project"
   type        = string
@@ -138,4 +150,16 @@ variable "application_audit_producers_irsa_list" {
   description = "Names of the IRSA producers for application audit"
   type        = list(string)
   default     = []
+}
+
+variable "analytics_dev_account_id" {
+  description = "ID of the Interop dev AWS account in which the Redshift dev cluster is deployed"
+  type        = string
+  default     = null
+}
+
+variable "analytics_redshift_dev_cluster_identifier" {
+  description = "Identifier of the Redshift dev cluster"
+  type        = string
+  default     = null
 }

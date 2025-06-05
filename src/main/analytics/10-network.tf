@@ -55,7 +55,8 @@ resource "aws_redshift_subnet_group" "analytics" {
 }
 
 locals {
-  deploy_tracing_redshift_vpce_authorization = (var.tracing_aws_account_id != null && var.tracing_vpc_id != null) ? true : false
+  deploy_tracing_redshift_vpce_authorization        = (var.tracing_aws_account_id != null && var.tracing_vpc_id != null) ? true : false
+  deploy_redshift_vpce_authorization_from_qa_to_dev = (var.analytics_qa_account_id != null && var.analytics_qa_vpc_id != null) ? true : false
 }
 
 resource "aws_redshift_endpoint_authorization" "analytics_tracing" {
@@ -64,4 +65,12 @@ resource "aws_redshift_endpoint_authorization" "analytics_tracing" {
   account            = var.tracing_aws_account_id
   cluster_identifier = aws_redshift_cluster.analytics[0].cluster_identifier
   vpc_ids            = [var.tracing_vpc_id]
+}
+
+resource "aws_redshift_endpoint_authorization" "analytics_from_qa_to_dev" {
+  count = local.deploy_redshift_cluster && local.deploy_redshift_vpce_authorization_from_qa_to_dev ? 1 : 0
+
+  account            = var.analytics_qa_account_id
+  cluster_identifier = aws_redshift_cluster.analytics[0].cluster_identifier
+  vpc_ids            = [var.analytics_qa_vpc_id]
 }
