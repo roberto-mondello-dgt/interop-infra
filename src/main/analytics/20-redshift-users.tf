@@ -77,6 +77,9 @@ locals {
     roberto_taglioni = {
       sql_name = "roberto_taglioni"
     },
+    carmine_porricelli = {
+      sql_name = "carmine_porricelli"
+    },
     qa_user = {
       sql_name = "qa_user"
     }
