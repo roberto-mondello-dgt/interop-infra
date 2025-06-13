@@ -1,6 +1,6 @@
 # TODO: refactor
 resource "aws_secretsmanager_secret" "anac" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/anac"
 
@@ -13,7 +13,7 @@ resource "aws_secretsmanager_secret" "anac" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "selfcare_v2" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/selfcare-v2"
 
@@ -26,7 +26,7 @@ resource "aws_secretsmanager_secret" "selfcare_v2" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "postgres" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/postgres"
 
@@ -39,7 +39,7 @@ resource "aws_secretsmanager_secret" "postgres" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "documentdb" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/documentdb"
 
@@ -52,7 +52,7 @@ resource "aws_secretsmanager_secret" "documentdb" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "metrics_reports" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/metrics-reports"
 
@@ -65,7 +65,7 @@ resource "aws_secretsmanager_secret" "metrics_reports" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "smtp_reports" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/smtp-reports"
 
@@ -78,7 +78,7 @@ resource "aws_secretsmanager_secret" "smtp_reports" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "pn_consumers" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/pn-consumers"
 
@@ -91,7 +91,7 @@ resource "aws_secretsmanager_secret" "pn_consumers" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "onetrust" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/onetrust"
 
@@ -104,7 +104,7 @@ resource "aws_secretsmanager_secret" "onetrust" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "smtp_certified" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/smtp-certified"
 
@@ -117,7 +117,7 @@ resource "aws_secretsmanager_secret" "smtp_certified" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "support_saml" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/support-saml"
 
@@ -130,7 +130,7 @@ resource "aws_secretsmanager_secret" "support_saml" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "event_store" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/event-store"
 
@@ -143,7 +143,7 @@ resource "aws_secretsmanager_secret" "event_store" {
 
 # TODO: refactor
 resource "aws_secretsmanager_secret" "read_model" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/read-model"
 
@@ -155,7 +155,7 @@ resource "aws_secretsmanager_secret" "read_model" {
 }
 
 resource "aws_secretsmanager_secret" "smtp_notifications" {
-  count = local.deployment_repo_v2_active && var.env != "test" && var.env != "att" ? 1 : 0
+  count = local.deployment_repo_v2_active && var.env != "att" ? 1 : 0
 
   name = "app/backend/smtp-notifications"
 
