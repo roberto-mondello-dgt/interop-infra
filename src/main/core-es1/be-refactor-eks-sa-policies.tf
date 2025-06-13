@@ -920,6 +920,18 @@ resource "aws_iam_policy" "be_refactor_authorization_server" {
         ]
       },
       {
+        Sid    = "DynamoDBDpopCache"
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query"
+        ]
+        Resource = [
+          aws_dynamodb_table.dpop_cache[0].arn,
+        ]
+      },
+      {
         Sid      = "KMSGenerateToken"
         Effect   = "Allow"
         Action   = "kms:Sign"

@@ -83,7 +83,8 @@ resource "aws_dynamodb_table" "token_generation_states" {
       "descriptorState",
       "descriptorVoucherLifespan",
       "purposeState",
-      "purposeVersionId"
+      "purposeVersionId",
+      "producerId"
     ] # implicit include: table and GSI HK, SK
   }
 
@@ -120,5 +121,26 @@ resource "aws_dynamodb_table" "token_generation_states" {
       "clientKind",
       "publicKey"
     ] # implicit include: table and GSI HK, SK
+  }
+}
+
+resource "aws_dynamodb_table" "dpop_cache" {
+  count = local.deploy_auth_server_refactor ? 1 : 0
+
+  name = format("%s-dpop-cache-%s", local.project, var.env)
+
+  billing_mode                = "PAY_PER_REQUEST"
+  deletion_protection_enabled = true
+
+  hash_key = "jti"
+
+  attribute {
+    name = "jti"
+    type = "S"
+  }
+
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
   }
 }
