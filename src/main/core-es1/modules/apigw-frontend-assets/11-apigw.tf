@@ -22,7 +22,7 @@ resource "aws_api_gateway_rest_api" "this" {
 
   body               = data.external.openapi_integration.result.integrated_openapi_yaml
   put_rest_api_mode  = "overwrite"
-  binary_media_types = ["multipart/form-data"]
+  binary_media_types = toset(var.binary_media_types)
 
   disable_execute_api_endpoint = true
 

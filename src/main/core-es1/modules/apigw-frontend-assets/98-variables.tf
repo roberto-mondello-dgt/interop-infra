@@ -13,6 +13,12 @@ variable "openapi_relative_path" {
   type        = string
 }
 
+variable "binary_media_types" {
+  description = "List of Content-Type values to treat as binary media types"
+  type        = list(string)
+  default     = ["multipart/form-data"]
+}
+
 variable "domain_name" {
   description = "Domain name to be assigned to the API Gateway"
   type        = string

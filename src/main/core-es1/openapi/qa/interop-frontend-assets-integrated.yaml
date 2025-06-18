@@ -237,6 +237,51 @@ paths:
               application/xml: "#set($inputRoot = $input.path('$'))"
           '5\\d{2}':
             statusCode: 500
+  /signalhub/pdnd_designazione_responsabilita_dati_personali_sh_v1.pdf:
+    get:
+      tags:
+        - signalhub
+        - s3
+      summary: Get Signalhub legal file
+      description: Get Signalhub legal file
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Length:
+              schema:
+                type: string
+            Content-Type:
+              schema:
+                type: string
+            Timestamp:
+              schema:
+                type: string
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+      x-amazon-apigateway-integration:
+        type: aws
+        httpMethod: GET
+        passthroughBehavior: when_no_match
+        connectionType: INTERNET
+        uri: $FrontendAdditionalAssetsS3BucketARN
+        credentials: $FrontendAdditionalAssetsRoleARN
+        responses:
+          '':
+            statusCode: 200
+            contentHandling: "CONVERT_TO_BINARY"
+            responseParameters:
+              method.response.header.Content-Length: "integration.response.header.Content-Length"
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Timestamp: "integration.response.header.Date"
+          '403':
+            statusCode: 404
+            responseTemplates:
+              application/xml: "#set($inputRoot = $input.path('$'))"
+          '5\\d{2}':
+            statusCode: 500
   /maintenance-window/data.json:
     get:
       tags:

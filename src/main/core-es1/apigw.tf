@@ -137,7 +137,12 @@ module "interop_frontend_assets_apigw" {
   env                   = var.env
   api_name              = "frontend-assets"
   openapi_relative_path = var.interop_frontend_assets_openapi_path
-  domain_name           = module.interop_selfcare_domain.apigw_custom_domain_name
+  binary_media_types = [
+    "multipart/form-data",
+    "application/pdf",
+    "application/octet-stream"
+  ]
+  domain_name = module.interop_selfcare_domain.apigw_custom_domain_name
 
   privacy_notices_bucket_name            = module.privacy_notices_content_bucket.s3_bucket_id
   frontend_additional_assets_bucket_name = module.frontend_additional_assets_bucket.s3_bucket_id
