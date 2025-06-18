@@ -50,6 +50,16 @@
           "scope": "cluster"
         }
       ]
+    },
+    {
+      "principal_arn": "arn:aws:iam::895646477129:user/manuel.morini@digitouch.it",
+      "kubernetes_groups": [],
+      "access_policies": [
+        {
+          "eks_policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy",
+          "scope": "cluster"
+        }
+      ]
     }
   ]
 }
