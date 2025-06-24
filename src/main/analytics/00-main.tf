@@ -6,7 +6,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.46.0"
+      version = "~> 5.100.0"
     }
 
     kubernetes = {
@@ -27,6 +27,17 @@ provider "aws" {
 provider "aws" {
   region = "eu-central-1"
   alias  = "ec1"
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+# - Needed by QuickSight until migration at aws provider version 6.0.0.
+#   Version 6.0.0 will introduce region argument in aws_quicksight_account_subscription resource.
+provider "aws" {
+  region = var.quicksight_identity_center_region
+  alias  = "identity_center_region"
 
   default_tags {
     tags = var.tags

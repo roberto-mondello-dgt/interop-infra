@@ -163,3 +163,22 @@ variable "analytics_redshift_dev_cluster_identifier" {
   type        = string
   default     = null
 }
+
+variable "quicksight_identity_center_arn" {
+  description = "The ARN of the AWS Identity Center instance used for QuickSight authentication"
+  type        = string
+  default     = null
+}
+
+variable "quicksight_identity_center_region" {
+  description = "QuickSight landing region, the same of identity center"
+  type        = string
+  default     = null
+}
+
+
+variable "quicksight_notification_email" {
+  description = "Email address where send notifications regarding QuickSight account and subscription"
+  type        = string
+  default     = null
+}

@@ -28,7 +28,7 @@ module "application_audit_archive" {
   count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.15.1"
+  version = "4.11.0"
 
   bucket = format("%s-application-audit-archive-%s-es1", local.project, var.env)
 

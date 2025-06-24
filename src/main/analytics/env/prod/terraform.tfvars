@@ -31,3 +31,8 @@ deployment_repo_name = "pagopa/interop-analytics-deployment"
 github_runner_task_role_name = "interop-github-runner-task-prod-es1"
 
 msk_cluster_name = "interop-platform-events-prod"
+
+quicksight_identity_center_arn    = "arn:aws:sso:::instance/ssoins-6804d580c9a0bfbc"
+quicksight_identity_center_region = "eu-west-1"
+
+quicksight_notification_email = "pdnd-interop+prod@pagopa.it"

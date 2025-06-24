@@ -141,3 +141,26 @@ module "redshift_devs_pgsql_user" {
     ALTER DEFAULT PRIVILEGES FOR USER interop_analytics_flyway_user GRANT SELECT ON TABLES TO GROUP readonly_group;
   EOT
 }
+
+module "redshift_quicksight_pgsql_user" {
+  count = local.deploy_redshift_cluster ? 1 : 0
+
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.10.0"
+
+  username = "interop_analytics_quicksight_user"
+
+  generated_password_length = 30
+  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+
+  secret_tags = merge(var.tags, {
+    Redshift = "" # Necessary for Redshift log-in integration when using Quey editor v2
+  })
+
+  redshift_cluster = true
+
+  db_host = local.redshift_host
+  db_port = aws_redshift_cluster.analytics[0].port
+  db_name = aws_redshift_cluster.analytics[0].database_name
+
+  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+}

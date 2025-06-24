@@ -42,10 +42,39 @@ resource "aws_security_group" "analytics" {
     prefix_list_ids = [data.aws_prefix_list.s3.id]
   }
 
+  # Ingress rule required by QuickSight (see https://docs.aws.amazon.com/quicksight/latest/user/vpc-security-groups.html)
+  ingress {
+    from_port       = 5432
+    to_port         = 5439
+    protocol        = "tcp"
+    security_groups = [aws_security_group.quicksight_analytics[0].id]
+  }
+
   lifecycle {
     create_before_destroy = true
   }
 }
+
+resource "aws_security_group" "quicksight_analytics" {
+  count = local.deploy_redshift_cluster ? 1 : 0
+
+  name        = format("quicksight/%s-analytics-%s", local.project, var.env)
+  description = "SG for interop-analytics-${var.env} QuickSight access to RedShift cluster"
+  vpc_id      = data.aws_vpc.core.id
+}
+
+resource "aws_vpc_security_group_egress_rule" "quicksight_analytics_to_redshift" {
+  count = local.deploy_redshift_cluster ? 1 : 0
+
+  security_group_id = aws_security_group.quicksight_analytics[0].id
+  description       = "Egress tcp rule from QuickSight to RedShift cluster"
+
+  ip_protocol                  = "tcp"
+  from_port                    = 5432
+  to_port                      = 5439
+  referenced_security_group_id = aws_security_group.analytics[0].id
+}
+
 
 resource "aws_redshift_subnet_group" "analytics" {
   count = local.deploy_redshift_cluster ? 1 : 0
