@@ -176,7 +176,7 @@ resource "aws_cloudwatch_query_definition" "auth_server_warnings" {
     fields @timestamp, @message
     | filter pod_app like /interop-be-authorization-server/
     | filter @message like /WARN/
-    | parse @message /\[CID=(?<cidValue>[^\]]*)\](?<errorMessage>.*?)","pod_app":/
+    | parse @message /\[CID=(?<cidValue>[^\]]*)\](?:\s*\[SPANID=[^\]]*\])?(?<errorMessage>.*?)","pod_app":/
     | stats count(*) as count by errorMessage
     | sort count desc
   EOT
