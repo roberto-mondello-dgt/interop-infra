@@ -20,9 +20,9 @@ bastion_host_ssh_cidr            = "0.0.0.0/0"
 bastion_host_key_pair            = "interop-bh-key-prod"
 
 platform_data_database_name          = "persistence_management"
-platform_data_engine_version         = "13.9"
+platform_data_engine_version         = "13.11"
 platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
-platform_data_instance_class         = "db.t4g.medium"
+platform_data_instance_class         = "db.r6g.large"
 platform_data_number_instances       = 3
 platform_data_parameter_group_family = "aurora-postgresql13"
 platform_data_master_username        = "root"
@@ -38,7 +38,7 @@ msk_version                = "3.6.0"
 msk_number_azs             = 3
 msk_number_brokers         = 3
 msk_brokers_instance_class = "kafka.m5.large"
-msk_brokers_storage_gib    = 100
+msk_brokers_storage_gib    = 200
 msk_signalhub_account_id   = "058264142001"
 
 notification_events_table_ttl_enabled = true
