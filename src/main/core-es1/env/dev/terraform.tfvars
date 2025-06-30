@@ -17,9 +17,9 @@ bastion_host_instance_type = "t2.micro"
 bastion_host_key_pair      = "interop-bh-key-dev"
 
 platform_data_database_name          = "persistence_management"
-platform_data_engine_version         = "13.9"
+platform_data_engine_version         = "13.11"
 platform_data_ca_cert_id             = "rds-ca-rsa2048-g1"
-platform_data_instance_class         = "db.t4g.medium"
+platform_data_instance_class         = "db.r6g.large"
 platform_data_number_instances       = 3
 platform_data_parameter_group_family = "aurora-postgresql13"
 platform_data_master_username        = "root"
