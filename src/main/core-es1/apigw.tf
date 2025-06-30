@@ -235,7 +235,7 @@ module "interop_api_v2_apigw" {
   api_version            = "v2"
   domain_name            = module.interop_api_domain.apigw_custom_domain_name
   openapi_relative_path  = var.interop_api_v2_openapi_path
-  openapi_s3_bucket_name = module.apigw_openapi_bucket.s3_bucket_id
+  openapi_s3_bucket_name = local.apigw_openapi_bucket_id
   openapi_s3_object_key  = replace(var.interop_api_openapi_path, "./", "")
 
   vpc_link_id          = aws_api_gateway_vpc_link.integration.id

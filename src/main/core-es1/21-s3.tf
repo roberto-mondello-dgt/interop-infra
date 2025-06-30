@@ -659,11 +659,15 @@ module "datalake_interface_export_bucket" {
   }
 }
 
+locals {
+  apigw_openapi_bucket_id = format("%s-apigw-openapi-%s-es1", local.project, var.env)
+}
+
 module "apigw_openapi_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = format("%s-apigw-openapi-%s-es1", local.project, var.env)
+  bucket = local.apigw_openapi_bucket_id
 
   block_public_acls       = true
   block_public_policy     = true
