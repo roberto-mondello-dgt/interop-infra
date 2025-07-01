@@ -126,79 +126,9 @@ dtd_share_sftp_hostname = "dtd-share.interop.pagopa.it"
 
 vpn_saml_metadata_path = "./assets/saml-metadata/interop-vpn-saml-prod.xml"
 
-# deployments which can be monitored using response HTTP status codes through APIGW
-k8s_monitoring_deployments_names = [
-  "interop-be-agreement-outbound-writer",
-  "interop-be-agreement-process",
-  "interop-be-api-gateway",
-  "interop-be-attribute-registry-process",
-  "interop-be-authorization-management",
-  "interop-be-authorization-process",
-  "interop-be-authorization-server",
-  "interop-be-authorization-server-node",
-  "interop-be-backend-for-frontend",
-  "interop-be-catalog-outbound-writer",
-  "interop-be-catalog-process",
-  "interop-be-delegation-process",
-  "interop-be-notifier",
-  "interop-be-party-registry-proxy",
-  "interop-be-purpose-outbound-writer",
-  "interop-be-purpose-process",
-  "interop-be-tenant-outbound-writer",
-  "interop-be-tenant-process",
-  "interop-frontend",
-]
-
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
-  "debezium-postgresql",
-  "interop-be-agreement-email-sender",
-  "interop-be-agreement-platformstate-writer",
-  "interop-be-agreement-readmodel-writer",
-  "interop-be-attribute-registry-readmodel-writer",
-  "interop-be-authorization-platformstate-writer",
-  "interop-be-authorization-updater",
-  "interop-be-catalog-platformstate-writer",
-  "interop-be-catalog-readmodel-writer",
-  "interop-be-certified-email-sender",
-  "interop-be-client-purpose-updater",
-  "interop-be-compute-agreements-consumer",
-  "interop-be-datalake-interface-exporter",
-  "interop-be-delegation-readmodel-writer",
-  "interop-be-eservice-descriptors-archiver",
-  "interop-be-eservice-template-outbound-writer",
-  "interop-be-eservice-template-process",
-  "interop-be-eservice-template-readmodel-writer",
-  "interop-be-eservice-template-updater",
-  "interop-be-notification-email-sender",
-  "interop-be-notifier",
-  "interop-be-notifier-seeder",
-  "interop-be-purpose-platformstate-writer",
-  "interop-be-purpose-readmodel-writer",
-  "interop-be-selfcare-onboarding-consumer",
-  "interop-be-tenant-readmodel-writer",
-  "redis"
-]
-
-k8s_monitoring_cronjobs_names = [
-  "interop-be-anac-certified-attributes-importer",
-  "interop-be-attributes-loader",
-  "interop-be-dashboard-metrics-report-generator",
-  "interop-be-datalake-data-export",
-  "interop-be-dtd-catalog-exporter",
-  "interop-be-dtd-catalog-total-load-exporter",
-  "interop-be-dtd-metrics",
-  "interop-be-eservices-monitoring-exporter",
-  "interop-be-ipa-certified-attributes-importer",
-  "interop-be-ivass-certified-attributes-importer",
-  "interop-be-metrics-report-generator",
-  "interop-be-one-trust-notices",
-  "interop-be-padigitale-report-generator",
-  "interop-be-party-registry-proxy-refresher",
-  "interop-be-pn-consumers",
-  "interop-be-tenants-cert-attr-updater",
-  "interop-be-token-details-persister",
-  "interop-be-token-generation-readmodel-checker"
+  "debezium-postgresql"
 ]
 
 deployment_repo_name = "pagopa/interop-core-deployment"

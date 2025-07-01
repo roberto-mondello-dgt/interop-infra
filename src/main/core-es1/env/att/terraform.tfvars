@@ -73,7 +73,7 @@ eks_application_log_group_name = "/aws/eks/interop-eks-cluster-att/application"
 
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
-  "debezium-postgresql",
+  "debezium-postgresql"
 ]
 
 deployment_repo_name = "pagopa/interop-core-deployment"

@@ -83,7 +83,7 @@ safe_storage_vpce_service_name = "com.amazonaws.vpce.eu-south-1.vpce-svc-075ebde
 
 # deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
-  "debezium-postgresql",
+  "debezium-postgresql"
 ]
 
 deployment_repo_name = "pagopa/interop-core-deployment"
