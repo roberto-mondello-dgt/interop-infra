@@ -37,6 +37,7 @@ msk_number_brokers         = 3
 msk_brokers_instance_class = "kafka.m5.large"
 msk_brokers_storage_gib    = 100
 msk_signalhub_account_id   = "654654262692"
+msk_tracing_account_id     = "637423185147"
 
 notification_events_table_ttl_enabled = true
 
