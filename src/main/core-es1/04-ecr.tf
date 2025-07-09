@@ -57,6 +57,8 @@ locals {
     "interop-be-key-readmodel-writer-sql",
     "interop-be-m2m-gateway",
     "interop-be-metrics-report-generator",
+    "interop-be-notification-config-process",
+    "interop-be-notification-config-readmodel-writer-sql",
     "interop-be-notification-email-sender",
     "interop-be-notifier",
     "interop-be-notifier-seeder",
