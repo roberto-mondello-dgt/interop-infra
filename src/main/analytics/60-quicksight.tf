@@ -104,6 +104,8 @@ resource "aws_quicksight_vpc_connection" "quicksight_to_redshift_connection" {
 }
 
 data "aws_secretsmanager_secret_version" "quicksight_user" {
+  count = local.deploy_redshift_cluster ? 1 : 0
+
   secret_id = module.redshift_quicksight_pgsql_user[0].secret_id
 }
 
@@ -133,8 +135,8 @@ resource "aws_quicksight_data_source" "analytics_views" {
   }
   credentials {
     credential_pair {
-      username = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user.secret_string)["username"]
-      password = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user.secret_string)["password"]
+      username = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user[0].secret_string)["username"]
+      password = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user[0].secret_string)["password"]
     }
   }
   ssl_properties {
