@@ -151,6 +151,36 @@ resource "aws_cloudwatch_query_definition" "apigw_m2m_waf_block" {
   EOT
 }
 
+resource "aws_cloudwatch_query_definition" "apigw_m2m_v2_5xx" {
+  count = local.deploy_interop_api_v2 ? 1 : 0
+
+  name = "APIGW-M2M-V2-5xx"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter apigwId = "${module.interop_api_v2_apigw[0].apigw_id}"
+    | filter status like /5./
+    | sort @timestamp desc
+  EOT
+}
+
+resource "aws_cloudwatch_query_definition" "apigw_m2m_v2_waf_block" {
+  count = local.deploy_interop_api_v2 ? 1 : 0
+
+  name = "APIGW-M2M-V2-WAF-Block"
+
+  log_group_names = [aws_cloudwatch_log_group.apigw_access_logs.name]
+
+  query_string = <<-EOT
+    fields @timestamp, @message
+    | filter apigwId = "${module.interop_api_v2_apigw[0].apigw_id}"
+    | filter wafStatus != "200"
+    | sort @timestamp desc
+  EOT
+}
+
 resource "aws_cloudwatch_query_definition" "generated_tokens" {
   name = "Auth-Server-Generated-Tokens"
 
