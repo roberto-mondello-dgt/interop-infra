@@ -678,3 +678,35 @@ module "apigw_openapi_bucket" {
     enabled = true
   }
 }
+
+module "public_assets_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "4.1.2"
+
+  bucket = format("%s-public-assets-%s", local.project, var.env)
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+
+  attach_public_policy = true
+  attach_policy        = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${module.public_assets_bucket.s3_bucket_arn}/*"
+      }
+    ]
+  })
+
+  versioning = {
+    enabled = true
+  }
+}
+
