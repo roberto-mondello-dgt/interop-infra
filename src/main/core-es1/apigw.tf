@@ -139,8 +139,7 @@ module "interop_frontend_assets_apigw" {
   openapi_relative_path = var.interop_frontend_assets_openapi_path
   binary_media_types = [
     "multipart/form-data",
-    "application/pdf",
-    "application/octet-stream"
+    "application/pdf"
   ]
   domain_name = module.interop_selfcare_domain.apigw_custom_domain_name
 
