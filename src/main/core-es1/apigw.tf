@@ -100,7 +100,7 @@ module "interop_selfcare_1dot0_apigw" {
 }
 
 module "interop_selfcare_0dot0_apigw" {
-  count = local.deploy_new_bff_apigw ? 1 : 0
+  count = local.deploy_new_bff_apigw && var.env == "dev" ? 1 : 0
 
   source = "./modules/rest-apigw-openapi"
 
