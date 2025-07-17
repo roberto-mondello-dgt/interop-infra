@@ -111,6 +111,29 @@ resource "aws_iam_policy" "be_api_gateway" {
   })
 }
 
+resource "aws_iam_policy" "be_m2m_gateway" {
+  count = local.deploy_be_refactor_infra ? 1 : 0
+
+  name = "InteropBeM2MGatewayEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Resource = compact([
+          format("%s/*", module.application_documents_bucket.s3_bucket_arn),
+          try(format("%s/*", module.be_refactor_application_documents_bucket[0].s3_bucket_arn), "")
+        ])
+      },
+    ]
+  })
+}
+
 resource "aws_iam_policy" "be_authorization_process" {
   count = local.deploy_be_refactor_infra ? 1 : 0
 

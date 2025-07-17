@@ -1052,6 +1052,10 @@ module "be_m2m_gateway_irsa" {
       namespace_service_accounts = ["${local.k8s_namespace_irsa}:interop-be-m2m-gateway"]
     }
   }
+
+  role_policy_arns = {
+    be_m2m_gateway = aws_iam_policy.be_m2m_gateway[0].arn
+  }
 }
 
 module "be_selfcare_client_users_updater_irsa" {
