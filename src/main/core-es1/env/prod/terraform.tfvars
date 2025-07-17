@@ -38,7 +38,7 @@ msk_version                = "3.6.0"
 msk_number_azs             = 3
 msk_number_brokers         = 3
 msk_brokers_instance_class = "kafka.m5.large"
-msk_brokers_storage_gib    = 200
+msk_brokers_storage_gib    = 300
 msk_signalhub_account_id   = "058264142001"
 
 notification_events_table_ttl_enabled = true
