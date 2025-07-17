@@ -119,11 +119,6 @@ variable "read_model_ca_cert_id" {
 variable "read_model_number_instances" {
   description = "Number of instances of the DocDB cluster - read model"
   type        = number
-
-  validation {
-    condition     = var.read_model_number_instances > 0
-    error_message = "The number of instances must be greater than 0"
-  }
 }
 
 variable "read_model_parameter_group_family" {
