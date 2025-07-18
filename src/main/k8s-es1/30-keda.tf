@@ -50,7 +50,7 @@ resource "helm_release" "keda" {
   repository = "https://kedacore.github.io/charts"
   chart      = "keda"
   version    = var.keda_chart_version
-  namespace  = kubernetes_namespace_v1.keda.metadata[0].name
+  namespace  = kubernetes_namespace_v1.keda[0].metadata[0].name
 
   dynamic "set" {
     for_each = local.flattened_keda_components_resources
