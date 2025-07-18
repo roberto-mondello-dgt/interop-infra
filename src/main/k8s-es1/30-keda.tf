@@ -2,32 +2,32 @@ locals {
   keda_components_resources = {
     operator = {
       requests = {
-        cpu    = var.keda_operator_resources_limits_cpu
-        memory = var.keda_operator_resources_limits_memory
+        cpu    = var.keda_operator_cpu
+        memory = var.keda_operator_memory
       },
       limits = {
-        cpu    = var.keda_operator_resources_limits_cpu
-        memory = var.keda_operator_resources_limits_memory
+        cpu    = var.keda_operator_cpu
+        memory = var.keda_operator_memory
       }
     },
     metricServer = {
       requests = {
-        cpu    = var.keda_metrics_server_resources_limits_cpu
-        memory = var.keda_metrics_server_resources_limits_memory
+        cpu    = var.keda_metrics_server_cpu
+        memory = var.keda_metrics_server_memory
       },
       limits = {
-        cpu    = var.keda_metrics_server_resources_limits_cpu
-        memory = var.keda_metrics_server_resources_limits_memory
+        cpu    = var.keda_metrics_server_cpu
+        memory = var.keda_metrics_server_memory
       }
     },
     webhooks = {
       requests = {
-        cpu    = var.keda_webhooks_resources_limits_cpu
-        memory = var.keda_webhooks_resources_limits_memory
+        cpu    = var.keda_webhooks_cpu
+        memory = var.keda_webhooks_memory
       },
       limits = {
-        cpu    = var.keda_webhooks_resources_limits_cpu
-        memory = var.keda_webhooks_resources_limits_memory
+        cpu    = var.keda_webhooks_cpu
+        memory = var.keda_webhooks_memory
       }
     }
   }

@@ -19,6 +19,8 @@ resource "kubernetes_namespace_v1" "aws_observability" {
 }
 
 resource "kubernetes_namespace_v1" "keda" {
+  count = local.deploy_keda ? 1 : 0
+
   metadata {
     name = "keda"
   }

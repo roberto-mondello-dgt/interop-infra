@@ -147,37 +147,37 @@ variable "keda_chart_version" {
   default     = null
 }
 
-variable "keda_operator_resources_limits_cpu" {
+variable "keda_operator_cpu" {
   type        = string
   description = "KEDA Operator CPU resources limits"
   default     = "250m"
 }
 
-variable "keda_operator_resources_limits_memory" {
+variable "keda_operator_memory" {
   type        = string
   description = "KEDA Operator RAM resources limits"
   default     = "250Mi"
 }
 
-variable "keda_webhooks_resources_limits_cpu" {
+variable "keda_webhooks_cpu" {
   type        = string
   description = "KEDA Admission Webhooks CPU resources limits"
   default     = "250m"
 }
 
-variable "keda_webhooks_resources_limits_memory" {
+variable "keda_webhooks_memory" {
   type        = string
   description = "KEDA Admission Webhooks RAM resources limits"
   default     = "250Mi"
 }
 
-variable "keda_metrics_server_resources_limits_cpu" {
+variable "keda_metrics_server_cpu" {
   type        = string
   description = "KEDA Metrics Server CPU resources limits"
   default     = "250m"
 }
 
-variable "keda_metrics_server_resources_limits_memory" {
+variable "keda_metrics_server_memory" {
   type        = string
   description = "KEDA Metrics Server RAM resources limits"
   default     = "250Mi"
