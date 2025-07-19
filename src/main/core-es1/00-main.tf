@@ -76,4 +76,5 @@ locals {
   deploy_codebuild_github_ci_runners = var.env == "dev"
   deploy_eks_mng_ci_gh_runners       = false
   deploy_keda                        = var.env == "dev"
+  deploy_uptime_cost_optimization    = var.env == "qa"
 }
