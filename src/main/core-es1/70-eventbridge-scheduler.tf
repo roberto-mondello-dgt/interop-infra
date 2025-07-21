@@ -67,7 +67,7 @@ resource "aws_scheduler_schedule" "start_aurora_working_hours" {
     mode = "OFF"
   }
 
-  schedule_expression          = "cron(45 7 ? * MON-FRI *)"
+  schedule_expression          = "cron(40 7 ? * MON-FRI *)"
   schedule_expression_timezone = "Europe/Rome"
 
   target {

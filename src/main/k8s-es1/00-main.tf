@@ -57,5 +57,5 @@ locals {
   deployment_repo_v2_active       = var.env == "dev" || var.env == "qa" || var.env == "vapt" || var.env == "test" || var.env == "att" || var.env == "prod"
   deploy_keda                     = (var.env == "dev" || var.env == "qa") && var.keda_chart_version != null
   deploy_cluster_autoscaler       = var.env == "dev" && var.cluster_autoscaler_chart_version != null
-  deploy_uptime_cost_optimization = var.env == "qa"
+  deploy_uptime_cost_optimization = var.env == "dev" || var.env == "qa"
 }
