@@ -75,6 +75,11 @@ locals {
   deploy_interop_api_v2              = var.env == "dev" || var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
   deploy_codebuild_github_ci_runners = var.env == "dev"
   deploy_eks_mng_ci_gh_runners       = false
+  deploy_safe_storage_event_queues = (
+    var.safe_storage_vpce_service_name != null
+    &&
+    var.safe_storage_account_id != null
+  )
   deploy_keda                        = var.env == "dev" || var.env == "qa"
   deploy_uptime_cost_optimization    = var.env == "dev" || var.env == "qa"
 }

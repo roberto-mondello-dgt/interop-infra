@@ -83,6 +83,9 @@ backend_integration_alb_name = "k8s-interopbe-2e63f79573"
 
 eks_application_log_group_name = "/aws/eks/interop-eks-cluster-dev/application"
 
+safe_storage_account_id        = "891377202032"
+safe_storage_vpce_service_name = "com.amazonaws.vpce.eu-south-1.vpce-svc-075ebde4859d4c631"
+
 # (dev NS) deployments which require monitoring from application logs instead of HTTP requests
 k8s_monitoring_internal_deployments_names = [
   "debezium-postgresql",

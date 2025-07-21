@@ -1762,3 +1762,22 @@ resource "aws_iam_policy" "be_selfcare_client_users_updater" {
     ]
   })
 }
+
+resource "aws_iam_policy" "be_signed_object_persister" {
+  name = "InteropBeSignedObjectPersisterEs1"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = [
+          module.signed_object_persister_safe_storage_events_queue[0].queue_arn
+        ]
+    }]
+  })
+}
