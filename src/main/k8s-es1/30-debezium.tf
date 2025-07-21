@@ -152,6 +152,11 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
     }
   }
 
+  # edge case: enable when applying during a cron shutdown window
+  # lifecycle {
+  #   ignore_changes = [spec[0].replicas]
+  # }
+
   spec {
     replicas = var.debezium_postgresql_replicas
 
@@ -243,4 +248,19 @@ resource "kubernetes_deployment_v1" "debezium_postgresql" {
       }
     }
   }
+}
+
+locals {
+  templated_dbz_scaled_object = local.deploy_uptime_cost_optimization ? templatefile("${path.module}/manifests/uptime-cost-optimization-scaled-object.yaml",
+    {
+      namespace                = kubernetes_deployment_v1.debezium_postgresql[0].metadata[0].namespace
+      deployment_name          = kubernetes_deployment_v1.debezium_postgresql[0].metadata[0].name
+      deployment_replica_count = kubernetes_deployment_v1.debezium_postgresql[0].spec[0].replicas
+  }) : null
+}
+
+resource "kubernetes_manifest" "debezium_scaled_object" {
+  count = local.deploy_uptime_cost_optimization ? 1 : 0
+
+  manifest = yamldecode(local.templated_dbz_scaled_object)
 }

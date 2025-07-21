@@ -1,0 +1,20 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: ${deployment_name}
+  namespace: ${namespace}
+  labels:
+    app.kubernetes.io/name: ${deployment_name}
+    app: ${deployment_name}
+spec:
+  scaleTargetRef:
+    name: ${deployment_name}
+  minReplicaCount: 0
+  maxReplicaCount: ${deployment_replica_count}
+  triggers:
+  - metadata:
+      desiredReplicas: "${deployment_replica_count}"
+      end: 0 20 * * 1-5
+      start: 0 8 * * 1-5
+      timezone: Europe/Rome
+    type: cron
