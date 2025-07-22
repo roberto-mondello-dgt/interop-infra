@@ -208,6 +208,12 @@ variable "dns_interop_base_domain" {
   type        = string
 }
 
+variable "dns_api_gov_domain" {
+  description = "Domain for API GOV hosted zone"
+  type        = string
+  default     = null
+}
+
 variable "dns_interop_dev_ns_records" {
   description = "NS records for the Interop 'dev' hosted zone. Used to grant DNS delegation for the subdomain"
   type        = list(string)

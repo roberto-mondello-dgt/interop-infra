@@ -51,6 +51,7 @@ github_runners_memory        = 4096
 github_runners_image_uri     = "ghcr.io/pagopa/interop-github-runner-aws:v1.19.0"
 
 dns_interop_base_domain = "interop.pagopa.it"
+dns_api_gov_domain      = "api.gov.it"
 
 dns_interop_dev_ns_records = [
   "ns-1337.awsdns-39.org.",
