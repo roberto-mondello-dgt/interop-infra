@@ -127,40 +127,8 @@ resource "aws_cloudwatch_metric_alarm" "on_call_token_4xx" {
 
 locals {
   on_call_deployments = local.on_call_env ? {
-    auth_server     = "interop-be-authorization-server"
-    auth_management = "interop-be-authorization-management"
+    auth_server = "interop-be-authorization-server-node"
   } : {}
-}
-
-moved {
-  from = aws_cloudwatch_metric_alarm.on_call_unavailable_pods
-  to   = aws_cloudwatch_metric_alarm.on_call_unavailable_pods[0]
-}
-
-resource "aws_cloudwatch_metric_alarm" "on_call_unavailable_pods" {
-  for_each = local.on_call_deployments
-
-  alarm_name        = format("on-call-k8s-%s-unavailable-pods-%s", replace(each.key, "_", "-"), var.env)
-  alarm_description = format("No available pods for %s K8s deployment", each.value)
-
-  alarm_actions = [aws_sns_topic.on_call_opsgenie[0].arn]
-
-  comparison_operator = "LessThanThreshold"
-  statistic           = "Minimum"
-  threshold           = 1
-  period              = 60 # 1 minute
-  evaluation_periods  = 10 # 10 periods, 1 minute each
-  datapoints_to_alarm = 5  # 5 periods breaching the threshold in the last N evaluation_periods
-  treat_missing_data  = "missing"
-
-  metric_name = "kube_deployment_status_replicas_available"
-  namespace   = "ContainerInsights"
-
-  dimensions = {
-    ClusterName = module.eks.cluster_name
-    Service     = each.value
-    Namespace   = var.env
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "on_call_readiness_pods" {
