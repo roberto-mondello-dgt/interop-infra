@@ -1764,6 +1764,8 @@ resource "aws_iam_policy" "be_selfcare_client_users_updater" {
 }
 
 resource "aws_iam_policy" "be_signed_object_persister" {
+  count = local.deploy_safe_storage_event_queues ? 1 : 0
+
   name = "InteropBeSignedObjectPersisterEs1"
 
   policy = jsonencode({

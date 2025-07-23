@@ -1081,6 +1081,8 @@ module "be_selfcare_client_users_updater_irsa" {
 }
 
 module "be_signed_object_persister_irsa" {
+  count = local.deploy_safe_storage_event_queues ? 1 : 0
+
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.20.0"
 
@@ -1096,6 +1098,6 @@ module "be_signed_object_persister_irsa" {
   }
 
   role_policy_arns = {
-    be_signed_object_persister = aws_iam_policy.be_signed_object_persister.arn
+    be_signed_object_persister = aws_iam_policy.be_signed_object_persister[0].arn
   }
 }

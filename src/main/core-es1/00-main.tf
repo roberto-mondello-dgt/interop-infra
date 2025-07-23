@@ -80,6 +80,6 @@ locals {
     &&
     var.safe_storage_account_id != null
   )
-  deploy_keda                        = var.env == "dev" || var.env == "qa"
-  deploy_uptime_cost_optimization    = var.env == "dev" || var.env == "qa"
+  deploy_keda                     = var.env == "dev" || var.env == "qa"
+  deploy_uptime_cost_optimization = var.env == "dev" || var.env == "qa"
 }

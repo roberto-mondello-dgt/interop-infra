@@ -56,7 +56,7 @@ locals {
 }
 
 resource "aws_sns_topic_subscription" "safe_storage_events_subscription" {
-  for_each = toset( local.signed_object_persister_queue_subscribed_topics )
+  for_each = toset(local.signed_object_persister_queue_subscribed_topics)
 
   topic_arn            = each.value
   protocol             = "sqs"
@@ -70,7 +70,7 @@ module "signed_object_persister_safe_storage_events_queue_monitoring" {
     module.signed_object_persister_safe_storage_events_queue[0]
   ]
 
-  source     = "./modules/queue-monitoring"
+  source = "./modules/queue-monitoring"
 
   env                      = var.env
   region                   = var.aws_region
