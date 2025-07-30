@@ -1,0 +1,291 @@
+{
+  "Dashboard": {
+    "DashboardId": "interop-dev-tenants_clients_access_by_ip_DASH",
+    "Arn": "arn:aws:quicksight:eu-south-1:505630707203:dashboard/interop-dev-tenants_clients_access_by_ip_DASH",
+    "Name": "Clients IPs (interop-dev)",
+    "Version": {
+      "CreatedTime": "2025-06-27T23:26:26.568000+02:00",
+      "Errors": [],
+      "VersionNumber": 1,
+      "Status": "CREATION_SUCCESSFUL",
+      "DataSetArns": [
+        "arn:aws:quicksight:eu-south-1:505630707203:dataset/interop-dev-tenants_clients_access_by_ip"
+      ],
+      "Description": "First Version",
+      "Sheets": [
+        {
+          "SheetId": "interop-dev-tenants_clients_access_by_ip_sheet_ClientsByIP"
+        }
+      ]
+    },
+    "CreatedTime": "2025-06-27T23:26:26.321000+02:00",
+    "LastPublishedTime": "2025-06-27T23:26:26.321000+02:00",
+    "LastUpdatedTime": "2025-06-27T23:26:26.568000+02:00"
+  },
+  "Definition": {
+    "DataSetIdentifierDeclarations": [
+      {
+        "Identifier": "analysis__tenants_clients_access_by_ip_ds",
+        "DataSetArn": "arn:aws:quicksight:eu-south-1:505630707203:dataset/interop-dev-tenants_clients_access_by_ip"
+      }
+    ],
+    "Sheets": [
+      {
+        "SheetId": "interop-dev-tenants_clients_access_by_ip_sheet_ClientsByIP",
+        "Title": "Clients by IP",
+        "ParameterControls": [
+          {
+            "TextField": {
+              "ParameterControlId": "79ad280a-1f3d-4a04-9e96-6b4b06535ce1",
+              "Title": "Filter By IP substring",
+              "SourceParameterName": "IpContains",
+              "DisplayOptions": {
+                "TitleOptions": {
+                  "Visibility": "VISIBLE",
+                  "FontConfiguration": {
+                    "FontSize": {
+                      "Relative": "MEDIUM"
+                    }
+                  }
+                },
+                "PlaceholderOptions": {
+                  "Visibility": "VISIBLE"
+                }
+              }
+            }
+          }
+        ],
+        "Visuals": [
+          {
+            "PivotTableVisual": {
+              "VisualId": "d2f25204-5a02-4823-a51c-a19e55aad3d8",
+              "Title": {
+                "Visibility": "VISIBLE"
+              },
+              "Subtitle": {
+                "Visibility": "VISIBLE"
+              },
+              "ChartConfiguration": {
+                "FieldWells": {
+                  "PivotTableAggregatedFieldWells": {
+                    "Rows": [
+                      {
+                        "CategoricalDimensionField": {
+                          "FieldId": "InteropDevTenantsClientsAccessByIpLTM.ip.0.1750937094176",
+                          "Column": {
+                            "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                            "ColumnName": "ip"
+                          }
+                        }
+                      }
+                    ],
+                    "Columns": [
+                      {
+                        "CategoricalDimensionField": {
+                          "FieldId": "InteropDevTenantsClientsAccessByIpLTM.tenant_name.1.1750937099695",
+                          "Column": {
+                            "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                            "ColumnName": "tenant_name"
+                          }
+                        }
+                      },
+                      {
+                        "CategoricalDimensionField": {
+                          "FieldId": "InteropDevTenantsClientsAccessByIpLTM.client_name.2.1750937103111",
+                          "Column": {
+                            "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                            "ColumnName": "client_name"
+                          }
+                        }
+                      }
+                    ],
+                    "Values": [
+                      {
+                        "DateMeasureField": {
+                          "FieldId": "InteropDevTenantsClientsAccessByIpLTM.oldest_ts.4.1750937112735",
+                          "Column": {
+                            "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                            "ColumnName": "oldest_ts"
+                          },
+                          "AggregationFunction": "MIN"
+                        }
+                      },
+                      {
+                        "DateMeasureField": {
+                          "FieldId": "InteropDevTenantsClientsAccessByIpLTM.latest_ts.3.1750937107635",
+                          "Column": {
+                            "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                            "ColumnName": "latest_ts"
+                          },
+                          "AggregationFunction": "MAX"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "SortConfiguration": {
+                  "FieldSortOptions": []
+                },
+                "TableOptions": {
+                  "ColumnHeaderStyle": {
+                    "Height": 35
+                  },
+                  "CellStyle": {
+                    "Height": 25
+                  },
+                  "RowFieldNamesStyle": {
+                    "Height": 35
+                  }
+                },
+                "FieldOptions": {
+                  "SelectedFieldOptions": [
+                    {
+                      "FieldId": "InteropDevTenantsClientsAccessByIpLTM.ip.0.1750937094176",
+                      "Visibility": "VISIBLE"
+                    },
+                    {
+                      "FieldId": "InteropDevTenantsClientsAccessByIpLTM.tenant_name.1.1750937099695",
+                      "Visibility": "VISIBLE"
+                    },
+                    {
+                      "FieldId": "InteropDevTenantsClientsAccessByIpLTM.client_name.2.1750937103111",
+                      "Visibility": "VISIBLE"
+                    },
+                    {
+                      "FieldId": "InteropDevTenantsClientsAccessByIpLTM.oldest_ts.4.1750937112735",
+                      "Visibility": "VISIBLE"
+                    },
+                    {
+                      "FieldId": "InteropDevTenantsClientsAccessByIpLTM.latest_ts.3.1750937107635",
+                      "Visibility": "VISIBLE"
+                    }
+                  ]
+                }
+              },
+              "Actions": []
+            }
+          }
+        ],
+        "Layouts": [
+          {
+            "Configuration": {
+              "GridLayout": {
+                "Elements": [
+                  {
+                    "ElementId": "d2f25204-5a02-4823-a51c-a19e55aad3d8",
+                    "ElementType": "VISUAL",
+                    "ColumnSpan": 18,
+                    "RowSpan": 12
+                  }
+                ],
+                "CanvasSizeOptions": {
+                  "ScreenCanvasSizeOptions": {
+                    "ResizeOption": "FIXED",
+                    "OptimizedViewPortWidth": "1600px"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "ContentType": "INTERACTIVE"
+      }
+    ],
+    "CalculatedFields": [],
+    "ParameterDeclarations": [
+      {
+        "StringParameterDeclaration": {
+          "ParameterValueType": "SINGLE_VALUED",
+          "Name": "IpContains",
+          "DefaultValues": {
+            "StaticValues": [
+              "."
+            ]
+          },
+          "ValueWhenUnset": {
+            "ValueWhenUnsetOption": "RECOMMENDED_VALUE"
+          }
+        }
+      }
+    ],
+    "FilterGroups": [
+      {
+        "FilterGroupId": "13388b4f-4e63-426f-8dca-127bdd545a13",
+        "Filters": [
+          {
+            "CategoryFilter": {
+              "FilterId": "4b527f3f-e666-4d84-b9b6-6240ab303d7d",
+              "Column": {
+                "DataSetIdentifier": "analysis__tenants_clients_access_by_ip_ds",
+                "ColumnName": "ip"
+              },
+              "Configuration": {
+                "CustomFilterConfiguration": {
+                  "MatchOperator": "CONTAINS",
+                  "ParameterName": "IpContains",
+                  "NullOption": "NON_NULLS_ONLY"
+                }
+              }
+            }
+          }
+        ],
+        "ScopeConfiguration": {
+          "SelectedSheets": {
+            "SheetVisualScopingConfigurations": [
+              {
+                "SheetId": "interop-dev-tenants_clients_access_by_ip_sheet_ClientsByIP",
+                "Scope": "SELECTED_VISUALS",
+                "VisualIds": [
+                  "d2f25204-5a02-4823-a51c-a19e55aad3d8"
+                ]
+              }
+            ]
+          }
+        },
+        "Status": "ENABLED",
+        "CrossDataset": "SINGLE_DATASET"
+      }
+    ]
+  },
+  "Permissions": [
+    {
+      "Principal": "arn:aws:quicksight:eu-west-1:505630707203:group/default/interop-dev-quicksight-admins",
+      "Actions": [
+        "quicksight:DescribeDashboard",
+        "quicksight:ListDashboardVersions",
+        "quicksight:UpdateDashboardPermissions",
+        "quicksight:QueryDashboard",
+        "quicksight:UpdateDashboard",
+        "quicksight:DeleteDashboard",
+        "quicksight:DescribeDashboardPermissions",
+        "quicksight:UpdateDashboardPublishedVersion"
+      ]
+    },
+    {
+      "Principal": "arn:aws:quicksight:eu-west-1:505630707203:group/default/interop-dev-quicksight-authors",
+      "Actions": [
+        "quicksight:DescribeDashboard",
+        "quicksight:ListDashboardVersions",
+        "quicksight:QueryDashboard"
+      ]
+    }
+  ],
+  "Tags": [
+    {
+      "Key": "Environment",
+      "Value": "dev"
+    },
+    {
+      "Key": "Owner",
+      "Value": "PagoPA"
+    },
+    {
+      "Key": "CreatedBy",
+      "Value": "Terraform"
+    },
+    {
+      "Key": "Source",
+      "Value": "https://github.com/pagopa/interop-infra"
+    }
+  ]
+}

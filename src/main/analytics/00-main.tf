@@ -35,8 +35,9 @@ provider "aws" {
 
 # - Needed by QuickSight until migration at aws provider version 6.0.0.
 #   Version 6.0.0 will introduce region argument in aws_quicksight_account_subscription resource.
+# TODO: Remove after apply to prod. It is still needed for destruction of QuickSight subscription
 provider "aws" {
-  region = var.quicksight_identity_center_region
+  region = "eu-west-1"
   alias  = "identity_center_region"
 
   default_tags {

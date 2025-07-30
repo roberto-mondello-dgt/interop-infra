@@ -1,4 +1,3 @@
-
 resource "aws_iam_role" "quicksight_redshift_access" {
   count = local.deploy_redshift_cluster ? 1 : 0
 
@@ -18,6 +17,7 @@ resource "aws_iam_role_policy" "quicksight_redshift_access_policy" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "CreateVpcConnection"
         Effect = "Allow"
         Action = [
           "ec2:CreateNetworkInterface",
@@ -74,6 +74,12 @@ resource "aws_quicksight_account_subscription" "quicksight_subscription" {
   admin_group  = [format("%s-%s-quicksight-admins", local.project, var.env)]
   author_group = [format("%s-%s-quicksight-authors", local.project, var.env)]
   reader_group = [format("%s-%s-quicksight-readers", local.project, var.env)]
+
+  depends_on = [
+    aws_iam_role.quicksight_service_role,
+    aws_iam_role.quicksight_secret_manager_service_role,
+    aws_iam_role_policy_attachment.quicksight_secret_manager_service_role_policy_attachment
+  ]
 }
 
 # This resource must be in the "Identity Center" region
@@ -82,6 +88,7 @@ resource "aws_quicksight_account_settings" "quicksight_account_settings" {
 
   provider = aws.identity_center_region
 
+  # Change before destroy
   termination_protection_enabled = true
 
   depends_on = [aws_quicksight_account_subscription.quicksight_subscription]
@@ -94,23 +101,13 @@ resource "aws_quicksight_vpc_connection" "quicksight_to_redshift_connection" {
   name              = "QuickSight to RedShift VPC connection"
 
   role_arn           = aws_iam_role.quicksight_redshift_access[0].arn
-  security_group_ids = [aws_security_group.quicksight_analytics[0].id]
-  subnet_ids         = data.aws_subnets.analytics.ids
+  security_group_ids = [data.aws_security_group.quicksight_analytic[0].id]
+  subnet_ids         = data.aws_subnets.analytics[0].ids
 
   depends_on = [
     aws_quicksight_account_subscription.quicksight_subscription,
     aws_iam_role_policy.quicksight_redshift_access_policy
   ]
-}
-
-data "aws_secretsmanager_secret_version" "quicksight_user" {
-  count = local.deploy_redshift_cluster ? 1 : 0
-
-  secret_id = module.redshift_quicksight_pgsql_user[0].secret_id
-}
-
-locals {
-  quicksight_groups_arn_prefix = "arn:aws:quicksight:${var.quicksight_identity_center_region}:${data.aws_caller_identity.current.account_id}:group/default/${local.project}-${var.env}"
 }
 
 # - Database connection that wrap Redshift default database connection parameters and credentials
@@ -128,35 +125,29 @@ resource "aws_quicksight_data_source" "analytics_views" {
   }
   parameters {
     redshift {
-      host     = aws_redshift_cluster.analytics[0].dns_name
-      port     = aws_redshift_cluster.analytics[0].port
-      database = aws_redshift_cluster.analytics[0].database_name
+      host     = data.aws_redshift_cluster.analytics[0].endpoint
+      port     = data.aws_redshift_cluster.analytics[0].port
+      database = data.aws_redshift_cluster.analytics[0].database_name
     }
   }
   credentials {
-    credential_pair {
-      username = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user[0].secret_string)["username"]
-      password = jsondecode(data.aws_secretsmanager_secret_version.quicksight_user[0].secret_string)["password"]
-    }
+    secret_arn = data.aws_secretsmanager_secret_version.quicksight_user_secret_version[0].arn
   }
   ssl_properties {
     disable_ssl = false
   }
 
-  dynamic "permission" {
-    for_each = ["quicksight-admins", "quicksight-authors"]
-
-    content {
-      principal = "${local.quicksight_groups_arn_prefix}-${permission.value}"
-      actions = [
-        "quicksight:PassDataSource",
-        "quicksight:DescribeDataSourcePermissions",
-        "quicksight:UpdateDataSource",
-        "quicksight:UpdateDataSourcePermissions",
-        "quicksight:DescribeDataSource",
-        "quicksight:DeleteDataSource"
-      ]
-    }
+  permission {
+    principal = "${local.quicksight_groups_arn_prefix}-quicksight-admins"
+    actions   = local.quicksight_datasource_read_write_actions
   }
 
+  permission {
+    principal = "${local.quicksight_groups_arn_prefix}-quicksight-authors"
+    actions   = local.quicksight_datasource_read_only_actions
+  }
+
+  tags = {
+    DatabaseName = data.aws_redshift_cluster.analytics[0].database_name
+  }
 }

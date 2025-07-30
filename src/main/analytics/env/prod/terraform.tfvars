@@ -50,8 +50,3 @@ application_audit_producers_irsa_list = [
   "interop-be-purpose-process-prod-es1",
   "interop-be-tenant-process-prod-es1"
 ]
-
-quicksight_identity_center_arn    = "arn:aws:sso:::instance/ssoins-6804d580c9a0bfbc"
-quicksight_identity_center_region = "eu-west-1"
-
-quicksight_notification_email = "pdnd-interop+prod@pagopa.it"
