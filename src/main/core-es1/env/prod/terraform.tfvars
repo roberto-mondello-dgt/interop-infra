@@ -134,4 +134,4 @@ k8s_monitoring_internal_deployments_names = [
 
 deployment_repo_name = "pagopa/interop-core-deployment"
 
-# analytics_k8s_namespace = "prod-analytics"
+analytics_k8s_namespace = "prod-analytics"
