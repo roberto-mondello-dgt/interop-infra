@@ -235,7 +235,7 @@ resource "aws_iam_policy" "s3_reprocess_github_repo" {
           ]
         }
       ],
-      local.deploy_data_ingestion_resources ? [
+      local.deploy_all_data_ingestion_resources ? [
         {
           Effect = "Allow"
           Action = [

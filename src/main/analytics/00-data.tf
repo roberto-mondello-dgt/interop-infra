@@ -64,3 +64,10 @@ data "aws_iam_role" "application_audit_producers" {
 
   name = each.value
 }
+
+data "aws_redshift_cluster" "cross_account" {
+  count = local.deploy_redshift_cross_account ? 1 : 0
+
+  provider           = aws.redshift-describe-clusters
+  cluster_identifier = var.redshift_cross_account_cluster.cluster_id
+}

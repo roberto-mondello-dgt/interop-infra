@@ -1,5 +1,5 @@
 resource "aws_s3_bucket_notification" "jwt_audit_source" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue_policy.jwt_audit[0]]
 
@@ -12,7 +12,7 @@ resource "aws_s3_bucket_notification" "jwt_audit_source" {
 }
 
 resource "aws_s3_bucket_notification" "alb_logs_source" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue_policy.alb_logs[0]]
 
@@ -25,7 +25,7 @@ resource "aws_s3_bucket_notification" "alb_logs_source" {
 }
 
 module "application_audit_archive" {
-  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? 1 : 0
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.11.0"

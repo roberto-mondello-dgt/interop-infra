@@ -1,0 +1,10 @@
+{
+  "be_app_users": [
+    "jwt_audit_analytics_writer_user",
+    "domains_analytics_writer_user",
+    "alb_logs_analytics_writer_user",
+    "application_audit_analytics_writer_user",
+    "tracing_enriched_data_handler_user"
+  ],
+  "readonly_users": []
+}

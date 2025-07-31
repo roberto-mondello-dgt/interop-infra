@@ -33,6 +33,16 @@ provider "aws" {
   }
 }
 
+# Needed to assume the IAM role to describe the Redshift clusters in case of cross-account access
+provider "aws" {
+  region = var.aws_region
+  alias  = "redshift-describe-clusters"
+
+  assume_role {
+    role_arn = var.redshift_cross_account_cluster != null ? format("arn:aws:iam::%s:role/%s", var.redshift_cross_account_cluster.aws_account_id, var.redshift_describe_clusters_role_name) : null
+  }
+}
+
 # - Needed by QuickSight until migration at aws provider version 6.0.0.
 #   Version 6.0.0 will introduce region argument in aws_quicksight_account_subscription resource.
 # TODO: Remove after apply to prod. It is still needed for destruction of QuickSight subscription
@@ -62,10 +72,11 @@ data "aws_iam_role" "sso_admin" {
 }
 
 locals {
-  project                              = "interop"
-  deploy_redshift_cluster              = var.env == "dev" || var.env == "prod"
-  deploy_data_ingestion_resources      = var.env == "dev" || var.env == "prod"
-  deploy_application_audit_resources   = var.env == "qa" || var.env == "test" || var.env == "att" || var.env == "prod"
-  deploy_redshift_cross_account_to_dev = var.env == "qa"
-  terraform_state                      = "analytics"
+  project         = "interop"
+  terraform_state = "analytics"
+
+  deploy_redshift_cluster                 = var.env == "dev" || var.env == "prod"
+  deploy_all_data_ingestion_resources     = var.env == "dev" || var.env == "qa" || var.env == "prod" # This local manages the deployment of the resources related to all of the ingestion flows: jwt audit, alb-logs, application audit, domains
+  deploy_only_application_audit_resources = var.env == "test" || var.env == "att"                    # This local manages the deployment of the resources related to the application audit ingestion flow only
+  deploy_redshift_cross_account           = var.env == "qa"
 }

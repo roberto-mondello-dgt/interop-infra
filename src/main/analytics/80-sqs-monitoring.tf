@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "sqs_jwt_audit" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue.jwt_audit[0]]
 
@@ -21,7 +21,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_jwt_audit" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_alb_logs" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue.alb_logs[0]]
 
@@ -43,7 +43,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_alb_logs" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_application_audit_fallback" {
-  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? 1 : 0
 
   depends_on = [aws_sqs_queue.application_audit_fallback[0]]
 

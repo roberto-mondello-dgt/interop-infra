@@ -22,6 +22,9 @@ eks_cluster_node_security_group_id = "sg-044f18e11c91e71ed"
 redshift_cluster_nodes_number = 2
 redshift_cluster_nodes_type   = "ra3.xlplus"
 
+redshift_databases_to_create                    = ["interop_dev", "interop_qa"]
+redshift_enable_cross_account_access_account_id = "755649575658"
+
 jwt_details_bucket_name = "interop-generated-jwt-details-dev-es1"
 alb_logs_bucket_name    = "interop-alb-logs-dev-es1"
 

@@ -22,6 +22,14 @@ eks_cluster_node_security_group_id = "sg-03a32a7ba847306f4"
 redshift_cluster_nodes_number = 2
 redshift_cluster_nodes_type   = "ra3.xlplus"
 
+redshift_describe_clusters_role_name = "interop-redshift-describe-clusters-cross-account-access-dev-es1"
+redshift_cross_account_cluster = {
+  aws_account_id  = "505630707203"
+  aws_account_env = "dev"
+  cluster_id      = "interop-analytics-dev"
+  database_name   = "interop_qa"
+}
+
 jwt_details_bucket_name = "interop-generated-jwt-details-qa-es1"
 alb_logs_bucket_name    = "interop-alb-logs-qa-es1"
 
@@ -50,6 +58,3 @@ application_audit_producers_irsa_list = [
   "interop-be-purpose-process-qa-es1",
   "interop-be-tenant-process-qa-es1"
 ]
-
-analytics_dev_account_id                  = "505630707203"
-analytics_redshift_dev_cluster_identifier = "interop-analytics-dev"

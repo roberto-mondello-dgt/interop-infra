@@ -72,6 +72,35 @@ variable "redshift_cluster_port" {
   default     = "5439"
 }
 
+variable "redshift_databases_to_create" {
+  type        = list(string)
+  description = "List of databases to create in the Redshift cluster"
+  default     = []
+}
+
+variable "redshift_enable_cross_account_access_account_id" {
+  type        = string
+  description = "ID of the account for which enabling cross-account access to the Redshift cluster"
+  default     = null
+}
+
+variable "redshift_describe_clusters_role_name" {
+  type        = string
+  description = "Name of the IAM role to assume to describe the Redshift clusters (in another account) in case of cross-account access"
+  default     = null
+}
+
+variable "redshift_cross_account_cluster" {
+  type = object({
+    aws_account_id  = string
+    aws_account_env = string
+    cluster_id      = string
+    database_name   = string
+  })
+  description = "Redshift cluster to use in case of cross-account access"
+  default     = null
+}
+
 variable "jwt_details_bucket_name" {
   type        = string
   description = "Name of the S3 Bucket containing the generated jwt to be ingested in Redshift"
@@ -150,16 +179,4 @@ variable "application_audit_producers_irsa_list" {
   description = "Names of the IRSA producers for application audit"
   type        = list(string)
   default     = []
-}
-
-variable "analytics_dev_account_id" {
-  description = "ID of the Interop dev AWS account in which the Redshift dev cluster is deployed"
-  type        = string
-  default     = null
-}
-
-variable "analytics_redshift_dev_cluster_identifier" {
-  description = "Identifier of the Redshift dev cluster"
-  type        = string
-  default     = null
 }

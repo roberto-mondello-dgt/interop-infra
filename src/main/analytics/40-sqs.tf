@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "jwt_audit" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   name = format("%s-analytics-jwt-audit-%s", local.project, var.env)
 
@@ -8,7 +8,7 @@ resource "aws_sqs_queue" "jwt_audit" {
 }
 
 resource "aws_sqs_queue_policy" "jwt_audit" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   queue_url = aws_sqs_queue.jwt_audit[0].url
   policy = jsonencode({
@@ -32,7 +32,7 @@ resource "aws_sqs_queue_policy" "jwt_audit" {
 }
 
 resource "aws_sqs_queue" "alb_logs" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   name = format("%s-analytics-alb-logs-%s", local.project, var.env)
 
@@ -41,7 +41,7 @@ resource "aws_sqs_queue" "alb_logs" {
 }
 
 resource "aws_sqs_queue_policy" "alb_logs" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   queue_url = aws_sqs_queue.alb_logs[0].url
   policy = jsonencode({
@@ -65,7 +65,7 @@ resource "aws_sqs_queue_policy" "alb_logs" {
 }
 
 resource "aws_sqs_queue" "application_audit_fallback" {
-  count = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? 1 : 0
 
   name = format("%s-analytics-application-audit-fallback-%s", local.project, var.env)
 

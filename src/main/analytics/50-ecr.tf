@@ -9,14 +9,14 @@ locals {
 }
 
 resource "aws_ecr_repository" "app" {
-  for_each = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? toset(local.repository_names) : []
+  for_each = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? toset(local.repository_names) : []
 
   image_tag_mutability = var.env == "test" || var.env == "prod" ? "IMMUTABLE" : "MUTABLE"
   name                 = each.key
 }
 
 resource "aws_ecr_lifecycle_policy" "app" {
-  for_each = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" } : {}
+  for_each = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" } : {}
 
   repository = each.value.name
   policy     = <<EOF
@@ -41,7 +41,7 @@ resource "aws_ecr_lifecycle_policy" "app" {
 }
 
 resource "aws_ecr_repository_policy" "dev_cross_account" {
-  for_each = local.deploy_data_ingestion_resources || local.deploy_application_audit_resources ? { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" } : {}
+  for_each = local.deploy_all_data_ingestion_resources || local.deploy_only_application_audit_resources ? { for repo in aws_ecr_repository.app : repo.name => repo if var.env == "dev" } : {}
 
   repository = each.value.name
 

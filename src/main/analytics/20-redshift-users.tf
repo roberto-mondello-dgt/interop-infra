@@ -4,18 +4,23 @@ locals {
     EKSClusterNamespacesSpaceSeparated = join(" ", [var.analytics_k8s_namespace])
     TerraformState                     = local.terraform_state
   }
-  redshift_host = local.deploy_data_ingestion_resources ? element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0) : null
+
+  # The following locals are useful to define the Redshift cluster connection parameters in case of a cross-account Redshift cluster
+  redshift_host         = local.deploy_redshift_cluster ? element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0) : data.aws_redshift_cluster.cross_account[0].endpoint
+  redshift_cluster_name = local.deploy_redshift_cluster ? aws_redshift_cluster.analytics[0].cluster_identifier : data.aws_redshift_cluster.cross_account[0].cluster_identifier
+  redshift_port         = local.deploy_redshift_cluster ? aws_redshift_cluster.analytics[0].port : data.aws_redshift_cluster.cross_account[0].port
+  redshift_database     = local.deploy_redshift_cluster ? aws_redshift_cluster.analytics[0].database_name : var.redshift_cross_account_cluster.database_name
+
+  redshift_master_user_secret_arn = local.deploy_redshift_cluster ? aws_secretsmanager_secret.redshift_master[0].arn : aws_secretsmanager_secret.redshift_master_replica[0].arn
 }
 
 module "redshift_flyway_pgsql_user" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
 
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.9.0"
-
-  username = "interop_analytics_flyway_user"
+  username = format("%s_flyway_user", var.env)
 
   generated_password_length = 30
-  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+  secret_prefix             = format("redshift/%s/users/", local.redshift_cluster_name)
 
   secret_tags = merge(local.eks_secret_default_tags,
     {
@@ -26,102 +31,65 @@ module "redshift_flyway_pgsql_user" {
   redshift_cluster = true
 
   db_host = local.redshift_host
-  db_port = aws_redshift_cluster.analytics[0].port
-  db_name = aws_redshift_cluster.analytics[0].database_name
+  db_port = local.redshift_port
+  db_name = local.redshift_database
 
-  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+  db_admin_credentials_secret_arn = local.redshift_master_user_secret_arn
 
   additional_sql_statements = <<-EOT
-    GRANT CREATE ON DATABASE ${aws_redshift_cluster.analytics[0].database_name} TO "interop_analytics_flyway_user";
-    ALTER USER interop_analytics_flyway_user SET search_path TO '\$user';
+    GRANT CREATE ON DATABASE ${local.redshift_database} TO "${format("%s_flyway_user", var.env)}";
+    ALTER USER "${format("%s_flyway_user", var.env)}" SET search_path TO '\$user';
   EOT
 }
 
 locals {
-  be_app_psql_usernames = local.deploy_data_ingestion_resources ? {
-    jwt_audit_analytics_writer_user = {
-      sql_name        = "interop_be_jwt_audit_analytics_writer_${var.env}",
-      k8s_secret_name = "redshift-jwt-audit-analytics-writer-user"
-    },
-    domains_analytics_writer_user = {
-      sql_name        = "interop_be_domains_analytics_writer_${var.env}",
-      k8s_secret_name = "redshift-domains-analytics-writer-user"
-    },
-    alb_logs_analytics_writer_user = {
-      sql_name        = "interop_be_alb_logs_analytics_writer_${var.env}",
-      k8s_secret_name = "redshift-alb-logs-analytics-writer-user"
-    },
-    application_audit_analytics_writer_user = {
-      sql_name        = "interop_be_application_audit_analytics_writer_${var.env}",
-      k8s_secret_name = "redshift-application-audit-analytics-writer-user"
-    },
-    tracing_enriched_data_handler_user = {
-      sql_name        = "tracing_be_enriched_data_handler_${var.env}",
-      k8s_secret_name = "redshift-tracing-enriched-data-handler-user"
-    }
-  } : {}
+  redshift_users_json_data = jsondecode(file("./assets/redshift-users/redshift-users-${var.env}.json"))
 
-  devs_psql_usernames = local.deploy_data_ingestion_resources ? {
-    readonly = {
-      sql_name = "interop_analytics_readonly"
-    },
-    lorenzo_giorgi = {
-      sql_name = "lorenzo_giorgi"
-    },
-    eduardo_mihalache = {
-      sql_name = "eduardo_mihalache"
-    },
-    diego_longo = {
-      sql_name = "diego_longo"
-    },
-    roberto_taglioni = {
-      sql_name = "roberto_taglioni"
-    },
-    carmine_porricelli = {
-      sql_name = "carmine_porricelli"
-    },
-    qa_user = {
-      sql_name = "qa_user"
-    }
-  } : {}
+  be_app_psql_usernames = try([
+    for user in local.redshift_users_json_data.be_app_users : user
+  ], [])
+
+  readonly_psql_usernames = try([
+    for user in local.redshift_users_json_data.readonly_users : user
+  ], [])
 }
 
 # PostgreSQL users with no initial grants. The grants will be applied by Flyway
 module "redshift_be_app_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.9.0"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
 
-  for_each = local.be_app_psql_usernames
+  for_each = toset(local.be_app_psql_usernames)
 
-  username = each.value.sql_name
+  username = format("%s_%s", var.env, each.value)
 
   generated_password_length = 30
-  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+  secret_prefix             = format("redshift/%s/users/", local.redshift_cluster_name)
 
   secret_tags = merge(local.eks_secret_default_tags,
     {
-      EKSReplicaSecretName = each.value.k8s_secret_name
+      EKSReplicaSecretName = format("redshift-%s", replace(each.value, "_", "-"))
     }
   )
 
   redshift_cluster = true
 
   db_host = local.redshift_host
-  db_port = aws_redshift_cluster.analytics[0].port
-  db_name = aws_redshift_cluster.analytics[0].database_name
+  db_port = local.redshift_port
+  db_name = local.redshift_database
 
-  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+  db_admin_credentials_secret_arn = local.redshift_master_user_secret_arn
 }
 
 # PostgreSQL users for developers with default privileges.
-module "redshift_devs_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.10.0"
+module "redshift_readonly_pgsql_user" {
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
 
-  for_each = local.devs_psql_usernames
+  for_each = toset(local.readonly_psql_usernames)
 
-  username = each.value.sql_name
+  username = each.value
 
   generated_password_length = 30
-  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+  secret_prefix             = format("redshift/%s/users/", local.redshift_cluster_name)
 
   secret_tags = merge(var.tags, {
     Redshift = "" # Necessary for Redshift log-in integration when using Quey editor v2
@@ -130,27 +98,27 @@ module "redshift_devs_pgsql_user" {
   redshift_cluster = true
 
   db_host = local.redshift_host
-  db_port = aws_redshift_cluster.analytics[0].port
-  db_name = aws_redshift_cluster.analytics[0].database_name
+  db_port = local.redshift_port
+  db_name = local.redshift_database
 
-  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+  db_admin_credentials_secret_arn = local.redshift_master_user_secret_arn
 
   grant_redshift_groups = ["readonly_group"]
 
   additional_sql_statements = <<-EOT
-    ALTER DEFAULT PRIVILEGES FOR USER interop_analytics_flyway_user GRANT SELECT ON TABLES TO GROUP readonly_group;
+    ALTER DEFAULT PRIVILEGES FOR USER ${format("%s_flyway_user", var.env)} GRANT SELECT ON TABLES TO GROUP readonly_group;
   EOT
 }
 
 module "redshift_quicksight_pgsql_user" {
   count = local.deploy_redshift_cluster ? 1 : 0
 
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.10.0"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
 
-  username = "interop_analytics_quicksight_user"
+  username = "${var.env}_quicksight_user"
 
   generated_password_length = 30
-  secret_prefix             = format("redshift/%s/users/", aws_redshift_cluster.analytics[0].cluster_identifier)
+  secret_prefix             = format("redshift/%s/users/", local.redshift_cluster_name)
 
   secret_tags = merge(var.tags, {
     Redshift = "" # Necessary for Redshift log-in integration when using Quey editor v2
@@ -159,8 +127,8 @@ module "redshift_quicksight_pgsql_user" {
   redshift_cluster = true
 
   db_host = local.redshift_host
-  db_port = aws_redshift_cluster.analytics[0].port
-  db_name = aws_redshift_cluster.analytics[0].database_name
+  db_port = local.redshift_port
+  db_name = local.redshift_database
 
-  db_admin_credentials_secret_arn = aws_secretsmanager_secret.redshift_master[0].arn
+  db_admin_credentials_secret_arn = local.redshift_master_user_secret_arn
 }

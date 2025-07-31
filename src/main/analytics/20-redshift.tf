@@ -124,3 +124,68 @@ resource "aws_redshift_cluster" "analytics" {
 
   skip_final_snapshot = true
 }
+
+locals {
+  databases_to_create = local.deploy_redshift_cluster ? [
+    for db in var.redshift_databases_to_create : db if db != aws_redshift_cluster.analytics[0].database_name # Exclude the already existing database from the list of databases to create
+  ] : []
+}
+
+# Create a database in the Redshift cluster for each entry in the databases_to_create list (excluding the the already existing database because it has already been created by the aws_redshift_cluster.a resource)
+resource "null_resource" "analytics_create_db" {
+  depends_on = [aws_redshift_cluster.analytics[0], aws_secretsmanager_secret.redshift_master[0]]
+
+  for_each = toset(local.databases_to_create)
+
+  provisioner "local-exec" {
+    environment = {
+      HOST                         = element(split(":", aws_redshift_cluster.analytics[0].endpoint), 0)
+      DATABASE                     = aws_redshift_cluster.analytics[0].database_name
+      DATABASE_PORT                = aws_redshift_cluster.analytics[0].port
+      DATABASE_TO_CREATE           = each.key
+      ADMIN_CREDENTIALS_SECRET_ARN = aws_secretsmanager_secret.redshift_master[0].arn
+    }
+
+    command = <<EOT
+      #!/bin/bash
+      set -euo pipefail
+      
+      secret_json=$(aws secretsmanager get-secret-value --secret-id $ADMIN_CREDENTIALS_SECRET_ARN --query SecretString --output text)
+
+      ADMIN_USERNAME=$(echo $secret_json | jq -r '.username')
+      ADMIN_PASSWORD=$(echo $secret_json | jq -r '.password')
+
+      export PGPASSWORD=$ADMIN_PASSWORD
+
+      DB_EXISTS=$(psql --host "$HOST" --username "$ADMIN_USERNAME" --port "$DATABASE_PORT" --dbname "$DATABASE" -tAc "SELECT 1 FROM pg_database WHERE datname = '$DATABASE_TO_CREATE';")
+
+      if [ "$DB_EXISTS" != "1" ]; then
+        echo "Creating database '$DATABASE_TO_CREATE'..."
+        psql --host "$HOST" --username "$ADMIN_USERNAME" --port "$DATABASE_PORT" --dbname "$DATABASE" -c "CREATE DATABASE '$DATABASE_TO_CREATE';"
+      else
+        echo "Database '$DATABASE_TO_CREATE' already exists."
+      fi
+    EOT
+  }
+}
+
+# Create a SM secret for the Redshift master user in case of a cross-account Redshift cluster
+resource "aws_secretsmanager_secret" "redshift_master_replica" {
+  count = local.deploy_redshift_cross_account ? 1 : 0
+
+  name = format("redshift/%s/users/%s", data.aws_redshift_cluster.cross_account[0].cluster_identifier, var.redshift_master_username)
+}
+
+resource "aws_secretsmanager_secret_version" "redshift_master_replica" {
+  count = local.deploy_redshift_cross_account ? 1 : 0
+
+  secret_id = aws_secretsmanager_secret.redshift_master_replica[0].id
+  secret_string = jsonencode({
+    username = var.redshift_master_username
+    password = "" # Must be set manually using the AWS console
+  })
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
+}

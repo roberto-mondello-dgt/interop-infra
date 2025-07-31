@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "github_monorepo_assume" {
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   statement {
     effect  = "Allow"
@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "github_monorepo_assume" {
 resource "aws_iam_role" "github_monorepo" {
   depends_on = [aws_ecr_repository.app]
 
-  count = local.deploy_data_ingestion_resources ? 1 : 0
+  count = local.deploy_all_data_ingestion_resources ? 1 : 0
 
   name = format("%s-kpi-github-monorepo-%s", local.project, var.env)
 
