@@ -263,46 +263,6 @@ module "public_dashboards_bucket" {
   })
 }
 
-module "probing_eservices_bucket" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.15.1"
-
-  bucket = format("%s-probing-eservices-%s-es1", var.short_name, var.env)
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-
-  versioning = {
-    enabled = true
-  }
-
-  attach_policy = var.probing_registry_reader_role_arn != null
-  policy = var.probing_registry_reader_role_arn != null ? jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          AWS : var.probing_registry_reader_role_arn
-        }
-        Action = [
-          "s3:GetObject",
-          "s3:ListBucketVersions",
-          "s3:ListBucket",
-          "s3:GetObjectVersion"
-        ]
-        Resource = [
-          module.probing_eservices_bucket.s3_bucket_arn,
-          "${module.probing_eservices_bucket.s3_bucket_arn}/*"
-        ]
-      }
-    ]
-  }) : null
-}
-
-
 module "metrics_reports_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"

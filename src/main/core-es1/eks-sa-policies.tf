@@ -415,20 +415,6 @@ resource "aws_iam_policy" "be_token_details_persister" {
   })
 }
 
-resource "aws_iam_policy" "be_eservices_monitoring_exporter" {
-  name = "InteropBeEservicesMonitoringExporterPolicyEs1"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow",
-        Action   = "s3:PutObject",
-        Resource = format("%s/*", module.probing_eservices_bucket.s3_bucket_arn)
-    }]
-  })
-}
-
 resource "aws_iam_policy" "be_tenants_certified_attributes_updater" {
   name = "InteropBeTenantsCertifiedAttributesUpdaterPolicyEs1"
 
