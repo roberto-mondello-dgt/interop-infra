@@ -6,5 +6,7 @@
     "application_audit_analytics_writer_user",
     "tracing_enriched_data_handler_user"
   ],
-  "readonly_users": []
+  "readonly_users": [
+    "readonly_user"
+  ]
 }
