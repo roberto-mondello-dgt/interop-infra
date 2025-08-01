@@ -2,7 +2,7 @@ resource "aws_redshift_scheduled_action" "analytics_resume" {
   count = local.deploy_redshift_cluster ? 1 : 0
 
   name     = format("%s-analytics-redshift-resume-%s", local.project, var.env)
-  schedule = "cron(0 7 ? * 2-6 *)"
+  schedule = "cron(0 6 ? * 2-6 *)"
   iam_role = aws_iam_role.analytics_scheduled_actions[0].arn
 
   target_action {
@@ -16,7 +16,7 @@ resource "aws_redshift_scheduled_action" "analytics_pause" {
   count = local.deploy_redshift_cluster ? 1 : 0
 
   name     = format("%s-analytics-redshift-pause-%s", local.project, var.env)
-  schedule = "cron(0 19 ? * 2-6 *)"
+  schedule = "cron(0 18 ? * 2-6 *)"
   iam_role = aws_iam_role.analytics_scheduled_actions[0].arn
 
   target_action {
