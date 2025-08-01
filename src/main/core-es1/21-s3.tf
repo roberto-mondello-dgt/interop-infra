@@ -665,6 +665,14 @@ module "public_assets_bucket" {
     ]
   })
 
+  cors_rule = [
+    {
+      allowed_headers = ["*"]
+      allowed_methods = ["GET", "HEAD"]
+      allowed_origins = ["https://developer.pagopa.it", "https://dev.developer.pagopa.it"]
+    }
+  ]
+
   versioning = {
     enabled = true
   }
