@@ -3,6 +3,7 @@ resource "aws_redshift_scheduled_action" "analytics_resume" {
 
   name     = format("%s-analytics-redshift-resume-%s", local.project, var.env)
   schedule = "cron(0 6 ? * 2-6 *)"
+  enable   = false
   iam_role = aws_iam_role.analytics_scheduled_actions[0].arn
 
   target_action {
@@ -17,6 +18,7 @@ resource "aws_redshift_scheduled_action" "analytics_pause" {
 
   name     = format("%s-analytics-redshift-pause-%s", local.project, var.env)
   schedule = "cron(0 18 ? * 2-6 *)"
+  enable   = false
   iam_role = aws_iam_role.analytics_scheduled_actions[0].arn
 
   target_action {
