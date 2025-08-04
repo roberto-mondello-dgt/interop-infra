@@ -91,6 +91,10 @@ resource "aws_quicksight_data_set" "tenants_clients_access_by_ip" {
     principal = "${local.quicksight_groups_arn_prefix}-quicksight-admins"
     actions   = local.quicksight_data_set_read_write_actions
   }
+  permissions {
+    principal = "${local.quicksight_groups_arn_prefix}-quicksight-authors"
+    actions   = local.quicksight_data_set_read_only_actions
+  }
 
 }
 

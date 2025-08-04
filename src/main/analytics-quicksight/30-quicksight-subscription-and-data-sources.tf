@@ -74,12 +74,6 @@ resource "aws_quicksight_account_subscription" "quicksight_subscription" {
   admin_group  = [format("%s-%s-quicksight-admins", local.project, var.env)]
   author_group = [format("%s-%s-quicksight-authors", local.project, var.env)]
   reader_group = [format("%s-%s-quicksight-readers", local.project, var.env)]
-
-  depends_on = [
-    aws_iam_role.quicksight_service_role,
-    aws_iam_role.quicksight_secret_manager_service_role,
-    aws_iam_role_policy_attachment.quicksight_secret_manager_service_role_policy_attachment
-  ]
 }
 
 # This resource must be in the "Identity Center" region

@@ -19,6 +19,16 @@ locals {
     "quicksight:DeleteDataSource"
   ]
 
+  quicksight_data_set_read_only_actions = [
+    "quicksight:DescribeRefreshSchedule",
+    "quicksight:ListIngestions",
+    "quicksight:DescribeDataSetPermissions",
+    "quicksight:PassDataSet",
+    "quicksight:ListRefreshSchedules",
+    "quicksight:DescribeDataSet",
+    "quicksight:DescribeIngestion"
+  ]
+
   quicksight_data_set_read_write_actions = [
     "quicksight:DeleteDataSet",
     "quicksight:UpdateDataSetPermissions",
@@ -71,6 +81,10 @@ locals {
     {
       principal = "${local.quicksight_groups_arn_prefix}-quicksight-admins"
       actions   = local.quicksight_data_set_read_write_actions
+    },
+    {
+      principal = "${local.quicksight_groups_arn_prefix}-quicksight-authors"
+      actions   = local.quicksight_data_set_read_only_actions
     }
   ]
 

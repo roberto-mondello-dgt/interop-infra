@@ -17,5 +17,5 @@ quicksight_identity_center_region = "eu-west-1"
 quicksight_notification_email = "pdnd-interop+prod@pagopa.it"
 
 quicksight_analytics_security_group_name   = "quicksight/interop-analytics-prod"
-quicksight_redshift_user_credential_secret = "redshift/interop-analytics-prod/users/interop_analytics_quicksight_user"
+quicksight_redshift_user_credential_secret = "redshift/interop-analytics-prod/users/prod_quicksight_user"
 redshift_cluster_identifier                = "interop-analytics-prod"
