@@ -68,6 +68,13 @@ data "aws_iam_role" "application_audit_producers" {
 data "aws_redshift_cluster" "cross_account" {
   count = local.deploy_redshift_cross_account ? 1 : 0
 
-  provider           = aws.redshift-describe-clusters
+  provider           = aws.redshift_describe_clusters
   cluster_identifier = var.redshift_cross_account_cluster.cluster_id
+}
+
+data "aws_secretsmanager_secret" "redshift_master_cross_account" {
+  count = local.deploy_redshift_cross_account ? 1 : 0
+
+  provider = aws.redshift_get_master_secret
+  name     = var.redshift_cross_account_cluster.master_secret_id
 }

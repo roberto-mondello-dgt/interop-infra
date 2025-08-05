@@ -72,3 +72,45 @@ resource "aws_iam_role" "redshift_describe_clusters" {
     })
   }
 }
+
+resource "aws_iam_role" "redshift_get_master_secret" {
+  count = local.deploy_redshift_cluster && var.redshift_enable_cross_account_access_account_id != null ? 1 : 0
+
+  name = format("%s-redshift-get-master-secret-cross-account-access-%s-es1", local.project, var.env)
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Action = "sts:AssumeRole"
+      Principal = {
+        AWS = "arn:aws:iam::${var.redshift_enable_cross_account_access_account_id}:root"
+      },
+      Condition = {
+        ArnLike = {
+          "aws:PrincipalArn" = "arn:aws:iam::${var.redshift_enable_cross_account_access_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_FullAdmin*"
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "RedshiftGetMasterSecretCrossAccountPolicy"
+
+    policy = jsonencode({
+      Version = "2012-10-17",
+      Statement = [{
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = [
+          aws_secretsmanager_secret.redshift_master[0].arn,
+          aws_secretsmanager_secret_version.redshift_master[0].arn
+        ]
+      }]
+    })
+  }
+}

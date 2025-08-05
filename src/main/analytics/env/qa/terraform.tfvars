@@ -23,11 +23,14 @@ redshift_cluster_nodes_number = 2
 redshift_cluster_nodes_type   = "ra3.xlplus"
 
 redshift_describe_clusters_role_name = "interop-redshift-describe-clusters-cross-account-access-dev-es1"
+redshift_get_master_secret_role_name = "interop-redshift-get-master-secret-cross-account-access-dev-es1"
+
 redshift_cross_account_cluster = {
-  aws_account_id  = "505630707203"
-  aws_account_env = "dev"
-  cluster_id      = "interop-analytics-dev"
-  database_name   = "interop_qa"
+  aws_account_id   = "505630707203"
+  aws_account_env  = "dev"
+  cluster_id       = "interop-analytics-dev"
+  master_secret_id = "redshift/interop-analytics-dev/users/root"
+  database_name    = "interop_qa"
 }
 
 jwt_details_bucket_name = "interop-generated-jwt-details-qa-es1"

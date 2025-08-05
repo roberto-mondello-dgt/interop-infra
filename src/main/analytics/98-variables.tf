@@ -90,12 +90,19 @@ variable "redshift_describe_clusters_role_name" {
   default     = null
 }
 
+variable "redshift_get_master_secret_role_name" {
+  type        = string
+  description = "Name of the IAM role to assume to retrieve the Redshift's master secret and its related secret version (in another account) in case of cross-account access"
+  default     = null
+}
+
 variable "redshift_cross_account_cluster" {
   type = object({
-    aws_account_id  = string
-    aws_account_env = string
-    cluster_id      = string
-    database_name   = string
+    aws_account_id   = string
+    aws_account_env  = string
+    cluster_id       = string
+    master_secret_id = string
+    database_name    = string
   })
   description = "Redshift cluster to use in case of cross-account access"
   default     = null

@@ -36,10 +36,32 @@ provider "aws" {
 # Needed to assume the IAM role to describe the Redshift clusters in case of cross-account access
 provider "aws" {
   region = var.aws_region
-  alias  = "redshift-describe-clusters"
+  alias  = "redshift_describe_clusters"
 
   assume_role {
     role_arn = var.redshift_cross_account_cluster != null ? format("arn:aws:iam::%s:role/%s", var.redshift_cross_account_cluster.aws_account_id, var.redshift_describe_clusters_role_name) : null
+  }
+}
+
+# Needed to assume the IAM role to get the Redshift's master secret in case of cross-account access
+provider "aws" {
+  region = var.aws_region
+  alias  = "redshift_get_master_secret"
+
+  assume_role {
+    role_arn = var.redshift_cross_account_cluster != null ? format("arn:aws:iam::%s:role/%s", var.redshift_cross_account_cluster.aws_account_id, var.redshift_get_master_secret_role_name) : null
+  }
+}
+
+# - Needed by QuickSight until migration at aws provider version 6.0.0.
+#   Version 6.0.0 will introduce region argument in aws_quicksight_account_subscription resource.
+# TODO: Remove after apply to prod. It is still needed for destruction of QuickSight subscription
+provider "aws" {
+  region = "eu-west-1"
+  alias  = "identity_center_region"
+
+  default_tags {
+    tags = var.tags
   }
 }
 

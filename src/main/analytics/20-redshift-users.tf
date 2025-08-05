@@ -11,7 +11,7 @@ locals {
   redshift_port         = local.deploy_redshift_cluster ? aws_redshift_cluster.analytics[0].port : data.aws_redshift_cluster.cross_account[0].port
   redshift_database     = local.deploy_redshift_cluster ? aws_redshift_cluster.analytics[0].database_name : var.redshift_cross_account_cluster.database_name
 
-  redshift_master_user_secret_arn = local.deploy_redshift_cluster ? aws_secretsmanager_secret.redshift_master[0].arn : aws_secretsmanager_secret.redshift_master_replica[0].arn
+  redshift_master_user_secret_arn = local.deploy_redshift_cluster ? aws_secretsmanager_secret.redshift_master[0].arn : data.aws_secretsmanager_secret.redshift_master_cross_account[0].arn
 }
 
 module "redshift_flyway_pgsql_user" {

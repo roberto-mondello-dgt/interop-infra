@@ -168,24 +168,3 @@ resource "null_resource" "analytics_create_db" {
     EOT
   }
 }
-
-# Create a SM secret for the Redshift master user in case of a cross-account Redshift cluster
-resource "aws_secretsmanager_secret" "redshift_master_replica" {
-  count = local.deploy_redshift_cross_account ? 1 : 0
-
-  name = format("redshift/%s/users/%s", data.aws_redshift_cluster.cross_account[0].cluster_identifier, var.redshift_master_username)
-}
-
-resource "aws_secretsmanager_secret_version" "redshift_master_replica" {
-  count = local.deploy_redshift_cross_account ? 1 : 0
-
-  secret_id = aws_secretsmanager_secret.redshift_master_replica[0].id
-  secret_string = jsonencode({
-    username = var.redshift_master_username
-    password = "" # Must be set manually using the AWS console
-  })
-
-  lifecycle {
-    ignore_changes = [secret_string]
-  }
-}
