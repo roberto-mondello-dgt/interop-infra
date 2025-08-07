@@ -129,3 +129,72 @@ module "platform_data_be_app_pgsql_user" {
 
   db_admin_credentials_secret_arn = module.platform_data.cluster_master_user_secret[0].secret_arn
 }
+
+module "platform_data_kpi_domains_readmodel_checker_pgsql_user" {
+  count      = local.deploy_read_model_refactor ? 1 : 0
+  depends_on = [module.platform_data_readonly_pgsql_user]
+
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.7.1"
+
+  username = "kpi_domains_readmodel_checker_user"
+
+  generated_password_length = 30
+  secret_prefix             = format("rds/%s/users/", module.platform_data.cluster_id)
+
+  secret_tags = merge(local.eks_secret_default_tags,
+    {
+      EKSReplicaSecretName = "kpi-domains-readmodel-checker-user"
+    }
+  )
+
+  db_host = module.platform_data.cluster_endpoint
+  db_port = module.platform_data.cluster_port
+  db_name = "read_model" # PG roles are "global", we just a need an existing database
+
+  db_admin_credentials_secret_arn = module.platform_data.cluster_master_user_secret[0].secret_arn
+
+  additional_sql_statements = <<-EOT
+    GRANT readonly_user TO kpi_domains_readmodel_checker_user;
+  EOT
+}
+
+locals {
+  eks_kpi_domains_readmodel_checker_analytics_replica_secret_tags = {
+    EKSClusterName                     = module.eks.cluster_name
+    EKSClusterNamespacesSpaceSeparated = join(" ", [format("%s-analytics", var.env)])
+    TerraformState                     = "analytics"
+  }
+}
+
+# This secret is useful to replicate the 'kpi_domains_readmodel_checker_user' secret on the ${ENV}-analytics namespace which is managed by the analytics TF state
+resource "aws_secretsmanager_secret" "kpi_domains_readmodel_checker_user_analytics_replica" {
+  count      = local.deploy_read_model_refactor ? 1 : 0
+  depends_on = [module.platform_data_kpi_domains_readmodel_checker_pgsql_user]
+
+  name                    = format("rds/%s/users/kpi_domains_readmodel_checker_user_analytics_replica", module.platform_data.cluster_id)
+  description             = "This secret is useful to replicate the already existing 'kpi_domains_readmodel_checker_user' secret on the ${var.env}-analytics namespace which is managed by the analytics TF state"
+  recovery_window_in_days = 0
+
+  tags = merge(local.eks_kpi_domains_readmodel_checker_analytics_replica_secret_tags,
+    {
+      EKSReplicaSecretName = "kpi-domains-readmodel-checker-user"
+    }
+  )
+}
+
+data "aws_secretsmanager_secret_version" "kpi_domains_readmodel_checker_user_analytics_replica" {
+  secret_id = module.platform_data_kpi_domains_readmodel_checker_pgsql_user[0].secret_id
+}
+
+resource "aws_secretsmanager_secret_version" "kpi_domains_readmodel_checker_user_analytics_replica" {
+  count      = local.deploy_read_model_refactor ? 1 : 0
+  depends_on = [module.platform_data_kpi_domains_readmodel_checker_pgsql_user]
+
+  secret_id = aws_secretsmanager_secret.kpi_domains_readmodel_checker_user_analytics_replica[0].id
+
+  secret_string = jsonencode({
+    database = "read_model"
+    username = "kpi_domains_readmodel_checker_user"
+    password = jsondecode(data.aws_secretsmanager_secret_version.kpi_domains_readmodel_checker_user_analytics_replica.secret_string)["password"]
+  })
+}
