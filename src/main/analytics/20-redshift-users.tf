@@ -15,7 +15,7 @@ locals {
 }
 
 module "redshift_flyway_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.6"
 
   username = format("%s_flyway_user", var.env)
 
@@ -56,7 +56,7 @@ locals {
 
 # PostgreSQL users with no initial grants. The grants will be applied by Flyway
 module "redshift_be_app_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.6"
 
   for_each = toset(local.be_app_psql_usernames)
 
@@ -82,7 +82,7 @@ module "redshift_be_app_pgsql_user" {
 
 # PostgreSQL users for developers with default privileges.
 module "redshift_readonly_pgsql_user" {
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.6"
 
   for_each = toset(local.readonly_psql_usernames)
 
@@ -113,7 +113,7 @@ module "redshift_readonly_pgsql_user" {
 module "redshift_quicksight_pgsql_user" {
   count = local.deploy_redshift_cluster ? 1 : 0
 
-  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.1"
+  source = "git::https://github.com/pagopa/interop-infra-commons//terraform/modules/postgresql-user?ref=v1.27.6"
 
   username = "${var.env}_quicksight_user"
 
