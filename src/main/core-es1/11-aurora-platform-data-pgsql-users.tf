@@ -95,6 +95,8 @@ locals {
     "producer_keychain_rmw_user",
     "purpose_process_user",
     "purpose_rmw_user",
+    "purpose_template_process_user",
+    "purpose_template_rmw_user",
     "selfcare_client_users_updater_user",
     "tenant_process_user",
     "tenant_rmw_user",
