@@ -99,3 +99,5 @@ be_refactor_k8s_monitoring_internal_deployments_names = [
 deployment_repo_name = "pagopa/interop-core-deployment"
 
 analytics_k8s_namespace = "dev-analytics"
+
+api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.2.2/packages/api-clients/open-api/apiGatewayApi.yml"
