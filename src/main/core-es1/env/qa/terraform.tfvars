@@ -77,4 +77,4 @@ k8s_monitoring_internal_deployments_names = [
 
 deployment_repo_name = "pagopa/interop-core-deployment"
 
-api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.1.11/packages/api-clients/open-api/apiGatewayApi.yml"
+api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.1.17/packages/api-clients/open-api/apiGatewayApi.yml"
