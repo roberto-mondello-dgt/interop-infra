@@ -100,4 +100,4 @@ deployment_repo_name = "pagopa/interop-core-deployment"
 
 analytics_k8s_namespace = "dev-analytics"
 
-api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.2.4/packages/api-clients/open-api/apiGatewayApi.yml"
+api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.2.7/packages/api-clients/open-api/apiGatewayApi.yml"
