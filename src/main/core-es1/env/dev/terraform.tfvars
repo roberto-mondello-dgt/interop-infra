@@ -102,6 +102,6 @@ analytics_k8s_namespace = "dev-analytics"
 
 api_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.2.3/packages/api-clients/open-api/apiGatewayApi.yml"
 
-backend_for_frontend_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.0.1/packages/api-clients/open-api/bffApi.yml"
+backend_for_frontend_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.0.2/packages/api-clients/open-api/bffApi.yml"
 
 m2m_gateway_raw_url = "https://raw.githubusercontent.com/pagopa/interop-be-monorepo/refs/tags/1.0.1/packages/api-clients/open-api/m2mGatewayApi.yml"
